@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InputMode04View" customModule="QCFossil1212u" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputMode04View" customModule="QCFossil1212u" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspection Area" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diq-rH-7zq">
+                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="52" y="84" width="169" height="21"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HTc-Pi-Hk7">
+                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="506" y="84" width="91" height="21"/>
+                    </variation>
+                </label>
+                <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnJ-2h-UbQ">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <gestureRecognizers/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="0.0" y="115" width="768" height="750"/>
+                    </variation>
+                </scrollView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sht-N8-cHV">
+                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                    <color key="backgroundColor" red="0.98039215690000003" green="0.72156862749999995" blue="0.039215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="0.0" y="114" width="768" height="2"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspection Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="60Y-Wf-4Vw">
+                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="278" y="84" width="159" height="21"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ps-Fa-3uP" userLabel="line">
+                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                    <color key="backgroundColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5G5-20-mbh">
+                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="0.0" y="84" width="35" height="21"/>
+                    </variation>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <gestureRecognizers/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="diq-rH-7zq"/>
+                    <exclude reference="HTc-Pi-Hk7"/>
+                    <exclude reference="cnJ-2h-UbQ"/>
+                    <exclude reference="sht-N8-cHV"/>
+                    <exclude reference="60Y-Wf-4Vw"/>
+                    <exclude reference="1Ps-Fa-3uP"/>
+                    <exclude reference="5G5-20-mbh"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="subviews">
+                    <include reference="diq-rH-7zq"/>
+                    <include reference="HTc-Pi-Hk7"/>
+                    <include reference="cnJ-2h-UbQ"/>
+                    <include reference="sht-N8-cHV"/>
+                    <include reference="60Y-Wf-4Vw"/>
+                    <exclude reference="1Ps-Fa-3uP"/>
+                    <include reference="5G5-20-mbh"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="ScrollCellView" destination="cnJ-2h-UbQ" id="f8I-O2-156"/>
+                <outlet property="addCellButton" destination="XRQ-a8-V1E" id="HJI-jm-inV"/>
+                <outlet property="apyToAllBtn" destination="oHr-7q-uyh" id="dKR-69-Trc"/>
+                <outlet property="inspAreaLabel" destination="diq-rH-7zq" id="iBk-1O-y4w"/>
+                <outlet property="inspItemLabel" destination="60Y-Wf-4Vw" id="h2o-B1-occ"/>
+                <outlet property="resultLabel" destination="HTc-Pi-Hk7" id="u9v-Wq-f5a"/>
+            </connections>
+            <point key="canvasLocation" x="612" y="4"/>
+        </view>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XRQ-a8-V1E" userLabel="AddCellButton">
+            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <state key="normal" image="add">
+                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            </state>
+            <connections>
+                <action selector="addCellButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="ng4-UQ-ujW"/>
+            </connections>
+            <point key="canvasLocation" x="251" y="-576"/>
+        </button>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="oHr-7q-uyh">
+            <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+            <state key="normal" title="Apply to All">
+                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            </state>
+            <point key="canvasLocation" x="378" y="-568"/>
+        </button>
+    </objects>
+    <resources>
+        <image name="add" width="64" height="64"/>
+    </resources>
+</document>

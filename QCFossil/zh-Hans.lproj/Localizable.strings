@@ -1,0 +1,773 @@
+/*
+ 
+ Localizable.strings
+ 
+ QCFossil
+ 
+ Created by Yin Huang on 14/12/15.
+ 
+ Copyright © 2015 kira. All rights reserved.
+ 
+ */
+
+"Username" = "用户名称";
+
+"Password" = "密码";
+
+"Language" = "语言";
+
+"Login" = "登陆";
+
+"Forget Username?" = "忘记用户名称？";
+
+"Forget Password?" = "忘记用户密码？";
+
+"Please provide below info and email would be sent:" = "请输入以下资料,所需资料将经电邮发送:";
+
+"Email Address" = "注册邮箱";
+
+"Submit" = "提交";
+
+"Cancel" = "取消";
+
+"Email Address" = "注册邮箱";
+
+"App Menu" ="菜单" ;
+
+"Task Search" ="任务搜索";
+
+"Create Task" ="创建任务";
+
+"Book/Inspect Date From" ="预约/检查日期由";
+
+"To" ="至";
+
+"Book/Inspect No." ="预约/检查编号";
+
+"Inspection Type" ="检查类型";
+
+"Style" ="款号";
+
+"Brand" ="品牌";
+
+"PO No." = "订单编号";
+
+"Book Date" = "预约/检查日期";
+
+"Book No" ="预约/检查编号";
+
+"Status" ="任务状态";
+
+"Location" ="地址";
+
+"PO" ="订单编号";
+
+"Type" ="类型";
+
+"Delivery Date From" ="送货日期由";
+
+"*Vendor" ="*供应商";
+
+"*Vendor Location" ="*供应商地址";
+
+"Vendor" ="供应商";
+
+"Vendor Location" ="供应商地址";
+
+"Vendor PlaceHolder" = "供应商名称";
+
+"Vendor Location PlaceHolder" ="供应商地址";
+
+"Task Status" ="任务状态";
+
+"Pending" ="待处理";
+
+"Draft" ="已输入";
+
+"Confirmed" ="已确认";
+
+"Uploaded" ="已上传";
+
+"Uploaded (C)" ="已上传 (取消)";
+
+"Search" ="搜索";
+
+"Clear" = "清空";
+
+"Refused" = "已拒絕";
+
+"PO List/Material" ="订单列表";
+
+"Delete" = "删除";
+
+"Product Type" ="产品类型";
+
+"OK" = "确认";
+
+"Save" = "保存";
+
+"Basic Information" = "基本资料";
+
+"Book/Inspect Date" = "预约/检查日期";
+
+"Inspector" = "检查员";
+
+"Inspection Result" = "检查结果";
+
+"Inspection Information" = "检查资料";
+
+"Inspection Item" = "检查项目";
+
+"PO Line No." = "订单行号";
+
+"Order Qty" = "订单数量";
+
+"Ship To" = "目的地";
+
+"Avail. Qty" = "可验货数量(N)";
+
+"Login User" = "登入用户";
+
+"Last Upload Date" = "最后上载日期";
+
+"Upload" = "上载";
+
+"Task Search"="任务搜索";
+
+"Data Sync"="数据同步";
+
+"User Logout"="用户登出";
+
+"PO Search" ="订单搜索";
+
+"Task Scheduled?"="有任务?";
+
+"Task Form"="任务表格";
+
+"Add PO Line(s)"="加入订单行";
+
+"Delete PO Line(s)"="删除订单行";
+
+"Last Login Date"="最后登入日期";
+
+"Last Download Date"="最后下载日期";
+
+"Download"="下载";
+
+"Enable?"="可加入?";
+
+"Inspection Categories"="检查项目";
+
+"Inspection Category"="检查分类";
+
+"Inspect Category" = "检查分类";
+
+"Result Summary"="检查结果总结";
+
+"Material"="物料";
+
+"Production Process"="工艺制作";
+
+"Product/Packaging"="成品/包装";
+
+"Other Inspections"="其他检查";
+
+"Pass"="合格";
+
+"Hold"="保留";
+
+"N.A."="不适用";
+
+"C.A."="有条件批准";
+
+"Total"="总数";
+
+"Inspector Comment"="检查员评语";
+
+"Vendor Notes"="供应商备注";
+
+"Sign-off & Confirm"="签署并确认";
+
+"Photo Album"="相片集";
+
+"Defect List"="不良项目列表";
+
+"Confirm"="确认";
+
+"Signature"="签署";
+
+"Please Signature"="請簽署確認";
+
+"Vendor Confirmer"="供应商确认者";
+
+"Please input Vendor Name."="请填写供应商确认者名称。";
+
+"Empty/Next Section"="空白/下一项目";
+
+"Section Menu"="项目菜单";
+
+"Empty/Previous Section"="空白/上一项目";
+
+"Inspection Area"="检查范围 ";
+
+"Inspect Item"="检查项目";
+
+"Defect"="不良项目";
+
+"Yes"="是";
+
+"No"="否";
+
+"Add Photo"="从iPad本地加入";
+
+"Select/Save"="选择/保存";
+
+"Photo"="相片";
+
+"Photo Filename"="相片档案名称";
+
+"Filename" = "档案名称";
+
+"Description"="描述";
+
+"Defect Qty."="不良项目数量";
+
+"Add Description"="加入描述";
+
+"Photo Added?"="已加相片?";
+
+"Start/Save" = "开始/保存";
+
+"Grade" = "等级";
+
+"Ref. No." = "参考编号";
+
+"A Q Level" = "AQL标准";
+
+"Case Back Print" = "底盖内印";
+
+"Time Setting" = "调较时间";
+
+"Case Back Date" = "底盖生产日期";
+
+"Inspect Area" = "检查范围";
+
+"Battery Date" = "电池日期";
+
+"Result Summary" = "检查结果总结";
+
+"Functional Tests" = "功能性测试";
+
+"Cosmetic Inspections" = "外观检查";
+
+"Packaging Inspections" = "包装检查";
+
+"Inspection No." = "检查编号";
+
+"Functional Tests" = "功能性测试";
+
+"Inspection Details" = "检查明细";
+
+"Result" = "結果";
+
+"Apply to All" = "加到全部";
+
+"Defect Position" = "不良项目位置";
+
+"Defect Position Point(s)" = "位置点";
+
+"Defect Position Description" = "位置描述";
+
+"Remove Photo" = "移除相片";
+
+"Defect Description" = "不良项目描述";
+
+"Defect Qty" = "不良项目数量";
+
+"Cosmetic Inspections" = "外观检查";
+
+"Defect Position Points & Info" = "不良項目位置點及位置描述";
+
+"Defect Type" = "不良項目種類";
+
+"Critical" = "严重";
+
+"Major" = "主要";
+
+"Minor" = "次要";
+
+"Remarks" = "备注";
+
+"Edit" = "编辑";
+
+"Done" = "完成";
+
+"Task Findings" = "不良品描述";
+
+"Please choose a source" = "请选择";
+
+"Add from Camera" = "从相机添加";
+
+"Add from Photo Library" = "从iPad相片库添加";
+
+"Add from Photo Album" = "从程式相片集添加";
+
+"Please select a Inspection Type!" = "请选择一个检查类型!";
+
+"Please select the Vendor!" = "请选择供应商！";
+
+"Please select Product Type and Inspection Type" = "请选择产品类型和检查类型";
+
+"Please add PO Lines(s)!" = "请加入订单行!";
+
+"Select PO Line" = "选择订单行";
+
+"Task Create Successed!" = "任务创建成功!";
+
+"Task Create Failed!" = "任务创建失败!";
+
+"Please fill in: 1. Inspector Comment 2. Vendor Notes!" = "请填写:\n1. 检查员评语\n2. 供应商备注!";
+
+"Sun" = "日";
+
+"Mon" = "一";
+
+"Tue" = "二";
+
+"Wed" = "三";
+
+"Thu" = "四";
+
+"Fri" = "五";
+
+"Sat" = "六";
+
+"Jan" = "1月";
+
+"Feb" = "2月";
+
+"Mar" = "3月";
+
+"Apr" = "4月";
+
+"May" = "5月";
+
+"Jun" = "6月";
+
+"Jul" = "7月";
+
+"Aug" = "8月";
+
+"Sep" = "9月";
+
+"Oct" = "10月";
+
+"Nov" = "11月";
+
+"Dec" = "12月";
+
+"Tap to Sign" = "点击签名";
+
+"Save & Confirm" = "保存并确认";
+
+"Delete Photo?" = "删除图片？";
+
+"Delete Photo From Photo Album?" = "删除相片集图片？";
+
+"Delete Task Findings Item?" = "确认删除？";
+
+"Please select Inspection Area, Inspection Item and Result!" = "请选择检查范围、检查项目及結果";
+
+"Cannot update Confirmed or Cancelled Task!" = "不能更改已确认或取消之任务！";
+
+"Close" = "关闭";						
+
+"Back" = "返回";
+
+"Please provide below info and email would be sent" = "请提供以下信息";
+
+"MM/DD/YYYY" = "月月/日日/年年年年";
+
+"Maximun 5 Photos!" = "可加入最多5张相片！";
+
+"Tap Anywhere To Close" = "任意点击关闭";
+
+"No Photo Selected, OK?" = "没有选择图片，确定？";
+
+"Loading" = "加载中";
+
+"Cancelled"="已取消";
+
+"Earliest Ship Win" = "最早Ship Win";
+
+"Ship Win From" = "SW/要求出厂日由";
+
+"OPD/RSD From" = "OPD/RSD由";
+
+"Inspect/Book Date" = "预约/检查日期";
+
+"Inspect/Book No." = "预约/检查编号";
+
+"Final/Material/In-line" = "成品/物料/生产线";
+
+"Sample Qty" = "抽验数量(n)";
+
+"QC Booked Qty" = "预约数量";
+
+"OPD/RSD" = "OPD/RSD";
+
+"OS QC Qty" = "未预约验货数";
+
+"User Login" = "用户登录";
+
+"Username or Password should not be nil!" = "用户名称或密码不能为空！";
+
+"Save Success!" = "保存成功！";
+
+"Save fail!" = "保存失败！";
+
+"Please Select Inspect Area and Inspect Item" = "请选择检查范畴以及检查项目";
+
+"Please Select Inspect Category and Inspect Item" = "请选择类别以及检查项目";
+
+"Please Select Inspect Item" = "请选择检查项目";
+
+"Please Select Inspect Defect Position and Points" = "请选择检查问题位置以及细项";
+
+"No Po Items!" = "请先选择订单项目！";
+
+"Photo(s) of this inspection item will be deleted!" = "此檢查項目中的相片將被刪除!";
+
+"Cancel Task" = "取消任务";
+
+"Upload" = "上传";
+
+"Download" = "下载";
+
+"Login User" = "登录用户";
+
+"Last Login Date" = "上次登录日期";
+
+"Last Download" = "上次下载时间";
+
+"-Master Data" = "-主要数据";
+
+"-Inspection Setup Data" = "-检查设置数据";
+
+"-FGPO Data" = "-订单数据";
+
+"-Task Booking Data" = "-任务预定数据";
+
+"-Task Status Data" = "-任务状态数据";
+
+"-Task Result Data" = "-任务结果数据";
+
+"-Task Result Photo" = "-任务结果照片";
+
+"Data Download" = "数据下载";
+
+"Data Upload" = "数据上载";
+
+"Data Sync" = "数据同步";
+
+"Last Upload" = "最后上传时间";
+
+"Delete?" = "删除？";
+
+"Please enter: 1. Sample Qty 2. Avail. Qty!" = "請輸入:\n1. 抽验數量\n2. 可验货数量(N)";
+
+"Please enter all Inspection Item results." = "請輸入所有檢查項目結果";
+
+"Maximun 5 Defect Photos!" = "最多5张图片！";
+
+"am" = "上午";
+
+"pm" = "下午";
+
+"Please Select Inspect Item Result!" = "请选择检查结果！";
+
+"Task Deleted!" = "任务已删除！";
+
+"Task Delete Fail!" = "任务删除失败！";
+
+"Delete Task?" = "删除任务？";
+
+"Inspect Result Cannot Be Nil!" = "任务检查结果不能为空！";
+
+"Data Control" = "数据控制";
+
+"Last Login" = "最后登入时间";
+
+"Last Download" = "最后下载时间";
+
+"Last Backup" = "最后备份时间";
+
+"Backup Data" = "数据备份";
+
+"Password Not Correct!" = "密码错误！";
+
+"No active PO line!" = "沒有订单行!";
+
+"Searching" = "搜索中";
+
+"Template Type" = "模版名称";
+
+"Please select a Template Type!" = "请选择模版！";
+
+"Login fail, the deviceid must match the login user." = "登入失败，DeviceId与登入用户不符！";
+
+"SW/Req. Ex-fty Date From" = "SW/要求出厂日期";
+
+"Earliest Ship Win" = "SW/要求出厂日";
+
+"YES" = "是";
+
+"NO" = "否";
+
+"ALL" = "全部";
+
+"Ship Win" = "SW/要求出厂日";
+
+"SW/Req. Ex-fty Date" = "SW/要求出厂日";
+
+"Cant Update Task Inspector!" = "不能关联任务与检查人员！";
+
+"Reviewed" = "已检阅";
+
+"Cancel Ad-hoc Task?" = "取消突发任务？";
+
+"Device ID:" = "机身编号:";
+
+"Cannot update Uploaded, Reviewed or Refused Task!" = "不能更改已上传，已检阅或已拒绝之任务！";
+
+"Restore Data" = "恢复数据";
+
+"Complete" = "完成";
+
+"Last Restore" = "最后恢复时间";
+
+"Delete Defect Item?" = "刪除不良項目?";
+
+"Saving" = "保存中";
+
+"Redirecting" = "跳转中";
+
+"Save Task" = "保存任务";
+
+"Please enter all Defect Qty." = "请填写所有不良项目数量";
+
+"Login success, Redirect..." = "登入成功，正在跳转...";
+
+"Login through Local Database..." = "通过本地数据库登入...";
+
+"Login through WS..." = "通过WS登入...";
+
+"From Camera" = "从照相机加入";
+
+"Version" = "版本";
+
+"No version number found!" = "找不到版本号码！";
+
+"User Setting" = "用户设定";
+
+"Change Password" = "更改密码";
+
+"Current Password" = "输入当前密码";
+
+"New Password" = "输入新密码";
+
+"Confirm Password" = "确认新密码";
+
+"New Password Again" = "再次输入新密码";
+
+"Resolution of Photo from Library or Camera" = "图片库或照相机图片尺寸设置";
+
+"Send Request..." = "发送请求...";
+
+"Sending Request..." = "发送请求...";
+
+"Waiting Response..." = "等待回响...";
+
+"Processing Data..." = "数据处理中...";
+
+"Sending _DS_MSTRDATA Acknowledgement..." = "发送主要数据反馈...";
+
+"Sending Master Data Download Acknowledgement..." = "发送主要数据反馈...";
+
+"Sending _DS_INPTSETUP Acknowledgement..." = "发送检查设置数据反馈...";
+
+"Sending Inspection Setup Data Download Acknowledgement..." = "发送检查设置数据反馈...";
+
+"Sending _DS_FGPODATA Acknowledgement..." = "发送订单数据反馈...";
+
+"Sending FGPO Data Download Acknowledgement..." = "发送订单数据反馈...";
+
+"Sending _DS_TASKDATA Acknowledgement..." = "发送任务预定数据反馈...";
+
+"Sending Task Booking Data Download Acknowledgement..." = "发送任务预定数据反馈...";
+
+"Sending _DS_DL_TASK_STATUS Acknowledgement..." = "发送任务状态数据反馈...";
+
+"Sending Task Status Data Download Acknowledgement..." = "发送任务状态数据反馈...";
+
+"Preparing Master Data..." = "主要数据整理中...";
+
+"Preparing Inspection Setup Data..." = "检查设置数据整理中...";
+
+"Preparing FGPO Data..." = "订单数据整理中...";
+
+"Preparing Task Booking Data..." = "任务预定数据整理中...";
+
+"Preparing Task Status Data..." = "任务状态数据整理中...";
+
+"Processing Response..." = "回应处理中...";
+
+"Downloading Data..." = "数据下载中...";
+
+"The network connection was lost." = "网络连接丢失！";
+
+"The internet connection appears to be offline." = "无网络连接！";
+
+"Clear Signature?" = "清空签名？";
+
+"Last Uploaded Task Count" = "最后上传任务总数";
+
+"No data response from server..." = "服务器无数据指示";
+
+"Inspector Signature" = "检查员签署";
+
+"Login information incorrect!" = "登入資料錯誤!";
+
+"Update Signature" = "更新簽署";
+
+"Shape Types" = "图形种类";
+
+"Delete Shape?" = "删除图形？";
+
+"New password should be 8-15 charators!" = "请输入8到15位新密码！";
+
+"New password need to include Numbers!" = "新密码必须包含数字！";
+
+"New password need to include Letters!" = "新密码必须包含字母！";
+
+"New password reset Successfully!" = "新密码设置成功！";
+
+"Confirm password is different from the New password!" = "两次输入密码必须一致！";
+
+"Old password is not Correct!" = "当前密码不正确！";
+
+"Cant use login name as new password!" = "不能使用登入名称作为新密码！";
+
+"Please Change Your Password Now" = "请现在更改你的密码";
+
+"DB Updating" = "数据库更新中";
+
+"DB Backup" = "数据库备份";
+
+"Updating" = "更新中";
+
+"Success" = "完成";
+
+"Fail" = "失败";
+
+"Please input description for backup data." = "请输入备份描述";
+
+"Compressing Data..." = "压缩文件中...";
+
+"Password update failed." = "密码更改失败";
+
+"Update failed. Please check internet connection." = "更改失敗。請檢查網絡連接狀況";
+
+"Password has been reset! Please check your Email!" = "密碼已發送至閣下的電郵地址";
+
+"Username or Password is not correct!" = "用户名字或密码不正确";
+
+"Please Select Backup First" = "请先选择一个备份文件";
+
+"Please Input Your Password" = "输入密码";
+
+"Delete Suceess." = "删除成功";
+
+"Restore Complete" = "还原完成";
+
+"List Backup History Complete" = "完成列出数据备份历史";
+
+"Downloading Backup File:" = "下载备份文件:";
+
+"Restore In Progress..." = "还原进行中...";
+
+"Decompress Complete" = "解压完成";
+
+"Preparing For Restortion..." = "还原工作准备中...";
+
+"New Password Update Fail..." = "密码更新失败...";
+
+"Username has been reset! Please check your Email!" = "用户名称已发送, 请检查电邮。";
+
+"Username or Email is not correct!" = "用户名称或电邮不正确";
+
+"Backup Description" = "备份备注";
+
+"Backup History List" = "备份列表";
+
+"Backup History" = "数据备份历史";
+
+"Restore" = "恢复备份";
+
+"The Internet connection appears to be offline." = "请检查网络连接状况。";
+
+"Could not connect to the server." = "请检查网络连接状况。";
+
+"Backup failed." = "备份失败。";
+
+"App Version" = "App版本";
+
+"App Release Date" = "App发送日期";
+
+"Backup Date" = "备份日期";
+
+"Backup Remarks" = "备份备注";
+
+"Data Cleanup?" = "清除数据？";
+
+"Delete Login User Data" = "删除登录用户数据";
+
+"You haven't done data sync over 3 days!" = "已有3天没有数据上载/下载记录, 请进行数据同步";
+
+"Prod Desc" = "产品描述";
+
+"Please chose a Vendor & Vendor Location!" = "请选择供应商以及供应商地址！";
+
+"Not allow [Lot Size(N)] less than [Sample Qty(n)]" = "不允许[可验货数量(N)]小于[抽验数量(n)]";
+
+"fail" = "失败";
+
+"Photo Uploading..." = "相片上传中...";
+
+"Waiting for Response Data from Server, need few minutes..." = "等候服务器回应...需时几分钟";
+
+"Decompressing" = "解压缩中";
+
+"Backup Local Data..." = "备份本地数据...";
+
+"Backup In Progress..." = "备份进行中...";
+
+"Uploading Backup File:" = "上传备份文件:";
+
+"Listing Backup Files..." = "获取备份列表...";
+
+"DB data updating, Dont press Home or Power button!" = "资料库数据更新中, 请勿按Home或电源键!";
+
+"Update Fail, DB Rollbacked" = "更新失败，已恢复资料库";
+
+"Use Background Mode for Download/Upload Task" = "使用Background下载／上传模式";
+
+"Data Download Complete." = "下载任务完成。";
+
+"Data Upload Complete." = "上传任务完成。";
+
+"Data Backup Complete." = "数据备份完成。";
+
+"Data Restore Complete." = "数据恢复完成。";
+
+"Clear Data Done..." = "数据清理完成...";

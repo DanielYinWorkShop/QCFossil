@@ -1,0 +1,27 @@
+
+/* Class = "UISegmentedControl"; 8pL-Pt-7MY.segmentTitles[0] = "English"; ObjectID = "8pL-Pt-7MY"; */
+"8pL-Pt-7MY.segmentTitles[0]" = "English";
+
+/* Class = "UISegmentedControl"; 8pL-Pt-7MY.segmentTitles[1] = "中文"; ObjectID = "8pL-Pt-7MY"; */
+"8pL-Pt-7MY.segmentTitles[1]" = "中文";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "Du3-Ym-nSa"; */
+"Du3-Ym-nSa.normalTitle" = "Login";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "M09-kr-pOW"; */
+"M09-kr-pOW.text" = "Username";
+
+/* Class = "UIButton"; normalTitle = "Forget Password?"; ObjectID = "cLq-pp-HwJ"; */
+"cLq-pp-HwJ.normalTitle" = "Forget Password?";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "cr7-yF-s3t"; */
+"cr7-yF-s3t.text" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Forget Username?"; ObjectID = "ju8-p4-9Xw"; */
+"ju8-p4-9Xw.normalTitle" = "Forget Username?";
+
+/* Class = "UILabel"; text = "Language"; ObjectID = "r9D-J1-Of9"; */
+"r9D-J1-Of9.text" = "Language";
+
+/* Class = "UIButton"; normalTitle = "Clear"; ObjectID = "uRZ-aO-eHF"; */
+"uRZ-aO-eHF.normalTitle" = "Clear";

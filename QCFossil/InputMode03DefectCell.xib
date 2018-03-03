@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputMode03DefectCellView" customModule="QCFossil_1128" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="225"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0E-GA-FzU">
+                    <rect key="frame" x="8" y="8" width="40" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xon-gT-1mZ">
+                    <rect key="frame" x="663" y="112" width="97" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LYx-dY-C33">
+                    <rect key="frame" x="8" y="112" width="647" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cug-Wh-CTs">
+                    <rect key="frame" x="663" y="167" width="40" height="40"/>
+                    <state key="normal" image="add">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="addDefectCellButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="SSE-cA-uvV"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tEw-6G-bSb">
+                    <rect key="frame" x="720" y="167" width="40" height="40"/>
+                    <state key="normal" image="remove">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="dismissDefectCellButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="lSx-7W-vHy"/>
+                    </connections>
+                </button>
+                <imageView tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="XDo-ZF-1Kj">
+                    <rect key="frame" x="92" y="167" width="40" height="40"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="z0B-ww-Ds4" appends="YES" id="GrA-D6-DAA"/>
+                    </connections>
+                </imageView>
+                <imageView tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="qGT-nr-iex">
+                    <rect key="frame" x="158" y="167" width="40" height="40"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="Hcp-w8-HOi" appends="YES" id="dWv-hC-Ycz"/>
+                    </connections>
+                </imageView>
+                <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="DvK-vN-Y7V">
+                    <rect key="frame" x="222" y="167" width="40" height="40"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="ddr-8P-5yM" appends="YES" id="8Et-50-FyQ"/>
+                    </connections>
+                </imageView>
+                <imageView tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="yw2-0K-TaP">
+                    <rect key="frame" x="287" y="167" width="40" height="40"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="mhg-Bp-L2T" appends="YES" id="6Of-2j-Oft"/>
+                    </connections>
+                </imageView>
+                <imageView tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="SFS-QD-Cle">
+                    <rect key="frame" x="352" y="167" width="40" height="40"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="irz-qN-Q1t" appends="YES" id="CZ1-jE-zBc"/>
+                    </connections>
+                </imageView>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHM-eQ-v4N" customClass="CustomButton" customModule="QCFossil_1128" customModuleProvider="target">
+                    <rect key="frame" x="121" y="159" width="15" height="15"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="-">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="aMC-Wx-fAn"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7gT-cw-kQB" customClass="CustomButton" customModule="QCFossil_1128" customModuleProvider="target">
+                    <rect key="frame" x="183" y="159" width="15" height="15"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="-">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="eNd-9s-aKk"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aho-vg-gdc" customClass="CustomButton" customModule="QCFossil_1128" customModuleProvider="target">
+                    <rect key="frame" x="247" y="159" width="15" height="15"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="-">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="5zF-mZ-ns5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0zO-bD-WiB" customClass="CustomButton" customModule="QCFossil_1128" customModuleProvider="target">
+                    <rect key="frame" x="312" y="159" width="15" height="15"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="-">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="DtD-Un-Eav"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAW-lI-0aa" userLabel="Line">
+                    <rect key="frame" x="0.0" y="224" width="768" height="1"/>
+                    <color key="backgroundColor" red="0.98039215690000003" green="0.72156862749999995" blue="0.039215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4V7-Ag-EiH" customClass="CustomButton" customModule="QCFossil_1128" customModuleProvider="target">
+                    <rect key="frame" x="377" y="159" width="15" height="15"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="-">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="5WK-7x-lIL"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Defect Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScA-HY-kMC">
+                    <rect key="frame" x="8" y="83" width="647" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Defect Qty" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8mg-rn-RGl">
+                    <rect key="frame" x="624" y="83" width="136" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6n-iB-raz">
+                    <rect key="frame" x="8" y="41" width="63" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DtB-wB-7nB">
+                    <rect key="frame" x="74" y="37" width="335" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CmT-OV-W11">
+                    <rect key="frame" x="417" y="37" width="343" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspection Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="INs-Be-pJ2">
+                    <rect key="frame" x="74" y="8" width="319" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3B-lb-v5J" customClass="CustomButton" customModule="QCFossil_1128" customModuleProvider="target">
+                    <rect key="frame" x="8" y="162" width="50" height="50"/>
+                    <state key="normal" image="add_photo_btn">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="addDefectPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Uoh-R9-iBA"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspection Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hS0-xh-H9g">
+                    <rect key="frame" x="417" y="8" width="343" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="addDescButton" destination="Cug-Wh-CTs" id="9YS-SE-9uG"/>
+                <outlet property="ddInput" destination="LYx-dY-C33" id="Wwo-Hz-LC9"/>
+                <outlet property="ddLabel" destination="ScA-HY-kMC" id="8gv-kL-Sz4"/>
+                <outlet property="defectPhoto1" destination="XDo-ZF-1Kj" id="HqU-Hs-tjn"/>
+                <outlet property="defectPhoto2" destination="qGT-nr-iex" id="2Rw-Bq-j3c"/>
+                <outlet property="defectPhoto3" destination="DvK-vN-Y7V" id="YLO-6d-UHB"/>
+                <outlet property="defectPhoto4" destination="yw2-0K-TaP" id="Wy0-YJ-TtD"/>
+                <outlet property="defectPhoto5" destination="SFS-QD-Cle" id="4Jf-hw-7bO"/>
+                <outlet property="dfQtyInput" destination="Xon-gT-1mZ" id="VCm-OX-an4"/>
+                <outlet property="dfQtyLabel" destination="8mg-rn-RGl" id="NN7-ue-i7d"/>
+                <outlet property="dismissDescButton" destination="tEw-6G-bSb" id="PTD-XJ-3Wr"/>
+                <outlet property="dismissPhotoButton1" destination="iHM-eQ-v4N" id="LSi-r8-b53"/>
+                <outlet property="dismissPhotoButton2" destination="7gT-cw-kQB" id="cY7-g8-gjj"/>
+                <outlet property="dismissPhotoButton3" destination="aho-vg-gdc" id="h04-fn-qas"/>
+                <outlet property="dismissPhotoButton4" destination="0zO-bD-WiB" id="CWH-93-cIc"/>
+                <outlet property="dismissPhotoButton5" destination="4V7-Ag-EiH" id="ug0-fS-RZa"/>
+                <outlet property="icInput" destination="DtB-wB-7nB" id="hTJ-jd-Jtw"/>
+                <outlet property="icLabel" destination="INs-Be-pJ2" id="4H7-dX-V05"/>
+                <outlet property="iiInput" destination="CmT-OV-W11" id="p0S-MV-Lds"/>
+                <outlet property="iiLabel" destination="hS0-xh-H9g" id="5a9-YN-x58"/>
+                <outlet property="indexLabel" destination="Q6n-iB-raz" id="t2v-Mk-EYT"/>
+            </connections>
+            <point key="canvasLocation" x="367" y="246.5"/>
+        </view>
+        <tapGestureRecognizer id="z0B-ww-Ds4">
+            <connections>
+                <action selector="previewTapOnClick:" destination="iN0-l3-epB" id="hAQ-2c-xNP"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Hcp-w8-HOi">
+            <connections>
+                <action selector="previewTapOnClick:" destination="iN0-l3-epB" id="J6j-SX-Xr7"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="ddr-8P-5yM">
+            <connections>
+                <action selector="previewTapOnClick:" destination="iN0-l3-epB" id="fDl-sQ-fMe"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="mhg-Bp-L2T">
+            <connections>
+                <action selector="previewTapOnClick:" destination="iN0-l3-epB" id="aeI-T0-nEN"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="irz-qN-Q1t">
+            <connections>
+                <action selector="previewTapOnClick:" destination="iN0-l3-epB" id="BAY-Kj-Oin"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="add" width="64" height="64"/>
+        <image name="add_photo_btn" width="50" height="50"/>
+        <image name="logo" width="350" height="350"/>
+        <image name="remove" width="64" height="64"/>
+    </resources>
+</document>
