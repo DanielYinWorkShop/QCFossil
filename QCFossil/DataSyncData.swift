@@ -10,8 +10,8 @@ import UIKit
 
 //Data Sync Server
 let dataSyncServerUsing = dataSyncUatServer
-let dataSyncTestServer = "http://202.123.87.16/test_ws_quality/"
-let dataSyncUatServer = "http://202.123.87.16/uat_ws_quality/"
+let dataSyncTestServer = "http://web01.forrus.com.hk/test_ws_quality/" //"http://202.123.87.16/test_ws_quality/"
+let dataSyncUatServer = "http://web01.forrus.com.hk/uat_ws_quality/" //"http://202.123.87.16/uat_ws_quality/"
 let dataSyncPrdServer = "https://quality.forrus.com.hk/ws_quality/"
 let _DS_PREFIX = "req_msg="
 let _DS_USERNAME = "uName"
