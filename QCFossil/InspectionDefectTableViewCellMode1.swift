@@ -279,12 +279,12 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     
     func updatePhotoAddedStatus(newStatus:String) {
         if newStatus == "yes" {
-            (self.inspItem as! InputMode04CellView).photoAdded = true
+            (self.inspItem as! InputMode01CellView).photoAdded = true
         }else{
-            (self.inspItem as! InputMode04CellView).photoAdded = false
+            (self.inspItem as! InputMode01CellView).photoAdded = false
         }
         
-        (self.inspItem as! InputMode04CellView).updatePhotoAddediConStatus("",photoTakenIcon: (self.inspItem as! InputMode04CellView).photoAddedIcon)
+        (self.inspItem as! InputMode01CellView).updatePhotoAddediConStatus("",photoTakenIcon: (self.inspItem as! InputMode01CellView).photoAddedIcon)
     }
     
     func previewTapOnClick(sender: UITapGestureRecognizer) {

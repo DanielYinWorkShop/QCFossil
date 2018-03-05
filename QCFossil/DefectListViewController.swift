@@ -61,24 +61,35 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
         var sortingDictionary = Dictionary<String, Int>()
         
         for defectItem in (Cache_Task_On?.defectItems)! {
-            
+           
             if defectItem.inspElmt.cellCatIdx < 1 && defectItem.inspElmt.cellIdx < 1 {
                 for inspSection in (Cache_Task_On?.inspSections)! {
                     if inspSection.sectionId == defectItem.sectObj.sectionId {
                         var idx = 1
                         for inspElmt in inspSection.taskInspDataRecords {
-                            if inspElmt.inspectElementId == defectItem.inspectElementId {
+                            
+                            var inspectElementId = 0
+                            if defectItem.inputMode == _INPUTMODE02 {
+                                let dpDataHelper = DPDataHelper()
+                                inspectElementId = dpDataHelper.getInspElementIdByInspRecordIdForINPUT02(defectItem.recordId!)
+                            }
+                            
+                            if inspElmt.inspectElementId == defectItem.inspectElementId || inspElmt.inspectElementId == inspectElementId {
                                 
                                 defectItem.inspElmt.cellCatIdx = inspSection.sectionId!
                                 defectItem.inspElmt.cellIdx = idx
                                 defectItem.inspElmt.cellCatName = (_ENGLISH ? inspSection.sectionNameEn : inspSection.sectionNameCn)!
                                 defectItem.inspElmt.inspCatText = (_ENGLISH ? inspSection.sectionNameEn : inspSection.sectionNameCn)!
-                                defectItem.inspElmt.inspAreaText = (_ENGLISH ? inspElmt.postnObj?.positionNameEn : inspElmt.postnObj?.positionNameCn)!
+                                //defectItem.inspElmt.inspAreaText = (_ENGLISH ? inspElmt.postnObj?.positionNameEn : inspElmt.postnObj?.positionNameCn)!
+                                defectItem.inspElmt.inspAreaText = (_ENGLISH ? defectItem.postnObj.positionNameEn : defectItem.postnObj.positionNameCn)
                                 
                                 if defectItem.inputMode == _INPUTMODE03 {
                                     defectItem.inspElmt.inspReqCatText = (_ENGLISH ? inspElmt.reqSectObj?.sectionNameEn : inspElmt.reqSectObj?.sectionNameCn)!
                                     defectItem.inspElmt.inspItemText = inspElmt.requestElementDesc
-                                }else{
+                                }else if defectItem.inputMode == _INPUTMODE01{
+                                    defectItem.inspElmt.inspAreaText = (_ENGLISH ? inspElmt.elmtObj?.elementNameEn : inspElmt.elmtObj?.elementNameCn)!
+                                }
+                                else{
                                     defectItem.inspElmt.inspItemText = (_ENGLISH ? inspElmt.elmtObj?.elementNameEn : inspElmt.elmtObj?.elementNameCn)!
                                 }
                             }
@@ -96,16 +107,18 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             
             defectItem.cellIdx = sortingDictionary["\(defectItem.inspElmt.cellCatIdx)-\(defectItem.inspElmt.cellIdx)"]!
             defectItem.sortNum = getSortingNum(defectItem.inspElmt.cellCatIdx, elmtFtor: defectItem.inspElmt.cellIdx, cellFtor: defectItem.cellIdx)
-    
+            
+            if defectItem.inputMode == _INPUTMODE02 {
+                let dpDataHelper = DPDataHelper()
+                defectItem.defectpositionPoints = dpDataHelper.getDefectPositionPointsByRecordId(defectItem.inspectRecordId!)
+            }
         }
         
         defectItems = (Cache_Task_On?.defectItems)!
-        
         updateContentView()
     }
     
     func getSortingNum(secFtor:Int, elmtFtor:Int, cellFtor:Int) ->Int {
-
         return secFtor*1000000 + elmtFtor*1000 + cellFtor
     }
     
@@ -458,6 +471,174 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             }
             
             return cellMode4
+          
+        }else if defectItem.inputMode! == _INPUTMODE01 {
+            let cellMode1 = tableView.dequeueReusableCellWithIdentifier("DefectCellMode1", forIndexPath: indexPath) as! DefectListTableViewCellMode1
+            
+            cellMode1.pVC = self
+            cellMode1.sectionName.text = defectItem.inspElmt.cellCatName
+            cellMode1.taskDefectDataRecordId = defectItem.recordId!
+            cellMode1.inspItem = defectItem.inspElmt as? InputMode01CellView
+            cellMode1.icInput.text = defectItem.inspElmt.inspAreaText
+            cellMode1.iiInput.text = defectItem.inspElmt.inspItemText
+            cellMode1.sectionId = defectItem.inspElmt.cellCatIdx
+            cellMode1.itemId = defectItem.inspElmt.cellIdx
+            cellMode1.cellIdx = defectItem.cellIdx
+            cellMode1.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
+            cellMode1.inputMode = _INPUTMODE01
+            cellMode1.ddInput.text = defectItem.defectDesc!
+            cellMode1.dfQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode1.defectPhoto1.image = nil
+            cellMode1.defectPhoto2.image = nil
+            cellMode1.defectPhoto3.image = nil
+            cellMode1.defectPhoto4.image = nil
+            cellMode1.defectPhoto5.image = nil
+            cellMode1.dismissPhotoButton1.hidden = true
+            cellMode1.dismissPhotoButton2.hidden = true
+            cellMode1.dismissPhotoButton3.hidden = true
+            cellMode1.dismissPhotoButton4.hidden = true
+            cellMode1.dismissPhotoButton5.hidden = true
+            
+            self.view.disableFuns(cellMode1.dismissPhotoButton1)
+            self.view.disableFuns(cellMode1.dismissPhotoButton2)
+            self.view.disableFuns(cellMode1.dismissPhotoButton3)
+            self.view.disableFuns(cellMode1.dismissPhotoButton4)
+            self.view.disableFuns(cellMode1.dismissPhotoButton5)
+            self.view.disableFuns(cellMode1.addDefectPhotoButton)
+            
+            if defectItem.photoNames != nil && defectItem.photoNames?.count > 0 {
+                
+                var idx = 0
+                cellMode1.photoNameAtIndex = ["","","","",""]
+                for photoName in defectItem.photoNames! {
+                    
+                    if photoName != "" && idx < 5 {
+                        
+                        let pathForImage = Cache_Task_Path! + "/" + _THUMBSPHYSICALNAME + "/" + photoName
+                        let image = UIImage(contentsOfFile: pathForImage)
+                        cellMode1.photoNameAtIndex[idx] = photoName
+                        idx += 1
+                        
+                        if cellMode1.defectPhoto1.image == nil {
+                            cellMode1.defectPhoto1.image = image
+                            cellMode1.dismissPhotoButton1.hidden = false
+                            
+                        }else if cellMode1.defectPhoto2.image == nil {
+                            cellMode1.defectPhoto2.image = image
+                            cellMode1.dismissPhotoButton2.hidden = false
+                            
+                        }else if cellMode1.defectPhoto3.image == nil {
+                            cellMode1.defectPhoto3.image = image
+                            cellMode1.dismissPhotoButton3.hidden = false
+                            
+                        }else if cellMode1.defectPhoto4.image == nil {
+                            cellMode1.defectPhoto4.image = image
+                            cellMode1.dismissPhotoButton4.hidden = false
+                            
+                        }else if cellMode1.defectPhoto5.image == nil {
+                            cellMode1.defectPhoto5.image = image
+                            cellMode1.dismissPhotoButton5.hidden = false
+                            
+                        }
+                    }
+                }
+            }
+            
+            if indexPath.row % 2 == 0 {
+                cellMode1.backgroundColor = _TABLECELL_BG_COLOR2
+            }else{
+                cellMode1.backgroundColor = _TABLECELL_BG_COLOR1
+            }
+            
+            return cellMode1
+            
+        }else if defectItem.inputMode! == _INPUTMODE02 {
+            
+            let cellMode2 = tableView.dequeueReusableCellWithIdentifier("DefectCellMode2", forIndexPath: indexPath) as! DefectListTableViewCellMode2
+            
+            
+            cellMode2.pVC = self
+            cellMode2.taskDefectDataRecordId = defectItem.recordId!
+            cellMode2.inspItem = defectItem.inspElmt as? InputMode02CellView
+            cellMode2.sectionName.text = _ENGLISH ? defectItem.sectObj.sectionNameEn : defectItem.sectObj.sectionNameCn
+            cellMode2.sectionId = defectItem.inspElmt.cellCatIdx
+            cellMode2.itemId = defectItem.inspElmt.cellIdx
+            cellMode2.cellIdx = defectItem.cellIdx
+            cellMode2.indexInput.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
+            cellMode2.inputMode = _INPUTMODE02
+            cellMode2.dfDescInput.text = defectItem.defectDesc
+            cellMode2.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
+            cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
+            cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
+            cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode2.dppInput.text = defectItem.defectpositionPoints
+            cellMode2.dpInput.text = _ENGLISH ? defectItem.postnObj.positionNameEn : defectItem.postnObj.positionNameCn
+            cellMode2.dtInput.text = _ENGLISH ? defectItem.elmtObj.elementNameEn : defectItem.elmtObj.elementNameCn
+            
+            cellMode2.defectPhoto1.image = nil
+            cellMode2.defectPhoto2.image = nil
+            cellMode2.defectPhoto3.image = nil
+            cellMode2.defectPhoto4.image = nil
+            cellMode2.defectPhoto5.image = nil
+            cellMode2.dismissPhotoButton1.hidden = true
+            cellMode2.dismissPhotoButton2.hidden = true
+            cellMode2.dismissPhotoButton3.hidden = true
+            cellMode2.dismissPhotoButton4.hidden = true
+            cellMode2.dismissPhotoButton5.hidden = true
+            
+            self.view.disableFuns(cellMode2.dismissPhotoButton1)
+            self.view.disableFuns(cellMode2.dismissPhotoButton2)
+            self.view.disableFuns(cellMode2.dismissPhotoButton3)
+            self.view.disableFuns(cellMode2.dismissPhotoButton4)
+            self.view.disableFuns(cellMode2.dismissPhotoButton5)
+            self.view.disableFuns(cellMode2.addDefectPhotoButton)
+            
+            if defectItem.photoNames != nil && defectItem.photoNames?.count > 0 {
+                
+                var idx = 0
+                cellMode2.photoNameAtIndex = ["","","","",""]
+                for photoName in defectItem.photoNames! {
+                    
+                    if photoName != "" && idx < 5 {
+                        
+                        let pathForImage = Cache_Task_Path! + "/" + _THUMBSPHYSICALNAME + "/" + photoName
+                        let image = UIImage(contentsOfFile: pathForImage)
+                        cellMode2.photoNameAtIndex[idx] = photoName
+                        idx += 1
+                        
+                        if cellMode2.defectPhoto1.image == nil {
+                            cellMode2.defectPhoto1.image = image
+                            cellMode2.dismissPhotoButton1.hidden = false
+                            
+                        }else if cellMode2.defectPhoto2.image == nil {
+                            cellMode2.defectPhoto2.image = image
+                            cellMode2.dismissPhotoButton2.hidden = false
+                            
+                        }else if cellMode2.defectPhoto3.image == nil {
+                            cellMode2.defectPhoto3.image = image
+                            cellMode2.dismissPhotoButton3.hidden = false
+                            
+                        }else if cellMode2.defectPhoto4.image == nil {
+                            cellMode2.defectPhoto4.image = image
+                            cellMode2.dismissPhotoButton4.hidden = false
+                            
+                        }else if cellMode2.defectPhoto5.image == nil {
+                            cellMode2.defectPhoto5.image = image
+                            cellMode2.dismissPhotoButton5.hidden = false
+                            
+                        }
+                    }
+                }
+            }
+            
+            if indexPath.row % 2 == 0 {
+                cellMode2.backgroundColor = _TABLECELL_BG_COLOR2
+            }else{
+                cellMode2.backgroundColor = _TABLECELL_BG_COLOR1
+            }
+            
+            return cellMode2
+            
             
         }else /*if defectItem!.inputMode! == _INPUTMODE03*/ {
             let cellMode3 = tableView.dequeueReusableCellWithIdentifier("DefectCellMode3", forIndexPath: indexPath) as! DefectListTableViewCellMode3

@@ -46,7 +46,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getTaskById(taskId:Int) ->Task? {
-        let sql = "SELECT * FROM inspect_task WHERE task_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM inspect_task WHERE task_id = ?"
         var task:Task!
         
         //extension
@@ -287,7 +287,7 @@ class TaskDataHelper:DataHelperMaster{
                 //If not yet init, just init the Task and add TaskInspDataRecords into DB
             }else{
                 
-                let inspSecElms = getInspSecElementsByPTIdITId(inspSec.sectionId!)
+                let inspSecElms = getInspSecElementsByPTIdITId(inspSec.sectionId!, inputMode: inspSec.inputModeCode!)
                 
                 var taskInspDataRecords = [TaskInspDataRecord]()
                 for inspSecElm in inspSecElms! {
@@ -333,8 +333,15 @@ class TaskDataHelper:DataHelperMaster{
                 }
                 
                 //init Positions
-                let positionId = getPositionIdByElementId(taskDefectDateRecord.inspectElementId!)
+                let positionId = getPositionIdByElementIdForINPUT02(taskDefectDateRecord.inspectRecordId!)
                 let position = getInspSecPositionById(positionId)
+                /*var positionId = getPositionIdByElementId(taskDefectDateRecord.inspectElementId!)
+                var position = getInspSecPositionById(positionId)
+                
+                if taskDefectDateRecord.inputMode == _INPUTMODE02 {
+                    positionId = getPositionIdByElementIdForINPUT02(taskDefectDateRecord.inspectRecordId!)
+                    position = getInspSecPositionById(positionId)
+                }*/
                 
                 if position != nil {
                     taskDefectDateRecord.postnObj = PositObj(positionId:(position?.positionId)!, positionNameEn:(position?.positionNameEn)!,positionNameCn:(position?.positionNameCn)!)
@@ -405,7 +412,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspTypeByInspTypeId(inspTypeId:Int) ->String {
-        let sql = "SELECT type_name_en,type_name_cn FROM inspect_type_mstr WHERE type_id = ? AND rec_status = 0 AND deleted_flag = 0"
+        let sql = "SELECT type_name_en,type_name_cn FROM inspect_type_mstr WHERE type_id = ?"
         var inspType:String = "null"
         
         if db.open() {
@@ -422,7 +429,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllInspType() ->[String] {
-        let sql = "SELECT type_name_en,type_name_cn FROM inspect_type_mstr WHERE rec_status = 0 AND deleted_flag = 0"
+        let sql = "SELECT type_name_en,type_name_cn FROM inspect_type_mstr"
         var inspType = [String]()
         
         if db.open() {
@@ -439,7 +446,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllTmplType() ->[String] {
-        let sql = "SELECT tmpl_name_en, tmpl_name_cn FROM inspect_task_tmpl_mstr ittm INNER JOIN inspect_type_mstr itm ON ittm.inspect_type_id = itm.type_id WHERE ittm.prod_type_id = ? AND (itm.type_name_en = ? OR itm.type_name_cn = ?) AND itm.rec_status = 0 AND itm.deleted_flag = 0 AND ittm.rec_status = 0 AND ittm.deleted_flag = 0"
+        let sql = "SELECT tmpl_name_en, tmpl_name_cn FROM inspect_task_tmpl_mstr ittm INNER JOIN inspect_type_mstr itm ON ittm.inspect_type_id = itm.type_id WHERE ittm.prod_type_id = ? AND (itm.type_name_en = ? OR itm.type_name_cn = ?)"
         var tmplType = [String]()
         
         if db.open() {
@@ -456,7 +463,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getTmplIdByName(tmplName:String) ->Int {
-        let sql = "SELECT tmpl_id FROM inspect_task_tmpl_mstr WHERE (tmpl_name_en = ? OR tmpl_name_cn = ?) AND rec_status = 0 AND deleted_flag = 0"
+        let sql = "SELECT tmpl_id FROM inspect_task_tmpl_mstr WHERE tmpl_name_en = ? OR tmpl_name_cn = ?"
         var tmplId = 0
         
         if db.open() {
@@ -474,7 +481,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspSetupIdByName(tmplName:String) ->Int {
-        let sql = "SELECT inspect_setup_id FROM inspect_task_tmpl_mstr WHERE (tmpl_name_en = ? OR tmpl_name_cn = ?) AND rec_status = 0 AND deleted_flag = 0"
+        let sql = "SELECT inspect_setup_id FROM inspect_task_tmpl_mstr WHERE tmpl_name_en = ? OR tmpl_name_cn = ?"
         var inspSetupId = 0
         
         if db.open() {
@@ -493,7 +500,7 @@ class TaskDataHelper:DataHelperMaster{
 
     
     func getAllProdType() ->[String] {
-        let sql = "SELECT type_name_en, type_name_cn FROM prod_type_mstr WHERE rec_status = 0 AND deleted_flag = 0"
+        let sql = "SELECT type_name_en, type_name_cn FROM prod_type_mstr"
         var inspType = [String]()
         
         if db.open() {
@@ -529,7 +536,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspectorByTaskId(taskId:Int) ->String {
-        let sql = "SELECT inspector_name FROM inspector_mstr WHERE inspector_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT inspector_name FROM inspector_mstr WHERE inspector_id = ?"
         var insptorName:String = ""
         let insptorId = getInspectorIdByTaskId(taskId)
         
@@ -549,7 +556,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getProdTypeIdByTaskId(taskId:Int) ->Int {
-        let sql = "SELECT prod_type_id FROM inspect_task WHERE task_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT prod_type_id FROM inspect_task WHERE task_id = ?"
         var prodTypeId = 0
         
         if db.open() {
@@ -568,7 +575,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspTypeIdByTaskId(taskId:Int) ->Int {
-        let sql = "SELECT inspect_type_id FROM inspect_task WHERE task_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT inspect_type_id FROM inspect_task WHERE task_id = ?"
         var inspTypeId = 0
         
         if db.open() {
@@ -592,7 +599,7 @@ class TaskDataHelper:DataHelperMaster{
         let prodTypeId = getProdTypeIdByTaskId(taskId)
         let inspTypeId = getInspTypeIdByTaskId(taskId)
         */
-        let sql = "SELECT * FROM inspect_task_tmpl_mstr ittm INNER JOIN inspect_task it ON ittm.tmpl_id = it.tmpl_id INNER JOIN inspect_task_tmpl_section itts ON ittm.tmpl_id = itts.tmpl_id INNER JOIN inspect_section_mstr ism ON itts.inspect_section_id = ism.section_id WHERE it.task_id = ? AND ittm.rec_status = 0 AND ittm.deleted_flag = 0 ORDER BY ism.display_order ASC"
+        let sql = "SELECT * FROM inspect_task_tmpl_mstr ittm INNER JOIN inspect_task it ON ittm.tmpl_id = it.tmpl_id INNER JOIN inspect_task_tmpl_section itts ON ittm.tmpl_id = itts.tmpl_id INNER JOIN inspect_section_mstr ism ON itts.inspect_section_id = ism.section_id WHERE it.task_id = ? ORDER BY ism.display_order ASC"
         var inspSections = [InspSection]()
         
         if db.open() {
@@ -634,10 +641,16 @@ class TaskDataHelper:DataHelperMaster{
         return nil
     }
     
-    func getInspSecElementsByPTIdITId(inspSectionId:Int) ->[InspSectionElement]? {
-        //let sql = "SELECT * FROM inspect_element_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND inspect_section_id = ? AND element_type = 1 AND required_element_flag = 1"
-        //let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1"
-        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND (iem.rec_status = 0 AND iem.deleted_flag = 0) ORDER BY iem.display_order ASC"
+    func getInspSecElementsByPTIdITId(inspSectionId:Int, inputMode:String = _INPUTMODE04) ->[InspSectionElement]? {
+        
+        var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 ORDER BY iem.display_order ASC"
+        
+        if inputMode == _INPUTMODE01 {
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 ORDER BY iem.display_order ASC"
+        }else if inputMode == _INPUTMODE02 {
+            return [InspSectionElement]()
+        }
+        
         var inspSecElms = [InspSectionElement]()
         
         if db.open() {
@@ -733,7 +746,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultSetIdByElmId(elmId:Int) ->Int {
-        let sql = "SELECT result_set_id FROM inspect_element_mstr WHERE element_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT result_set_id FROM inspect_element_mstr WHERE element_id = ?"
         var resultSetId = 0
         
         if db.open() {
@@ -752,7 +765,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultSetValueByElmId(elmId:Int) ->[String]? {
-        let sql = "SELECT v.value_name_en,v.value_name_cn FROM result_set_value as s INNER JOIN result_value_mstr as v ON s.value_id=v.value_id WHERE s.set_id = ? AND (v.rec_status = 0 AND v.deleted_flag = 0) ORDER BY v.display_order"
+        let sql = "SELECT v.value_name_en,v.value_name_cn FROM result_set_value as s INNER JOIN result_value_mstr as v ON s.value_id=v.value_id WHERE s.set_id = ? ORDER BY v.display_order"
         var resultSetValues = [String]()
         let rsId = getResultSetIdByElmId(elmId)
         
@@ -779,7 +792,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultSetValueBySetId(rsId:Int) ->[String]? {
-        let sql = "SELECT v.value_name_en,v.value_name_cn FROM result_set_value as s INNER JOIN result_value_mstr as v ON s.value_id=v.value_id WHERE s.set_id = ? AND (v.rec_status = 0 AND v.deleted_flag = 0) ORDER BY v.display_order"
+        let sql = "SELECT v.value_name_en,v.value_name_cn FROM result_set_value as s INNER JOIN result_value_mstr as v ON s.value_id=v.value_id WHERE s.set_id = ? ORDER BY v.display_order"
         var resultSetValues = [String]()
         
         if db.open() {
@@ -878,7 +891,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getOptInspSecElementsByIds(prodTypeId:Int, inspTypeId:Int, inspSectionId:Int) ->[InspSectionElement]? {
         //let sql = "SELECT * FROM inspect_element_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND inspect_section_id = ? AND required_element_flag = 0 ORDER BY element_name_en ASC"
-        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 AND (iem.rec_status = 0 AND iem.deleted_flag = 0) ORDER BY iem.element_name_en ASC"
+        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 ORDER BY iem.element_name_en ASC"
         var inspSecElms = [InspSectionElement]()
         
         if db.open() {
@@ -928,7 +941,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getOptInspSecPositionByIds(prodTypeId:Int, inspTypeId:Int, sectionId:Int) ->[InspSectionPosition]? {
         //let sql = "SELECT DISTINCT ipm.* FROM inspect_element_mstr as iem INNER JOIN inspect_position_mstr as ipm ON iem.inspect_position_id=ipm.position_id WHERE iem.prod_type_id = ? AND iem.inspect_type_id = ? AND iem.inspect_section_id = ? AND iem.required_element_flag = 0 ORDER BY ipm.position_name_en ASC"
-        let sql = "SELECT DISTINCT ipm.* FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_section_element ise ON ipe.inspect_element_id = ise.inspect_element_id INNER JOIN inspect_element_mstr iem ON ise.inspect_element_id = iem.element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 AND (ipm.rec_status = 0 AND ipm.deleted_flag = 0) ORDER BY ipm.position_name_en ASC"
+        let sql = "SELECT DISTINCT ipm.* FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_section_element ise ON ipe.inspect_element_id = ise.inspect_element_id INNER JOIN inspect_element_mstr iem ON ise.inspect_element_id = iem.element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 ORDER BY ipm.position_name_en ASC"
         var inspSecPostns = [InspSectionPosition]()
         
         if db.open() {
@@ -1013,7 +1026,7 @@ class TaskDataHelper:DataHelperMaster{
     
     
     func getInspSecPositionById(inspPostId:Int) ->InspSectionPosition? {
-        let sql = "SELECT * FROM inspect_position_mstr WHERE position_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM inspect_position_mstr WHERE position_id = ?"
         var inspSecPost:InspSectionPosition?
         
         if db.open() {
@@ -1055,7 +1068,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspSecElementById(inspElmId:Int) ->InspSectionElement? {
-        let sql = "SELECT * FROM inspect_element_mstr WHERE element_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM inspect_element_mstr WHERE element_id = ?"
         var inspSecElm:InspSectionElement?
         
         if db.open() {
@@ -1106,7 +1119,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getResultValueIdByResultValue(resultValue:String, prodTypeId:Int, inspTypeId:Int) ->Int {
         //let sql = "SELECT value_id FROM result_value_mstr WHERE (value_name_en LIKE ? OR value_name_cn LIKE ?) AND prod_type_id = ? AND inspect_type_id = ?"
-        let sql = "SELECT value_id FROM result_value_mstr WHERE value_name_en LIKE ? OR value_name_cn LIKE ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT value_id FROM result_value_mstr WHERE value_name_en LIKE ? OR value_name_cn LIKE ?"
         var resultValueId = 0
         
         if db.open() {
@@ -1125,7 +1138,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultValueByResultValueId(resultValueId:Int) ->String {
-        let sql = "SELECT * FROM result_value_mstr WHERE value_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM result_value_mstr WHERE value_id = ?"
         var resultValue = ""
         
         if db.open() {
@@ -1144,7 +1157,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultValueById(resultValueId:Int) ->ResultValueObj? {
-        let sql = "SELECT * FROM result_value_mstr WHERE value_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM result_value_mstr WHERE value_id = ?"
         var resultValue:ResultValueObj?
         
         if db.open() {
@@ -1169,7 +1182,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultSetValuesByTaskId(taskId:Int) ->[SummaryResultValue] {
-        let sql = "SELECT ism.section_id, ism.section_name_en,ism.section_name_cn,rvm.value_id, rvm.value_name_en,rvm.value_name_cn,IFNULL(dr.result_cnt, 0) AS result_cnt FROM inspect_task it INNER JOIN inspect_task_tmpl_section itts ON it.tmpl_id = itts.tmpl_id INNER JOIN inspect_section_mstr ism ON ism.section_id = itts.inspect_section_id AND ism.rec_status = 0 AND ism.deleted_flag = 0 INNER JOIN result_set_mstr rsm ON rsm.set_id = ism.result_set_id AND rsm.rec_status = 0 AND rsm.deleted_flag = 0 INNER JOIN result_set_value rsv ON rsv.set_id = rsm.set_id INNER JOIN result_value_mstr rvm ON rvm.value_id = rsv.value_id AND rvm.rec_status = 0 AND rvm.deleted_flag = 0 LEFT OUTER JOIN (SELECT task_id, inspect_section_id, result_value_id, COUNT(record_id) AS result_cnt FROM task_inspect_data_record GROUP BY task_id, inspect_section_id, result_value_id) dr ON dr.task_id = it.task_id AND dr.inspect_section_id = ism.section_id AND dr.result_value_id = rsv.value_id WHERE it.task_id=? AND (it.rec_status = 0 AND it.deleted_flag = 0) AND (ism.rec_status = 0 AND ism.deleted_flag = 0) AND (rsm.rec_status = 0 AND rsm.deleted_flag = 0) AND (rvm.rec_status = 0 AND rvm.deleted_flag = 0) ORDER BY ism.display_order ASC, rvm.display_order ASC"
+        let sql = "SELECT ism.section_id, ism.section_name_en,ism.section_name_cn,rvm.value_id, rvm.value_name_en,rvm.value_name_cn,IFNULL(dr.result_cnt, 0) AS result_cnt FROM inspect_task it INNER JOIN inspect_task_tmpl_section itts ON it.tmpl_id = itts.tmpl_id INNER JOIN inspect_section_mstr ism ON ism.section_id = itts.inspect_section_id AND ism.rec_status = 0 AND ism.deleted_flag = 0 INNER JOIN result_set_mstr rsm ON rsm.set_id = ism.result_set_id AND rsm.rec_status = 0 AND rsm.deleted_flag = 0 INNER JOIN result_set_value rsv ON rsv.set_id = rsm.set_id INNER JOIN result_value_mstr rvm ON rvm.value_id = rsv.value_id AND rvm.rec_status = 0 AND rvm.deleted_flag = 0 LEFT OUTER JOIN (SELECT task_id, inspect_section_id, result_value_id, COUNT(record_id) AS result_cnt FROM task_inspect_data_record GROUP BY task_id, inspect_section_id, result_value_id) dr ON dr.task_id = it.task_id AND dr.inspect_section_id = ism.section_id AND dr.result_value_id = rsv.value_id WHERE it.task_id=? ORDER BY ism.display_order ASC, rvm.display_order ASC"
         
         var resultSetValues = [SummaryResultValue]()
         
@@ -1248,7 +1261,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getTypeNameByTypeId(typeId:Int) ->String {
-        let sql = "SELECT type_name_en, type_name_cn FROM prod_type_mstr WHERE type_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT type_name_en, type_name_cn FROM prod_type_mstr WHERE type_id = ?"
         var typeName = ""
         
         if db.open() {
@@ -1266,15 +1279,12 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func updateTask(task:Task) ->Bool {
-        //let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=datetime('now','localtime'),cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
-        let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=?,cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
+        let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=datetime('now','localtime'),cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
         
         if db.open() {
             db.beginTransaction()
             
-            let vdrSignDate = (task.vdrSignDate != nil) ? task.vdrSignDate:UIView.init().getCurrentDateTime()
-            
-            if !db.executeUpdate(sql, withArgumentsInArray: [task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,vdrSignDate!,task.cancelDate,task.reportPrefix!,task.reportInspectorId!,task.taskId!]) {
+            if !db.executeUpdate(sql, withArgumentsInArray: [task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,task.cancelDate,task.reportPrefix!,task.reportInspectorId!,task.taskId!]) {
                 
                 db.rollback()
                 db.close()
@@ -1288,7 +1298,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultValueIdByName(resultValueName:String) ->Int {
-        let sql = "SELECT value_id FROM result_value_mstr WHERE value_name_en=? OR value_name_cn=? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT value_id FROM result_value_mstr WHERE value_name_en=? OR value_name_cn=?"
         var resultValueId = 0
         
         if db.open() {
@@ -1307,7 +1317,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultValueNameById(resultValueId:Int) ->String {
-        let sql = "SELECT value_name_en,value_name_cn FROM result_value_mstr WHERE value_id=? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT value_name_en,value_name_cn FROM result_value_mstr WHERE value_id=?"
         var resultValueName = ""
         
         if db.open() {
@@ -1372,8 +1382,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspSectionsById(sectionId:Int) ->InspSection? {
-        //let sql = "SELECT * FROM inspect_section_mstr WHERE section_id=? AND rec_status = 0 AND deleted_flag = 0"
-        let sql = "SELECT * FROM inspect_section_mstr WHERE section_id=? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM inspect_section_mstr WHERE section_id=?"
         var inspSection:InspSection?
         
         if db.open() {
@@ -1414,7 +1423,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getReqSectionIdByName(sectionName:String) ->Int {
-        let sql = "SELECT section_id FROM inspect_section_mstr WHERE section_name_en = ? OR section_name_cn = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT section_id FROM inspect_section_mstr WHERE section_name_en = ? OR section_name_cn = ?"
         var reqSecId = 0
         
         if db.open() {
@@ -1498,6 +1507,26 @@ class TaskDataHelper:DataHelperMaster{
         if db.open() {
             
             if let rs = db.executeQuery(sql, withArgumentsInArray: [elmId]) {
+                
+                if rs.next() {
+                    
+                    positionId = Int(rs.intForColumn("inspect_position_id"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return positionId
+    }
+    
+    func getPositionIdByElementIdForINPUT02(recordId:Int) ->Int {
+        let sql = "SELECT ipe.inspect_position_id FROM inspect_position_element ipe INNER JOIN task_inspect_data_record tidr ON ipe.inspect_position_id = tidr.inspect_position_id INNER JOIN  task_defect_data_record tddr ON tddr.inspect_record_id = tidr.record_id WHERE tddr.inspect_record_id = ?"
+        var positionId = 0
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [recordId]) {
                 
                 if rs.next() {
                     
@@ -1650,6 +1679,23 @@ class TaskDataHelper:DataHelperMaster{
         return true
     }
     
+    func deleteTaskDefectDataPPTRecordsByInspItemId(id:Int) ->Bool {
+        let sql = "DELETE FROM task_inspect_position_point WHERE inspect_record_id = ?"
+        
+        if db.open(){
+            
+            let rs = db.executeUpdate(sql, withArgumentsInArray: [id])
+            
+            db.close()
+            
+            if !rs {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
     func insertTaskInspDataRecord(taskInspDataRecord:TaskInspDataRecord) ->Int {
         let sql = "INSERT OR REPLACE INTO task_inspect_data_record  ('record_id','task_id','ref_record_id','inspect_section_id','inspect_element_id','inspect_position_id','inspect_position_desc','inspect_detail','inspect_remarks','result_value_id','create_user','create_date','modify_user','modify_date','request_section_id','request_element_desc') VALUES ((SELECT record_id FROM task_inspect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
         var taskInspDataRecordId = 0
@@ -1667,7 +1713,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspTypeIdByName(inspTypeName:String) ->Int {
-        let sql = "SELECT type_id FROM inspect_type_mstr WHERE type_name_en = ? OR type_name_cn =? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT type_id FROM inspect_type_mstr WHERE type_name_en = ? OR type_name_cn =?"
         var inspTypeId = 0
         
         if db.open() {
@@ -1685,7 +1731,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getProdTypeIdByName(prodTypeName:String) ->Int {
-        let sql = "SELECT type_id FROM prod_type_mstr WHERE type_name_en = ? OR type_name_cn = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT type_id FROM prod_type_mstr WHERE type_name_en = ? OR type_name_cn = ?"
         var prodTypeId = 0
         
         if db.open() {
@@ -1831,7 +1877,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getResultSetIdByTmplId(tmplId:Int) ->Int {
-        let sql = "SELECT result_set_id FROM inspect_task_tmpl_mstr WHERE tmpl_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT result_set_id FROM inspect_task_tmpl_mstr WHERE tmpl_id = ?"
         var resultSetId = 1
         
         if db.open() {
@@ -1880,7 +1926,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllTaskBrands() ->[Brand] {
-        let sql = "SELECT * FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE (bm.rec_status = 0 AND bm.deleted_flag = 0)"
+        let sql = "SELECT * FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id"
         
         var brands = [Brand]()
         
@@ -1916,7 +1962,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllTaskBrandCodes() ->[String] {
-        let sql = "SELECT DISTINCT(brand_code) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE (bm.rec_status = 0 AND bm.deleted_flag = 0)"
+        let sql = "SELECT DISTINCT(brand_code) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id"
         
         var brands = [String]()
         
@@ -1939,7 +1985,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllTaskBrandCodes(inputCode:String) ->[String] {
-        let sql = "SELECT DISTINCT(brand_code) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE brand_Code LIKE ? AND (bm.rec_status = 0 AND bm.deleted_flag = 0)"
+        let sql = "SELECT DISTINCT(brand_code) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE brand_Code LIKE ?"
         
         var brands = [String]()
         
@@ -1962,7 +2008,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllTaskBookingNo(inputCode:String) ->[String] {
-        let sql = "SELECT booking_no, inspection_no FROM inspect_task WHERE booking_no LIKE ? OR inspection_no LIKE ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT booking_no, inspection_no FROM inspect_task WHERE booking_no LIKE ? OR inspection_no LIKE ?"
         
         var bookingNos = [String]()
         
@@ -1985,7 +2031,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getBookingNoByTaskId(taskId:Int) ->String {
-        let sql = "SELECT booking_no, inspection_no FROM inspect_task WHERE task_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT booking_no, inspection_no FROM inspect_task WHERE task_id = ?"
         var bookingNo = ""
         
         if db.open() {
@@ -2159,4 +2205,5 @@ class TaskDataHelper:DataHelperMaster{
         
         return styleNoList
     }
+    
 }

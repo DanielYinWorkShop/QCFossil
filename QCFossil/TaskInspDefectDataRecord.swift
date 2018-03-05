@@ -39,6 +39,7 @@ class TaskInspDefectDataRecord {
     var sectObj:SectObj = SectObj(sectionId:0, sectionNameEn: "", sectionNameCn: "",inputMode: "")
     var elmtObj:ElmtObj = ElmtObj(elementId:0,elementNameEn:"", elementNameCn:"", reqElmtFlag: 0)
     var postnObj:PositObj = PositObj(positionId:0, positionNameEn:"",positionNameCn:"")
+    var defectpositionPoints = ""
     
     //UI Obj
     var inputMode:String?

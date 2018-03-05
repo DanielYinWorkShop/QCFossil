@@ -8,7 +8,7 @@
 
 import UIKit
 
-class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDelegate,  UITableViewDataSource {
+class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDelegate,  UITableViewDataSource {
     
 
     @IBOutlet weak var inspectionTitle1: UILabel!
@@ -16,10 +16,12 @@ class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDe
     @IBOutlet weak var inspectDefectTableview: UITableView!
     @IBOutlet weak var inspectionTitle1Input: UILabel!
     @IBOutlet weak var inspectionTitle2Input: UILabel!
+    @IBOutlet weak var showDPPDescBtn: UIButton!
     
     var inspItem:InputModeICMaster?
     weak var currentCell:InputModeDFMaster2!
     var defectItems = [TaskInspDefectDataRecord]()
+    var defectPositionPointsDesc = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +29,12 @@ class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDe
         
         self.inspectionTitle1Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\(inspItem?.inspReqCatText != "" ? (inspItem?.inspReqCatText)! : (inspItem?.inspAreaText)!)")
         self.inspectionTitle2Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspItem?.inspItemText)!)")
+        
+        if inspItem?.parentView.InputMode == _INPUTMODE02 {
+            self.showDPPDescBtn.hidden = false
+            self.inspectionTitle1Input.text = inspItem?.inspAreaText
+            self.defectPositionPointsDesc = (inspItem?.inspItemText)!
+        }
         
         self.inspectionTitle1.font = UIFont.boldSystemFontOfSize(18.0)
         self.inspectionTitle2.font = UIFont.boldSystemFontOfSize(18.0)
@@ -226,6 +234,7 @@ class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDe
         newDfItem?.inspElmt = inspItem!
         newDfItem?.sectObj = SectObj(sectionId:inspItem!.cellCatIdx, sectionNameEn: inspItem!.cellCatName, sectionNameCn: inspItem!.cellCatName,inputMode: (inspItem?.parentView?.InputMode)!)
         newDfItem?.elmtObj = ElmtObj(elementId:inspItem!.elementDbId,elementNameEn:"", elementNameCn:"", reqElmtFlag: 0)
+        //newDfItem!.inspectElementId = 0
         
         let cellIdx = (Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == inspItem!.cellCatIdx && $0.inspElmt.cellIdx == inspItem!.cellIdx }))!
         newDfItem?.cellIdx = cellIdx.count
@@ -260,7 +269,7 @@ class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDe
         let defectItem = self.defectItems[indexPath.row]
         
         if defectItem.inputMode! == _INPUTMODE04 {
-            
+            self.inspectDefectTableview.rowHeight = 170
             let cellMode4 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode4", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode4
             
             cellMode4.pVC = self
@@ -287,8 +296,75 @@ class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDe
             
             return cellMode4
             
-        }else {
+        }else if defectItem.inputMode! == _INPUTMODE02 {
+            self.inspectDefectTableview.rowHeight = 250
+            let cellMode2 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode2", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode2
             
+            cellMode2.pVC = self
+            cellMode2.taskDefectDataRecordId = defectItem.recordId!
+            cellMode2.inspItem = defectItem.inspElmt as? InputMode02CellView
+            cellMode2.sectionId = defectItem.inspElmt.cellCatIdx
+            cellMode2.itemId = defectItem.inspElmt.cellIdx
+            cellMode2.cellIdx = defectItem.cellIdx
+            cellMode2.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
+            cellMode2.inputMode = _INPUTMODE02
+            cellMode2.defectDescInput.text = defectItem.defectDesc!
+            cellMode2.defectMajorQtyInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
+            cellMode2.defectMinorQtyInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
+            cellMode2.defectCriticalQtyInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
+            cellMode2.defectTotalQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode2.defectPPIInput.text = self.defectPositionPointsDesc
+            
+            if Int(defectItem.inspectElementId!) > 0 {
+                let defectDataHelper = DefectDataHelper()
+                cellMode2.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId!)
+            }else{
+                cellMode2.defectTypeInput.text = ""
+            }
+            
+            cellMode2.refreshImageviews()
+            if defectItem.photoNames != nil && defectItem.photoNames?.count > 0 {
+                cellMode2.showDefectPhotoByName(defectItem.photoNames!)
+            }
+            
+            if indexPath.row % 2 == 0 {
+                cellMode2.backgroundColor = _TABLECELL_BG_COLOR2
+            }else{
+                cellMode2.backgroundColor = _TABLECELL_BG_COLOR1
+            }
+            
+            return cellMode2
+         
+        }else if defectItem.inputMode! == _INPUTMODE01 {
+            self.inspectDefectTableview.rowHeight = 170
+            let cellMode1 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode1", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode1
+            
+            cellMode1.pVC = self
+            cellMode1.taskDefectDataRecordId = defectItem.recordId!
+            cellMode1.inspItem = defectItem.inspElmt as? InputMode01CellView
+            cellMode1.sectionId = defectItem.inspElmt.cellCatIdx
+            cellMode1.itemId = defectItem.inspElmt.cellIdx
+            cellMode1.cellIdx = defectItem.cellIdx
+            cellMode1.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
+            cellMode1.inputMode = _INPUTMODE01
+            cellMode1.defectDescInput.text = defectItem.defectDesc!
+            cellMode1.defectQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            
+            cellMode1.refreshImageviews()
+            if defectItem.photoNames != nil && defectItem.photoNames?.count > 0 {
+                cellMode1.showDefectPhotoByName(defectItem.photoNames!)
+            }
+            
+            if indexPath.row % 2 == 0 {
+                cellMode1.backgroundColor = _TABLECELL_BG_COLOR2
+            }else{
+                cellMode1.backgroundColor = _TABLECELL_BG_COLOR1
+            }
+            
+            return cellMode1
+        
+        }else {
+            self.inspectDefectTableview.rowHeight = 170
             let cellMode3 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode3", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode3
             
             cellMode3.pVC = self
@@ -318,4 +394,23 @@ class InspectionDefectList: UIViewController, UITextFieldDelegate, UITableViewDe
         }
     }
     
+    @IBAction func showDPP(sender: UIButton){
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
+        
+        popoverContent.dataType = _DEFECTPPDESC 
+        popoverContent.selectedValue = defectPositionPointsDesc
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover!.delegate = sender.parentVC as! PopoverMaster
+        popover!.sourceView = sender
+        popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+        
+        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+    }
 }

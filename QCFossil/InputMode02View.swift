@@ -39,6 +39,22 @@ class InputMode02View: InputModeSCMaster {
         
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        guard let touch:UITouch = touches.first else
+        {
+            return
+        }
+        
+        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+            self.resignFirstResponderByTextField(self)
+            
+        }else {
+            self.clearDropdownviewForSubviews(self)
+            
+        }
+    }
+    
     override func didMoveToSuperview() {
         if (self.parentVC == nil) {
             // a removeFromSuperview situation
@@ -47,7 +63,7 @@ class InputMode02View: InputModeSCMaster {
         
         //Init Defect Position Items
         let dpDataHelper = DPDataHelper()
-        self.defectPosits = dpDataHelper.getDefectPositions()
+        self.defectPosits = dpDataHelper.getDefectPositions((inspSection?.sectionId)!)
         self.defectPositPoints = dpDataHelper.getAllDefectPositPoints()
         
         let photoDataHelper = PhotoDataHelper()
@@ -71,11 +87,8 @@ class InputMode02View: InputModeSCMaster {
             inputCells.append(inputCell)
             }
             
-            idx++
+            idx += 1
         }
-        
-        //inputCells.append(inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),dpText: "", dpDescText: "", dppText: "", dismissBtnHidden: true, elementDbId: 0, refRecordId: 0, inspElmId: 0, inspPostId: 0))
-        
         
         self.updateContentView()
         self.initSegmentControlView(self.InputMode,apyToAllBtn: self.applyToAllButton)
@@ -83,17 +96,22 @@ class InputMode02View: InputModeSCMaster {
     
     func applyRstToAll() {
         
-        let taskDataHelper = TaskDataHelper()
-        let resultValueId = taskDataHelper.getResultValueIdByResultValue(resultForAll, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
+        self.alertConfirmView("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Apply to All"))?",parentVC:self.parentVC!, handlerFun: { (action:UIAlertAction!) in
+
         
-        for cell in inputCells {
-            cell.cellResultInput.text = resultForAll
-            cell.updatePhotoAddediConStatus(resultForAll,photoTakenIcon: cell.photoAddedIcon)
-            cell.resultValueId = resultValueId
-        }
+            let taskDataHelper = TaskDataHelper()
+            let resultValueId = taskDataHelper.getResultValueIdByResultValue(self.resultForAll, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
         
-        Cache_Task_On?.didModify = true
-        updateContentView()
+            for cell in self.inputCells {
+                cell.cellResultInput.text = self.resultForAll
+                cell.updatePhotoAddediConStatus(self.resultForAll,photoTakenIcon: cell.photoAddedIcon)
+                cell.resultValueId = resultValueId
+            }
+        
+            Cache_Task_On?.didModify = true
+            self.updateContentView()
+            
+        })
     }
     
     func updateContentView() {
@@ -162,7 +180,16 @@ class InputMode02View: InputModeSCMaster {
     @IBAction func addCellBtnOnClick(sender: UIButton) {
         NSLog("Add Cell")
         
-        inputCells.append(inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),dpText: "", dpDescText: "", dppText: "", dismissBtnHidden: false, elementDbId: 0, refRecordId: 0, inspElmId: 0, inspPostId: 0))
+        let dpDataHelper = DPDataHelper()
+        let elementId = dpDataHelper.getElementIdBySectionIdForINPUT02(inspSection!.sectionId!)
+        
+        //inputCells.append(inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),dpText: "", dpDescText: "", dppText: "", dismissBtnHidden: false, elementDbId: elementId, refRecordId: 0, inspElmId: elementId, inspPostId: 0))
+        
+        let inputCell = inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),dpText: "", dpDescText: "", dppText: "", dismissBtnHidden: false, elementDbId: elementId, refRecordId: 0, inspElmId: elementId, inspPostId: 0)
+        
+        inputCell.saveMyselfToGetId()
+        
+        inputCells.append(inputCell)
         
         self.updateContentView()
     }

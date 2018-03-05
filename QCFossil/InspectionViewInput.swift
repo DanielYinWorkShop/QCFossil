@@ -53,7 +53,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
             
             return
         }
-
+        
         let categoryCount = Cache_Task_On!.inspSections.count
         if categoryCount < 1 {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No Category Info in DB!"))
@@ -229,4 +229,6 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
     @IBAction func backBarBtnOnClick(sender: UIBarButtonItem) {
         self.parentVC!.navigationController?.popViewControllerAnimated(false)
     }
+    
+    
 }

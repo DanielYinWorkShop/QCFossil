@@ -25,8 +25,6 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var inspectorSignatureInput: UIImageView!
     @IBOutlet weak var inspectorSignatureBtn: UIButton!
     @IBOutlet weak var clearBtn: UIButton!
-    @IBOutlet weak var useBackgroundModeTitle: UILabel!
-    @IBOutlet weak var useBackgroundModeSwitch: UISwitch!
     
     var signInputView:SignoffView?
     
@@ -41,7 +39,6 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.changePwBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Change Password"), forState: UIControlState.Normal)
         self.imageSizeTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Resolution of Photo from Library or Camera")
         self.inspectorSignatureLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspector Signature")
-        self.useBackgroundModeTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Use Background Mode for Download/Upload Task")
         
         self.newPwInput.delegate = self
         self.newPwAgainInput.delegate = self
@@ -62,14 +59,6 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
             self.inspectorSignatureInput.image = UIImage.init().fromBase64(signImageInCode)
             self.inspectorSignatureBtn.hidden = true
         }
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if (defaults.stringForKey("backgroundrun_preference") != nil) && defaults.stringForKey("backgroundrun_preference")! != "true" {
-            self.useBackgroundModeSwitch.on = false
-        }else{
-            self.useBackgroundModeSwitch.on = true
-        }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -387,19 +376,6 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
             keyValueDataHelper.saveInspectorSignImage(String(Cache_Inspector?.inspectorId), imageToBase64: "")
          
         })*/
-    }
-    
-    @IBAction func useBackgroundModeOnchange(sender: UISwitch) {
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
-        if sender.on {
-            defaults.setObject("true", forKey: "backgroundrun_preference")
-            NSNotificationCenter.defaultCenter().postNotificationName("initSessionWithBackgroundSession", object: nil, userInfo: nil)
-        }else{
-            defaults.setObject("false", forKey: "backgroundrun_preference")
-            NSNotificationCenter.defaultCenter().postNotificationName("initSessionWithDefaultSession", object: nil, userInfo: nil)
-        }
     }
     
 }

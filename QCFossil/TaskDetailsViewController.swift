@@ -53,7 +53,8 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
             }
         }
     }
-    */  
+    */
+    
     override func viewWillAppear(animated: Bool) {
         refreshCameraIcon()
         
@@ -177,33 +178,6 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                 taskDetailView.tag = _TASKDETAILVIEWTAG
                 
                 self.ScrollView.addSubview(taskDetailView)
-                
-                /*
-                dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-                    
-                    //Init Task Detail
-                    let inspectionView = InspectionViewInput.loadFromNibNamed("InspectionView")
-                    inspectionView?.tag = _TASKINSPCATVIEWTAG
-                    inspectionView?.pVC = self
-                    self.inspCatAdded = true
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.ScrollView.addSubview(inspectionView!)
-                        self.ScrollView.bringSubviewToFront(self.ScrollView.viewWithTag(_TASKDETAILVIEWTAG)!)
-                    })
-                }
-                */
-                /*
-                //Init Task Detail
-                let inspectionView = InspectionViewInput.loadFromNibNamed("InspectionView")
-                inspectionView?.tag = _TASKINSPCATVIEWTAG
-                inspectionView?.pVC = self
-                
-                self.ScrollView.addSubview(inspectionView!)
-                self.inspCatAdded = true
-                self.ScrollView.bringSubviewToFront(self.ScrollView.viewWithTag(_TASKDETAILVIEWTAG)!)
-                */
- 
                 self.view.removeActivityIndicator()
                 
                 NSNotificationCenter.defaultCenter().postNotificationName("reloadAllPhotosFromDB", object: nil, userInfo: nil)

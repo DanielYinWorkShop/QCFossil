@@ -107,6 +107,45 @@ class PopoverViewController: UIViewController {
             self.navigationItem.rightBarButtonItem=rightButton
             
             return
+        }else if dataType == _DEFECTPPDESC {
+        
+            self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position Point(s)")
+            
+            let descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 325,height: 500))
+            descView.text = selectedValue
+            descView.userInteractionEnabled = false
+            
+            self.view.addSubview(descView)
+            
+            self.automaticallyAdjustsScrollViewInsets = false
+            
+            let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: _NAVIBARHEIGHT, width: 325, height: 150+_NAVIBARHEIGHT))
+            scrollView.contentSize = CGSize.init(width: 325, height: 150+_NAVIBARHEIGHT)
+            
+            self.view.addSubview(scrollView)
+            
+            let poItemString = selectedValue
+            let poItemNames = poItemString.characters.split{$0 == ","}.map(String.init)
+            
+            if poItemNames.count>0 {
+                for idx in 0...poItemNames.count-1 {
+                    
+                    let poItem = UILabel.init(frame: CGRect(x: 10,y: idx*20+10,width: 325,height: 21))
+                    
+                    if idx < 1 {
+                        poItem.text = "\((idx+1)).  \(poItemNames[idx])"
+                    }else{
+                        poItem.text = "\((idx+1)). \(poItemNames[idx])"
+                    }
+                    
+                    scrollView.addSubview(poItem)
+                }
+                
+                let newHeight:CGFloat = CGFloat(poItemNames.count*21)
+                scrollView.contentSize = CGSize.init(width: 325, height: newHeight+_NAVIBARHEIGHT)
+            }
+            
+            return
         }else{
             inputview = PopoverViewsInput.loadFromNibNamed("PopoverViews")!
             inputview.initData(sourceType)

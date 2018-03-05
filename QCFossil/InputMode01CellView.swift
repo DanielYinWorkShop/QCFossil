@@ -34,6 +34,23 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     */
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        guard let touch:UITouch = touches.first else
+        {
+            return
+        }
+        
+        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+            self.resignFirstResponderByTextField((self.parentVC?.view)!)
+            
+        }else {
+            self.parentVC?.view.clearDropdownviewForSubviews((self.parentVC?.view)!)
+            
+        }
+        
+    }
+    
     override func awakeFromNib() {
         cellResultInput.delegate = self
         inptItemInput.delegate = self
@@ -54,12 +71,13 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             return
         }
         
+        self.inspReqCatText = self.cellCatName
         updatePhotoAddediConStatus("",photoTakenIcon: self.photoAddedIcon)
     }
 
     @IBAction func defectBtnOnClick(sender: UIButton) {
         //add defect cell to defect list
-        
+        /*
         if self.inptItemInput.text == "" || self.resultValueId < 1 {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Inspect Item Result!"))
             return
@@ -67,7 +85,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         
         //Save self to DB to get the taskDataRecordId
         self.saveMyselfToGetId()
-        
+        */
         let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
 
@@ -75,16 +93,27 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         //add defect cell
         
         if !isDefectItemAdded(defectListVC!) {
-            let defectObj = defectListVC!.inputCellInit(_INPUTMODE01, isHidden: false, idxLabel: String(cellIdx), iaLabel: "", iiLabel: inptItemInput.text!, sectionId: cellCatIdx, itemId: cellIdx, inspItem: self)
+            let newDfItem = TaskInspDefectDataRecord(taskId: (Cache_Task_On?.taskId)!, inspectRecordId: self.taskInspDataRecordId, refRecordId: 0, inspectElementId: self.elementDbId, defectDesc: "", defectQtyCritical: 0, defectQtyMajor: 0, defectQtyMinor: 0, defectQtyTotal: 0, createUser: Cache_Inspector?.appUserName, createDate: self.getCurrentDateTime(), modifyUser: Cache_Inspector?.appUserName, modifyDate: self.getCurrentDateTime())
             
-            defectListVC!.defectCells.append(defectObj as! InputModeDFMaster2 )
+            newDfItem?.inputMode = _INPUTMODE01
+            newDfItem?.inspElmt = self
+            newDfItem?.sectObj = SectObj(sectionId:cellCatIdx, sectionNameEn: self.cellCatName, sectionNameCn: self.cellCatName,inputMode: _INPUTMODE01)
+            newDfItem?.elmtObj = ElmtObj(elementId:self.elementDbId,elementNameEn:"", elementNameCn:"", reqElmtFlag: 0)
             
-            defectListVC!.defectCells.sortInPlace({$0.sectionId<$1.sectionId})
-            defectListVC!.defectCells.sortInPlace({$0.itemId<$1.itemId})
+            let defectsByItemId = Cache_Task_On?.defectItems.filter({$0.sectObj.sectionId == self.cellCatIdx && $0.elmtObj.elementId == self.elementDbId})
+            newDfItem?.cellIdx = defectsByItemId!.count
+            newDfItem?.sortNum = (newDfItem?.sectObj.sectionId)!*1000000 + (newDfItem?.inspElmt.elementDbId)!*1000 + (newDfItem?.cellIdx)!
+            newDfItem?.photoNames = [String]()
+            
+            let taskDataHelper = TaskDataHelper()
+            newDfItem?.recordId = taskDataHelper.updateInspDefectDataRecord(newDfItem!)
+            
+            if newDfItem?.recordId > 0 {
+                Cache_Task_On?.defectItems.append(newDfItem!)
+            }
         }
         
-        //self.parentVC!.performSegueWithIdentifier("DefectFromScreenSegue", sender:self)
-        //NSNotificationCenter.defaultCenter().postNotificationName("switchTabViewToDL", object: nil)
+        self.parentVC!.performSegueWithIdentifier("DefectListFromInspectItemSegue", sender:self)
     }
     
     @IBAction func dismissBtnOnClick(sender: UIButton) {
@@ -121,7 +150,32 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             (self.parentView as! InputMode01View).updateOptionalInspElmts(releaseInspItems,action: "add")
             
             //Delete Relative Defect Items From DB
-            NSNotificationCenter.defaultCenter().postNotificationName("deleteDefectItemsByInspItem", object: nil, userInfo: ["inspElmt":self])
+            //NSNotificationCenter.defaultCenter().postNotificationName("deleteDefectItemsByInspItem", object: nil, userInfo: ["inspElmt":self])
+        
+            let defectItemsArray = Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == self.cellCatIdx && $0.inspElmt.cellIdx == self.cellIdx })
+            
+            if defectItemsArray?.count > 0 {
+                for defectItem in defectItemsArray! {
+                    let index = Cache_Task_On?.defectItems.indexOf({ $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
+                    Cache_Task_On?.defectItems.removeAtIndex(index!)
+                    
+                    //remove DB data
+                    if defectItem.photoNames != nil && defectItem.photoNames?.count>0 {
+                        for photoName in defectItem.photoNames! {
+                            //Remove defect photo to Photo Album
+                            let photoDataHelper = PhotoDataHelper()
+                            photoDataHelper.updatePhotoDatasByPhotoName(photoName, dataType:PhotoDataType(caseId: "TASK").rawValue, dataRecordId:0)
+                        }
+                    }
+                    
+                    //Delete Record From DB
+                    if defectItem.recordId > 0 {
+                        let taskDataHelper = TaskDataHelper()
+                        taskDataHelper.deleteTaskInspDefectDataRecordById(defectItem.recordId!)
+                        
+                    }
+                }
+            }
         })
     }
     

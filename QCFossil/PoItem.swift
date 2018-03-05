@@ -123,22 +123,22 @@ class PoItem {
         //self.outStandQty = outStandQty
         //self.reportInspectorId = reportInspectorId
         /*
-        self.refBuyerId = refBuyerId
-        self.buyerCode = buyerCode
-        self.buyerName = buyerName
-        self.buyerDisplayName = buyerDisplayName
-        self.refBuyerLocationId = refBuyerLocationId
-        self.promisedShipDateStart = promisedShipDateStart
-        self.promisedShipDateEnd = promisedShipDateEnd
-        self.schedShipDateStart = schedShipDateStart
-        self.schedShipDateEnd = schedShipDateEnd
-        
-        self.lineSchedDateStart = lineSchedDateStart
-        self.lineSchedText = lineSchedText
-        self.lineSchedDateEnd = lineSchedDateEnd
-        self.appReadyPrugeDate = appReadyPrugeDate
-        
-*/
+         self.refBuyerId = refBuyerId
+         self.buyerCode = buyerCode
+         self.buyerName = buyerName
+         self.buyerDisplayName = buyerDisplayName
+         self.refBuyerLocationId = refBuyerLocationId
+         self.promisedShipDateStart = promisedShipDateStart
+         self.promisedShipDateEnd = promisedShipDateEnd
+         self.schedShipDateStart = schedShipDateStart
+         self.schedShipDateEnd = schedShipDateEnd
+         
+         self.lineSchedDateStart = lineSchedDateStart
+         self.lineSchedText = lineSchedText
+         self.lineSchedDateEnd = lineSchedDateEnd
+         self.appReadyPrugeDate = appReadyPrugeDate
+         
+         */
     }
     
     

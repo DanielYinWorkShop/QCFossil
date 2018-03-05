@@ -72,11 +72,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     var uploadPhotos = [Photo]()
     var _UPDATE_DB_DATA = false
     
-    //for PO download only
-    var init_service_session = ""
-    var totalReqCnt = 0
-    var downloadReqCnt = 0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,8 +88,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         configuration.timeoutIntervalForRequest = 300
         configuration.timeoutIntervalForResource = 300
-        //configuration.sessionSendsLaunchEvents = true
-        //configuration.discretionary = true
+        configuration.sessionSendsLaunchEvents = true
+        configuration.discretionary = true
         
         fgSession = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         
@@ -149,8 +144,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
      MydefaultSession.defaultSessionStaticSelf = self
      return MydefaultSession.defaultSessionInstance
      }
-    
-    
+     
      var backgroundSession: NSURLSession {
      struct MybackgroundSession {
      static var backgroundSessionStaticSelf: DataSyncViewController!
@@ -242,10 +236,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.fgpoDataProcessBar.progress = 0.0
         self.taskDataProcessBar.progress = 0.0
         self.taskStatusDataProcessBar.progress = 0.0
-        
-        self.totalReqCnt = 0
-        self.downloadReqCnt = 0
-        self.init_service_session = ""
         
         _DS_RECORDS = [
             "_DS_MSTRDATA" : [String](),
@@ -582,7 +572,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if poLineNeedInsert {
                     dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!)"
-                    dbAction += "(\(dbFields)) VALUES (\(dbValues))"
+                     dbAction += "(\(dbFields)) VALUES (\(dbValues))"
                     
                 }else{
                     dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!) (\(dbFields)) SELECT \(dbValues) WHERE EXISTS (SELECT po_item_id FROM inspect_task_item WHERE po_item_id = \(poItemId))"
@@ -597,7 +587,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
-            
             /*
              if apiName == "_DS_TASKDATA" {
              print("action: \(dbAction)")
@@ -607,61 +596,18 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
         }
         
-        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-            /*if self.downloadReqCnt < 1 {
-                self.updateProgressBar(0.6)
-            }
-            */
-        }else{
-            self.updateProgressBar(0.6)
-            //sleep(1)
-        }
-        
+        self.updateProgressBar(0.6)
         var result = false
-        
-        if apiName == "_DS_FGPODATA" {
-            let totalReqCnt = Int("\(jsonData["total_req_cnt"]!)")
-            let downloadReqCnt = Int("\(jsonData["download_req_cnt"]!)")
-            
-            print("total: \(totalReqCnt), download: \(downloadReqCnt)")
-            
-            self.totalReqCnt = totalReqCnt!
-            self.downloadReqCnt = downloadReqCnt!
-            
-            if totalReqCnt > downloadReqCnt {
-                
-                let progress = 30+(Float(downloadReqCnt!) / Float(totalReqCnt!))*30
-                print("progress: \(progress*0.01)")
-                self.updateProgressBar(progress*0.01)
-                
-                recCountInTable["service_session"] = Int(_DS_SESSION)
-                self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
-                return
-                
-            }else{
-                self.updateProgressBar(0.6)
-                //sleep(1)
-            }
-            
-        }
-        
         dataSyncDataHelper.updateTableRecordsByScript(self, apiName: apiName, sqlScript: _DS_RECORDS[apiName]!, handler: { () -> Void in
-            result = true
-
-            self.updateDLProcessLabel("Sending \(apiName) Acknowledgement...")
-                
-            recCountInTable["service_session"] = Int(_DS_SESSION)
-            self.updateProgressBar(0.8)
-            //sleep(1)
             
-            if apiName == "_DS_FGPODATA" {
-                //sleep(1)
-                print("PO Download 0.8")
-            }else{
-                //sleep(1)
-            }
+            self.updateDLProcessLabel("Sending \(apiName) Acknowledgement...")
+            
+            recCountInTable["service_session"] = Int(_DS_SESSION)
+            self.updateProgressBar(1)
             
             self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
+
+            result = true
         })
         
         if !result {
@@ -1049,8 +995,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         for (key, value) in dsData["APIPARA"] as! Dictionary<String,String> {
             if key == "service_token" {
                 param += "\"\(key)\":\"\(_DS_SERVICETOKEN)\","
-            }else if key == "init_service_session" {
-                param += "\"\(key)\":\"\(self.init_service_session)\","
             }else{
                 param += "\"\(key)\":\"\(value)\","
             }
@@ -1058,18 +1002,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         param += "}"
         param = param.stringByReplacingOccurrencesOfString(",}", withString: "}")
         
-        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-            if self.downloadReqCnt < 1 {
-                self.updateProgressBar(0.10)
-                ////sleep(1)
-            }
-            
-        }else{
-            self.updateProgressBar(0.10)
-            ////sleep(1)
-            
-        }
-        
+        self.updateProgressBar(0.2)
         print("Download Request: \(param)")
         
         let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
@@ -1117,20 +1050,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         param += "}"
         param = param.stringByReplacingOccurrencesOfString(",}", withString: "}")
         
-        print("param: \(param), Name: \(self.dsDataObj!["NAME"])")
-        
-        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
-            if self.downloadReqCnt == self.totalReqCnt {
-                self.updateProgressBar(0.9)
-                //sleep(1)
-                print("PO Download 0.9")
-            }
-            
-        }else{
-            self.updateProgressBar(0.9)
-            //sleep(1)
-        }
-        
         print("\(dsData["APINAME"] as! String) ACK Response: \(param)")
         
         let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
@@ -1170,14 +1089,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         body.appendString("\(createUploadData())\r\n")
         body.appendString("--\(boundary)--\r\n")
         
-        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-            if self.downloadReqCnt < 1 {
-                self.updateProgressBar(0.2)
-            }
-            
-        }else{
-            self.updateProgressBar(0.2)
-        }
+        self.updateProgressBar(0.2)
         
         let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -1195,7 +1107,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         if "Task Result Data Upload" == self.dsDataObj!["NAME"] as! String {
             dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-                
+                //let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
                 var percentageUploaded = 55 + (Float(totalBytesSent) / Float(totalBytesExpectedToSend))*5
                 percentageUploaded = percentageUploaded*0.01
                 
@@ -1210,88 +1122,22 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
                 
                 dispatch_async(dispatch_get_main_queue(), {
-                    
+                    //self.taskPhotoUploadStatus.text = "\(String(lroundf(100*percentageUploaded)))%"
                     self.taskPhotoProcessBar.progress = percentageUploaded
                 })
             }
             
-        }else if (self.dsDataObj!["NAME"] as! String).containsString("Acknowledgement") {
-            //dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-                //let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
-                
-              //  dispatch_async(dispatch_get_main_queue(), {
-                    /*if percentageUploaded > 0.99999 {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
-                            if self.downloadReqCnt == self.totalReqCnt {
-                                self.updateProgressBar(0.95)
-                                //sleep(1)
-                                print("PO Download 0.95")
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.95)
-                            //sleep(1)
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
-                    }*/
-                    
-                    if totalBytesSent == totalBytesExpectedToSend {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
-                            if self.downloadReqCnt == self.totalReqCnt {
-                                self.updateProgressBar(0.95)
-                                sleep(1)
-                                print("PO Download 0.95")
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.95)
-                            //sleep(1)
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
-                    }
-               // })
-            //}
-            
         }else{
-           // dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-                //let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
+            dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+                let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
                 
-             //   dispatch_async(dispatch_get_main_queue(), {
-                    /*if percentageUploaded > 0.99999 {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-                            if self.downloadReqCnt < 1 {
-                                self.updateProgressBar(0.15)
-                                //sleep(1)
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.15)
-                            //sleep(1)
-                            
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
-                    }*/
-                    
-                    if totalBytesSent == totalBytesExpectedToSend {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-                            if self.downloadReqCnt < 1 {
-                                self.updateProgressBar(0.15)
-                                //sleep(1)
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.15)
-                            //sleep(1)
-                            
-                        }
-                        
+                dispatch_async(dispatch_get_main_queue(), {
+                    if percentageUploaded > 0.99999 {
+                        self.updateProgressBar(0.25)
                         self.updateDLProcessLabel("Waiting Response...")
                     }
-               // })
-            //}
+                })
+            }
             
         }
     }
@@ -1401,7 +1247,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
                 print("session result: \(session_result)")
-                self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_INPTSETUP)
             }
@@ -1466,7 +1311,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
                 print("session result: \(session_result)")
-                self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_FGPODATA)
             }
@@ -1485,7 +1329,12 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
             
-            do {
+            do {/*
+                 dispatch_async(dispatch_get_main_queue(), {
+                 self.fgpoDataStatus.text =  "100%"
+                 self.fgpoDataProcessBar.progress = 100
+                 })*/
+                
                 updateDLProcessLabel("Preparing FGPO Data...")
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
@@ -1493,10 +1342,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                if self.init_service_session == "" {
-                    self.init_service_session = _DS_SESSION
-                }
                 
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
@@ -1531,13 +1376,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
-                if self.totalReqCnt > self.downloadReqCnt {
-                    self.makeDLPostRequest(_DS_FGPODATA)
-                    return
-                }
-                
                 print("session result: \(session_result)")
-                self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_TASKDATA)
             }
@@ -1602,7 +1441,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
-                self.updateProgressBar(1)
                 //task status download request
                 self.makeDLPostRequest(_DS_DL_TASK_STATUS)
                 /*
@@ -1688,7 +1526,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 }
                 
                 //Send local notification for Task Done.
-                self.updateProgressBar(1)
                 self.presentLocalNotification("Data Download Complete.")
                 
             }
@@ -1715,7 +1552,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
-                
+  
                 if jsonData.count > 0 {
                     
                     for (key,value) in jsonData {
@@ -1924,6 +1761,276 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
     }
     
+    func updateDBData() {
+        print("update db data")
+        /*
+         updateDLProcessLabel("Complete")
+         self.updateButtonStatus("Enable",btn: self.downloadBtn)
+         return
+         */
+        if !_UPDATE_DB_DATA {
+            return
+        }
+        
+        //dispatch_async(dispatch_get_main_queue(), {
+        
+        let dsDataObjList = [_DS_MSTRDATA, _DS_INPTSETUP, _DS_FGPODATA, _DS_TASKDATA, _DS_DL_TASK_STATUS]
+        
+        for dsDataObj in dsDataObjList {
+            
+            //let dataSyncDataHelper = DataSyncDataHelper()
+            //let actionNames = dsDataObj["ACTIONNAMES"] as! [String]
+            let actionFields:Dictionary<String, [String]> = dsDataObj["ACTIONFIELDS"] as! Dictionary
+            let actionTables:Dictionary<String, String> = dsDataObj["ACTIONTABLES"] as! Dictionary
+            //let ackName = dsDataObj["ACKNAME"]
+            
+            var currActTable = ""
+            let clearBeforeUpdateTables = ["inspect_task_tmpl_field","inspect_task_tmpl_section","inspect_task_tmpl_position","inspect_task_field_select_val","inspect_section_element","inspect_position_element","inspect_element_detail_select_val","result_set_value"]
+            
+            for data in self.dataSet {
+                //while let data = self.dataSet.popLast() {
+                //outerloop: for data in dataSet {
+                
+                if (actionTables[data["tableName"]!] != nil && data["apiName"] == dsDataObj["NAME"]) {
+                    currActTable = actionTables[data["tableName"]!]!
+                    
+                    if let index = self.dataSet.indexOf({ $0 == data }) {
+                        self.dataSet.removeAtIndex(index)
+                    }
+                    
+                }else{
+                    continue
+                }
+                
+                //Below Table Need to Delete Exsiting Records
+                if dsDataObj == _DS_INPTSETUP && clearBeforeUpdateTables.contains(currActTable) {
+                    
+                    var dbAction = ""
+                    if (data[actionFields[data["tableName"]!]![0]] != nil) {
+                        
+                        dbAction = "DELETE FROM \(currActTable) WHERE \(actionFields[data["tableName"]!]![0]) = \(data[actionFields[data["tableName"]!]![0]]!)"
+                    }
+                    let filterResult = _DS_RECORDS["_DS_INPTSETUP"]?.filter({ $0 == dbAction })
+                    
+                    if filterResult?.count < 1 {
+                        _DS_RECORDS["_DS_INPTSETUP"]!.append("\(dbAction)")
+                    }
+                }
+                
+                
+                var dbFields = ""
+                var dbValues = ""
+                var taskId = 0
+                //-------------------------
+                var poLineNeedInsert = true
+                var poItemId = ""
+                var taskIdInTaskStatus = ""
+                var dbActionForTaskStatus = ""
+                
+                if (actionFields[data["tableName"]!] != nil) {
+                    for idx in 0...actionFields[data["tableName"]!]!.count-1 {
+                        
+                        if let value = data[actionFields[data["tableName"]!]![idx]] {
+                            
+                            if dsDataObj == _DS_TASKDATA && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
+                                
+                                dbFields += "task_id"
+                                dbValues += "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(value))"
+                                
+                                if data["tableName"]! == "inspect_task_list" {
+                                    dbFields += ","+actionFields[data["tableName"]!]![idx]
+                                    dbValues += ",\"\(value)\""
+                                }
+                            }else if dsDataObj == _DS_DL_TASK_STATUS && actionFields[data["tableName"]!]![idx] == "task_id" {
+                                
+                                if Int(value) != nil {
+                                    taskId = Int(value)!
+                                }
+                                
+                            }else if dsDataObj == _DS_DL_TASK_STATUS && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
+                                for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
+                                    
+                                    if actionFields[data["tableName"]!]![sIdx] == "ref_task_id" {
+                                        let refTaskId = data[actionFields[data["tableName"]!]![sIdx]]!
+                                        
+                                        if Int(refTaskId) > 0 {
+                                            dbFields += "task_id"
+                                            dbValues += "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(refTaskId))"
+                                            
+                                            taskIdInTaskStatus = "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(refTaskId))"
+                                        }else{
+                                            dbFields += "task_id"
+                                            dbValues += "\(taskId)"
+                                            
+                                            taskIdInTaskStatus = "\(taskId)"
+                                        }
+                                        
+                                        break
+                                    }
+                                }
+                                
+                            }else if dsDataObj == _DS_DL_TASK_STATUS {
+                                dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
+                                
+                            }else if dsDataObj == _DS_MSTRDATA && actionFields[data["tableName"]!]![idx] == "vdr_sign_name" {
+                                
+                                for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
+                                    if actionFields[data["tableName"]!]![sIdx] == "location_id" {
+                                        let locationId = data[actionFields[data["tableName"]!]![sIdx]]!
+                                        
+                                        dbFields += "\(actionFields[data["tableName"]!]![idx])"
+                                        dbValues += " CASE WHEN ((SELECT vdr_sign_name FROM vdr_location_mstr WHERE location_id = \(locationId))  == \"\" OR (SELECT vdr_sign_name FROM vdr_location_mstr WHERE location_id = \(locationId)) IS NULL) THEN \"\(value)\" ELSE  (SELECT vdr_sign_name FROM vdr_location_mstr WHERE location_id = \(locationId)) END "
+                                    }
+                                }
+                                
+                            }else{
+                                dbFields += actionFields[data["tableName"]!]![idx]
+                                dbValues += "\"\(value)\""
+                                
+                            }
+                            
+                            if idx < actionFields[data["tableName"]!]!.count-1 {
+                                dbFields += ","
+                                dbValues += ","
+                            }
+                            
+                            // extra special considering on fields
+                            if dsDataObj == _DS_FGPODATA && actionFields[data["tableName"]!]![idx] == "app_ready_purge_date" && value != "" {
+                                poLineNeedInsert = false
+                                
+                            }else if dsDataObj == _DS_FGPODATA && actionFields[data["tableName"]!]![idx] == "item_id" {
+                                poItemId = value
+                                
+                            }else if dsDataObj == _DS_DL_TASK_STATUS && actionFields[data["tableName"]!]![idx] == "task_id" {
+                                taskIdInTaskStatus = value
+                                
+                            }
+                        }
+                    }
+                    
+                    
+                    dbActionForTaskStatus += "]!@#$*&^"
+                    dbActionForTaskStatus = dbActionForTaskStatus.stringByReplacingOccurrencesOfString(",]!@#$*&^", withString: "")
+                    
+                    
+                    var dbAction = ""
+                    if dsDataObj == _DS_DL_TASK_STATUS {
+                        
+                        dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE task_id = \(taskIdInTaskStatus)"
+                        
+                    }else if dsDataObj == _DS_FGPODATA {
+                        
+                        if poLineNeedInsert {
+                            dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!)"
+                            dbAction += "(\(dbFields)) VALUES (\(dbValues))"
+                            
+                        }else{
+                            dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!) (\(dbFields)) SELECT \(dbValues) WHERE EXISTS (SELECT po_item_id FROM inspect_task_item WHERE po_item_id = \(poItemId))"
+                            
+                        }
+                        
+                    }else{
+                        dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!)"
+                        dbAction += "(\(dbFields)) VALUES (\(dbValues))"
+                        
+                    }
+                    
+                    //print("action: \(dbAction)")
+                    
+                    if dsDataObj == _DS_MSTRDATA {
+                        _DS_RECORDS["_DS_MSTRDATA"]!.append("\(dbAction)")
+                        
+                    }else if dsDataObj == _DS_INPTSETUP {
+                        _DS_RECORDS["_DS_INPTSETUP"]!.append("\(dbAction)")
+                        
+                    }else if dsDataObj == _DS_FGPODATA {
+                        _DS_RECORDS["_DS_FGPODATA"]!.append("\(dbAction)")
+                        
+                    }else if dsDataObj == _DS_TASKDATA {
+                        _DS_RECORDS["_DS_TASKDATA"]!.append("\(dbAction)")
+                        print("action: \(dbAction)")
+                        
+                    }else if dsDataObj == _DS_DL_TASK_STATUS {
+                        _DS_RECORDS["_DS_DL_TASK_STATUS"]!.append("\(dbAction)")
+                        
+                    }
+                }
+            }
+        }
+        
+        //dispatch_async(dispatch_get_main_queue(), {
+        let dataSyncDataHelper = DataSyncDataHelper()
+        /*for (key,value) in _DS_RECORDS {
+         
+         dataSyncDataHelper.updateTableRecordsByScript(key, sqlScript: value, handler: { () -> Void in
+         
+         _DS_RECORDS[key] = [String]()
+         
+         })
+         
+         }*/
+        var result = false
+        
+        dataSyncDataHelper.updateTableRecordsByScript(self, apiName: "_DS_MSTRDATA", sqlScript: _DS_RECORDS["_DS_MSTRDATA"]!, handler: { () -> Void in
+            print("_DS_MSTRDATA")
+            _DS_RECORDS["_DS_MSTRDATA"] = [String]()
+            
+            dataSyncDataHelper.updateTableRecordsByScript(self, apiName: "_DS_INPTSETUP", sqlScript: _DS_RECORDS["_DS_INPTSETUP"]!, handler: { () -> Void in
+                print("_DS_INPTSETUP")
+                _DS_RECORDS["_DS_INPTSETUP"] = [String]()
+                
+                dataSyncDataHelper.updateTableRecordsByScript(self, apiName: "_DS_FGPODATA", sqlScript: _DS_RECORDS["_DS_FGPODATA"]!, handler: { () -> Void in
+                    print("_DS_FGPODATA")
+                    _DS_RECORDS["_DS_FGPODATA"] = [String]()
+                    
+                    dataSyncDataHelper.updateTableRecordsByScript(self, apiName: "_DS_TASKDATA", sqlScript: _DS_RECORDS["_DS_TASKDATA"]!, handler: { () -> Void in
+                        print("_DS_TASKDATA")
+                        _DS_RECORDS["_DS_TASKDATA"] = [String]()
+                        
+                        dataSyncDataHelper.updateTableRecordsByScript(self, apiName: "_DS_DL_TASK_STATUS", sqlScript: _DS_RECORDS["_DS_DL_TASK_STATUS"]!, handler: { () -> Void in
+                            print("_DS_DL_TASK_STATUS")
+                            _DS_RECORDS["_DS_DL_TASK_STATUS"] = [String]()
+                            result = true
+                            
+                        })
+                        
+                    })
+                    
+                })
+                
+            })
+            
+        })
+        
+        
+        self.lastDownloadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("reloadTaskSearchTableView", object: nil)
+        
+        let keyValueDataHelper = KeyValueDataHelper()
+        keyValueDataHelper.updateLastDownloadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
+        
+        //Handel Tasks Delete Here
+        //let dataSyncDataHelper = DataSyncDataHelper()
+        let taskIds = dataSyncDataHelper.selectTaskIdsCanDelete()
+        
+        for taskId in taskIds {
+            self.view.deleteTask(taskId)
+        }
+        
+        if result {
+            self.downloadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Complete")
+        }else{
+            self.downloadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Fail, DB Rollbacked")
+        }
+        
+        self.updateButtonStatus("Enable",btn: self.downloadBtn)
+        self._UPDATE_DB_DATA = false
+        //})
+        //})
+        
+    }
+    
     func getRefusedTaskIdAndUpdateConfirmUploadDate() ->[Int] {
         let dataSyncDataHelper = DataSyncDataHelper()
         var taskRefused = [Int]()
@@ -2007,18 +2114,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         print("正在下载 \(totalBytesWritten)/\(totalBytesExpectedToWrite)")
         
-        let percentageDownloaded = 15 + (Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))*15
+        let percentageDownloaded = 25 + (Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))*5
+        self.updateProgressBar(percentageDownloaded*0.01)
         
-        //self.updateProgressBar(percentageDownloaded*0.01)
-        
-        if "FGPO Data Download" == self.dsDataObj!["NAME"] as! String {
-            if self.downloadReqCnt < 1 {
-                self.updateProgressBar(percentageDownloaded*0.01)
-            }
-        }else{
-        
-            self.updateProgressBar(percentageDownloaded*0.01)
-        }
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
@@ -2027,7 +2125,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     }
     
     func updateProgressBar(percentageDownloaded:Float = 0) {
-        print("dsDataObj: \(self.dsDataObj!["NAME"] as! String)")
+        
         if "Master Data Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel("Downloading Data...")
             dispatch_async(dispatch_get_main_queue(), {
@@ -2045,14 +2143,12 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             })
             
         }else if "FGPO Data Download" == self.dsDataObj!["NAME"] as! String {
-            //if self.downloadReqCnt < 1 {
-                updateDLProcessLabel("Downloading Data...")
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.fgpoDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
-                    self.fgpoDataProcessBar.progress =  percentageDownloaded
-                    
-                })
-            //}
+            updateDLProcessLabel("Downloading Data...")
+            dispatch_async(dispatch_get_main_queue(), {
+                self.fgpoDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
+                self.fgpoDataProcessBar.progress =  percentageDownloaded
+                
+            })
             
         }else if "Task Booking Data Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel("Downloading Data...")
@@ -2066,51 +2162,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             dispatch_async(dispatch_get_main_queue(), {
                 self.taskStatusDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.taskStatusDataProcessBar.progress =  percentageDownloaded
-                
-            })
-        }else if "FGPO Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if /*self.downloadReqCnt == self.totalReqCnt && */self.fgpoDataProcessBar.progress < percentageDownloaded {
-                    self.fgpoDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
-                    self.fgpoDataProcessBar.progress =  percentageDownloaded
-                    print("PO Download 1")
-                }
-            })
-    
-        }else if "Master Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.masterDataProcessBar.progress < percentageDownloaded {
-                    self.mstrDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
-                    self.masterDataProcessBar.progress = percentageDownloaded
-                }
-            })
-        }else if "Inspection Setup Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.setupDataProcessBar.progress < percentageDownloaded {
-                    self.inspSetupDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
-                    self.setupDataProcessBar.progress = percentageDownloaded
-                }
-                
-            })
-        }else if "Task Booking Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.taskDataProcessBar.progress < percentageDownloaded {
-                    self.taskDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
-                    self.taskDataProcessBar.progress = percentageDownloaded
-                }
-                
-            })
-        }else if "Task Status Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.taskStatusDataProcessBar.progress < percentageDownloaded{
-                    self.taskStatusDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
-                    self.taskStatusDataProcessBar.progress = percentageDownloaded
-                }
                 
             })
         }

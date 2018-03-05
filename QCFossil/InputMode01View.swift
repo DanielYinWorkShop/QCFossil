@@ -28,6 +28,22 @@ class InputMode01View: InputModeSCMaster {
     }
     */
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        guard let touch:UITouch = touches.first else
+        {
+            return
+        }
+        
+        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+            self.resignFirstResponderByTextField(self)
+            
+        }else {
+            self.clearDropdownviewForSubviews(self)
+            
+        }
+    }
+    
     override func didMoveToSuperview() {
         if (self.parentVC == nil) {
             // a removeFromSuperview situation
@@ -76,17 +92,20 @@ class InputMode01View: InputModeSCMaster {
     }
     
     func applyRstToAll() {
-        let taskDataHelper = TaskDataHelper()
-        let resultValueId = taskDataHelper.getResultValueIdByResultValue(resultForAll, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
+        self.alertConfirmView("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Apply to All"))?",parentVC:self.parentVC!, handlerFun: { (action:UIAlertAction!) in
+
+            let taskDataHelper = TaskDataHelper()
+            let resultValueId = taskDataHelper.getResultValueIdByResultValue(self.resultForAll, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
         
-        for cell in inputCells {
-            cell.cellResultInput.text = resultForAll
-            cell.updatePhotoAddediConStatus(resultForAll,photoTakenIcon: cell.photoAddedIcon)
-            cell.resultValueId = resultValueId
-        }
+            for cell in self.inputCells {
+                cell.cellResultInput.text = self.resultForAll
+                cell.updatePhotoAddediConStatus(self.resultForAll,photoTakenIcon: cell.photoAddedIcon)
+                cell.resultValueId = resultValueId
+            }
         
-        Cache_Task_On?.didModify = true
-        updateContentView()
+            Cache_Task_On?.didModify = true
+            self.updateContentView()
+        })
     }
     
     func updateContentView() {

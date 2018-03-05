@@ -242,7 +242,6 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.vendorSignInput.image = signInputView?.image
         Cache_Task_On?.vdrSignImageFile = self.vendorSignInput.image?.toBase64()
         Cache_Task_On?.vdrSignName = self.vendorSignBoxInput.text
-        Cache_Task_On?.vdrSignDate = self.view.getCurrentDateTime()
         
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
     }

@@ -356,7 +356,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         cell.taskScheduledInput.text = ""
         cell.shipWinInput.text = poItem.shipWin
         cell.orInput.text = ""
-        cell.osQCQtyInput.text = String(poItem.outStandQty!) //String(poItem.orderQty-poItem.qcBookedQty)
+        cell.osQCQtyInput.text = String(poItem.outStandQty!)//String(poItem.orderQty-poItem.qcBookedQty)
         cell.shipToInput.text = poItem.shipTo
         cell.orInput.text = poItem.opdRsd
         cell.taskScheduledInput.text = poItem.taskSched
@@ -536,6 +536,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             inputValue = ""
             textField.showListData(textField, parent: self.view, handle: nil, listData: [String](), width: 200)
             return true
+            
         }else if string == ""{
             inputValue = String(textField.text!.characters.dropLast())
         }else {

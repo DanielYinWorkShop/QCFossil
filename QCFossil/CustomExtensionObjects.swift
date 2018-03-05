@@ -757,6 +757,15 @@ extension UIView {
         })
     }
     
+    func ifExistingSubviewByViewTag(view:UIView, tag:Int) ->Bool {
+        
+        if (view.viewWithTag(tag) != nil) {
+            return true
+        }
+        
+        return false
+    }
+    
     func resignFirstResponderByTextField(view:UIView) {
         
         // Get the subviews of the view
@@ -1505,7 +1514,7 @@ extension NSDate {
 }
 
 extension UITextField {
-    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false) /*->DropdownListViewControl*/ {
+    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000) /*->DropdownListViewControl*/ {
         
         if listData.count > 0 {
             //return Cache_Dropdown_Instance!
@@ -1533,6 +1542,7 @@ extension UITextField {
             Cache_Dropdown_Instance!.tableView.allowsMultipleSelection = allowMulpSel
             Cache_Dropdown_Instance!.tableView.rowHeight = 50
             Cache_Dropdown_Instance!.handleFun = handle
+            Cache_Dropdown_Instance?.tag = tag
             
             if CGFloat(adjustheight) < height {
                 Cache_Dropdown_Instance!.tableView.scrollEnabled = false
@@ -1674,34 +1684,3 @@ extension UIBezierPath {
     }
     
 }
-/*
-class BackgroundTask {
-    private let application: UIApplication
-    private var identifier = UIBackgroundTaskInvalid
-    
-    init(application: UIApplication) {
-        self.application = application
-    }
-    
-    class func run(application: UIApplication, handler: (BackgroundTask) -> ()) {
-        // NOTE: The handler must call end() when it is done
-        
-        let backgroundTask = BackgroundTask(application: application)
-        backgroundTask.begin()
-        handler(backgroundTask)
-    }
-    
-    func begin() {
-        self.identifier = application.beginBackgroundTaskWithExpirationHandler {
-            self.end()
-        }
-    }
-    
-    func end() {
-        if (identifier != UIBackgroundTaskInvalid) {
-            application.endBackgroundTask(identifier)
-        }
-        
-        identifier = UIBackgroundTaskInvalid
-    }
-}*/

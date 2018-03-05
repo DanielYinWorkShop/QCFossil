@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="fob-Eb-ghH" customClass="ShapePreviewViewInput" customModule="QCFossil012617p" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="fob-Eb-ghH" customClass="ShapePreviewViewInput" customModule="QCFossil070217u" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="330" height="330"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>

@@ -548,7 +548,7 @@
 
 "Delete Defect Item?" = "刪除不良項目?";
 
-"Saving" = "保存中";
+"Saving..." = "保存中";
 
 "Redirecting" = "跳转中";
 
@@ -760,8 +760,6 @@
 
 "Update Fail, DB Rollbacked" = "更新失败，已恢复资料库";
 
-"Use Background Mode for Download/Upload Task" = "使用Background下载／上传模式";
-
 "Data Download Complete." = "下载任务完成。";
 
 "Data Upload Complete." = "上传任务完成。";
@@ -769,5 +767,3 @@
 "Data Backup Complete." = "数据备份完成。";
 
 "Data Restore Complete." = "数据恢复完成。";
-
-"Clear Data Done..." = "数据清理完成...";

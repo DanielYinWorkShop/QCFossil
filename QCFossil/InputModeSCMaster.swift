@@ -65,7 +65,7 @@ class InputModeSCMaster:UIView {
             }
             
             if self.idx < 1 {
-                let moveRightBtn = UIButton()
+                let moveRightBtn = CustomButton()
                 let moveRightIcon = UIImage.init(named: "arrow_icon_right")
                 moveRightBtn.frame = CGRectMake(705, 0, 80, 80)
                 moveRightBtn.setImage(moveRightIcon, forState: UIControlState.Normal)
@@ -74,7 +74,7 @@ class InputModeSCMaster:UIView {
                 self.addSubview(moveRightBtn)
                 
             }else if self.idx < 3 {
-                let moveLeftBtn = UIButton()
+                let moveLeftBtn = CustomButton()
                 let moveLeftIcon = UIImage.init(named: "arrow_icon_left")
                 moveLeftBtn.frame = CGRectMake(645, 0, 80, 80)
                 moveLeftBtn.setImage(moveLeftIcon, forState: UIControlState.Normal)
@@ -82,7 +82,7 @@ class InputModeSCMaster:UIView {
                 moveLeftBtn.addTarget(self, action: #selector(InputModeSCMaster.moveToLeft(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 self.addSubview(moveLeftBtn)
                 
-                let moveRightBtn = UIButton()
+                let moveRightBtn = CustomButton()
                 let moveRightIcon = UIImage.init(named: "arrow_icon_right")
                 moveRightBtn.frame = CGRectMake(705, 0, 80, 80)
                 moveRightBtn.setImage(moveRightIcon, forState: UIControlState.Normal)
@@ -91,7 +91,7 @@ class InputModeSCMaster:UIView {
                 self.addSubview(moveRightBtn)
                 
             }else{
-                let moveLeftBtn = UIButton()
+                let moveLeftBtn = CustomButton()
                 let moveLeftIcon = UIImage.init(named: "arrow_icon_left")
                 moveLeftBtn.frame = CGRectMake(645, 0, 80, 80)
                 moveLeftBtn.setImage(moveLeftIcon, forState: UIControlState.Normal)

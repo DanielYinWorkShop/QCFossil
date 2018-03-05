@@ -66,10 +66,12 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         // Do any additional setup after loading the view.
         updateLocalizedString()
         
+        //bgSession = backgroundSession
+        //fgSession = defaultSession
         var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         configuration.timeoutIntervalForRequest = 300
         configuration.timeoutIntervalForResource = 300
-        configuration.sessionSendsLaunchEvents = false
+        configuration.sessionSendsLaunchEvents = true
         configuration.discretionary = true
         
         fgSession = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
@@ -418,7 +420,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         let request = NSMutableURLRequest(URL: url)
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.HTTPMethod = "POST"
-        request.timeoutInterval = 300
+        request.timeoutInterval = 60
         request.HTTPBody = body
         request.HTTPShouldHandleCookies = false
         
@@ -563,7 +565,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         print("bytesSent: \(bytesSent) totalBytesSent: \(totalBytesSent) totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
         
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-            let percentageUploaded = 0.9 * Float(totalBytesSent) / Float(totalBytesExpectedToSend)
+            let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
             
             dispatch_async(dispatch_get_main_queue(), {
                 self.passwordLabel.text = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Uploading Backup File:")) \(String(lroundf(100*percentageUploaded)))%"
@@ -618,7 +620,6 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
         } catch {
             print("Could not clear temp folder: \(error)")
-            self.updateButtonsStatus(true)
         }
             
                     
@@ -707,22 +708,19 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             if error?.code == NSURLErrorTimedOut {
                 let errorMsg = "The network connection was lost."
                 print("\(errorMsg)")
-                self.passwordLabel.text = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg))"
+                
                 
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
                 let errorMsg = "The internet connection appears to be offline."
                 
                 print("\(errorMsg)")
-                self.passwordLabel.text = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg))"
+                
                 
                 
             }else{
                 print("error: \(error!.localizedDescription), error code: \(error?.code)")
                 
-                self.passwordLabel.text = "\(error!.localizedDescription)"
             }
-            
-            self.updateButtonsStatus(true)
             
         }else if self.typeNow == self.typeListBackupFiles {
             
@@ -794,8 +792,6 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             
                             //Remove Zip File Here
                             self.removeLocalBackupZipFile()
-                            
-                            
                         }
                     }
                 }
@@ -815,12 +811,11 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
             buffer.setData(NSMutableData())
         }
-        /*
+        
         dispatch_async(dispatch_get_main_queue(), {
             self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Done")
             self.progressBar.progress = 100
-            
-        })*/
+        })
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
@@ -957,7 +952,6 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
             } catch {
                 print("Could not clear Zip file: \(error)")
-                self.updateButtonsStatus(true)
             }
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

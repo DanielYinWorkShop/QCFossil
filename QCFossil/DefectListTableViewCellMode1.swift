@@ -385,5 +385,43 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
         self.pVC?.currentCell = self
         self.parentVC?.performSegueWithIdentifier("PhotoAlbumSegueFromDF", sender: self)
     }
+    
+    override func setSelectedPhoto(photo:Photo, needSave:Bool=true) {
+        
+        if defectPhoto1.image == nil {
+            let resizePhoto = updateDefectPhotoData(0, photo: photo, needSave: needSave)
+            defectPhoto1.image = resizePhoto!.photo?.image
+            dismissPhotoButton1.hidden = false
+            
+        }else if defectPhoto2.image == nil {
+            let resizePhoto = updateDefectPhotoData(1, photo: photo, needSave: needSave)
+            defectPhoto2.image = resizePhoto!.photo?.image
+            dismissPhotoButton2.hidden = false
+            
+        }else if defectPhoto3.image == nil {
+            let resizePhoto = updateDefectPhotoData(2, photo: photo, needSave: needSave)
+            defectPhoto3.image = resizePhoto!.photo?.image
+            dismissPhotoButton3.hidden = false
+            
+        }else if defectPhoto4.image == nil {
+            let resizePhoto = updateDefectPhotoData(3, photo: photo, needSave: needSave)
+            defectPhoto4.image = resizePhoto!.photo?.image
+            dismissPhotoButton4.hidden = false
+            
+        }else if defectPhoto5.image == nil {
+            let resizePhoto = updateDefectPhotoData(4, photo: photo, needSave: needSave)
+            defectPhoto5.image = resizePhoto!.photo?.image
+            dismissPhotoButton5.hidden = false
+            
+        }
+        
+        //Update InspItem PhotoAdded Status
+        self.photoAdded = String(PhotoAddedStatus.init(caseId: "yes"))
+        updatePhotoAddedStatus("yes")
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("reloadPhotos", object: nil, userInfo: ["photoSelected":photo])
+        
+        //
+    }
 }
 

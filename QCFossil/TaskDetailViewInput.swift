@@ -196,10 +196,10 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             
             let section = Cache_Task_On?.inspSections[idx]
             var itemCount = taskDataHelper.getCatItemCountById((Cache_Task_On?.taskId)!,sectionId: (section?.sectionId)!)
-            
+            /*
             if section?.inputModeCode == _INPUTMODE02 {
                 itemCount = itemCount - 1
-            }
+            }*/
             
             let catBtnTitle = (_ENGLISH ? section?.sectionNameEn:section?.sectionNameCn)!+"(\(itemCount))"
             inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, forState: UIControlState.Normal)

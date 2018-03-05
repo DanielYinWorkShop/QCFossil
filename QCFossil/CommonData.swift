@@ -95,6 +95,7 @@ let _POPOVERPOITEMTYPESHIPWIN = "PoItemShipWinDisplay"
 let _POPOVERTASKSTATUSDESC = "TaskStatusDesc"
 let _SHAPEDATATYPE = "ShapeDataType"
 let _POPOVERPRODDESC = "ProdDesc"
+let _DEFECTPPDESC = "DefectPPDesc"
 
 //Sing Images Name
 let _INSPECTORSIGNIMAGE = "inspectorSignImage.jpg"
@@ -115,6 +116,5 @@ let _THUMBNAILHEIGHT:CGFloat = 128
 //Number Textfield Max Length
 let _MAXIMUNINT:Int = 10
 
-//NSSESSIONURL DownloadTask background mode flag
-var _IS_BACKGROUNDSESSION_MODE = true
+
 

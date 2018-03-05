@@ -79,16 +79,9 @@ class DataSyncDataHelper:DataHelperMaster {
         if db.open() {
             db.beginTransaction()
             
-            print("apiName: \(apiName)")
             if apiName == "_DS_FGPODATA" {
-                print("clear po data")
                 self.cleanDBTableByName("fgpo_line_item WHERE item_id NOT IN (SELECT fli.item_id FROM fgpo_line_item fli INNER JOIN inspect_task_item iti WHERE fli.item_id = iti.po_item_id)")
-        
                 vc.updateProgressBar(0.7)
-                vc.updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear Data Done..."))
-                sleep(1)
-                print("PO Download 0.7")
-            
             }
             
             for sql in sqlScript {
@@ -96,17 +89,17 @@ class DataSyncDataHelper:DataHelperMaster {
                 if sql == "" {
                     continue
                 }
-                
+                    
                 //2. update table records
                 if !db.executeUpdate(sql, withArgumentsInArray: nil) {
                     print("Error, DB Rollback!")
                     db.rollback()
                     db.close()
-                    
+                        
                     if apiName == "_DS_DL_TASK_STATUS" {
                         handler()
                     }
-                    
+                        
                     return false
                 }
             }
@@ -114,7 +107,7 @@ class DataSyncDataHelper:DataHelperMaster {
             db.commit()
             db.close()
         }
-        
+            
         handler()
         return true
     }

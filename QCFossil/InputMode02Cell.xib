@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputMode02CellView" customModule="QCFossil" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputMode02CellView" customModule="QCFossil070217u" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="768" height="140"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -51,7 +51,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Defect Position Point(s)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-cd-APU">
-                    <rect key="frame" x="8" y="76" width="309" height="21"/>
+                    <rect key="frame" x="8" y="76" width="425" height="21"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -120,15 +120,27 @@
                         <rect key="frame" x="8" y="84" width="65" height="21"/>
                     </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="XhT-og-dbh">
-                    <rect key="frame" x="525" y="104" width="21" height="21"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="kpg-tC-XQs">
-                    <rect key="frame" x="296" y="37" width="21" height="21"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Wct-Ef-XhJ">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yi7-QN-knw">
                     <rect key="frame" x="412" y="104" width="21" height="21"/>
-                </imageView>
+                    <state key="normal" image="select_icon"/>
+                    <connections>
+                        <action selector="clearDropdownListOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="mc4-7p-NNz"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0B-wv-BTS">
+                    <rect key="frame" x="525" y="104" width="21" height="21"/>
+                    <state key="normal" image="select_icon"/>
+                    <connections>
+                        <action selector="clearDropdownListOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="8gZ-fu-sBc"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="84O-5C-9qA">
+                    <rect key="frame" x="296" y="37" width="21" height="21"/>
+                    <state key="normal" image="select_icon"/>
+                    <connections>
+                        <action selector="clearDropdownListOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="Cg2-hj-VLP"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>

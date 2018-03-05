@@ -38,6 +38,10 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
     @IBOutlet weak var dismissPhotoButton3: CustomControlButton!
     @IBOutlet weak var dismissPhotoButton4: CustomControlButton!
     @IBOutlet weak var dismissPhotoButton5: CustomControlButton!
+    @IBOutlet weak var addDefectPhotoButton: CustomControlButton!
+    @IBOutlet weak var addDefectPhotoByCamera: CustomControlButton!
+    @IBOutlet weak var addDefectPhotoByAlbum: CustomControlButton!
+    @IBOutlet weak var sectionName: UILabel!
     
     weak var pVC:DefectListViewController!
 
@@ -67,6 +71,7 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
         self.minorInput.delegate = self
         self.majorInput.delegate = self
         self.totalInput.delegate = self
+        self.dfDescInput.delegate = self
         
         updateLocalizedString()
         
@@ -93,7 +98,7 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
     
     func updateLocalizedString(){
         self.dpLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position")
-        self.dppLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position Points")
+        self.dppLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position Point(s)")
         self.dtLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Type")
         self.dfDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
         self.criticalLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Critical")
@@ -411,5 +416,125 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
         
         self.pVC?.currentCell = self
         self.parentVC?.performSegueWithIdentifier("PhotoAlbumSegueFromDF", sender: self)
+    }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if textField == self.dtInput {
+            let defectDataHelper = DefectDataHelper()
+            /*
+             Element Type
+             1: Inspect Item
+             2: Defect Item
+             */
+            let dfElms = defectDataHelper.getDefectTypeElms((Cache_Task_On?.prodTypeId)!, inspType: (Cache_Task_On?.inspectionTypeId)!, elemtType: 2, inspSecId: self.sectionId)
+            
+            textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms)
+            
+            return false
+        }
+        
+        return true
+    }
+    
+    func dropdownHandleFunc(textField:UITextField) {
+        if textField == self.dtInput {
+            
+            let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+            
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                let defectDataHelper = DefectDataHelper()
+                
+                defectItem.inspectElementId = defectDataHelper.getInspElementIdByName(textField.text!)
+            }
+        }
+    }
+    
+    override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        Cache_Task_On?.didModify = true
+        var inputValue = ""
+        if textField.text!.characters.count < 2 && string == "" {
+            inputValue = ""
+        }else if string == ""{
+            inputValue = String(textField.text!.characters.dropLast())
+        }else {
+            inputValue = textField.text! + string
+        }
+        
+        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+        
+        if textField.keyboardType == UIKeyboardType.NumberPad {
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                if Int(inputValue) == nil {
+                    inputValue = "0"
+                }
+                //if Int(inputValue) != nil {
+                
+                if textField == self.criticalInput {
+                    defectItem.defectQtyCritical = Int(inputValue)!
+                    
+                }else if textField == self.majorInput {
+                    defectItem.defectQtyMajor = Int(inputValue)!
+                    
+                }else if textField == self.minorInput {
+                    defectItem.defectQtyMinor = Int(inputValue)!
+                    
+                }
+                //}
+                
+                defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
+                self.totalInput.text = String(defectItem.defectQtyTotal)
+            }
+            
+            return textField.numberOnlyCheck(textField, sourceText: string)
+        }else{
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                defectItem.defectDesc = inputValue
+            }
+        }
+        
+        return true
+    }
+    
+    override func setSelectedPhoto(photo:Photo, needSave:Bool=true) {
+        
+        if defectPhoto1.image == nil {
+            let resizePhoto = updateDefectPhotoData(0, photo: photo, needSave: needSave)
+            defectPhoto1.image = resizePhoto!.photo?.image
+            dismissPhotoButton1.hidden = false
+            
+        }else if defectPhoto2.image == nil {
+            let resizePhoto = updateDefectPhotoData(1, photo: photo, needSave: needSave)
+            defectPhoto2.image = resizePhoto!.photo?.image
+            dismissPhotoButton2.hidden = false
+            
+        }else if defectPhoto3.image == nil {
+            let resizePhoto = updateDefectPhotoData(2, photo: photo, needSave: needSave)
+            defectPhoto3.image = resizePhoto!.photo?.image
+            dismissPhotoButton3.hidden = false
+            
+        }else if defectPhoto4.image == nil {
+            let resizePhoto = updateDefectPhotoData(3, photo: photo, needSave: needSave)
+            defectPhoto4.image = resizePhoto!.photo?.image
+            dismissPhotoButton4.hidden = false
+            
+        }else if defectPhoto5.image == nil {
+            let resizePhoto = updateDefectPhotoData(4, photo: photo, needSave: needSave)
+            defectPhoto5.image = resizePhoto!.photo?.image
+            dismissPhotoButton5.hidden = false
+            
+        }
+        
+        //Update InspItem PhotoAdded Status
+        self.photoAdded = String(PhotoAddedStatus.init(caseId: "yes"))
+        updatePhotoAddedStatus("yes")
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("reloadPhotos", object: nil, userInfo: ["photoSelected":photo])
+        
+        //
     }
 }

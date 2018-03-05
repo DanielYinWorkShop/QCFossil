@@ -40,7 +40,7 @@ class InputMode04CellView: InputModeICMaster, UITextFieldDelegate {
     {
         guard let touch:UITouch = touches.first else
         {
-            return;
+            return
         }
         
         if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {

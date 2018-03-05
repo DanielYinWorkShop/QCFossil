@@ -10,8 +10,8 @@ import UIKit
 
 //Data Sync Server
 let dataSyncServerUsing = dataSyncUatServer
-let dataSyncTestServer = "http://web01.forrus.com.hk/test_ws_quality/" //"http://202.123.87.16/test_ws_quality/"
-let dataSyncUatServer = "http://web01.forrus.com.hk/uat_ws_quality/" //"http://202.123.87.16/uat_ws_quality/"
+let dataSyncTestServer = "http://202.123.87.16/test_ws_quality/"
+let dataSyncUatServer = "http://202.123.87.16/uat_ws_quality/"
 let dataSyncPrdServer = "https://quality.forrus.com.hk/ws_quality/"
 let _DS_PREFIX = "req_msg="
 let _DS_USERNAME = "uName"
@@ -611,7 +611,6 @@ let _DS_FGPODATA = [
         "service_token" : _DS_SERVICETOKEN,
         "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
         "service_type": "FGPO Data Download",
-        "init_service_session": ""
     ],
     
     "ACTIONNAMES" : [

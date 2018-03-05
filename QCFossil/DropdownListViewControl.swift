@@ -49,8 +49,10 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         
         dropdownDataFilter = dropdownData
         
-        let cells = myParentTextField?.text!.characters.split{$0 == ","}.map(String.init)
-        for cell in cells! {
+        let selectedValues = myParentTextField?.text!.stringByReplacingOccurrencesOfString(", ", withString: ",")
+        
+        let cells = selectedValues!.characters.split{$0 == ","}.map(String.init)
+        for cell in cells {
             let cellObj = UITableViewCell.init()
             cellObj.textLabel?.text = cell as String
             self.selectedTableViewCell.append(cellObj)
@@ -103,6 +105,7 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath)!
             var selected = false
             for cell in selectedTableViewCell {
+               
                 if selectedCell.textLabel!.text == cell.textLabel!.text {
                     selected = true
                 }
@@ -115,7 +118,13 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             
                 if myParentTextField != nil {
                     let text = String(dropdownDataFilter[indexPath.row])
-                    myParentTextField!.text! += text+","
+                    //myParentTextField!.text! += text+", "
+                    
+                    if myParentTextField!.text == "" {
+                        myParentTextField!.text! += text
+                    }else{
+                        myParentTextField!.text! += ", "+text
+                    }
                     
                     if (handleFun != nil){
                         handleFun!(myParentTextField!)
@@ -151,7 +160,14 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         for idx in 0...selectedTableViewCell.count-1 {
             if selectedTableViewCell[idx].textLabel?.text == cell.textLabel?.text {
                 //Remove Text From Parent TextField
-                myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!+",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                
+                if idx < 1 && selectedTableViewCell.count > 1 {
+                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!+", ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                }else if idx < 1 && selectedTableViewCell.count < 2 {
+                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                }else{
+                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString(", "+(cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                }
                 
                 selectedTableViewCell.removeAtIndex(idx)
                 break
