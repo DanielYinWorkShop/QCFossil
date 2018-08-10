@@ -1315,6 +1315,19 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         print("All tasks are finished")
     }
     
+    func errorMsgByCode(code:Int) ->String {
+        var errorDesc = "";
+        switch(code) {
+            case 3840:
+                errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("No Data Response.")
+                break
+            default:
+                errorDesc = ""
+        }
+        
+        return errorDesc
+    }
+    
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         //use buffer here.Download is done
         //progress.progress = 1.0   // download 100% complete
@@ -1378,10 +1391,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Master Data Error: \(error)")
+                    updateDLProcessLabel("Master Data Error with Code: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Master Data Error: \(error)")
+                    updateULProcessLabel("Master Data Error with Code: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1407,13 +1420,13 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             }
             catch {
                 print("error serializing JSON: \(error)")
-                
+               
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Master Data ACK Error: \(error)")
+                    updateDLProcessLabel("Master Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Master Data ACK Error: \(error)")
+                    updateULProcessLabel("Master Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1444,10 +1457,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Inspection Setup Data Error: \(error)")
+                    updateDLProcessLabel("Inspection Setup Data Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Inspection Setup Data Error: \(error)")
+                    updateULProcessLabel("Inspection Setup Data Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1475,10 +1488,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Inspection Setup Data ACK Error: \(error)")
+                    updateDLProcessLabel("Inspection Setup Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Inspection Setup Data ACK Error: \(error)")
+                    updateULProcessLabel("Inspection Setup Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1546,10 +1559,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("FGPO Data ACK Error: \(error)")
+                    updateDLProcessLabel("FGPO Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("FGPO Data ACK Error: \(error)")
+                    updateULProcessLabel("FGPO Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1581,10 +1594,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Booking Data Error: \(error)")
+                    updateDLProcessLabel("Task Booking Data Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Booking Data Error: \(error)")
+                    updateULProcessLabel("Task Booking Data Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1624,10 +1637,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Booking Data ACK Error: \(error)")
+                    updateDLProcessLabel("Task Booking Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Booking Data ACK Error: \(error)")
+                    updateULProcessLabel("Task Booking Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1658,10 +1671,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Status Data Error: \(error)")
+                    updateDLProcessLabel("Task Status Data Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Status Data Error: \(error)")
+                    updateULProcessLabel("Task Status Data Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1691,16 +1704,26 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.updateProgressBar(1)
                 self.presentLocalNotification("Data Download Complete.")
                 
+                
+                //Handel Tasks Delete Here
+                let dataSyncDataHelper = DataSyncDataHelper()
+                let taskIds = dataSyncDataHelper.selectTaskIdsCanDelete()
+                
+                for taskId in taskIds {
+                    print("delete \(taskId)");
+                    //self.view.deleteTask(taskId)
+                }
+                
             }
             catch {
                 print("error serializing JSON: \(error)")
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Status Data ACK Error: \(error)")
+                    updateDLProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Status Data ACK Error: \(error)")
+                    updateULProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
@@ -1819,10 +1842,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Result Data Error: \(error)")
+                    updateDLProcessLabel("Task Result Data Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Result Data Error: \(error)")
+                    updateULProcessLabel("Task Result Data Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Photo Data Upload" {
@@ -1910,11 +1933,11 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Photo Upload Error: \(error)")
+                    updateDLProcessLabel("Task Photo Upload Error: \(errorMsgByCode((error as NSError).code))")
                     
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Photo Upload Error: \(error)")
+                    updateULProcessLabel("Task Photo Upload Error: \(errorMsgByCode((error as NSError).code))")
                     
                 }
             }
