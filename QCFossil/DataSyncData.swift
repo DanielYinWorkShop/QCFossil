@@ -9,7 +9,12 @@
 import UIKit
 
 //Data Sync Server
+#if DEVELOPMENT
 let dataSyncServerUsing = dataSyncUatServer
+#else
+let dataSyncServerUsing = dataSyncPrdServer
+#endif
+
 let dataSyncTestServer = "http://web01.forrus.com.hk/test_ws_quality/" //"http://202.123.87.16/test_ws_quality/"
 let dataSyncUatServer = "http://web01.forrus.com.hk/uat_ws_quality/" //"http://202.123.87.16/uat_ws_quality/"
 let dataSyncPrdServer = "https://quality.forrus.com.hk/ws_quality/"

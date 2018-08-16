@@ -104,9 +104,21 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "030418N"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "08142018"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
+        
+        #if DEVELOPMENT
+            self.databaseUsingCode.text = "UAT " + releaseDate
+            defaults.setObject("UAT", forKey: "serverEnv_preference")
+            defaults.setObject(dataSyncUatServer, forKey: "webServiceUrl_preference")
+        #else
+            self.databaseUsingCode.text = "PRD " + releaseDate
+            defaults.setObject("PRD", forKey: "serverEnv_preference")
+            defaults.setObject(dataSyncPrdServer, forKey: "webServiceUrl_preference")
+        #endif
+        
+        /*
         if dataSyncUatServer == dataSyncServerUsing {
             self.databaseUsingCode.text = "UAT " + releaseDate
             defaults.setObject("UAT", forKey: "serverEnv_preference")
@@ -122,7 +134,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             defaults.setObject("TEST", forKey: "serverEnv_preference")
             defaults.setObject(dataSyncTestServer, forKey: "webServiceUrl_preference")
             
-        }
+        }*/
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.defaultsChanged), name: NSUserDefaultsDidChangeNotification, object: nil)
     }

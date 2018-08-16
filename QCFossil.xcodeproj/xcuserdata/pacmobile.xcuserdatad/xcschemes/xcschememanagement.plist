@@ -4,10 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>QCFossil.xcscheme</key>
+		<key>QCFossil PRD.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>QCFossil UAT.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>9C0C36E91C1E6F7800CF48ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BDD1A2992123472B00AE391E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
