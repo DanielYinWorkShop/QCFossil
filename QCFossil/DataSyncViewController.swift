@@ -488,6 +488,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var poLineNeedInsert = true
             var poItemId = ""
             var taskIdInTaskStatus = ""
+            var taskInspectionNoInTaskStatus = ""
+            var taskInspectionDateInTaskStatus = ""
             var dbActionForTaskStatus = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
@@ -532,7 +534,14 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         }
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" {
-                        dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
+                        
+                        if actionFields[data["tableName"]!]![idx] == "inspection_no" {
+                            taskInspectionNoInTaskStatus = "\"\(value)\""
+                        }else if actionFields[data["tableName"]!]![idx] == "inspection_date" {
+                            taskInspectionDateInTaskStatus = "\"\(value)\""
+                        }else {
+                            dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
+                        }
                         
                     }else if apiName == "_DS_MSTRDATA" && actionFields[data["tableName"]!]![idx] == "vdr_sign_name" {
                         
@@ -576,7 +585,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE task_id = \(taskIdInTaskStatus)"
+                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE task_id = \(taskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
                 
             }else if apiName == "_DS_FGPODATA" {
                 
@@ -598,10 +607,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
             
-            /*
-             if apiName == "_DS_TASKDATA" {
-             print("action: \(dbAction)")
-             }*/
+            
+             if apiName == "_DS_DL_TASK_STATUS" {
+                print("action: \(dbAction)")
+             }
             
             _DS_RECORDS[apiName]!.append("\(dbAction)")
             

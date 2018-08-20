@@ -108,7 +108,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
-        #if DEVELOPMENT
+        #if DEBUG
             self.databaseUsingCode.text = "UAT " + releaseDate
             defaults.setObject("UAT", forKey: "serverEnv_preference")
             defaults.setObject(dataSyncUatServer, forKey: "webServiceUrl_preference")

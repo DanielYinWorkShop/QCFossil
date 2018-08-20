@@ -134,6 +134,7 @@
 		BD7DF48B1DDDCB5700618D85 /* CreateTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7DF48A1DDDCB5700618D85 /* CreateTaskTableViewCell.swift */; };
 		BD908EB61C50A36900D02A8E /* CacheData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD908EB51C50A36900D02A8E /* CacheData.swift */; };
 		BD968D9D1CA2B86800BE2BE9 /* TaskInspPosinPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD968D9C1CA2B86800BE2BE9 /* TaskInspPosinPoint.swift */; };
+		BDA1B5C3212AFF6F001C3C5D /* QCFossil-UAT-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDA1B5C2212AFF6F001C3C5D /* QCFossil-UAT-Info.plist */; };
 		BDCC90131C56020C009A5AB7 /* EmbedContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC90121C56020C009A5AB7 /* EmbedContainerController.swift */; };
 		BDCC901C1C56101D009A5AB7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC901B1C56101D009A5AB7 /* DatabaseManager.swift */; };
 		BDCC903B1C5620CB009A5AB7 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = BDCC90311C5620CB009A5AB7 /* FMDatabase.m */; };
@@ -317,7 +318,6 @@
 		BDD1A3412123472B00AE391E /* POCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C0848861C61E08500CAAD88 /* POCellView.xib */; };
 		BDD1A3422123472B00AE391E /* InspectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD8617E1C5B9929005B66EC /* InspectionView.xib */; };
 		BDD1A3432123472B00AE391E /* InptCategoryCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C96E4691C4786030052C486 /* InptCategoryCellView.xib */; };
-		BDD1A34B2124788800AE391E /* QCFossil-UAT-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDD1A34A2124788800AE391E /* QCFossil-UAT-Info.plist */; };
 		BDD2E0C21C45048C00CB0C40 /* TaskTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2E0C11C45048C00CB0C40 /* TaskTypeViewController.swift */; };
 		BDD51C4F1C3E442000A6E656 /* InputMode04DefectCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD51C4E1C3E442000A6E656 /* InputMode04DefectCellView.swift */; };
 		BDD51C511C3E443C00A6E656 /* InputMode04DefectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDD51C501C3E443C00A6E656 /* InputMode04DefectCell.xib */; };
@@ -522,6 +522,7 @@
 		BD7DF48A1DDDCB5700618D85 /* CreateTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTaskTableViewCell.swift; sourceTree = "<group>"; };
 		BD908EB51C50A36900D02A8E /* CacheData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheData.swift; sourceTree = "<group>"; };
 		BD968D9C1CA2B86800BE2BE9 /* TaskInspPosinPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInspPosinPoint.swift; sourceTree = "<group>"; };
+		BDA1B5C2212AFF6F001C3C5D /* QCFossil-UAT-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "QCFossil-UAT-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BDCC90121C56020C009A5AB7 /* EmbedContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbedContainerController.swift; sourceTree = "<group>"; };
 		BDCC901B1C56101D009A5AB7 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BDCC902F1C5620CB009A5AB7 /* QCFossil-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QCFossil-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -546,7 +547,6 @@
 		BDCF87101C57886D000B0C38 /* InspSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspSection.swift; sourceTree = "<group>"; };
 		BDCFCCE01DB4835D00414027 /* InputModeDFMaster2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputModeDFMaster2.swift; sourceTree = "<group>"; };
 		BDD1A3472123472B00AE391E /* QCFossil UAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QCFossil UAT.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BDD1A34A2124788800AE391E /* QCFossil-UAT-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "QCFossil-UAT-Info.plist"; sourceTree = "<group>"; };
 		BDD2E0C11C45048C00CB0C40 /* TaskTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTypeViewController.swift; sourceTree = "<group>"; };
 		BDD51C4E1C3E442000A6E656 /* InputMode04DefectCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode04DefectCellView.swift; sourceTree = "<group>"; };
 		BDD51C501C3E443C00A6E656 /* InputMode04DefectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputMode04DefectCell.xib; sourceTree = "<group>"; };
@@ -913,7 +913,7 @@
 				9CD85A3A1D74147F004DD641 /* SSZipArchive */,
 				9C0C36D51C1E6F7800CF48ED /* Assets.xcassets */,
 				9C0C36DA1C1E6F7800CF48ED /* Info.plist */,
-				BDD1A34A2124788800AE391E /* QCFossil-UAT-Info.plist */,
+				BDA1B5C2212AFF6F001C3C5D /* QCFossil-UAT-Info.plist */,
 				9C0C37021C1EA70800CF48ED /* Localizable.strings */,
 			);
 			name = Others;
@@ -1218,7 +1218,7 @@
 				9C25B2ED1C4CEA7A005DCA11 /* InputMode01DefectCell.xib in Resources */,
 				9C25B2DB1C4CBCF5005DCA11 /* InputMode01.xib in Resources */,
 				BD5A0DB01C44A9880056B077 /* POSearchView.xib in Resources */,
-				BDD1A34B2124788800AE391E /* QCFossil-UAT-Info.plist in Resources */,
+				BDA1B5C3212AFF6F001C3C5D /* QCFossil-UAT-Info.plist in Resources */,
 				9C93B6471C4F567E00D7123A /* InputMode03DefectCell.xib in Resources */,
 				9C93B64D1C4F94A600D7123A /* DropdownListView.xib in Resources */,
 				9CD85A6A1D74147F004DD641 /* Info.plist in Resources */,
@@ -1826,7 +1826,7 @@
 				INFOPLIST_FILE = "QCFossil-UAT-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "-DEVELOPMENT";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1846,7 +1846,7 @@
 				INFOPLIST_FILE = "QCFossil-UAT-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "-DEVELOPMENT";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

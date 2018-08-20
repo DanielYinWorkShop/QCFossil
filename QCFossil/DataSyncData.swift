@@ -9,7 +9,7 @@
 import UIKit
 
 //Data Sync Server
-#if DEVELOPMENT
+#if DEBUG
 let dataSyncServerUsing = dataSyncUatServer
 #else
 let dataSyncServerUsing = dataSyncPrdServer
@@ -845,7 +845,9 @@ let _DS_DL_TASK_STATUS = [
             "modify_user",
             "deleted_flag",
             "delete_date",
-            "delete_user"
+            "delete_user",
+            "inspection_no",//add 0820
+            "inspection_date"//add 0820
         ]
     ]
 ]
