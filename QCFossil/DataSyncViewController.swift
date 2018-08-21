@@ -483,11 +483,11 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
             var dbFields = ""
             var dbValues = ""
-            var taskId = 0
             //-------------------------
             var poLineNeedInsert = true
             var poItemId = ""
             var taskIdInTaskStatus = ""
+            var refTaskIdInTaskStatus = ""
             var taskInspectionNoInTaskStatus = ""
             var taskInspectionDateInTaskStatus = ""
             var dbActionForTaskStatus = ""
@@ -508,29 +508,13 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     }else if apiName == "_DS_DL_TASK_STATUS" && actionFields[data["tableName"]!]![idx] == "task_id" {
                         
                         if Int(value) != nil {
-                            taskId = Int(value)!
+                            taskIdInTaskStatus = value
                         }
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
-                        for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
-                            
-                            if actionFields[data["tableName"]!]![sIdx] == "ref_task_id" {
-                                let refTaskId = data[actionFields[data["tableName"]!]![sIdx]]!
-                                
-                                if Int(refTaskId) > 0 {
-                                    dbFields += "task_id"
-                                    dbValues += "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(refTaskId))"
-                                    
-                                    taskIdInTaskStatus = "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(refTaskId))"
-                                }else{
-                                    dbFields += "task_id"
-                                    dbValues += "\(taskId)"
-                                    
-                                    taskIdInTaskStatus = "\(taskId)"
-                                }
-                                
-                                break
-                            }
+                        
+                        if taskIdInTaskStatus == "" && Int(value) != nil {
+                            refTaskIdInTaskStatus = value
                         }
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" {
@@ -585,7 +569,11 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE task_id = \(taskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
+                if taskIdInTaskStatus != "" {
+                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
+                }else {
+                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
+                }
                 
             }else if apiName == "_DS_FGPODATA" {
                 

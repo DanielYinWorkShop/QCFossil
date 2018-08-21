@@ -348,8 +348,23 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
             cell.taskStatusText.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(TaskStatus(caseId: task.taskStatus!)))
         }
         
-        cell.vendorLabelText.text = task.vendor
-        cell.vendorLocationText.text = task.vendorLocation
+        var vendorLoc = ""
+        if task.vendor != nil {
+            vendorLoc = task.vendor!
+        }
+        
+        if task.vendorLocation != nil {
+            vendorLoc = "\(vendorLoc)(\(task.vendorLocation!))"
+        }
+        
+        cell.vendorLabelText.text = vendorLoc
+        
+        var opdRsd = ""
+        if task.poItems.count > 0 {
+            opdRsd = task.poItems[0].opdRsd
+        }
+        
+        cell.vendorLocationText.text = opdRsd
         cell.brandText.text = task.brand
         cell.styleText.text = task.style
         cell.poListText.text = task.poNo
