@@ -38,10 +38,12 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var taskStatusDescLabel: UILabel!
     @IBOutlet weak var showTaskStatusDesc: UIButton!
     @IBOutlet weak var showProdDesc: UIButton!
+    @IBOutlet weak var showOpdRsd: UIButton!
     
     weak var parentTaskSearchVC:TaskSearchViewController?
     var dataRefuseDesc = ""
     var prodDesc = ""
+    var opdRsd = ""
     var taskId:Int = 0
     
     override func awakeFromNib() {
@@ -63,7 +65,7 @@ class TaskTableViewCell: UITableViewCell {
         self.bookingNoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspect/Book No.")
         self.taskStatusLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status")
         self.vendorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor")
-        self.vendorLocationLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Location")
+        self.vendorLocationLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("OPD/RSD")//MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Location")
         self.brandLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Brand")
         self.poListLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("PO List/Material")
         self.styleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
@@ -203,6 +205,25 @@ class TaskTableViewCell: UITableViewCell {
         sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
     }
     
+    @IBAction func showOpdRsdOnClick(sender: UIButton) {
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
+        
+        popoverContent.dataType = _POPOVERPOPDRSD
+        popoverContent.selectedValue = vendorLocationText.text!
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover!.delegate = sender.parentVC as! PopoverMaster
+        popover!.sourceView = sender
+        popover!.sourceRect = CGRectMake(0,sender.frame.minY - sender.frame.size.height,sender.frame.size.width,sender.frame.size.height)
+        
+        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+    }
     
     func clearAllFilesTaskImages(taskFderName:String){
         /*let fileManager = NSFileManager.defaultManager()

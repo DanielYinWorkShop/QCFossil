@@ -44,6 +44,10 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
     @IBOutlet weak var clearBtn: UIButton!
     @IBOutlet weak var canceledLabel: UILabel!
     @IBOutlet weak var reviewedLabel: UILabel!
+    @IBOutlet weak var opdRsdFromLabel: UILabel!
+    @IBOutlet weak var opdRsdFromInput: UITextField!
+    @IBOutlet weak var opdRsdToLabel: UILabel!
+    @IBOutlet weak var opdRsdToInput: UITextField!
     
     var taskItems = [TaskItem]()
     var taskSet = [Task]()
@@ -75,6 +79,8 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         bookingDateToInput.delegate = self
         shipWinFromInput.delegate = self
         shipWinToInput.delegate = self
+        opdRsdFromInput.delegate = self
+        opdRsdToInput.delegate = self
         styleInput.delegate = self
         vendorInput.delegate = self
         vendorLocationInput.delegate = self
@@ -201,7 +207,8 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
         self.vendorInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor PlaceHolder")
         self.vendorLocationInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Location PlaceHolder")
-        
+        self.opdRsdFromLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("OPD/RSD From")
+        self.opdRsdToLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("To")
         
         let segmentTitles = [MylocalizedString.sharedLocalizeManager.getLocalizedString("Book Date"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Book No"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Status"),MylocalizedString.sharedLocalizeManager.getLocalizedString("PO"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Style"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Brand"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Ship Win")]
         
@@ -222,6 +229,8 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         self.bookingDateToInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("MM/DD/YYYY")
         self.shipWinFromInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("MM/DD/YYYY")
         self.shipWinToInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("MM/DD/YYYY")
+        self.opdRsdFromInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("MM/DD/YYYY")
+        self.opdRsdToInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("MM/DD/YYYY")
     }
 
     func find<C: CollectionType>(collection: C, predicate: (C.Generator.Element) -> Bool) -> C.Index? {
@@ -358,13 +367,6 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         }
         
         cell.vendorLabelText.text = vendorLoc
-        
-        var opdRsd = ""
-        if task.poItems.count > 0 {
-            opdRsd = task.poItems[0].opdRsd
-        }
-        
-        cell.vendorLocationText.text = opdRsd
         cell.brandText.text = task.brand
         cell.styleText.text = task.style
         cell.poListText.text = task.poNo
@@ -395,6 +397,12 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
             cell.showAllshipWinDatesLabel.hidden = true
         }
         
+        if task.opdRsd?.rangeOfString(",") != nil {
+            cell.showOpdRsd.hidden = false
+        }else{
+            cell.showOpdRsd.hidden = true
+        }
+        
         if task.dataRefuseDesc == "" {
             cell.taskStatusDescLabel.hidden = true
             cell.showTaskStatusDesc.hidden = true
@@ -404,6 +412,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         }
         
         cell.shipWinText.text = task.shipWin
+        cell.vendorLocationText.text = task.opdRsd
         
         if indexPath.row % 2 == 0 {
             cell.backgroundColor = _TABLECELL_BG_COLOR2
@@ -565,6 +574,12 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
                 
                 tasksByFilter = tasksByFilter.filter({ $0.shipWin == nil || $0.shipWin == "" || self.filterByShipWin($0.shipWin!, shipWinFrom: shipWinFrom!, shipWinTo: shipWinTo!) })
                 
+                //Filter By OPDRSD
+                let opdRsdFrom = dateFormatter.dateFromString(self.opdRsdFromInput.text! == "" ? "01/01/1970" : self.opdRsdFromInput.text!)
+                let opdRsdTo = dateFormatter.dateFromString(self.opdRsdToInput.text! == "" ? "12/30/2099" : self.opdRsdToInput.text!)
+                
+                tasksByFilter = tasksByFilter.filter({ $0.opdRsd == nil || $0.opdRsd == "" || self.filterByOPDRSD($0.opdRsd!, opdRsdFrom: opdRsdFrom!, opdRsdTo: opdRsdTo!) })
+                
                 //Filter By Vendor
                 if self.vendorInput.text != "" {
                     tasksByFilter = tasksByFilter.filter({ $0.vendor == nil || ($0.vendor != "" && ($0.vendor?.lowercaseString.containsString((self.vendorInput.text?.lowercaseString)!))!) })
@@ -648,6 +663,26 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         return false
     }
     
+    func filterByOPDRSD(opdRsdTmp:String, opdRsdFrom:NSDate, opdRsdTo:NSDate) ->Bool {
+        let opdRsdTmpArray = opdRsdTmp.characters.split{$0 == ","}.map(String.init)
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = _DATEFORMATTER
+        
+        if opdRsdTmpArray.count>0 {
+            
+            for opdRsd in opdRsdTmpArray {
+                
+                if opdRsd != "" && (dateFormatter.dateFromString(opdRsd)!.equalToDate(opdRsdFrom) || dateFormatter.dateFromString(opdRsd)!.equalToDate(opdRsdTo) || (dateFormatter.dateFromString(opdRsd)!.isGreaterThanDate(opdRsdFrom) && dateFormatter.dateFromString(opdRsd)!.isLessThanDate(opdRsdTo)))
+                {
+                    
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
     @IBAction func clearOnClick(sender: UIButton) {
         dispatch_async(dispatch_get_main_queue(), {
             self.view.showActivityIndicator()
@@ -665,7 +700,9 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
                 self.shipWinToInput.text = ""
                 self.vendorInput.text = ""
                 self.vendorLocationInput.text = ""
-
+                self.opdRsdFromInput.text = ""
+                self.opdRsdToInput.text = ""
+                
                 self.view.removeActivityIndicator()
             })
         })
@@ -680,7 +717,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
-        if textField == self.bookingDateFromInput || textField == self.bookingDateToInput || textField == self.shipWinFromInput || textField == self.shipWinToInput {
+        if textField == self.bookingDateFromInput || textField == self.bookingDateToInput || textField == self.shipWinFromInput || textField == self.shipWinToInput || textField == self.opdRsdFromInput || textField == self.opdRsdToInput {
             UITextField.init().showDatePicker(textField)
             
             return false

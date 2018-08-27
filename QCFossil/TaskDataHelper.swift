@@ -160,6 +160,7 @@ class TaskDataHelper:DataHelperMaster{
             task.brand = poItem.brandName
             task.style = poItem.styleNo
             task.shipWin = poItem.shipWin
+            task.opdRsd = poItem.opdRsd
             
             /*
             var poNo = poItem.poNo
@@ -183,6 +184,13 @@ class TaskDataHelper:DataHelperMaster{
                 }
             }
             
+            var opdRsds = [String]()
+            for poItem in task.poItems {
+                if poItem.isEnable == 1 || task.taskStatus == GetTaskStatusId(caseId: "Cancelled").rawValue || (task.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue && task.cancelDate != "") {
+                    opdRsds.append(poItem.opdRsd)
+                }
+            }
+            
             if poItem.dimen2 != nil && poItem.prodDesc != nil {
                 let prodDesc = "\(poItem.dimen2!) / \(poItem.prodDesc!)"
                 task.prodDesc = prodDesc
@@ -190,16 +198,18 @@ class TaskDataHelper:DataHelperMaster{
             
             var uniquePoNos = Array(Set(poNos))
             var uniqueShipWins = Array(Set(shipWins))
+            var uniqueOpdRsds = Array(Set(opdRsds))
             
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = _DATEFORMATTER
             
             uniquePoNos.sortInPlace({ Int($0) < Int($1) })
             uniqueShipWins.sortInPlace({ dateFormatter.dateFromString($0)!.isGreaterThanDate(dateFormatter.dateFromString($1)!) })
+            uniqueOpdRsds.sortInPlace({ $0 != "" && $1 != "" && dateFormatter.dateFromString($0)!.isGreaterThanDate(dateFormatter.dateFromString($1)!) })
             
             task.poNo = uniquePoNos.joinWithSeparator(",")
             task.shipWin = uniqueShipWins.joinWithSeparator(",")
-            
+            task.opdRsd = uniqueOpdRsds.joinWithSeparator(",")
         }
         
         task.inspectionType = getInspTypeByInspTypeId(inspTypeId)

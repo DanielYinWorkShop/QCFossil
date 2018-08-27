@@ -41,6 +41,42 @@ class PopoverViewController: UIViewController {
             
             self.view.addSubview(descView)
             
+        }else if dataType == _POPOVERPOPDRSD {
+            self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("OPD/RSD")
+            
+            self.automaticallyAdjustsScrollViewInsets = false
+            
+            let scrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: _NAVIBARHEIGHT, width: 325, height: 150+_NAVIBARHEIGHT))
+            scrollView.contentSize = CGSize.init(width: 325, height: 150+_NAVIBARHEIGHT)
+            
+            self.view.addSubview(scrollView)
+            
+            let poItemString = selectedValue
+            let poItemNames = poItemString.characters.split{$0 == ","}.map(String.init)
+            
+            if poItemNames.count>0 {
+                for idx in 0...poItemNames.count-1 {
+                    
+                    let poItem = UILabel.init(frame: CGRect(x: 10,y: idx*20+10,width: 325,height: 21))
+                    //poItem.font = UIFont(name: "", size: 30)
+                    poItem.text = poItemNames[idx]
+                    
+                    scrollView.addSubview(poItem)
+                }
+                
+                let newHeight:CGFloat = CGFloat(poItemNames.count*21)
+                scrollView.contentSize = CGSize.init(width: 325, height: newHeight+_NAVIBARHEIGHT)
+            }
+            
+            let rightButton=UIBarButtonItem()
+            rightButton.title=MylocalizedString.sharedLocalizeManager.getLocalizedString("Close")
+            rightButton.tintColor = UIColor.blackColor()
+            rightButton.style=UIBarButtonItemStyle.Plain
+            rightButton.target=self
+            rightButton.action=#selector(PopoverViewController.cancelPick)
+            self.navigationItem.rightBarButtonItem=rightButton
+            
+            return
         }else if dataType == _POPOVERTASKSTATUSDESC {
             self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Refused")
             

@@ -95,6 +95,7 @@ let _POPOVERPOITEMTYPESHIPWIN = "PoItemShipWinDisplay"
 let _POPOVERTASKSTATUSDESC = "TaskStatusDesc"
 let _SHAPEDATATYPE = "ShapeDataType"
 let _POPOVERPRODDESC = "ProdDesc"
+let _POPOVERPOPDRSD = "OpdRsd"
 
 //Sing Images Name
 let _INSPECTORSIGNIMAGE = "inspectorSignImage.jpg"
