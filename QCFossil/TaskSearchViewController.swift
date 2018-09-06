@@ -298,6 +298,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
             self.reloadTaskSearchTableView()
         }
         
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
         //self.reloadTaskSearchTableView()
     }
     

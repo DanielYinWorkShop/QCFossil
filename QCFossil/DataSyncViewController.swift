@@ -1708,7 +1708,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 for taskId in taskIds {
                     print("delete \(taskId)");
-                    //self.view.deleteTask(taskId)
+                    self.view.deleteTask(taskId)
                 }
                 
             }

@@ -170,6 +170,12 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.taskStatusDescLabel.layer.masksToBounds = true
         self.taskStatusDescLabel.layer.cornerRadius = 5
         
+        if Cache_Task_On?.prodTypeId < 1 || Cache_Task_On?.inspectionTypeId < 0 || (Cache_Task_On?.tmplId)! < 0 {
+            self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Invalid task!"))
+            Cache_Task_On?.deleteFlag = 1
+            return
+        }
+        
         let categoryCount = Cache_Task_On!.inspSections.count
         if categoryCount < 1 {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No Category Info in DB!"))
