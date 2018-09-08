@@ -2169,4 +2169,22 @@ class TaskDataHelper:DataHelperMaster{
         
         return styleNoList
     }
+    
+    func getAllInvalidTaskId() ->[Int] {
+        let sql = "SELECT task_id FROM inspect_task WHERE prod_type_id < 1 AND inspect_type_id < 1 AND tmpl_id < 1"
+        var ids = [Int]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: nil) {
+                while rs.next() {
+                    ids.append(Int(rs.intForColumn("task_id")))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return ids
+    }
 }

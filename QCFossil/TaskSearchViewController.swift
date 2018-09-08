@@ -293,8 +293,13 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         
         //Physical Delete Task if Need
         if Cache_Task_On?.deleteFlag == 1 {
+            let taskDataHelper = TaskDataHelper()
+            var invalidTaskIds = taskDataHelper.getAllInvalidTaskId()
             
-            self.view.deleteTask((Cache_Task_On?.taskId)!)
+            while let id = invalidTaskIds.popLast() {
+                self.view.deleteTask(id)
+            }
+            
             self.reloadTaskSearchTableView()
         }
         
