@@ -48,7 +48,7 @@ class PoDataHelper:DataHelperMaster {
     }
     
     func getPoByTaskId(taskId:Int) ->[PoItem] {
-        let sql = "SELECT * FROM inspect_task_item AS iti INNER JOIN fgpo_line_item AS fli ON iti.po_item_id = fli.item_id WHERE iti.task_id = ? AND fli.deleted_flag = 0"
+        let sql = "SELECT * FROM inspect_task_item AS iti INNER JOIN fgpo_line_item AS fli ON iti.po_item_id = fli.item_id WHERE iti.task_id = ?"
         var poItems = [PoItem]()
         
         if db.open() {
@@ -152,9 +152,7 @@ class PoDataHelper:DataHelperMaster {
     }
     
     func getAllPoItems() ->[PoItem]? {
-        //var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-        //var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-        var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5"
+        var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5 AND deleted_flag = 0"
         
         var poItems = [PoItem]()
         
@@ -258,9 +256,7 @@ class PoDataHelper:DataHelperMaster {
             }
             
             //Not Sched Po Items
-            //sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-            //sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-            sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5"
+            sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5 AND deleted_flag = 0"
 
             if let rs = db.executeQuery(sql, withArgumentsInArray: nil) {
                 
@@ -366,7 +362,7 @@ class PoDataHelper:DataHelperMaster {
     
     func getAllPoItems(vdrDisName:String, vdrLocName:String) ->[PoItem]? {
         //let sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND vdr_display_name = ? AND vdr_location_name = ? AND order_qty > qc_booked_qty"
-        let sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND vdr_display_name = ? AND vdr_location_name = ? AND outstand_qty > 0 AND line_status <> 5"
+        let sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND vdr_display_name = ? AND vdr_location_name = ? AND outstand_qty > 0 AND line_status <> 5 AND deleted_flag = 0"
         
         var poItems = [PoItem]()
         

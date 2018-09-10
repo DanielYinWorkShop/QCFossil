@@ -779,3 +779,7 @@
 "Inspection Type or Product Type or Template can't be null!" = "检查设置数据, 产品类型或者模版不能为空";
 
 "Invalid task!" = "无效之任务！";
+
+"-Clean Task" = "-清理数据";
+
+"Task Cleaning..." = "数据清理中...";

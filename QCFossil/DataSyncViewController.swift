@@ -50,6 +50,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     @IBOutlet weak var taskStatusDataStatus: UILabel!
     @IBOutlet weak var lastUploadTasksLabel: UILabel!
     @IBOutlet weak var lastUploadTasksCount: UILabel!
+    @IBOutlet weak var cleanTaskLabel: UILabel!
+    @IBOutlet weak var cleanTaskProcessBar: UIProgressView!
+    @IBOutlet weak var cleanTaskStatus: UILabel!
+    
     
     var subCounter = 1
     var totalDLRecords:Int = 4
@@ -76,6 +80,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     var init_service_session = ""
     var totalReqCnt = 0
     var downloadReqCnt = 0
+    
+    var cleanTaskCnt = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -190,6 +196,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.lastUploadTasksLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("Last Uploaded Task Count")
         self.lastUploadDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Upload")
         self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Sync")
+        self.cleanTaskLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Clean Task")
         
         self.view.setButtonCornerRadius(self.downloadBtn)
         self.view.setButtonCornerRadius(self.uploadBtn)
@@ -212,6 +219,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.taskResultDataProcessBar.progress = 0.0
         self.taskPhotoProcessBar.progress = 0.0
         self.taskStatusDataProcessBar.progress = 0.0
+        self.cleanTaskProcessBar.progress = 0.0
         self.downloadProcessBar.hidden = true
         self.uploadProcessBar.hidden = true
         self.downloadProcessLabel.hidden = true
@@ -1689,8 +1697,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
-                self.updateDLProcessLabel("Complete")
-                self.updateButtonStatus("Enable",btn: self.downloadBtn)
+                
                 
                 let fileManager = NSFileManager.defaultManager()
                 if fileManager.fileExistsAtPath(getDataJsonPath()) {
@@ -1699,17 +1706,33 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 //Send local notification for Task Done.
                 self.updateProgressBar(1)
-                self.presentLocalNotification("Data Download Complete.")
-                
                 
                 //Handel Tasks Delete Here
                 let dataSyncDataHelper = DataSyncDataHelper()
                 let taskIds = dataSyncDataHelper.selectTaskIdsCanDelete()
                 
+                self.cleanTaskCnt = 0
                 for taskId in taskIds {
                     print("delete \(taskId)");
                     self.view.deleteTask(taskId)
+                    self.cleanTaskCnt += 1
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.updateDLProcessLabel("Task Cleaning...")
+                        
+                        self.cleanTaskStatus.text = "\(self.cleanTaskCnt)"
+                        let percent = Float(self.cleanTaskCnt)/Float(taskIds.count)
+                        
+                        self.cleanTaskProcessBar.progress = percent
+                    })
+
                 }
+                
+                //Send local notification for Task Done.
+                self.presentLocalNotification("Data Download Complete.")
+
+                self.updateDLProcessLabel("Complete")
+                self.updateButtonStatus("Enable",btn: self.downloadBtn)
                 
             }
             catch {
