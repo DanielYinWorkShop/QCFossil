@@ -297,6 +297,8 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 self.poTableView.reloadData()
                 
                 self.view.removeActivityIndicator()
+                
+                NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
             })
         })
     }

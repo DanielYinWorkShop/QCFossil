@@ -293,14 +293,25 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         
         //Physical Delete Task if Need
         if Cache_Task_On?.deleteFlag == 1 {
-            let taskDataHelper = TaskDataHelper()
-            var invalidTaskIds = taskDataHelper.getAllInvalidTaskId()
-            
-            while let id = invalidTaskIds.popLast() {
-                self.view.deleteTask(id)
-            }
-            
-            self.reloadTaskSearchTableView()
+            self.view.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete all invalid tasks?"), parentVC:self, handlerFun: { (action:UIAlertAction!) in
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.view.showActivityIndicator("Deleting...")
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let taskDataHelper = TaskDataHelper()
+                        var invalidTaskIds = taskDataHelper.getAllInvalidTaskId()
+                
+                        while let id = invalidTaskIds.popLast() {
+                                self.view.deleteTask(id)
+                        }
+                
+                        self.view.removeActivityIndicator()
+                        self.reloadTaskSearchTableView()
+                    })
+                })
+                
+            })
         }
         
         NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])

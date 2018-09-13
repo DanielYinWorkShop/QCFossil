@@ -250,6 +250,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.fgpoDataProcessBar.progress = 0.0
         self.taskDataProcessBar.progress = 0.0
         self.taskStatusDataProcessBar.progress = 0.0
+        self.cleanTaskProcessBar.progress = 0.0
         
         self.totalReqCnt = 0
         self.downloadReqCnt = 0
@@ -306,6 +307,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.fgpoDataStatus.text = ""
                 self.taskDataStatus.text = ""
                 self.taskStatusDataStatus.text = ""
+                self.cleanTaskStatus.text = ""
                 
             })
         }
@@ -1726,6 +1728,13 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         self.cleanTaskProcessBar.progress = percent
                     })
 
+                }
+                
+                if self.cleanTaskCnt < 1 {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.cleanTaskStatus.text = "0"
+                        self.cleanTaskProcessBar.progress = 1.0
+                    })
                 }
                 
                 //Send local notification for Task Done.
