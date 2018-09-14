@@ -305,7 +305,8 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
                         while let id = invalidTaskIds.popLast() {
                                 self.view.deleteTask(id)
                         }
-                
+                        
+                        Cache_Task_On = nil
                         self.view.removeActivityIndicator()
                         self.reloadTaskSearchTableView()
                     })
@@ -314,7 +315,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
             })
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+        //NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
         //self.reloadTaskSearchTableView()
     }
     

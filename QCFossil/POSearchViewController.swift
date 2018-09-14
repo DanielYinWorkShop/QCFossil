@@ -298,7 +298,9 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 
                 self.view.removeActivityIndicator()
                 
-                NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+                
+                //NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+                
             })
         })
     }
@@ -811,7 +813,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
     }
     
     @IBAction func cancelBtn(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
 }

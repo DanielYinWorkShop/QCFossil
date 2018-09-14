@@ -1737,6 +1737,15 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     })
                 }
                 
+                //clear invalid tasks
+                let taskDataHelper = TaskDataHelper()
+                var invalidTaskIds = taskDataHelper.getAllInvalidTaskId()
+                
+                while let id = invalidTaskIds.popLast() {
+                    self.view.deleteTask(id)
+                }
+                //
+                
                 //Send local notification for Task Done.
                 self.presentLocalNotification("Data Download Complete.")
 

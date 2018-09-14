@@ -140,6 +140,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
     }
     
     @IBAction func backButton(sender: UIBarButtonItem) {
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -206,6 +207,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         }
         
         self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Create Successed!"),handlerFun: alertViewDismissCallBack)
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
     }
     
     func alertViewDismissCallBack(alert: UIAlertAction!) {

@@ -90,6 +90,7 @@ class TaskTypeViewController: UIViewController, UITextFieldDelegate, UIPopoverPr
     }
     
     @IBAction func cancelButton(sender: UIButton) {
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
         NSNotificationCenter.defaultCenter().postNotificationName("CreateTaskCancel", object: nil, userInfo: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
