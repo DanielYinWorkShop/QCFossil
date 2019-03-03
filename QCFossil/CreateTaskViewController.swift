@@ -101,6 +101,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
     override func viewWillAppear(animated: Bool) {
         //loadPoItemCell()
         self.createTaskTableview.reloadData()
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
     }
     
     // MARK: - Navigation
@@ -139,6 +140,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
     }
     
     @IBAction func backButton(sender: UIBarButtonItem) {
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -155,6 +157,11 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         let prodTypeId = taskDataHelper.getProdTypeIdByName(self.productTypeInput.text!)
         let tmplId = taskDataHelper.getTmplIdByName(tmplName)
         let inspSetupId = taskDataHelper.getInspSetupIdByName(tmplName)
+        
+        if inspTypeId < 1 || prodTypeId < 1 || tmplId < 1 {
+            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Type or Product Type or Template can't be null!"))
+            return
+        }
         
         let vendorDataHelper = VendorDataHelper()
         let vdrLocId = vendorDataHelper.getVdrLocationIdByCode (self.vdrLocationInput.text!)
@@ -200,6 +207,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         }
         
         self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Create Successed!"),handlerFun: alertViewDismissCallBack)
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
     }
     
     func alertViewDismissCallBack(alert: UIAlertAction!) {

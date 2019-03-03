@@ -170,6 +170,16 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.taskStatusDescLabel.layer.masksToBounds = true
         self.taskStatusDescLabel.layer.cornerRadius = 5
         
+        if Cache_Task_On?.prodTypeId < 1 || Cache_Task_On?.inspectionTypeId < 0 || (Cache_Task_On?.tmplId)! < 0 {
+            
+            //self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete all invalid tasks?"), parentVC:self.pVC, handlerFun: { (action:UIAlertAction!) in
+                //self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Invalid task!"))
+                Cache_Task_On?.deleteFlag = 1
+                return
+            //})
+            
+        }
+        
         let categoryCount = Cache_Task_On!.inspSections.count
         if categoryCount < 1 {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No Category Info in DB!"))
@@ -371,6 +381,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel Ad-hoc Task?"),parentVC:self.pVC!, handlerFun: { (action:UIAlertAction!) in
                 
                 Cache_Task_On?.deleteFlag = 1
+                Cache_Task_On?.taskStatus = 0
                 self.pVC!.parentViewController!.navigationController?.popViewControllerAnimated(true)
             })
             

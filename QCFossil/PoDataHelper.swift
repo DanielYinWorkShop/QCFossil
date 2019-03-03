@@ -35,7 +35,7 @@ class PoDataHelper:DataHelperMaster {
         if db.open() {
             
             if let rs = db.executeQuery(sql, withArgumentsInArray: [poId]) {
-                
+            
                 if rs.next() {
                     poNo = rs.stringForColumnIndex(0)
                 }
@@ -48,101 +48,101 @@ class PoDataHelper:DataHelperMaster {
     }
     
     func getPoByTaskId(taskId:Int) ->[PoItem] {
-        let sql = "SELECT * FROM inspect_task_item AS iti INNER JOIN fgpo_line_item AS fli ON iti.po_item_id = fli.item_id WHERE iti.task_id = ? AND fli.deleted_flag = 0"
+        let sql = "SELECT * FROM inspect_task_item AS iti INNER JOIN fgpo_line_item AS fli ON iti.po_item_id = fli.item_id WHERE iti.task_id = ?"
         var poItems = [PoItem]()
         
         if db.open() {
             
             if let rs = db.executeQuery(sql, withArgumentsInArray: [taskId]) {
+            
+            while rs.next() {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = _DATEFORMATTER
                 
-                while rs.next() {
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateFormat = _DATEFORMATTER
-                    
-                    let itemId = Int(rs.intForColumn("item_id"))
-                    let dataEnv = rs.stringForColumn("data_env")
-                    let refHeadId = Int(rs.intForColumn("ref_head_id"))
-                    let poNo = rs.stringForColumn("po_no")
-                    let refVdrId = Int(rs.intForColumn("ref_vdr_id"))
-                    let vdrCode = rs.stringForColumn("vdr_code")
-                    let vdrName = rs.stringForColumn("vdr_name")
-                    let vdrDisplayName = rs.stringForColumn("vdr_display_name")
-                    let refLineId = Int(rs.intForColumn("ref_line_id"))
-                    let poLineNo = rs.stringForColumn("po_line_no")
-                    let refPordId = Int(rs.intForColumn("ref_prod_id"))
-                    let skuNo = rs.stringForColumn("sku_no")
-                    let prodTypeCode = rs.stringForColumn("prod_type_code")
-                    let styleNo = rs.stringForColumn("style_no")
-                    let dimen1 = rs.stringForColumn("dimen_1")
-                    let dimen2 = rs.stringForColumn("dimen_2")
-                    let dimen3 = rs.stringForColumn("dimen_3")
-                    let refVdrLocationId = Int(rs.intForColumn("ref_vdr_location_id"))
-                    let vdrLocationCode = rs.stringForColumn("vdr_location_code")
-                    let vdrLocationName = rs.stringForColumn("vdr_location_name")
-                    let refBuyerLocationId = rs.stringForColumn("ref_buyer_location_id")
-                    let buyerLocationCode = rs.stringForColumn("buyer_location_code")
-                    let buyerLocationName = rs.stringForColumn("buyer_location_name")
-                    let refOrderNo = rs.stringForColumn("ref_order_no")
-                    let refOrderLine = rs.stringForColumn("ref_order_line")
-                    let refBrandId = Int(rs.intForColumn("ref_brand_id"))
-                    let brandCode = rs.stringForColumn("brand_code")
-                    let brandName = rs.stringForColumn("brand_name")
-                    let reqDelivDate = rs.stringForColumn("req_deliv_date")
-                    var shipWin = rs.stringForColumn("ship_win")// dateFormatter.stringFromDate(rs.dateForColumn("ship_win")) //
-                    let orderQty = Int(rs.intForColumn("order_qty"))
-                    let lineQtyUom = rs.stringForColumn("line_qty_uom")
-                    let lineStatus = Int(rs.intForColumn("line_status"))
-                    let createDate = rs.stringForColumn("create_date")
-                    let modifyDate = rs.stringForColumn("modify_date")
-                    let deletedFlag = Int(rs.intForColumn("deleted_flag"))
-                    let deleteDate = rs.stringForColumn("delete_date")
-                    let availQty = Int(rs.intForColumn("avail_inspect_qty"))
-                    let inspEnableFlag = Int(rs.intForColumn("inspect_enable_flag"))
-                    var shipTo = rs.stringForColumn("buyer_location_code")//rs.stringForColumn("ship_to")
-                    var opdRsd = rs.stringForColumn("line_sched_text")
-                    let qcBookedQty = Int(rs.intForColumn("qc_booked_qty"))
-                    let samplingQty = Int(rs.intForColumn("sampling_qty"))
-                    var prodDesc = rs.stringForColumn("prod_desc")
-                    
-                    if (prodDesc == nil) {
-                        prodDesc = ""
-                    }
-                    
-                    if (shipTo == nil) {
-                        shipTo = ""
-                    }
-                    
-                    if shipWin != nil {
-                        let shipWinTmp = shipWin
-                        let shipWinTmpArray = shipWinTmp.characters.split{$0 == " "}.map(String.init)
-                        
-                        if shipWinTmpArray.count>0 {
-                            shipWin = shipWinTmpArray[0]
-                            
-                            shipWin = dateFormatter.stringFromDate(dateFormatter.dateFromString(shipWin)!)
-                        }
-                    }else{
-                        shipWin = ""
-                    }
-                    
-                    if opdRsd != nil {
-                        let opdRsdTmp = opdRsd
-                        let opdRsdTmpArray = opdRsdTmp.characters.split{$0 == " "}.map(String.init)
-                        
-                        if opdRsdTmpArray.count > 0 {
-                            opdRsd = opdRsdTmpArray[0]
-                            opdRsd = opdRsd.stringByReplacingOccurrencesOfString(":", withString: "")
-                            
-                            opdRsd = dateFormatter.stringFromDate(dateFormatter.dateFromString(opdRsd)!)
-                        }
-                    }else{
-                        opdRsd = ""
-                    }
-                    
-                    let poItem = PoItem(itemId: itemId, dataEnv: dataEnv, refHeadId: refHeadId, poNo: poNo, refVdrId: refVdrId, vdrCode: vdrCode, vdrName: vdrName, vdrDisplayName: vdrDisplayName, refLineId: refLineId, poLineNo: poLineNo, refPordId: refPordId, skuNo: skuNo, prodTypeCode: prodTypeCode, styleNo: styleNo, dimen1: dimen1, dimen2: dimen2, dimen3: dimen3, refVdrLocationId: refVdrLocationId, vdrLocationCode: vdrLocationCode, vdrLocationName: vdrLocationName, refBuyerLocationId: refBuyerLocationId, buyerLocationCode: buyerLocationCode, buyerLocationName: buyerLocationName, refOrderNo: refOrderNo, refOrderLine: refOrderLine, refBrandId: refBrandId, brandCode: brandCode, brandName: brandName, reqDelivDate: reqDelivDate, shipWin: shipWin, orderQty: orderQty, lineQtyUom: lineQtyUom, lineStatus: lineStatus, createDate: createDate, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteDate: deleteDate, shipTo: shipTo, opdRsd: opdRsd, qcBookedQty: qcBookedQty, availableQty: availQty, isEnable: inspEnableFlag, samplingQty: samplingQty, prodDesc: prodDesc)
-                    
-                    poItems.append(poItem!)
+                let itemId = Int(rs.intForColumn("item_id"))
+                let dataEnv = rs.stringForColumn("data_env")
+                let refHeadId = Int(rs.intForColumn("ref_head_id"))
+                let poNo = rs.stringForColumn("po_no")
+                let refVdrId = Int(rs.intForColumn("ref_vdr_id"))
+                let vdrCode = rs.stringForColumn("vdr_code")
+                let vdrName = rs.stringForColumn("vdr_name")
+                let vdrDisplayName = rs.stringForColumn("vdr_display_name")
+                let refLineId = Int(rs.intForColumn("ref_line_id"))
+                let poLineNo = rs.stringForColumn("po_line_no")
+                let refPordId = Int(rs.intForColumn("ref_prod_id"))
+                let skuNo = rs.stringForColumn("sku_no")
+                let prodTypeCode = rs.stringForColumn("prod_type_code")
+                let styleNo = rs.stringForColumn("style_no")
+                let dimen1 = rs.stringForColumn("dimen_1")
+                let dimen2 = rs.stringForColumn("dimen_2")
+                let dimen3 = rs.stringForColumn("dimen_3")
+                let refVdrLocationId = Int(rs.intForColumn("ref_vdr_location_id"))
+                let vdrLocationCode = rs.stringForColumn("vdr_location_code")
+                let vdrLocationName = rs.stringForColumn("vdr_location_name")
+                let refBuyerLocationId = rs.stringForColumn("ref_buyer_location_id")
+                let buyerLocationCode = rs.stringForColumn("buyer_location_code")
+                let buyerLocationName = rs.stringForColumn("buyer_location_name")
+                let refOrderNo = rs.stringForColumn("ref_order_no")
+                let refOrderLine = rs.stringForColumn("ref_order_line")
+                let refBrandId = Int(rs.intForColumn("ref_brand_id"))
+                let brandCode = rs.stringForColumn("brand_code")
+                let brandName = rs.stringForColumn("brand_name")
+                let reqDelivDate = rs.stringForColumn("req_deliv_date")
+                var shipWin = rs.stringForColumn("ship_win")// dateFormatter.stringFromDate(rs.dateForColumn("ship_win")) //
+                let orderQty = Int(rs.intForColumn("order_qty"))
+                let lineQtyUom = rs.stringForColumn("line_qty_uom")
+                let lineStatus = Int(rs.intForColumn("line_status"))
+                let createDate = rs.stringForColumn("create_date")
+                let modifyDate = rs.stringForColumn("modify_date")
+                let deletedFlag = Int(rs.intForColumn("deleted_flag"))
+                let deleteDate = rs.stringForColumn("delete_date")
+                let availQty = Int(rs.intForColumn("avail_inspect_qty"))
+                let inspEnableFlag = Int(rs.intForColumn("inspect_enable_flag"))
+                var shipTo = rs.stringForColumn("buyer_location_code")//rs.stringForColumn("ship_to")
+                var opdRsd = rs.stringForColumn("line_sched_text")
+                let qcBookedQty = Int(rs.intForColumn("qc_booked_qty"))
+                let samplingQty = Int(rs.intForColumn("sampling_qty"))
+                var prodDesc = rs.stringForColumn("prod_desc")
+                
+                if (prodDesc == nil) {
+                    prodDesc = ""
                 }
+                
+                if (shipTo == nil) {
+                    shipTo = ""
+                }
+                
+                if shipWin != nil {
+                    let shipWinTmp = shipWin
+                    let shipWinTmpArray = shipWinTmp.characters.split{$0 == " "}.map(String.init)
+                    
+                    if shipWinTmpArray.count>0 {
+                        shipWin = shipWinTmpArray[0]
+                        
+                        shipWin = dateFormatter.stringFromDate(dateFormatter.dateFromString(shipWin)!)
+                    }
+                }else{
+                    shipWin = ""
+                }
+                
+                if opdRsd != nil {
+                    let opdRsdTmp = opdRsd
+                    let opdRsdTmpArray = opdRsdTmp.characters.split{$0 == " "}.map(String.init)
+                    
+                    if opdRsdTmpArray.count > 0 {
+                        opdRsd = opdRsdTmpArray[0]
+                        opdRsd = opdRsd.stringByReplacingOccurrencesOfString(":", withString: "")
+                        
+                        opdRsd = dateFormatter.stringFromDate(dateFormatter.dateFromString(opdRsd)!)
+                    }
+                }else{
+                    opdRsd = ""
+                }
+                
+                let poItem = PoItem(itemId: itemId, dataEnv: dataEnv, refHeadId: refHeadId, poNo: poNo, refVdrId: refVdrId, vdrCode: vdrCode, vdrName: vdrName, vdrDisplayName: vdrDisplayName, refLineId: refLineId, poLineNo: poLineNo, refPordId: refPordId, skuNo: skuNo, prodTypeCode: prodTypeCode, styleNo: styleNo, dimen1: dimen1, dimen2: dimen2, dimen3: dimen3, refVdrLocationId: refVdrLocationId, vdrLocationCode: vdrLocationCode, vdrLocationName: vdrLocationName, refBuyerLocationId: refBuyerLocationId, buyerLocationCode: buyerLocationCode, buyerLocationName: buyerLocationName, refOrderNo: refOrderNo, refOrderLine: refOrderLine, refBrandId: refBrandId, brandCode: brandCode, brandName: brandName, reqDelivDate: reqDelivDate, shipWin: shipWin, orderQty: orderQty, lineQtyUom: lineQtyUom, lineStatus: lineStatus, createDate: createDate, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteDate: deleteDate, shipTo: shipTo, opdRsd: opdRsd, qcBookedQty: qcBookedQty, availableQty: availQty, isEnable: inspEnableFlag, samplingQty: samplingQty, prodDesc: prodDesc)
+            
+                poItems.append(poItem!)
+            }
             }
             
             db.close()
@@ -152,9 +152,7 @@ class PoDataHelper:DataHelperMaster {
     }
     
     func getAllPoItems() ->[PoItem]? {
-        //var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-        //var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-        var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5"
+        var sql = "SELECT * FROM fgpo_line_item WHERE item_id IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5 AND deleted_flag = 0"
         
         var poItems = [PoItem]()
         
@@ -162,12 +160,12 @@ class PoDataHelper:DataHelperMaster {
             
             //Sched Po Items
             if let rs = db.executeQuery(sql, withArgumentsInArray: nil) {
-                
+            
                 while rs.next() {
-                    
+                
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = _DATEFORMATTER
-                    
+                
                     let itemId = Int(rs.intForColumn("item_id"))
                     let dataEnv = rs.stringForColumn("data_env")
                     let refHeadId = Int(rs.intForColumn("ref_head_id"))
@@ -250,7 +248,7 @@ class PoDataHelper:DataHelperMaster {
                     
                     
                     let poItem = PoItem(itemId: itemId, dataEnv: dataEnv, refHeadId: refHeadId, poNo: poNo, refVdrId: refVdrId, vdrCode: vdrCode, vdrName: vdrName, vdrDisplayName: vdrDisplayName, refLineId: refLineId, poLineNo: poLineNo, refPordId: refPordId, skuNo: skuNo, prodTypeCode: prodTypeCode, styleNo: styleNo, dimen1: dimen1, dimen2: dimen2, dimen3: dimen3, refVdrLocationId: refVdrLocationId, vdrLocationCode: vdrLocationCode, vdrLocationName: vdrLocationName, refBuyerLocationId: refBuyerLocationId, buyerLocationCode: buyerLocationCode, buyerLocationName: buyerLocationName, refOrderNo: refOrderNo, refOrderLine: refOrderLine, refBrandId: refBrandId, brandCode: brandCode, brandName: brandName, reqDelivDate: reqDelivDate, shipWin: shipWin, orderQty: orderQty, lineQtyUom: lineQtyUom, lineStatus: lineStatus, createDate: createDate, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteDate: deleteDate, shipTo: shipTo, opdRsd: opdRsd, qcBookedQty: qcBookedQty, prodDesc: prodDesc)
-                    
+                
                     poItem?.taskSched = MylocalizedString.sharedLocalizeManager.getLocalizedString("YES")
                     poItem?.outStandQty = outStandQty
                     poItems.append(poItem!)
@@ -258,10 +256,8 @@ class PoDataHelper:DataHelperMaster {
             }
             
             //Not Sched Po Items
-            //sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-            //sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND order_qty > qc_booked_qty"
-            sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5"
-            
+            sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND outstand_qty > 0 AND line_status <> 5 AND deleted_flag = 0"
+
             if let rs = db.executeQuery(sql, withArgumentsInArray: nil) {
                 
                 while rs.next() {
@@ -357,7 +353,7 @@ class PoDataHelper:DataHelperMaster {
             }
             
             db.close()
-            
+        
             return poItems
         }
         
@@ -366,104 +362,104 @@ class PoDataHelper:DataHelperMaster {
     
     func getAllPoItems(vdrDisName:String, vdrLocName:String) ->[PoItem]? {
         //let sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND vdr_display_name = ? AND vdr_location_name = ? AND order_qty > qc_booked_qty"
-        let sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND vdr_display_name = ? AND vdr_location_name = ? AND outstand_qty > 0 AND line_status <> 5"
+        let sql = "SELECT * FROM fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item) AND vdr_display_name = ? AND vdr_location_name = ? AND outstand_qty > 0 AND line_status <> 5 AND deleted_flag = 0"
         
         var poItems = [PoItem]()
         
         if db.open() {
             
             if let rs = db.executeQuery(sql, withArgumentsInArray: [vdrDisName,vdrLocName]) {
+            
+            while rs.next() {
                 
-                while rs.next() {
-                    
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateFormat = _DATEFORMATTER
-                    
-                    let itemId = Int(rs.intForColumn("item_id"))
-                    let dataEnv = rs.stringForColumn("data_env")
-                    let refHeadId = Int(rs.intForColumn("ref_head_id"))
-                    let poNo = rs.stringForColumn("po_no")
-                    let refVdrId = Int(rs.intForColumn("ref_vdr_id"))
-                    let vdrCode = rs.stringForColumn("vdr_code")
-                    let vdrName = rs.stringForColumn("vdr_name")
-                    let vdrDisplayName = rs.stringForColumn("vdr_display_name")
-                    let refLineId = Int(rs.intForColumn("ref_line_id"))
-                    let poLineNo = rs.stringForColumn("po_line_no")
-                    let refPordId = Int(rs.intForColumn("ref_prod_id"))
-                    let skuNo = rs.stringForColumn("sku_no")
-                    let prodTypeCode = rs.stringForColumn("prod_type_code")
-                    let styleNo = rs.stringForColumn("style_no")
-                    let dimen1 = rs.stringForColumn("dimen_1")
-                    let dimen2 = rs.stringForColumn("dimen_2")
-                    let dimen3 = rs.stringForColumn("dimen_3")
-                    let refVdrLocationId = Int(rs.intForColumn("ref_vdr_location_id"))
-                    let vdrLocationCode = rs.stringForColumn("vdr_location_code")
-                    let vdrLocationName = rs.stringForColumn("vdr_location_name")
-                    let refBuyerLocationId = rs.stringForColumn("ref_buyer_location_id")
-                    let buyerLocationCode = rs.stringForColumn("buyer_location_code")
-                    let buyerLocationName = rs.stringForColumn("buyer_location_name")
-                    let refOrderNo = rs.stringForColumn("ref_order_no")
-                    let refOrderLine = rs.stringForColumn("ref_order_line")
-                    let refBrandId = Int(rs.intForColumn("ref_brand_id"))
-                    let brandCode = rs.stringForColumn("brand_code")
-                    let brandName = rs.stringForColumn("brand_name")
-                    let reqDelivDate = rs.stringForColumn("req_deliv_date")
-                    var shipWin = rs.stringForColumn("ship_win")
-                    let orderQty = Int(rs.intForColumn("order_qty"))
-                    let lineQtyUom = rs.stringForColumn("line_qty_uom")
-                    let lineStatus = Int(rs.intForColumn("line_status"))
-                    let createDate = rs.stringForColumn("create_date")
-                    let modifyDate = rs.stringForColumn("modify_date")
-                    let deletedFlag = Int(rs.intForColumn("deleted_flag"))
-                    let deleteDate = rs.stringForColumn("delete_date")
-                    var shipTo = rs.stringForColumn("buyer_location_code")
-                    var opdRsd = rs.stringForColumn("line_sched_text")
-                    let qcBookedQty = Int(rs.intForColumn("qc_booked_qty"))
-                    var prodDesc = rs.stringForColumn("prod_desc")
-                    let outStandQty = Int(rs.intForColumn("outstand_qty"))
-                    
-                    if (prodDesc == nil) {
-                        prodDesc = ""
-                    }
-                    
-                    if (shipTo == nil) {
-                        shipTo = ""
-                    }
-                    
-                    if shipWin != nil {
-                        let shipWinTmp = shipWin
-                        let shipWinTmpArray = shipWinTmp.characters.split{$0 == " "}.map(String.init)
-                        
-                        if shipWinTmpArray.count>0 {
-                            shipWin = shipWinTmpArray[0]
-                            
-                            shipWin = dateFormatter.stringFromDate(dateFormatter.dateFromString(shipWin)!)
-                        }
-                    }else{
-                        shipWin = ""
-                    }
-                    
-                    
-                    if opdRsd != nil {
-                        let opdRsdTmp = opdRsd
-                        let opdRsdTmpArray = opdRsdTmp.characters.split{$0 == " "}.map(String.init)
-                        
-                        if opdRsdTmpArray.count > 0 {
-                            opdRsd = opdRsdTmpArray[0]
-                            opdRsd = opdRsd.stringByReplacingOccurrencesOfString(":", withString: "")
-                            
-                            opdRsd = dateFormatter.stringFromDate(dateFormatter.dateFromString(opdRsd)!)
-                        }
-                    }else{
-                        opdRsd = ""
-                    }
-                    
-                    
-                    let poItem = PoItem(itemId: itemId, dataEnv: dataEnv, refHeadId: refHeadId, poNo: poNo, refVdrId: refVdrId, vdrCode: vdrCode, vdrName: vdrName, vdrDisplayName: vdrDisplayName, refLineId: refLineId, poLineNo: poLineNo, refPordId: refPordId, skuNo: skuNo, prodTypeCode: prodTypeCode, styleNo: styleNo, dimen1: dimen1, dimen2: dimen2, dimen3: dimen3, refVdrLocationId: refVdrLocationId, vdrLocationCode: vdrLocationCode, vdrLocationName: vdrLocationName, refBuyerLocationId: refBuyerLocationId, buyerLocationCode: buyerLocationCode, buyerLocationName: buyerLocationName, refOrderNo: refOrderNo, refOrderLine: refOrderLine, refBrandId: refBrandId, brandCode: brandCode, brandName: brandName, reqDelivDate: reqDelivDate, shipWin: shipWin, orderQty: orderQty, lineQtyUom: lineQtyUom, lineStatus: lineStatus, createDate: createDate, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteDate: deleteDate, shipTo: shipTo, opdRsd: opdRsd, qcBookedQty: qcBookedQty, prodDesc: prodDesc)
-                    
-                    poItem?.outStandQty = outStandQty
-                    poItems.append(poItem!)
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = _DATEFORMATTER
+                
+                let itemId = Int(rs.intForColumn("item_id"))
+                let dataEnv = rs.stringForColumn("data_env")
+                let refHeadId = Int(rs.intForColumn("ref_head_id"))
+                let poNo = rs.stringForColumn("po_no")
+                let refVdrId = Int(rs.intForColumn("ref_vdr_id"))
+                let vdrCode = rs.stringForColumn("vdr_code")
+                let vdrName = rs.stringForColumn("vdr_name")
+                let vdrDisplayName = rs.stringForColumn("vdr_display_name")
+                let refLineId = Int(rs.intForColumn("ref_line_id"))
+                let poLineNo = rs.stringForColumn("po_line_no")
+                let refPordId = Int(rs.intForColumn("ref_prod_id"))
+                let skuNo = rs.stringForColumn("sku_no")
+                let prodTypeCode = rs.stringForColumn("prod_type_code")
+                let styleNo = rs.stringForColumn("style_no")
+                let dimen1 = rs.stringForColumn("dimen_1")
+                let dimen2 = rs.stringForColumn("dimen_2")
+                let dimen3 = rs.stringForColumn("dimen_3")
+                let refVdrLocationId = Int(rs.intForColumn("ref_vdr_location_id"))
+                let vdrLocationCode = rs.stringForColumn("vdr_location_code")
+                let vdrLocationName = rs.stringForColumn("vdr_location_name")
+                let refBuyerLocationId = rs.stringForColumn("ref_buyer_location_id")
+                let buyerLocationCode = rs.stringForColumn("buyer_location_code")
+                let buyerLocationName = rs.stringForColumn("buyer_location_name")
+                let refOrderNo = rs.stringForColumn("ref_order_no")
+                let refOrderLine = rs.stringForColumn("ref_order_line")
+                let refBrandId = Int(rs.intForColumn("ref_brand_id"))
+                let brandCode = rs.stringForColumn("brand_code")
+                let brandName = rs.stringForColumn("brand_name")
+                let reqDelivDate = rs.stringForColumn("req_deliv_date")
+                var shipWin = rs.stringForColumn("ship_win")
+                let orderQty = Int(rs.intForColumn("order_qty"))
+                let lineQtyUom = rs.stringForColumn("line_qty_uom")
+                let lineStatus = Int(rs.intForColumn("line_status"))
+                let createDate = rs.stringForColumn("create_date")
+                let modifyDate = rs.stringForColumn("modify_date")
+                let deletedFlag = Int(rs.intForColumn("deleted_flag"))
+                let deleteDate = rs.stringForColumn("delete_date")
+                var shipTo = rs.stringForColumn("buyer_location_code")
+                var opdRsd = rs.stringForColumn("line_sched_text")
+                let qcBookedQty = Int(rs.intForColumn("qc_booked_qty"))
+                var prodDesc = rs.stringForColumn("prod_desc")
+                let outStandQty = Int(rs.intForColumn("outstand_qty"))
+                
+                if (prodDesc == nil) {
+                    prodDesc = ""
                 }
+                
+                if (shipTo == nil) {
+                    shipTo = ""
+                }
+                
+                if shipWin != nil {
+                    let shipWinTmp = shipWin
+                    let shipWinTmpArray = shipWinTmp.characters.split{$0 == " "}.map(String.init)
+                    
+                    if shipWinTmpArray.count>0 {
+                        shipWin = shipWinTmpArray[0]
+                        
+                        shipWin = dateFormatter.stringFromDate(dateFormatter.dateFromString(shipWin)!)
+                    }
+                }else{
+                    shipWin = ""
+                }
+                
+                
+                if opdRsd != nil {
+                    let opdRsdTmp = opdRsd
+                    let opdRsdTmpArray = opdRsdTmp.characters.split{$0 == " "}.map(String.init)
+                    
+                    if opdRsdTmpArray.count > 0 {
+                        opdRsd = opdRsdTmpArray[0]
+                        opdRsd = opdRsd.stringByReplacingOccurrencesOfString(":", withString: "")
+                        
+                        opdRsd = dateFormatter.stringFromDate(dateFormatter.dateFromString(opdRsd)!)
+                    }
+                }else{
+                    opdRsd = ""
+                }
+                
+                
+                let poItem = PoItem(itemId: itemId, dataEnv: dataEnv, refHeadId: refHeadId, poNo: poNo, refVdrId: refVdrId, vdrCode: vdrCode, vdrName: vdrName, vdrDisplayName: vdrDisplayName, refLineId: refLineId, poLineNo: poLineNo, refPordId: refPordId, skuNo: skuNo, prodTypeCode: prodTypeCode, styleNo: styleNo, dimen1: dimen1, dimen2: dimen2, dimen3: dimen3, refVdrLocationId: refVdrLocationId, vdrLocationCode: vdrLocationCode, vdrLocationName: vdrLocationName, refBuyerLocationId: refBuyerLocationId, buyerLocationCode: buyerLocationCode, buyerLocationName: buyerLocationName, refOrderNo: refOrderNo, refOrderLine: refOrderLine, refBrandId: refBrandId, brandCode: brandCode, brandName: brandName, reqDelivDate: reqDelivDate, shipWin: shipWin, orderQty: orderQty, lineQtyUom: lineQtyUom, lineStatus: lineStatus, createDate: createDate, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteDate: deleteDate, shipTo: shipTo, opdRsd: opdRsd, qcBookedQty: qcBookedQty, prodDesc: prodDesc)
+                
+                poItem?.outStandQty = outStandQty
+                poItems.append(poItem!)
+            }
             }
             
             db.close()
@@ -481,7 +477,7 @@ class PoDataHelper:DataHelperMaster {
         if db.open() {
             
             if db.executeUpdate(sql, withArgumentsInArray: [task.taskId!,task.prodTypeId!,task.inspectionTypeId!,task.bookingNo!,task.bookingDate!,task.vdrLocationId!,task.reportInspectorId!,task.reportPrefix!,task.inspectionNo!,task.inspectionDate!,task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,task.refTaskId!,task.recStatus!,task.createUser!,task.createDate!,task.modifyUser!,task.modifyDate!,task.deleteFlag!,task.deleteUser!,task.deleteDate!,task.inspectSetupId!,task.tmplId!,task.reportRunningNo!]) {
-                
+            
                 lastId = Int(db.lastInsertRowId())
             }
             
@@ -516,7 +512,7 @@ class PoDataHelper:DataHelperMaster {
             if db.executeUpdate(sql, withArgumentsInArray: [taskItem.taskId!,taskItem.poItemId!,taskItem.targetInspectQty!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!]) {
                 lastId = Int(db.lastInsertRowId())
             }
-            
+    
             db.close()
         }
         return lastId

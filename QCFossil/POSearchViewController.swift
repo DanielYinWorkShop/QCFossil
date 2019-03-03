@@ -88,9 +88,6 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
     
     func initData() {
         dispatch_async(dispatch_get_main_queue(), {
-        //dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-            //let poDataHelper = PoDataHelper()
-            //self.poItemSet = poDataHelper.getAllPoItems()!
             
             let vendorDataHelper = VendorDataHelper()
             self.vendors = vendorDataHelper.getAllVendorsFromPOSearch()!
@@ -300,6 +297,10 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 self.poTableView.reloadData()
                 
                 self.view.removeActivityIndicator()
+                
+                
+                //NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+                
             })
         })
     }
@@ -813,7 +814,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
     }
     
     @IBAction func cancelBtn(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
 }

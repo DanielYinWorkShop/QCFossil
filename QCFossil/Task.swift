@@ -42,6 +42,7 @@ class Task {
     var shipWin:String?
     var vdrSignDate:String?
     var tmplId:Int?
+    var opdRsd:String? //add 08222018
     
     //extension
     var vendor:String?

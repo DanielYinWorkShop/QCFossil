@@ -9,7 +9,12 @@
 import UIKit
 
 //Data Sync Server
+#if DEBUG
 let dataSyncServerUsing = dataSyncUatServer
+#else
+let dataSyncServerUsing = dataSyncPrdServer
+#endif
+
 let dataSyncTestServer = "http://web01.forrus.com.hk/test_ws_quality/" //"http://202.123.87.16/test_ws_quality/"
 let dataSyncUatServer = "http://web01.forrus.com.hk/uat_ws_quality/" //"http://202.123.87.16/uat_ws_quality/"
 let dataSyncPrdServer = "https://quality.forrus.com.hk/ws_quality/"
@@ -810,7 +815,7 @@ let _DS_ACKTASKDATA = [
 //Task Status Data Download Request
 let _DS_DL_TASK_STATUS = [
     "NAME" : "Task Status Data Download",
-    "APINAME" : "\(dataSyncServerUsing)dl_task_status.aspx",
+    "APINAME" : "\(dataSyncServerUsing)dl_task_status_ws2.aspx",
     "ACKNAME" : _DS_ACKTASKSTATUS,
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
@@ -839,7 +844,9 @@ let _DS_DL_TASK_STATUS = [
             "modify_user",
             "deleted_flag",
             "delete_date",
-            "delete_user"
+            "delete_user",
+            "inspection_no",//add 0820
+            "inspection_date"//add 0820
         ]
     ]
 ]
