@@ -381,6 +381,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel Ad-hoc Task?"),parentVC:self.pVC!, handlerFun: { (action:UIAlertAction!) in
                 
                 Cache_Task_On?.deleteFlag = 1
+                Cache_Task_On?.taskStatus = 0
                 self.pVC!.parentViewController!.navigationController?.popViewControllerAnimated(true)
             })
             

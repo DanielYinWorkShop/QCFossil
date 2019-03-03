@@ -293,26 +293,32 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         
         //Physical Delete Task if Need
         if Cache_Task_On?.deleteFlag == 1 {
-            self.view.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete all invalid tasks?"), parentVC:self, handlerFun: { (action:UIAlertAction!) in
+            if Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Cancelled").rawValue {
+                self.view.deleteTask((Cache_Task_On?.taskId)!)
+                self.reloadTaskSearchTableView()
                 
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.view.showActivityIndicator("Deleting...")
-                    
+            }else{
+                self.view.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete all invalid tasks?"), parentVC:self, handlerFun: { (action:UIAlertAction!) in
+                
                     dispatch_async(dispatch_get_main_queue(), {
-                        let taskDataHelper = TaskDataHelper()
-                        var invalidTaskIds = taskDataHelper.getAllInvalidTaskId()
+                        self.view.showActivityIndicator("Deleting...")
+                    
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let taskDataHelper = TaskDataHelper()
+                            var invalidTaskIds = taskDataHelper.getAllInvalidTaskId()
                 
-                        while let id = invalidTaskIds.popLast() {
-                                self.view.deleteTask(id)
-                        }
+                            while let id = invalidTaskIds.popLast() {
+                                    self.view.deleteTask(id)
+                            }
                         
-                        Cache_Task_On = nil
-                        self.view.removeActivityIndicator()
-                        self.reloadTaskSearchTableView()
+                            Cache_Task_On = nil
+                            self.view.removeActivityIndicator()
+                            self.reloadTaskSearchTableView()
+                        })
                     })
-                })
                 
-            })
+                })
+            }
         }
         
         //NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
