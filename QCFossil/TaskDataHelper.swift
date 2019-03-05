@@ -2187,4 +2187,42 @@ class TaskDataHelper:DataHelperMaster{
         
         return ids
     }
+    
+    func getPositionIdByElementIdForINPUT02(recordId:Int) ->Int {
+        let sql = "SELECT ipe.inspect_position_id FROM inspect_position_element ipe INNER JOIN task_inspect_data_record tidr ON ipe.inspect_position_id = tidr.inspect_position_id INNER JOIN  task_defect_data_record tddr ON tddr.inspect_record_id = tidr.record_id WHERE tddr.inspect_record_id = ?"
+        var positionId = 0
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [recordId]) {
+                
+                if rs.next() {
+                    
+                    positionId = Int(rs.intForColumn("inspect_position_id"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return positionId
+    }
+    
+    func deleteTaskDefectDataPPTRecordsByInspItemId(id:Int) ->Bool {
+        let sql = "DELETE FROM task_inspect_position_point WHERE inspect_record_id = ?"
+        
+        if db.open(){
+            
+            let rs = db.executeUpdate(sql, withArgumentsInArray: [id])
+            
+            db.close()
+            
+            if !rs {
+                return false
+            }
+        }
+        
+        return true
+    }
+
 }
