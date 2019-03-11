@@ -297,7 +297,7 @@ class TaskDataHelper:DataHelperMaster{
                 //If not yet init, just init the Task and add TaskInspDataRecords into DB
             }else{
                 
-                let inspSecElms = getInspSecElementsByPTIdITId(inspSec.sectionId!)
+                let inspSecElms = getInspSecElementsByPTIdITId(inspSec.sectionId!, inputMode: inspSec.inputModeCode!)
                 
                 var taskInspDataRecords = [TaskInspDataRecord]()
                 for inspSecElm in inspSecElms! {
@@ -343,7 +343,7 @@ class TaskDataHelper:DataHelperMaster{
                 }
                 
                 //init Positions
-                let positionId = getPositionIdByElementId(taskDefectDateRecord.inspectElementId!)
+                let positionId = getPositionIdByElementId(taskDefectDateRecord.inspectElementId!, inputMode: taskDefectDateRecord.inputMode!)
                 let position = getInspSecPositionById(positionId)
                 
                 if position != nil {
@@ -644,50 +644,56 @@ class TaskDataHelper:DataHelperMaster{
         return nil
     }
     
-    func getInspSecElementsByPTIdITId(inspSectionId:Int) ->[InspSectionElement]? {
-        //let sql = "SELECT * FROM inspect_element_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND inspect_section_id = ? AND element_type = 1 AND required_element_flag = 1"
-        //let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1"
-        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND (iem.rec_status = 0 AND iem.deleted_flag = 0) ORDER BY iem.display_order ASC"
+    func getInspSecElementsByPTIdITId(inspSectionId:Int, inputMode:String = _INPUTMODE04) ->[InspSectionElement]? {
+        
+        var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 ORDER BY iem.display_order ASC"
+        
+        if inputMode == _INPUTMODE01 {
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 ORDER BY iem.display_order ASC"
+        }else if inputMode == _INPUTMODE02 {
+            return [InspSectionElement]()
+        }
+        
         var inspSecElms = [InspSectionElement]()
         
         if db.open() {
             
             if let rs = db.executeQuery(sql, withArgumentsInArray: [inspSectionId]) {
-            
-            while rs.next() {
                 
-                let elementId = Int(rs.intForColumn("element_id"))
-                let inspectSetupId = 0//Int(rs.intForColumn("inspect_setup_id"))
-                let elementNameEn = rs.stringForColumn("element_name_en")
-                let elementNameCn = rs.stringForColumn("element_name_cn")
-                let prodTypeId = Int(rs.intForColumn("prod_type_id"))
-                let inspectTypeId = Int(rs.intForColumn("inspect_type_id"))
-                let elementType = Int(rs.intForColumn("element_type"))
-                let inspectSectionId = Int(rs.intForColumn("inspect_section_id"))
-                let inspectPositionId = Int(rs.intForColumn("inspect_position_id"))
-                let displayOrder = Int(rs.intForColumn("display_order"))
-                let resultSetId = Int(rs.intForColumn("result_set_id"))
-                let requiredElementFlag = Int(rs.intForColumn("required_element_flag"))
-                let detailDefaultValue = rs.stringForColumn("detail_default_value")
-                var detailRequiredResultList = rs.stringForColumn("detail_required_result_set_id")
-                let detailSuggestFlag = Int(rs.intForColumn("detail_suggest_flag"))
-                let recStatus = Int(rs.intForColumn("rec_status"))
-                let createUser = rs.stringForColumn("create_user")
-                let createDate = rs.stringForColumn("create_date")
-                let modifyUser = rs.stringForColumn("modify_user")
-                let modifyDate = rs.stringForColumn("modify_date")
-                let deletedFlag = Int(rs.intForColumn("deleted_flag"))
-                let deleteUser = rs.stringForColumn("delete_user")
-                let deleteDate = rs.stringForColumn("delete_date")
-                
-                if (detailRequiredResultList == nil) {
-                    detailRequiredResultList = ""
+                while rs.next() {
+                    
+                    let elementId = Int(rs.intForColumn("element_id"))
+                    let inspectSetupId = 0//Int(rs.intForColumn("inspect_setup_id"))
+                    let elementNameEn = rs.stringForColumn("element_name_en")
+                    let elementNameCn = rs.stringForColumn("element_name_cn")
+                    let prodTypeId = Int(rs.intForColumn("prod_type_id"))
+                    let inspectTypeId = Int(rs.intForColumn("inspect_type_id"))
+                    let elementType = Int(rs.intForColumn("element_type"))
+                    let inspectSectionId = Int(rs.intForColumn("inspect_section_id"))
+                    let inspectPositionId = Int(rs.intForColumn("inspect_position_id"))
+                    let displayOrder = Int(rs.intForColumn("display_order"))
+                    let resultSetId = Int(rs.intForColumn("result_set_id"))
+                    let requiredElementFlag = Int(rs.intForColumn("required_element_flag"))
+                    let detailDefaultValue = rs.stringForColumn("detail_default_value")
+                    var detailRequiredResultList = rs.stringForColumn("detail_required_result_set_id")
+                    let detailSuggestFlag = Int(rs.intForColumn("detail_suggest_flag"))
+                    let recStatus = Int(rs.intForColumn("rec_status"))
+                    let createUser = rs.stringForColumn("create_user")
+                    let createDate = rs.stringForColumn("create_date")
+                    let modifyUser = rs.stringForColumn("modify_user")
+                    let modifyDate = rs.stringForColumn("modify_date")
+                    let deletedFlag = Int(rs.intForColumn("deleted_flag"))
+                    let deleteUser = rs.stringForColumn("delete_user")
+                    let deleteDate = rs.stringForColumn("delete_date")
+                    
+                    if (detailRequiredResultList == nil) {
+                        detailRequiredResultList = ""
+                    }
+                    
+                    let inspSecElm = InspSectionElement(elementId: elementId, inspectSetupId: inspectSetupId, elementNameEn: elementNameEn, elementNameCn: elementNameCn, prodTypeId: prodTypeId, inspectTypeId: inspectTypeId, elementType: elementType, inspectSectionId: inspectSectionId, inspectPositionId: inspectPositionId, displayOrder: displayOrder, resultSetId: resultSetId, requiredElementFlag: requiredElementFlag, detailDefaultValue: detailDefaultValue, detailRequiredResultList: detailRequiredResultList, detailSuggestFlag: detailSuggestFlag, recStatus: recStatus, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteUser: deleteUser, deleteDate: deleteDate)
+                    
+                    inspSecElms.append(inspSecElm)
                 }
-                
-                let inspSecElm = InspSectionElement(elementId: elementId, inspectSetupId: inspectSetupId, elementNameEn: elementNameEn, elementNameCn: elementNameCn, prodTypeId: prodTypeId, inspectTypeId: inspectTypeId, elementType: elementType, inspectSectionId: inspectSectionId, inspectPositionId: inspectPositionId, displayOrder: displayOrder, resultSetId: resultSetId, requiredElementFlag: requiredElementFlag, detailDefaultValue: detailDefaultValue, detailRequiredResultList: detailRequiredResultList, detailSuggestFlag: detailSuggestFlag, recStatus: recStatus, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteUser: deleteUser, deleteDate: deleteDate)
-                
-                inspSecElms.append(inspSecElm)
-            }
             }
             
             db.close()
@@ -700,7 +706,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getInspSecPositionByIds(prodTypeId:Int, inspectTypeId:Int) ->[InspSectionPosition]? {
         //let sql = "SELECT * FROM inspect_position_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND parent_position_id < 1"
-        let sql = "SELECT * FROM inspect_task_tmpl_position ittp INNER JOIN inspect_task_tmpl_mstr ittm ON ittp.tmpl_id = ittm.tmpl_id INNER JOIN inspect_position_mstr ipm ON ittp.inspect_position_id = ipm.position_id WHERE ittm.prod_type_id = ? AND ittm.inspect_type_id = ? AND ipm.parent_position_id < 1 ORDER BY ipm.display_order ASC"
+        let sql = "SELECT * FROM inspect_task_tmpl_position ittp INNER JOIN inspect_task_tmpl_mstr ittm ON ittp.tmpl_id = ittm.tmpl_id INNER JOIN inspect_position_mstr ipm ON ittp.inspect_position_id = ipm.position_id WHERE ittm.prod_type_id = ? AND ittm.inspect_type_id = ? AND ittm.rec_status = 0 AND ittm.deleted_flag = 0 AND ipm.rec_status = 0 AND ipm.deleted_flag = 0 AND ipm.parent_position_id < 1 ORDER BY ipm.display_order ASC"
         var inspSecPostns = [InspSectionPosition]()
         
         if db.open() {
@@ -1501,8 +1507,13 @@ class TaskDataHelper:DataHelperMaster{
         return sectionId
     }
     
-    func getPositionIdByElementId(elmId:Int) ->Int {
-        let sql = "SELECT inspect_position_id FROM inspect_position_element WHERE inspect_element_id = ?"
+    func getPositionIdByElementId(elmId:Int, inputMode:String = _INPUTMODE04) ->Int {
+        var sql = "SELECT inspect_position_id FROM inspect_position_element WHERE inspect_element_id = ?"
+        
+        if inputMode == _INPUTMODE02 {
+            sql = "SELECT ipe.inspect_position_id FROM inspect_position_element ipe INNER JOIN task_inspect_data_record tidr ON ipe.inspect_position_id = tidr.inspect_position_id INNER JOIN  task_defect_data_record tddr ON tddr.inspect_record_id = tidr.record_id WHERE tddr.inspect_record_id = ?"
+        }
+
         var positionId = 0
         
         if db.open() {

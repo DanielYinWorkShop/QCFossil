@@ -205,7 +205,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             inputInptCatViewObj?.inptCatButton.tag = idx
             
             let section = Cache_Task_On?.inspSections[idx]
-            var itemCount = taskDataHelper.getCatItemCountById((Cache_Task_On?.taskId)!,sectionId: (section?.sectionId)!)
+            let itemCount = taskDataHelper.getCatItemCountById((Cache_Task_On?.taskId)!,sectionId: (section?.sectionId)!)
             /*
             if section?.inputModeCode == _INPUTMODE02 {
                 itemCount = itemCount - 1
