@@ -224,24 +224,24 @@ class InputMode04DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         NSLog("Image Pick")
         
-        let widthRatio = _RESIZEIMAGEWIDTH / image.size.width
-        let heightRatio = _RESIZEIMAGEHEIGHT / image.size.height
-        let scale = min(widthRatio, heightRatio)
-        let newWidth = scale * image.size.width
-        let newHeight = scale * image.size.height
-        
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
-        
-        
-        let imageView = UIImageView.init(image: image)
-        let photo = Photo(photo: imageView, photoFilename: "", taskId: (Cache_Task_On?.taskId)!, photoFile: "")
-        setSelectedPhoto(photo!)
-        
-        self.pVC!.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismissViewControllerAnimated(true, completion: {
+            let widthRatio = _RESIZEIMAGEWIDTH / image.size.width
+            let heightRatio = _RESIZEIMAGEHEIGHT / image.size.height
+            let scale = min(widthRatio, heightRatio)
+            let newWidth = scale * image.size.width
+            let newHeight = scale * image.size.height
+            
+            UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+            image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            
+            UIGraphicsEndImageContext()
+            
+            
+            let imageView = UIImageView.init(image: image)
+            let photo = Photo(photo: imageView, photoFilename: "", taskId: (Cache_Task_On?.taskId)!, photoFile: "")
+            self.setSelectedPhoto(photo!)
+        })
     }
     
     override func setSelectedPhoto(photo:Photo, needSave:Bool=true) {

@@ -116,7 +116,7 @@
 
 "Inspection Information" = "检查资料";
 
-"Inspection Item" = "检查项目";
+"Inspection Item" = "不良项目位置点及位置描述";
 
 "PO Line No." = "订单行号";
 
@@ -208,7 +208,7 @@
 
 "Empty/Previous Section"="空白/上一项目";
 
-"Inspection Area"="检查范围 ";
+"Inspection Area"="不良项目位置";
 
 "Inspect Item"="检查项目";
 

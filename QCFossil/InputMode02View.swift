@@ -137,7 +137,7 @@ class InputMode02View: InputModeSCMaster {
         
         self.addCellButton.frame = CGRect.init(x: 8, y: inputCells.count*cellHeight+10, width: 50, height: 50)
         self.scrollCellView.addSubview(self.addCellButton)
-        resizeScrollView(CGSize.init(width: self.scrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+500)))
+        resizeScrollView(CGSize.init(width: self.scrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+defectPositPoints.count*10+500)))
     }
     
     func resizeScrollView(size:CGSize) {
@@ -182,8 +182,6 @@ class InputMode02View: InputModeSCMaster {
         
         let dpDataHelper = DPDataHelper()
         let elementId = dpDataHelper.getElementIdBySectionIdForINPUT02(inspSection!.sectionId!)
-        
-        //inputCells.append(inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),dpText: "", dpDescText: "", dppText: "", dismissBtnHidden: false, elementDbId: elementId, refRecordId: 0, inspElmId: elementId, inspPostId: 0))
         
         let inputCell = inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),dpText: "", dpDescText: "", dppText: "", dismissBtnHidden: false, elementDbId: elementId, refRecordId: 0, inspElmId: elementId, inspPostId: 0)
         

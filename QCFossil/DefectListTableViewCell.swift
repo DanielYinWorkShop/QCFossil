@@ -263,11 +263,10 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         NSLog("Image Pick")
         
-        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.pVC!.dismissViewControllerAnimated(true, completion: nil)
-        
+        picker.dismissViewControllerAnimated(true, completion: {
+            
             let imageView = UIImageView.init(image: image)
-        
+            
             let photo = Photo(photo: imageView, photoFilename: "", taskId: (Cache_Task_On?.taskId)!, photoFile: "")
             
             let photoName = self.getNameBySaveDefectPhotoData(0, photo: photo!)
@@ -284,14 +283,16 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
                     defectCell.photoNames!.append(photoName)
                 }
             }
-        
+            
             //Update InspItem PhotoAdded Status
             self.photoAdded = String(PhotoAddedStatus.init(caseId: "yes"))
-            updatePhotoAddedStatus("yes")
-        
+            self.updatePhotoAddedStatus("yes")
+            
             NSNotificationCenter.defaultCenter().postNotificationName("reloadPhotos", object: nil, userInfo: ["photoSelected":photo!])
-        
+            
             self.pVC!.updateContentView()
+        
+        })
     }
     
     override func setSelectedPhoto(photo:Photo, needSave:Bool=true) {

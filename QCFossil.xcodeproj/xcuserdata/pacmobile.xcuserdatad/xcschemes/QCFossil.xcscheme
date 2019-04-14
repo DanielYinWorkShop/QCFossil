@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9C0C36CA1C1E6F7800CF48ED"
-               BuildableName = "QCFossil0103uw.app"
-               BlueprintName = "QCFossil"
+               BuildableName = "QCFossil0913pl.app"
+               BlueprintName = "QCFossil PRD"
                ReferencedContainer = "container:QCFossil.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -53,8 +53,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9C0C36CA1C1E6F7800CF48ED"
-            BuildableName = "QCFossil0103uw.app"
-            BlueprintName = "QCFossil"
+            BuildableName = "QCFossil0913pl.app"
+            BlueprintName = "QCFossil PRD"
             ReferencedContainer = "container:QCFossil.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -76,8 +76,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9C0C36CA1C1E6F7800CF48ED"
-            BuildableName = "QCFossil0103uw.app"
-            BlueprintName = "QCFossil"
+            BuildableName = "QCFossil0913pl.app"
+            BlueprintName = "QCFossil PRD"
             ReferencedContainer = "container:QCFossil.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -95,8 +95,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9C0C36CA1C1E6F7800CF48ED"
-            BuildableName = "QCFossil0103uw.app"
-            BlueprintName = "QCFossil"
+            BuildableName = "QCFossil0913pl.app"
+            BlueprintName = "QCFossil PRD"
             ReferencedContainer = "container:QCFossil.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -220,11 +220,11 @@ class InputMode03DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         NSLog("Image Pick")
         
-        let imageView = UIImageView.init(image: image)
-        let photo = Photo(photo: imageView, photoFilename: "", taskId: (Cache_Task_On?.taskId)!, photoFile: "")
-        setSelectedPhoto(photo!)
-        
-        self.pVC!.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismissViewControllerAnimated(true, completion: {
+            let imageView = UIImageView.init(image: image)
+            let photo = Photo(photo: imageView, photoFilename: "", taskId: (Cache_Task_On?.taskId)!, photoFile: "")
+            self.setSelectedPhoto(photo!)
+        })
     }
     
     override func setSelectedPhoto(photo:Photo, needSave:Bool=true) {

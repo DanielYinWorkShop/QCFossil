@@ -43,5 +43,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to camera to provide you an amazing app experience.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>We need access to your photo library to provide you an amazing app experience.</string>
 </dict>
 </plist>
