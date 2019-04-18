@@ -297,7 +297,7 @@ class TaskDataHelper:DataHelperMaster{
                 //If not yet init, just init the Task and add TaskInspDataRecords into DB
             }else{
                 
-                let inspSecElms = getInspSecElementsByPTIdITId(inspSec.sectionId!, inputMode: inspSec.inputModeCode!)
+                let inspSecElms = getInspSecElementsByPTIdITId(inspSec.sectionId!, inputMode: inspSec.inputModeCode!, optionEnableFlag: inspSec.optionalEnableFlag ?? 1)
                 
                 var taskInspDataRecords = [TaskInspDataRecord]()
                 for inspSecElm in inspSecElms! {
@@ -644,12 +644,19 @@ class TaskDataHelper:DataHelperMaster{
         return nil
     }
     
-    func getInspSecElementsByPTIdITId(inspSectionId:Int, inputMode:String = _INPUTMODE04) ->[InspSectionElement]? {
+    func getInspSecElementsByPTIdITId(inspSectionId:Int, inputMode:String = _INPUTMODE04, optionEnableFlag:Int = 1) ->[InspSectionElement]? {
         
         var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 ORDER BY iem.display_order ASC"
         
+        if optionEnableFlag < 1 {
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? ORDER BY iem.display_order ASC"
+        }
+        
         if inputMode == _INPUTMODE01 {
             sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 ORDER BY iem.display_order ASC"
+            if optionEnableFlag < 1 {
+                sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? ORDER BY iem.display_order ASC"
+            }
         }else if inputMode == _INPUTMODE02 {
             return [InspSectionElement]()
         }
@@ -899,7 +906,7 @@ class TaskDataHelper:DataHelperMaster{
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [prodTypeId, inspTypeId, inspSectionId]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [inspSectionId]) {
             
             while rs.next() {
                 
@@ -2234,6 +2241,31 @@ class TaskDataHelper:DataHelperMaster{
         }
         
         return true
+    }
+    
+    func getInptElementDetailSelectValueByElementId(elementId: Int) ->[String] {
+        
+        let sql = "SELECT * FROM inspect_element_detail_select_val WHERE element_id = ?"
+        
+        var values = [String]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray:[elementId]) {
+                
+                while rs.next() {
+                    
+                    let value = _ENGLISH ? rs.stringForColumn("select_text_en") : rs.stringForColumn("select_text_cn")
+                    
+                    values.append(value)
+                    
+                }
+            }
+            
+            db.close()
+        }
+        return values
+        
     }
 
 }

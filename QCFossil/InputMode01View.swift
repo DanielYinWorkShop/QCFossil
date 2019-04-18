@@ -63,7 +63,7 @@ class InputMode01View: InputModeSCMaster {
         var inspElmNames = [String]()
         for taskInspDataRecord in (inspSection?.taskInspDataRecords)! {
             
-            let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),inspItemText: (_ENGLISH ? taskInspDataRecord.elmtObj?.elementNameEn:taskInspDataRecord.elmtObj?.elementNameCn)!,inspDetailText: taskInspDataRecord.inspectDetail!, inspRemarksText: taskInspDataRecord.inspectRemarks!,dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId:taskInspDataRecord.postnObj!.positionId, resultValueObj: taskInspDataRecord.resultObj!, taskInspDataRecordId: taskInspDataRecord.recordId!, inspItemInputText:"" , requiredElementFlag: taskInspDataRecord.elmtObj!.reqElmtFlag)
+            let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),inspItemText: (_ENGLISH ? taskInspDataRecord.elmtObj?.elementNameEn:taskInspDataRecord.elmtObj?.elementNameCn)!,inspDetailText: taskInspDataRecord.inspectDetail!, inspRemarksText: taskInspDataRecord.inspectRemarks!,dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId:taskInspDataRecord.postnObj!.positionId, resultValueObj: taskInspDataRecord.resultObj!, taskInspDataRecordId: taskInspDataRecord.recordId!, inspItemInputText:"" , requiredElementFlag: taskInspDataRecord.elmtObj!.reqElmtFlag, optionEnableFlag: inspSection?.optionalEnableFlag ?? 1)
             
             
             inputCell.photoAdded = photoDataHelper.checkPhotoAddedByInspDataRecordId(taskInspDataRecord.recordId!)
@@ -109,11 +109,10 @@ class InputMode01View: InputModeSCMaster {
     }
     
     func updateContentView() {
-        
-        if inputCells.count < 1 {
-            return
-        }
-        
+                
+        if inputCells.count > 0 {
+            //return
+            
         for index in 0...inputCells.count-1 {
             let cell = inputCells[index]
             cell.updateCellIndex(cell,index: index)
@@ -130,6 +129,7 @@ class InputMode01View: InputModeSCMaster {
                 self.scrollCellView.addSubview(inputCells[cell.cellPhysicalIdx])
             }
         }
+        }
         
         self.addCellButton.frame = CGRect.init(x: 8, y: inputCells.count*cellHeight+10, width: 50, height: 50)
         self.scrollCellView.addSubview(self.addCellButton)
@@ -140,7 +140,7 @@ class InputMode01View: InputModeSCMaster {
         self.scrollCellView.contentSize = size
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, inspItemText:String, inspDetailText:String,inspRemarksText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspItemInputText:String="", userInteractive:Bool=false, requiredElementFlag:Int=0) -> InputMode01CellView {
+    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, inspItemText:String, inspDetailText:String,inspRemarksText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspItemInputText:String="", userInteractive:Bool=false, requiredElementFlag:Int=0, optionEnableFlag:Int=1) -> InputMode01CellView {
         
         let inputCellViewObj = InputMode01CellView.loadFromNibNamed("InputMode01Cell")
         
@@ -170,7 +170,7 @@ class InputMode01View: InputModeSCMaster {
             inputCellViewObj?.inptItemInput.userInteractionEnabled = false
         }
         
-        if !dismissBtnHidden || requiredElementFlag < 1{
+        if !dismissBtnHidden || (requiredElementFlag < 1 && optionEnableFlag > 0) {
             inputCellViewObj?.showDismissButton()
         }
         

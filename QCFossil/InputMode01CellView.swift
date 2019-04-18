@@ -24,6 +24,10 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var cellDismissButton: UIButton!
     @IBOutlet weak var photoAddedIcon: UIImageView!
     @IBOutlet weak var takePhotoIcon: UIButton!
+    @IBOutlet weak var inptDetailItemList: UIButton!
+    @IBOutlet weak var inptDetailItemsListBtn: UIButton!
+    
+    var selectValues = [String]()
     //weak var parentView = InputMode01View()
     
     /*
@@ -73,6 +77,13 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         
         self.inspReqCatText = self.cellCatName
         updatePhotoAddediConStatus("",photoTakenIcon: self.photoAddedIcon)
+        
+        let taskDataHelper = TaskDataHelper()
+        self.selectValues = taskDataHelper.getInptElementDetailSelectValueByElementId(self.elementDbId ?? 0)
+        
+        if selectValues.count > 0 {
+            inptDetailItemsListBtn.hidden = false
+        }
     }
 
     @IBAction func defectBtnOnClick(sender: UIButton) {
@@ -230,6 +241,14 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         
         return true
     }
+    
+
+    @IBAction func showInptDetailVals(sender: UIButton) {
+        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 200, height:250, allowManuallyInput: true)
+        
+
+    }
+    
     
     @IBAction func takePhotoFromCell(sender: UIButton) {
         if self.inptItemInput.text == "" {

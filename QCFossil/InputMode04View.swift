@@ -67,7 +67,7 @@ class InputMode04View: InputModeSCMaster{
         //Init Insp Items
         for taskInspDataRecord in (inspSection?.taskInspDataRecords)! {
             
-            let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),iaLabelText: _ENGLISH ?(taskInspDataRecord.postnObj?.positionNameEn)! : (taskInspDataRecord.postnObj?.positionNameCn)!,iiLabelText: _ENGLISH ? (taskInspDataRecord.elmtObj?.elementNameEn)! : (taskInspDataRecord.elmtObj?.elementNameCn)!,dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId:(taskInspDataRecord.postnObj?.positionId)!, resultValueId: taskInspDataRecord.resultValueId, taskInspDataRecordId:taskInspDataRecord.recordId!, requiredElementFlag: taskInspDataRecord.elmtObj!.reqElmtFlag)
+            let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),iaLabelText: _ENGLISH ?(taskInspDataRecord.postnObj?.positionNameEn)! : (taskInspDataRecord.postnObj?.positionNameCn)!,iiLabelText: _ENGLISH ? (taskInspDataRecord.elmtObj?.elementNameEn)! : (taskInspDataRecord.elmtObj?.elementNameCn)!,dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId:(taskInspDataRecord.postnObj?.positionId)!, resultValueId: taskInspDataRecord.resultValueId, taskInspDataRecordId:taskInspDataRecord.recordId!, requiredElementFlag: taskInspDataRecord.elmtObj!.reqElmtFlag, optionEnableFlag: inspSection?.optionalEnableFlag ?? 1)
             
             inputCell.photoAdded = photoDataHelper.checkPhotoAddedByInspDataRecordId(taskInspDataRecord.recordId!)
             inputCell.updatePhotoNeededStatus((taskInspDataRecord.resultObj?.resultValueNameEn)!)
@@ -172,7 +172,7 @@ class InputMode04View: InputModeSCMaster{
         }
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, iaLabelText:String, iiLabelText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, displayDDList:Bool=false, resultValueId:Int=0, taskInspDataRecordId:Int=0, requiredElementFlag:Int=0, userInteractive:Bool=false) -> InputMode04CellView {
+    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, iaLabelText:String, iiLabelText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, displayDDList:Bool=false, resultValueId:Int=0, taskInspDataRecordId:Int=0, requiredElementFlag:Int=0, userInteractive:Bool=false, optionEnableFlag:Int=1) -> InputMode04CellView {
         
         let inputCellViewObj = InputMode04CellView.loadFromNibNamed("InputMode04Cell")
         
@@ -204,7 +204,7 @@ class InputMode04View: InputModeSCMaster{
             inputCellViewObj?.inspectionItemLabel.userInteractionEnabled = false
         }
         
-        if !dismissBtnHidden || requiredElementFlag < 1{
+        if !dismissBtnHidden || (requiredElementFlag < 1 && optionEnableFlag > 0) {
             inputCellViewObj?.showDismissButton()
         }
         

@@ -18,6 +18,7 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
     var sizeHeight = 0
     var selectedTableViewCell = [UITableViewCell]()
     var handleFun:((UITextField)->(Void))? = nil
+    var allowManuallyInput = false
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -133,13 +134,32 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             }
             
         }else {
-            if myParentTextField != nil {
-                myParentTextField!.text = String(dropdownDataFilter[indexPath.row])
+            if self.allowManuallyInput {
                 
-                if (handleFun != nil){
-                    handleFun!(myParentTextField!)
+                if myParentTextField != nil {
+                    guard let oldText = myParentTextField?.text else {
+                        myParentTextField?.text = String(dropdownDataFilter[indexPath.row])
+
+                        if (handleFun != nil){
+                            handleFun!(myParentTextField!)
+                        }
+                        return
+                    }
+                    
+                    myParentTextField!.text = oldText + String(dropdownDataFilter[indexPath.row])
+                    handleFun?(myParentTextField!)
+                    
+                    //myParentTextField!.endEditing(true)
                 }
-                //myParentTextField!.endEditing(true)
+                
+                
+            } else {
+            
+                if myParentTextField != nil {
+                    myParentTextField?.text = String(dropdownDataFilter[indexPath.row])
+                    handleFun?(myParentTextField!)
+                    //myParentTextField!.endEditing(true)
+                }
             }
             
             Cache_Dropdown_Instance = nil

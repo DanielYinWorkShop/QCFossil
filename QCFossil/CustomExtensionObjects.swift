@@ -1514,7 +1514,7 @@ extension NSDate {
 }
 
 extension UITextField {
-    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000) /*->DropdownListViewControl*/ {
+    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false) /*->DropdownListViewControl*/ {
         
         if listData.count > 0 {
             //return Cache_Dropdown_Instance!
@@ -1540,6 +1540,7 @@ extension UITextField {
             Cache_Dropdown_Instance!.myParentTextField = sender
             Cache_Dropdown_Instance!.layer.cornerRadius = 5.0
             Cache_Dropdown_Instance!.tableView.allowsMultipleSelection = allowMulpSel
+            Cache_Dropdown_Instance?.allowManuallyInput = allowManuallyInput
             Cache_Dropdown_Instance!.tableView.rowHeight = 50
             Cache_Dropdown_Instance!.handleFun = handle
             Cache_Dropdown_Instance?.tag = tag
