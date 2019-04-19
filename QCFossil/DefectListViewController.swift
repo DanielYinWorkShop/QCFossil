@@ -43,11 +43,12 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
         defectTableView.rowHeight = 225
         defectTableView.allowsSelection = false
         
-        sectionSegmentControl.setTitle(_ENGLISH ? "All" : "全部", forSegmentAtIndex: 0)
+        sectionSegmentControl.removeAllSegments()
+        sectionSegmentControl.insertSegmentWithTitle(_ENGLISH ? "All" : "全部", atIndex: 0, animated: true)
         
         var index = 1
         for section in (Cache_Task_On?.inspSections)! {
-            sectionSegmentControl.setTitle(_ENGLISH ? section.sectionNameEn! : section.sectionNameCn!, forSegmentAtIndex: index)
+            sectionSegmentControl.insertSegmentWithTitle(_ENGLISH ? section.sectionNameEn! : section.sectionNameCn!, atIndex: index, animated: true)
             index += 1
         }
         
