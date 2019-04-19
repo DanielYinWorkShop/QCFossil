@@ -432,7 +432,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getAllInspType() ->[String] {
-        let sql = "SELECT type_name_en,type_name_cn FROM inspect_type_mstr WHERE rec_status = 0 AND deleted_flag = 0"
+        let sql = "SELECT type_name_en,type_name_cn FROM inspect_type_mstr WHERE rec_status = 0 AND deleted_flag = 0 ORDER BY type_id DESC"
         var inspType = [String]()
         
         if db.open() {
