@@ -19,7 +19,8 @@ class PopoverViewController: UIViewController {
     var sourceType:String!
     var dataType:String! = _POPOVERDATATPYE
     var selectedValue:String = ""
-    
+    var didPickCompletion:(()->(Void))?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -237,6 +238,8 @@ class PopoverViewController: UIViewController {
         /*if self.selectedValue != nil {
             setValueBySourceType(sourceType, selectedValue: self.selectedValue)
         }*/
+        self.didPickCompletion?()
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
