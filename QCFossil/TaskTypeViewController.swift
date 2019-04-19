@@ -136,6 +136,21 @@ class TaskTypeViewController: UIViewController, UITextFieldDelegate, UIPopoverPr
 
         popoverContent.parentTextFieldView = sender
         popoverContent.sourceType = _INPTTYPE
+        popoverContent.didPickCompletion = { _ in
+        
+            Cache_Inspector?.selectedInspType = self.inptType.text!
+            let taskDataHelper = TaskDataHelper()
+            let templates = taskDataHelper.getAllTmplType()
+            
+            if templates.count < 1 {
+                self.templateType?.text = ""
+            } else if templates.count == 1 {
+                for template in templates {
+                    self.templateType?.text = template
+                }
+            }
+            
+        }
         
         let nav = UINavigationController(rootViewController: popoverContent)
         nav.modalPresentationStyle = UIModalPresentationStyle.Popover
@@ -156,8 +171,6 @@ class TaskTypeViewController: UIViewController, UITextFieldDelegate, UIPopoverPr
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please select a Inspection Type!"))
             return
         }
-        
-        Cache_Inspector?.selectedInspType = self.inptType.text!
         
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSizeMake(_POPOVERVIEWSIZE_S.width,_POPOVERVIEWSIZE_S.height+_NAVIBARHEIGHT)
