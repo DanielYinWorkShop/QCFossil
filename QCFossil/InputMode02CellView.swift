@@ -70,7 +70,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     @IBAction func defectBtnOnClick(sender: UIButton) {
         //add defect cell to defect list
         
-        if self.dpInput.text == "" || self.resultValueId < 1 {
+        if self.dpInput.text == "" {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Inspect Defect Position and Points"))
             return
         }

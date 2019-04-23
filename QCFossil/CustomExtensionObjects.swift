@@ -657,6 +657,22 @@ extension UIView {
         return timestamp*/
     }
     
+    func getFormattedStringByDateString(dateString: String) ->String {
+        
+        let dfmatter = NSDateFormatter()
+        dfmatter.dateFormat = "\(_DATEFORMATTER) hh:mm:ss a"
+        let formattedDate = dfmatter.dateFromString(dateString)
+        
+        let dfmatter2 = NSDateFormatter()
+        dfmatter2.dateFormat = "\(_DATEFORMATTER) HH:mm:ss a"
+        
+        guard let newFormattedDate = formattedDate else{
+            return ""
+        }
+        
+        return dfmatter2.stringFromDate(newFormattedDate)
+    }
+    
     func showActivityIndicator(title:String="Loading") {
         let container: UIView = UIView()
         container.tag = _MASKVIEWTAG
