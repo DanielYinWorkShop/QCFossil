@@ -583,7 +583,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 taskInspectionDateInTaskStatus = "\"\(self.view.getFormattedStringByDateString(taskInspectionDateValueInTaskStatus))\""
                 
-                if taskIdInTaskStatus != "" {
+                if taskInspectionDateValueInTaskStatus == "" || Int(taskInspectionDateValueInTaskStatus) < 1 {
                     dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
                 }else {
                     dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
@@ -1995,7 +1995,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         for taskStatus in taskStatusList {
             
-            if taskStatus["task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
+            if taskStatus["task_id"] != nil && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
                 
                 if Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Refused").rawValue {
                     taskRefused.append(Int(taskStatus["task_id"]!)!)
@@ -2015,13 +2015,14 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         for taskStatus in taskStatusList {
             
-            if taskStatus["task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
+            if taskStatus["task_id"] != nil && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
                 
-                dataSyncDataHelper.updateTaskStatus(Int(taskStatus["task_id"]!)!, status: Int(taskStatus["task_status"]!)!, refuseDesc: taskStatus["data_refuse_desc"]!)
+                dataSyncDataHelper.updateTaskStatus(Int(taskStatus["task_id"]!)!, status: Int(taskStatus["task_status"]!)!, refuseDesc: taskStatus["data_refuse_desc"]!, ref_task_id: Int(taskStatus["ref_task_id"]!)!)
                 
                 if Cache_Task_On?.taskId == Int(taskStatus["task_id"]!)! {
                     Cache_Task_On?.taskStatus = Int(taskStatus["task_status"]!)!
                     Cache_Task_On?.dataRefuseDesc = taskStatus["data_refuse_desc"]!
+                    Cache_Task_On?.refTaskId = Int(taskStatus["ref_task_id"]!)!
                 }
                 
             }
