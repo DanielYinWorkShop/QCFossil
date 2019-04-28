@@ -79,7 +79,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         updatePhotoAddediConStatus("",photoTakenIcon: self.photoAddedIcon)
         
         let taskDataHelper = TaskDataHelper()
-        self.selectValues = taskDataHelper.getInptElementDetailSelectValueByElementId(self.elementDbId ?? 0)
+        self.selectValues = taskDataHelper.getInptElementDetailSelectValueByElementId(self.inspElmId ?? 0)
         
         if selectValues.count > 0 {
             inptDetailItemsListBtn.hidden = false
@@ -244,7 +244,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     
 
     @IBAction func showInptDetailVals(sender: UIButton) {
-        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 200, height:250, allowManuallyInput: true)
+        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 500, height:250, allowManuallyInput: true)
         
 
     }
