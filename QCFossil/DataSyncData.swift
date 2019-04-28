@@ -1123,6 +1123,7 @@ let _DS_ULTASKDATA = [
         ],
         "task_status_list": [
             "task_id":"",
+            "ref_task_id":"", //add 0424 2019
             "task_status":"",
             "data_refuse_desc":"" //add 1107
         ]
