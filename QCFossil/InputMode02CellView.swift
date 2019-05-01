@@ -24,7 +24,6 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var cellDismissButton: UIButton!
     @IBOutlet weak var photoAddedIcon: UIImageView!
     @IBOutlet weak var takePhotoIcon: UIButton!
-    //weak var parentView = InputMode02View()
     var myDefectPositPoints = [PositPointObj]()
     
     /*
@@ -69,7 +68,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     
     @IBAction func defectBtnOnClick(sender: UIButton) {
         //add defect cell to defect list
-        
+        /*
         if self.dpInput.text == "" {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Inspect Defect Position and Points"))
             return
@@ -77,7 +76,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         
         //Save self to DB to get the taskDataRecordId
         self.saveMyselfToGetId()
-        
+        */
         let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
         
@@ -103,23 +102,6 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             }
         }
         
-        /*
-        if !isDefectItemAdded(defectListVC!) {
-            let defectObj = defectListVC!.inputCellInit(_INPUTMODE02, isHidden: true, idxLabel: String(cellIdx), iaLabel: dpInput.text!, iiLabel: self.cellDPPInput.text!, sectionId: cellCatIdx, itemId: cellIdx, inspItem: self)
-            
-            defectListVC!.defectCells.append(defectObj as! InputModeDFMaster2)
-            defectListVC!.defectCells.sortInPlace({$0.sectionId<$1.sectionId})
-            defectListVC!.defectCells.sortInPlace({$0.itemId<$1.itemId})
-        }else{
-            let inspSectionCells = defectListVC!.defectCells
-            let myDefectItems = inspSectionCells.filter({$0.sectionId == cellCatIdx && $0.itemId == cellIdx})
-            for myDefectItem in myDefectItems{
-                (myDefectItem as! InputMode02DefectCellView).dppInput.text = self.cellDPPInput.text
-                (myDefectItem as! InputMode02DefectCellView).dpInput.text = self.dpInput.text
-            }
-        }*/
-        
-        //NSNotificationCenter.defaultCenter().postNotificationName("switchTabViewToDL", object: nil)
         self.parentVC!.performSegueWithIdentifier("DefectListFromInspectItemSegue", sender:self)
     }
     

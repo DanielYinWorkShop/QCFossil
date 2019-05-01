@@ -30,16 +30,30 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         self.inspectionTitle1Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\(inspItem?.inspReqCatText != "" ? (inspItem?.inspReqCatText)! : (inspItem?.inspAreaText)!)")
         self.inspectionTitle2Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspItem?.inspItemText)!)")
         
-        if inspItem?.parentView.InputMode == _INPUTMODE02 {
-            self.showDPPDescBtn.hidden = false
-            self.inspectionTitle1Input.text = inspItem?.inspAreaText
-            self.defectPositionPointsDesc = (inspItem?.inspItemText)!
-        }
-        
         self.inspectionTitle1.font = UIFont.boldSystemFontOfSize(18.0)
         self.inspectionTitle2.font = UIFont.boldSystemFontOfSize(18.0)
         self.inspectionTitle1.text = MylocalizedString.sharedLocalizeManager.getLocalizedString( inspItem?.inspCatText != "" ? "Inspection Category" : "Inspection Area")
         self.inspectionTitle2.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Item")
+
+        
+        if inspItem?.parentView.InputMode == _INPUTMODE02 {
+            self.showDPPDescBtn.hidden = false
+            self.inspectionTitle1Input.text = inspItem?.inspAreaText
+            self.defectPositionPointsDesc = (inspItem?.inspItemText)!
+        } else if inspItem?.parentView.InputMode == _INPUTMODE01 {
+            
+            if let inspectItem = inspItem as? InputMode01CellView {
+                self.inspectionTitle1.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Area")
+                self.inspectionTitle2.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Details")
+                self.inspectionTitle1Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspItem?.inspAreaText)!)")
+                self.inspectionTitle2Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspectItem.inptDetailInput.text)!)")
+            }
+            /*let dpDataHelper = DPDataHelper()
+            if let elementId = inspItem?.inspElmId {
+                self.inspectionTitle2Input.text = dpDataHelper.getPositionItemByElementId(elementId)
+            }*/
+        }
+        
         
         //filter all defectItems belong to the inspItem
         var currIdx = 0
@@ -269,7 +283,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         let defectItem = self.defectItems[indexPath.row]
         
         if defectItem.inputMode! == _INPUTMODE04 {
-            self.inspectDefectTableview.rowHeight = 170
+            self.inspectDefectTableview.rowHeight = 250
             let cellMode4 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode4", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode4
             
             cellMode4.pVC = self
@@ -336,7 +350,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return cellMode2
          
         }else if defectItem.inputMode! == _INPUTMODE01 {
-            self.inspectDefectTableview.rowHeight = 170
+            self.inspectDefectTableview.rowHeight = 250
             let cellMode1 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode1", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode1
             
             cellMode1.pVC = self
@@ -349,6 +363,16 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode1.inputMode = _INPUTMODE01
             cellMode1.defectDescInput.text = defectItem.defectDesc!
             cellMode1.defectQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
+            cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
+            cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
+            
+            if Int(defectItem.inspectElementId!) > 0 {
+                let defectDataHelper = DefectDataHelper()
+                cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId!)
+            }else{
+                cellMode1.defectTypeInput.text = ""
+            }
             
             cellMode1.refreshImageviews()
             if defectItem.photoNames != nil && defectItem.photoNames?.count > 0 {

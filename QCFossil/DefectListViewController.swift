@@ -65,12 +65,14 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
            
             if defectItem.inspElmt.cellCatIdx < 1 && defectItem.inspElmt.cellIdx < 1 {
                 for inspSection in (Cache_Task_On?.inspSections)! {
-                    if inspSection.sectionId == defectItem.sectObj.sectionId {
+                    //print("inspSectionId: \(inspSection.sectionId), defect secObj sectionId: \(defectItem.sectObj.sectionId)")
+                    //if inspSection.sectionId == defectItem.sectObj.sectionId {
                         var idx = 1
+                        
                         for inspElmt in inspSection.taskInspDataRecords {
                             
                             var inspectElementId = 0
-                            if defectItem.inputMode == _INPUTMODE02 {
+                            if defectItem.inputMode == _INPUTMODE02 || defectItem.inputMode == _INPUTMODE01 {
                                 let dpDataHelper = DPDataHelper()
                                 inspectElementId = dpDataHelper.getInspElementIdByInspRecordIdForINPUT02(defectItem.recordId!)
                             }
@@ -96,7 +98,7 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
                             }
                             idx += 1
                         }
-                    }
+                    //}
                 }
             }
             
@@ -258,6 +260,9 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             inputCell?.inputMode = _INPUTMODE01
             inputCell?.idInput.text = dfDesc
             inputCell?.dfQtyInput.text = dfQty
+            inputCell?.criticalInput.text = criticalQty
+            inputCell?.majorInput.text = majorQty
+            inputCell?.minorInput.text = minorQty
             inputCell?.frame = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(768), CGFloat(225))
             
             return inputCell!
@@ -476,18 +481,25 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
         }else if defectItem.inputMode! == _INPUTMODE01 {
             let cellMode1 = tableView.dequeueReusableCellWithIdentifier("DefectCellMode1", forIndexPath: indexPath) as! DefectListTableViewCellMode1
             
+            let inspElement = defectItem.inspElmt as? InputMode01CellView
+            
+            
+            
             cellMode1.pVC = self
             cellMode1.sectionName.text = defectItem.inspElmt.cellCatName
             cellMode1.taskDefectDataRecordId = defectItem.recordId!
-            cellMode1.inspItem = defectItem.inspElmt as? InputMode01CellView
+            cellMode1.inspItem = inspElement
             cellMode1.icInput.text = defectItem.inspElmt.inspAreaText
-            cellMode1.iiInput.text = defectItem.inspElmt.inspItemText
+            cellMode1.iiInput.text = ""//defectItem.inspElmt.inspectDetail
             cellMode1.sectionId = defectItem.inspElmt.cellCatIdx
             cellMode1.itemId = defectItem.inspElmt.cellIdx
             cellMode1.cellIdx = defectItem.cellIdx
             cellMode1.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode1.inputMode = _INPUTMODE01
             cellMode1.ddInput.text = defectItem.defectDesc!
+            cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
+            cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
+            cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
             cellMode1.dfQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
             cellMode1.defectPhoto1.image = nil
             cellMode1.defectPhoto2.image = nil
@@ -499,6 +511,24 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.dismissPhotoButton3.hidden = true
             cellMode1.dismissPhotoButton4.hidden = true
             cellMode1.dismissPhotoButton5.hidden = true
+            
+            
+            let defectDataHelper = DefectDataHelper()
+            if Int(defectItem.inspectElementId!) > 0 {
+                cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId!)
+            }else{
+                cellMode1.defectTypeInput.text = ""
+            }
+            
+            if let inspectRecordId = defectItem.inspectRecordId {
+                let taskInspDataRecord = defectDataHelper.getTaskInspDataRcordNameById(inspectRecordId)
+                cellMode1.iiInput.text = taskInspDataRecord?.inspectDetail
+                
+                if cellMode1.inspItem?.inspPostId == nil || cellMode1.inspItem?.inspPostId < 1 {
+                    
+                    cellMode1.positionIdOfInspectElement = taskInspDataRecord?.inspectPositionId
+                }
+            }
             
             self.view.disableFuns(cellMode1.dismissPhotoButton1)
             self.view.disableFuns(cellMode1.dismissPhotoButton2)
@@ -567,14 +597,35 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode2.cellIdx = defectItem.cellIdx
             cellMode2.indexInput.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode2.inputMode = _INPUTMODE02
-            cellMode2.dfDescInput.text = defectItem.defectDesc
+            //cellMode2.dfDescInput.text = defectItem.defectDesc
             cellMode2.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
             cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
             cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
             cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
             cellMode2.dppInput.text = defectItem.defectpositionPoints
-            cellMode2.dpInput.text = _ENGLISH ? defectItem.postnObj.positionNameEn : defectItem.postnObj.positionNameCn
+            //cellMode2.dpInput.text = _ENGLISH ? defectItem.postnObj.positionNameEn : defectItem.postnObj.positionNameCn
             cellMode2.dtInput.text = _ENGLISH ? defectItem.elmtObj.elementNameEn : defectItem.elmtObj.elementNameCn
+            
+            let defectDataHelper = DefectDataHelper()
+            if Int(defectItem.inspectElementId!) > 0 {
+                cellMode2.dtInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId!)
+            }else{
+                cellMode2.dtInput.text = ""
+            }
+            
+            if let inspectRecordId = defectItem.inspectRecordId {
+                let taskInspDataRecord = defectDataHelper.getTaskInspDataRcordNameById(inspectRecordId)
+                cellMode2.dfDescInput.text = taskInspDataRecord?.inspectDetail
+                
+                if let inspectPositionId = taskInspDataRecord?.inspectPositionId {
+                    cellMode2.dpInput.text =  defectDataHelper.getInspPositionNameById(inspectPositionId)
+                }else {
+                    cellMode2.dpInput.text = ""
+                }
+            }else {
+                cellMode2.dfDescInput.text = ""
+                
+            }
             
             cellMode2.defectPhoto1.image = nil
             cellMode2.defectPhoto2.image = nil

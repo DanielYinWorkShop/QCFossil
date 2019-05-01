@@ -247,4 +247,40 @@ class DPDataHelper:DataHelperMaster {
         
         return result
     }
+    
+    func getPositionItemByElementId(elementId:Int) ->String {
+        let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_element_mstr iem ON ipe.inspect_element_id = iem.element_id WHERE iem.element_id = ? AND ipm.position_type = 3"
+        var positionString = ""
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [elementId]) {
+                if rs.next() {
+                    positionString = (_ENGLISH ? rs.stringForColumn("position_name_en") : rs.stringForColumn("position_name_cn"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return positionString
+    }
+    
+    func getPositionIdByElementId(elementId:Int) ->Int {
+        let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_element_mstr iem ON ipe.inspect_element_id = iem.element_id WHERE iem.element_id = ? AND ipm.position_type = 3"
+        var positionId = 0
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [elementId]) {
+                if rs.next() {
+                    positionId = Int(rs.intForColumn("position_id"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return positionId
+    }
 }

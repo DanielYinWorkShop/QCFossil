@@ -73,7 +73,7 @@ class InputModeSCMaster:UIView {
                 moveRightBtn.addTarget(self, action: #selector(InputModeSCMaster.moveToRight(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 self.addSubview(moveRightBtn)
                 
-            }else if self.idx < 3 {
+            }else if self.idx < otherInspSec!.count {
                 let moveLeftBtn = CustomButton()
                 let moveLeftIcon = UIImage.init(named: "arrow_icon_left")
                 moveLeftBtn.frame = CGRectMake(645, 0, 80, 80)

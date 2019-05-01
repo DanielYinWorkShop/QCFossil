@@ -1530,7 +1530,7 @@ extension NSDate {
 }
 
 extension UITextField {
-    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false) /*->DropdownListViewControl*/ {
+    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false, requiredHeight: Int? = nil) /*->DropdownListViewControl*/ {
         
         if listData.count > 0 {
             //return Cache_Dropdown_Instance!
@@ -1542,7 +1542,7 @@ extension UITextField {
             
             Cache_Dropdown_Instance!.dropdownData = listData as! [String]
             
-            let adjustheight = listData.count*50 < 650 ? listData.count*50 : 650
+            let adjustheight = listData.count*50 < 250 ? listData.count*50 : 250
             
             if (sender.frame.minX + width) > 768 {
                 Cache_Dropdown_Instance!.frame = CGRect.init(x: 768-width, y: sender.superview!.frame.minY+sender.frame.minY+sender.frame.size.height, width: width, height: CGFloat(listData.count*50))
@@ -1564,6 +1564,19 @@ extension UITextField {
             if CGFloat(adjustheight) < height {
                 Cache_Dropdown_Instance!.tableView.scrollEnabled = false
             }
+            
+            if requiredHeight != nil {
+                Cache_Dropdown_Instance!.sizeHeight = requiredHeight!
+                Cache_Dropdown_Instance!.frame.size.height = CGFloat(requiredHeight!)
+                
+                if adjustheight < requiredHeight {
+                    
+                    Cache_Dropdown_Instance!.tableView.scrollEnabled = false
+                }else {
+                    Cache_Dropdown_Instance!.tableView.scrollEnabled = true
+                }
+            }
+
             
             parent.addSubview(Cache_Dropdown_Instance!)
         }else{

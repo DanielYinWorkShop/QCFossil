@@ -14,6 +14,14 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectQtyLabel: UILabel!
     @IBOutlet weak var defectDescInput: UITextField!
     @IBOutlet weak var defectQtyInput: UITextField!
+    @IBOutlet weak var criticalLabel: UILabel!
+    @IBOutlet weak var criticalInput: UITextField!
+    @IBOutlet weak var majorLabel: UILabel!
+    @IBOutlet weak var majorInput: UITextField!
+    @IBOutlet weak var minorLabel: UILabel!
+    @IBOutlet weak var minorInput: UITextField!
+    @IBOutlet weak var defectTypeLabel: UILabel!
+    @IBOutlet weak var defectTypeInput: UITextField!
     
     weak var pVC:InspectionDefectList!
     
@@ -22,9 +30,23 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         
         self.defectDescInput.delegate = self
         self.defectQtyInput.delegate = self
+        self.criticalInput.delegate = self
+        self.majorInput.delegate = self
+        self.minorInput.delegate = self
+        self.defectTypeInput.delegate = self
+        self.defectQtyInput.userInteractionEnabled = false
         
         self.defectDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
-        self.defectQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Qty")
+        self.defectQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Total")
+        self.defectTypeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Type")
+        self.criticalLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Critical")
+        self.majorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Major")
+        self.minorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Minor")
+        
+        self.criticalInput.text = "0"
+        self.majorInput.text = "0"
+        self.minorInput.text = "0"
+        self.defectQtyInput.text = "0"
     }
     
     @IBAction func addDefectPhoto(sender: UIButton) {
@@ -39,6 +61,9 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         
         self.defectDescInput.resignFirstResponder()
         self.defectQtyInput.resignFirstResponder()
+        self.criticalInput.resignFirstResponder()
+        self.majorInput.resignFirstResponder()
+        self.minorInput.resignFirstResponder()
         
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .PhotoLibrary
@@ -109,7 +134,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 let pathForImage = Cache_Task_Path! + "/" + _THUMBSPHYSICALNAME + "/" + photoName
                 let imageView = UIImageView.init(image: UIImage(contentsOfFile: pathForImage))
                 
-                imageView.frame = CGRect(x: xPos[idx], y: 112, width: 40, height: 40)
+                imageView.frame = CGRect(x: xPos[idx], y: 195, width: 40, height: 40)
                 imageView.tag = idx + 1
                 
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(InspectionDefectTableViewCellMode1.previewTapOnClick(_:)))
@@ -121,7 +146,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 self.addSubview(imageView)
                 
                 let cBtn = CustomControlButton()
-                cBtn.frame = CGRect.init(x: xPosBtn[idx], y: 99, width: 20, height: 20)
+                cBtn.frame = CGRect.init(x: xPosBtn[idx], y: 185, width: 20, height: 20)
                 cBtn.addTarget(self, action: #selector(InspectionDefectTableViewCellMode1.removeDefectPhotoOnIndex(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cBtn.tag = idx + 1
                 cBtn.setTitle("-", forState: UIControlState.Normal)
@@ -342,5 +367,127 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             //Update Photo Album
             NSNotificationCenter.defaultCenter().postNotificationName("reloadAllPhotosFromDB", object: nil)
         }
+    }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if textField == self.defectTypeInput {
+            let defectDataHelper = DefectDataHelper()
+            /*
+             Element Type
+             1: Inspect Item
+             2: Defect Item
+             */
+            
+            
+            guard let inspectPositionId = self.inspItem?.inspPostId else {return false}
+            
+            let dfElms = defectDataHelper.getDefectTypesByPositionId(inspectPositionId)
+            
+            //let indexPath = self.pVC.inspectDefectTableview.indexPathForCell(self)
+            //let rectOfCell = self.pVC.inspectDefectTableview.rectForRowAtIndexPath(indexPath!)
+            
+            textField.showListData(textField, parent: self, handle: dropdownHandleFunc, listData: dfElms, requiredHeight:150)
+            
+            return false
+        }
+        
+        return true
+    }
+    
+    func dropdownHandleFunc(textField:UITextField) {
+        if textField == self.defectTypeInput {
+            
+            let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+            
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                let defectDataHelper = DefectDataHelper()
+                
+                defectItem.inspectElementId = defectDataHelper.getInspElementIdByName(textField.text!)
+            }
+        }
+    }
+    
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        Cache_Task_On?.didModify = true
+        
+        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+        
+        if textField.keyboardType == UIKeyboardType.NumberPad {
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                if textField == self.criticalInput {
+                    defectItem.defectQtyCritical = 0
+                    
+                }else if textField == self.majorInput {
+                    defectItem.defectQtyMajor = 0
+                    
+                }else if textField == self.minorInput {
+                    defectItem.defectQtyMinor = 0
+                    
+                }
+                
+                defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
+                self.defectQtyInput.text = String(defectItem.defectQtyTotal)
+            }
+        }
+        
+        return true
+    }
+    
+    override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        Cache_Task_On?.didModify = true
+        var inputValue = ""
+        if textField.text!.characters.count < 2 && string == "" {
+            inputValue = ""
+        }else if string == ""{
+            inputValue = String(textField.text!.characters.dropLast())
+        }else {
+            inputValue = textField.text! + string
+        }
+        
+        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+        
+        if textField.keyboardType == UIKeyboardType.NumberPad {
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                if Int(inputValue) == nil {
+                    inputValue = "0"
+                }
+                //if Int(inputValue) != nil {
+                
+                if textField == self.criticalInput {
+                    defectItem.defectQtyCritical = Int(inputValue)!
+                    
+                }else if textField == self.majorInput {
+                    defectItem.defectQtyMajor = Int(inputValue)!
+                    
+                }else if textField == self.minorInput {
+                    defectItem.defectQtyMinor = Int(inputValue)!
+                    
+                }
+                //}
+                
+                defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
+                self.defectQtyInput.text = String(defectItem.defectQtyTotal)
+            }
+            
+            return textField.numberOnlyCheck(textField, sourceText: string)
+        }else{
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                defectItem.defectDesc = inputValue
+            }
+        }
+        
+        return true
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        self.pVC.view.clearDropdownviewForSubviews((self.pVC?.view)!)
     }
 }

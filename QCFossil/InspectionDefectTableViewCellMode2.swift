@@ -407,6 +407,34 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         }
     }
     
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        Cache_Task_On?.didModify = true
+        
+        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+        
+        if textField.keyboardType == UIKeyboardType.NumberPad {
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                if textField == self.defectCriticalQtyInput {
+                    defectItem.defectQtyCritical = 0
+                    
+                }else if textField == self.defectMajorQtyInput {
+                    defectItem.defectQtyMajor = 0
+                    
+                }else if textField == self.defectMinorQtyInput {
+                    defectItem.defectQtyMinor = 0
+                    
+                }
+                
+                defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
+                self.defectTotalQtyInput.text = String(defectItem.defectQtyTotal)
+            }
+        }
+        
+        return true
+    }
+    
     override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         Cache_Task_On?.didModify = true
         var inputValue = ""
@@ -461,18 +489,6 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     {
         
         self.pVC.view.clearDropdownviewForSubviews((self.pVC?.view)!)
-        /*
-        guard let touch:UITouch = touches.first else
-        {
-            //return
-        }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
-            self.pVC.view.resignFirstResponderByTextField((self.pVC.view)!)
-            
-        }else {
-            self.pVC.view.clearDropdownviewForSubviews((self.pVC?.view)!)
-            
-        }*/
     }
 }

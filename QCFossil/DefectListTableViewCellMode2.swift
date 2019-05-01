@@ -449,6 +449,34 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
         }
     }
     
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        Cache_Task_On?.didModify = true
+        
+        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+        
+        if textField.keyboardType == UIKeyboardType.NumberPad {
+            if defectItemFilter?.count>0 {
+                let defectItem = defectItemFilter![0]
+                
+                if textField == self.criticalInput {
+                    defectItem.defectQtyCritical = 0
+                    
+                }else if textField == self.majorInput {
+                    defectItem.defectQtyMajor = 0
+                    
+                }else if textField == self.minorInput {
+                    defectItem.defectQtyMinor = 0
+                    
+                }
+                
+                defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
+                self.totalInput.text = String(defectItem.defectQtyTotal)
+            }
+        }
+        
+        return true
+    }
+    
     override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         Cache_Task_On?.didModify = true
         var inputValue = ""

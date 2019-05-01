@@ -29,7 +29,12 @@ class InputMode01DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
     @IBOutlet weak var dismissPhotoButton3: CustomButton!
     @IBOutlet weak var dismissPhotoButton4: CustomButton!
     @IBOutlet weak var dismissPhotoButton5: CustomButton!
-    
+    @IBOutlet weak var criticalLabel: UILabel!
+    @IBOutlet weak var criticalInput: UITextField!
+    @IBOutlet weak var majorLabel: UILabel!
+    @IBOutlet weak var majorInput: UITextField!
+    @IBOutlet weak var minorLabel: UILabel!
+    @IBOutlet weak var minorInput: UITextField!
     
     weak var pVC:DefectListViewController!
     //weak var inspItem = InputMode01CellView()
@@ -56,6 +61,9 @@ class InputMode01DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
         dismissPhotoButton5.hidden = true
         
         self.dfQtyInput.delegate = self
+        self.criticalInput.delegate = self
+        self.minorInput.delegate = self
+        self.majorInput.delegate = self
         
         updateLocalizedString()
     }

@@ -64,7 +64,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func updateLocalizedString() {
-        self.inptItemLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Item")
+        self.inptItemLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Area")
         self.inptDetailLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Details")
         self.cellRemarksLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Remarks")
         self.cellResultLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Result")
@@ -78,11 +78,18 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         self.inspReqCatText = self.cellCatName
         updatePhotoAddediConStatus("",photoTakenIcon: self.photoAddedIcon)
         
+        fetchDetailSelectedValues()
+    }
+    
+    func fetchDetailSelectedValues() {
+        
         let taskDataHelper = TaskDataHelper()
         self.selectValues = taskDataHelper.getInptElementDetailSelectValueByElementId(self.inspElmId ?? 0)
         
         if selectValues.count > 0 {
             inptDetailItemsListBtn.hidden = false
+        } else {
+            inptDetailItemsListBtn.hidden = true
         }
     }
 
@@ -99,10 +106,8 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         */
         let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
-
         
         //add defect cell
-        
         if !isDefectItemAdded(defectListVC!) {
             let newDfItem = TaskInspDefectDataRecord(taskId: (Cache_Task_On?.taskId)!, inspectRecordId: self.taskInspDataRecordId, refRecordId: 0, inspectElementId: self.elementDbId, defectDesc: "", defectQtyCritical: 0, defectQtyMajor: 0, defectQtyMinor: 0, defectQtyTotal: 0, createUser: Cache_Inspector?.appUserName, createDate: self.getCurrentDateTime(), modifyUser: Cache_Inspector?.appUserName, modifyDate: self.getCurrentDateTime())
             
@@ -206,6 +211,13 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             self.inspAreaText = textField.text!
             updateParentOptionElmts()
             
+            let defectDataHelper = DefectDataHelper()
+            self.inspElmId = defectDataHelper.getInspElementIdByName(textField.text!, elementType: 1)
+            
+            
+            
+            fetchDetailSelectedValues()
+            
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
         }
     }
@@ -241,7 +253,6 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         
         return true
     }
-    
 
     @IBAction func showInptDetailVals(sender: UIButton) {
         self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 500, height:250, allowManuallyInput: true)

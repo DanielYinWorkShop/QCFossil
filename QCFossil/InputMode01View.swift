@@ -75,7 +75,7 @@ class InputMode01View: InputModeSCMaster {
                 defectItem.inspElmt = inputCell
             }
             
-            self.optInspElms = self.optInspElms.filter({ $0.elementId != taskInspDataRecord.elmtObj?.elementId})
+            //self.optInspElms = self.optInspElms.filter({ $0.elementId != taskInspDataRecord.elmtObj?.elementId})
             inputCells.append(inputCell)
             inspElmNames.append(_ENGLISH ? (taskInspDataRecord.elmtObj?.elementNameEn)! : (taskInspDataRecord.elmtObj?.elementNameCn)!)
         
@@ -140,7 +140,7 @@ class InputMode01View: InputModeSCMaster {
         self.scrollCellView.contentSize = size
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, inspItemText:String, inspDetailText:String,inspRemarksText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspItemInputText:String="", userInteractive:Bool=false, requiredElementFlag:Int=0, optionEnableFlag:Int=1) -> InputMode01CellView {
+    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, inspItemText:String, inspDetailText:String,inspRemarksText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspItemInputText:String="", userInteractive:Bool=true, requiredElementFlag:Int=0, optionEnableFlag:Int=1) -> InputMode01CellView {
         
         let inputCellViewObj = InputMode01CellView.loadFromNibNamed("InputMode01Cell")
         
@@ -165,6 +165,7 @@ class InputMode01View: InputModeSCMaster {
         inputCellViewObj?.inspReqCatText = sectionName
         inputCellViewObj?.inspAreaText = inspItemText
         inputCellViewObj?.inspItemText = inspItemInputText
+        inputCellViewObj?.requiredElementFlag = requiredElementFlag
         
         if !userInteractive {
             inputCellViewObj?.inptItemInput.userInteractionEnabled = false
@@ -191,7 +192,16 @@ class InputMode01View: InputModeSCMaster {
             let optInspElm = self.optInspElms[0]
             usedInspItemNames.append((_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!)
             
-            let inputCell = inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),inspItemText: (_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!, inspDetailText: "", inspRemarksText: "", dismissBtnHidden: false, elementDbId: 0, refRecordId: 0, inspElmId: optInspElm.elementId!, inspPostId: 0, userInteractive: true)
+            let dpDataHelper = DPDataHelper()
+            var inspectPositionId = 0
+            if let elementId = optInspElm.elementId {
+                inspectPositionId = dpDataHelper.getPositionIdByElementId(elementId)
+            }
+            
+            
+            let inputCell = inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),inspItemText: (_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!, inspDetailText: "", inspRemarksText: "", dismissBtnHidden: false, elementDbId: 0, refRecordId: 0, inspElmId: optInspElm.elementId!, inspPostId: inspectPositionId, userInteractive: true)
+            
+            inputCell.saveMyselfToGetId()
             inputCells.append(inputCell)
             
             inputCell.inspReqCatText = categoryName
@@ -205,10 +215,10 @@ class InputMode01View: InputModeSCMaster {
     func updateOptionalInspElmts(inspElmtNames:[String]=[], action:String="filter") {
         
         if action == "filter" {
-            self.optInspElms = self.optInspElmsMaster
+            /*self.optInspElms = self.optInspElmsMaster
             for inspElmtName in inspElmtNames {
                 self.optInspElms = self.optInspElms.filter({ _ENGLISH ? $0.elementNameEn != inspElmtName : $0.elementNameCn != inspElmtName })
-            }
+            }*/
         }else{
             for inspElmtName in inspElmtNames {
                 let inspElmt = self.optInspElmsMaster.filter({ _ENGLISH ? $0.elementNameEn == inspElmtName : $0.elementNameCn == inspElmtName })

@@ -34,7 +34,7 @@ class DefectDataHelper:DataHelperMaster {
         
         return defectTypeElms
     }
-    
+
     func deleteDefectItemById(recordId:Int) ->Bool {
         let sql = "DELETE FROM task_defect_data_record WHERE record_id = ?"
         
@@ -52,13 +52,13 @@ class DefectDataHelper:DataHelperMaster {
         return true
     }
     
-    func getInspElementIdByName(name:String) ->Int {
-        let sql = "SELECT element_id FROM inspect_element_mstr WHERE (element_name_en = ? OR element_name_cn = ?) AND element_type = 2"
+    func getInspElementIdByName(name:String, elementType:Int = 2) ->Int {
+        let sql = "SELECT element_id FROM inspect_element_mstr WHERE (element_name_en = ? OR element_name_cn = ?) AND element_type = ?"
         var id = 0
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [name, name]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [name, name, elementType]) {
                 if rs.next() {
                     id = Int(rs.intForColumn("element_id"))
                 }
@@ -86,5 +86,74 @@ class DefectDataHelper:DataHelperMaster {
         }
         
         return name
+    }
+    
+    func getInspPositionNameById(id:Int) ->String {
+        let sql = "SELECT * FROM inspect_position_mstr WHERE position_id = ? AND position_type = 1"
+        var name = ""
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [id]) {
+                if rs.next() {
+                    name = _ENGLISH ? rs.stringForColumn("position_name_en") : rs.stringForColumn("position_name_cn")
+                }
+            }
+            
+            db.close()
+        }
+        
+        return name
+    }
+    
+    
+    func getDefectTypesByPositionId(positionId:Int) ->[String] {
+        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON ipe.inspect_element_id = iem.element_id WHERE ipe.inspect_position_id = ? AND iem.element_type = 2"
+        var defectTypes = [String]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [positionId]) {
+                while rs.next() {
+                    defectTypes.append((_ENGLISH ? rs.stringForColumn("element_name_en") : rs.stringForColumn("element_name_cn")))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return defectTypes
+    }
+
+    
+    func getTaskInspDataRcordNameById(recordId:Int) ->TaskInspDataRecord? {
+        let sql = "SELECT * FROM task_inspect_data_record WHERE record_id = ?"
+        var taskInspDataRecord:TaskInspDataRecord?
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [recordId]) {
+                if rs.next() {
+                    
+                    let taskId = Int(rs.intForColumn("task_id"))
+                    let refRecordId = Int(rs.intForColumn("ref_record_id"))
+                    let inspectSectionId = Int(rs.intForColumn("inspect_section_id"))
+                    let inspectElementId = Int(rs.intForColumn("inspect_element_id"))
+                    let inspectPositionId = Int(rs.intForColumn("inspect_position_id"))
+                    let inspectPositionDesc = rs.stringForColumn("inspect_position_desc")
+                    let inspectDetail = rs.stringForColumn("inspect_detail")
+                    let inspectRemarks = rs.stringForColumn("inspect_remarks")
+                    let resultValueId = Int(rs.intForColumn("result_value_id"))
+                    let requestSectionId = Int(rs.intForColumn("request_section_id"))
+                    let requestElementDesc = rs.stringForColumn("request_element_desc")
+                    
+                    taskInspDataRecord = TaskInspDataRecord.init(taskId: taskId, refRecordId: refRecordId, inspectSectionId: inspectSectionId, inspectElementId: inspectElementId, inspectPositionId: inspectPositionId, inspectPositionDesc: inspectPositionDesc, inspectDetail: inspectDetail, inspectRemarks: inspectRemarks, resultValueId: resultValueId, requestSectionId: requestSectionId, requestElementDesc: requestElementDesc)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return taskInspDataRecord
     }
 }

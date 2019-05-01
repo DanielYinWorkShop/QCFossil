@@ -70,7 +70,7 @@ class InputMode02View: InputModeSCMaster {
         var idx = 1
         
         for taskInspDataRecord in (inspSection?.taskInspDataRecords)! {
-            if taskInspDataRecord.postnObj?.positionId > 0 {
+            //if taskInspDataRecord.postnObj?.positionId > 0 {
             
             let dfPositPoints = dpDataHelper.getDefectPositionPointsByRecordId(taskInspDataRecord.recordId!)
             let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),dpText: (_ENGLISH ? taskInspDataRecord.postnObj?.positionNameEn:taskInspDataRecord.postnObj?.positionNameCn)!, dpDescText: taskInspDataRecord.inspectPositionDesc!, dppText: dfPositPoints, dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId: taskInspDataRecord.postnObj!.positionId, resultValueObj:taskInspDataRecord.resultObj!, taskInspDataRecordId:taskInspDataRecord.recordId!)
@@ -85,7 +85,7 @@ class InputMode02View: InputModeSCMaster {
             }
             
             inputCells.append(inputCell)
-            }
+            //}
             
             idx += 1
         }
