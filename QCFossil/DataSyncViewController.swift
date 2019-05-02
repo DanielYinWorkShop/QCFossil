@@ -583,7 +583,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 taskInspectionDateInTaskStatus = "\"\(self.view.getFormattedStringByDateString(taskInspectionDateValueInTaskStatus))\""
                 
-                if taskInspectionDateValueInTaskStatus == "" || Int(taskInspectionDateValueInTaskStatus) < 1 {
+                if refTaskIdInTaskStatus == "" || Int(refTaskIdInTaskStatus) < 1 {
                     dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
                 }else {
                     dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
