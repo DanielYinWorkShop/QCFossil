@@ -500,7 +500,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var refTaskIdInTaskStatus = ""
             var taskInspectionNoInTaskStatus = ""
             var taskInspectionDateInTaskStatus = ""
-            var taskInspectionDateValueInTaskStatus = ""
             var dbActionForTaskStatus = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
@@ -534,7 +533,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             taskInspectionNoInTaskStatus = "\"\(value)\""
                         }else if actionFields[data["tableName"]!]![idx] == "inspection_date" {
                             taskInspectionDateInTaskStatus = "\"\(value)\""
-                            taskInspectionDateValueInTaskStatus = value
                         }else {
                             dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
                         }
@@ -581,7 +579,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                taskInspectionDateInTaskStatus = "\"\(self.view.getFormattedStringByDateString(taskInspectionDateValueInTaskStatus))\""
                 
                 if taskIdInTaskStatus != "" {
                     dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
