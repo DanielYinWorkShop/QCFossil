@@ -386,7 +386,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             //let indexPath = self.pVC.inspectDefectTableview.indexPathForCell(self)
             //let rectOfCell = self.pVC.inspectDefectTableview.rectForRowAtIndexPath(indexPath!)
             
-            textField.showListData(textField, parent: self, handle: dropdownHandleFunc, listData: dfElms, requiredHeight:150)
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms, requiredHeight:300)
             
             return false
         }

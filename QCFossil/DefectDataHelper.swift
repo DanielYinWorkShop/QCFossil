@@ -156,4 +156,22 @@ class DefectDataHelper:DataHelperMaster {
         
         return taskInspDataRecord
     }
+    
+    func getPositionIdByElementId(elementId:Int) ->Int {
+        let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_element_mstr iem ON ipe.inspect_element_id = iem.element_id where iem.element_id = ? AND ipm.position_type = 3"
+        var id = 0
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [elementId]) {
+                if rs.next() {
+                    id = Int(rs.intForColumn("position_id"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return id
+    }
 }

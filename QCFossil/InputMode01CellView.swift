@@ -94,16 +94,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
 
     @IBAction func defectBtnOnClick(sender: UIButton) {
-        //add defect cell to defect list
-        /*
-        if self.inptItemInput.text == "" || self.resultValueId < 1 {
-            self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Inspect Item Result!"))
-            return
-        }
-        
-        //Save self to DB to get the taskDataRecordId
-        self.saveMyselfToGetId()
-        */
+ 
         let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
         
@@ -209,14 +200,19 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         }else if textField == self.inptItemInput {
             //Update Parent InspElmt
             self.inspAreaText = textField.text!
+            
             updateParentOptionElmts()
             
             let defectDataHelper = DefectDataHelper()
-            self.inspElmId = defectDataHelper.getInspElementIdByName(textField.text!, elementType: 1)
+            let inspElementId = defectDataHelper.getInspElementIdByName(textField.text!, elementType: 1)
             
-            
-            
-            fetchDetailSelectedValues()
+            if inspElementId != self.inspElmId {
+                self.inptDetailInput.text = ""
+                self.inspElmId = inspElementId
+                self.inspPostId = defectDataHelper.getPositionIdByElementId(inspElementId)
+                
+                fetchDetailSelectedValues()
+            }
             
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
         }

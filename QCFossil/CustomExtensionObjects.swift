@@ -659,13 +659,27 @@ extension UIView {
     
     func getFormattedStringByDateString(dateString: String) ->String {
         
-        let dfmatter = NSDateFormatter()
-        dfmatter.dateFormat = "\(_DATEFORMATTER) hh:mm:ss a"
-        let formattedDate = dfmatter.dateFromString(dateString)
+        let dateFormatter = NSDateFormatter()
+        var localeId = dateFormatter.locale.localeIdentifier
+        if !localeId.hasSuffix("_POSIX") {
+            localeId = localeId + ("_POSIX")
+            dateFormatter.locale = NSLocale(localeIdentifier: localeId)
+        }
+        dateFormatter.dateFormat = "\(_DATEFORMATTER) hh:mm:ss a"
         
+        let formattedDate = dateFormatter.dateFromString(dateString)
+        /*
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "\(_DATEFORMATTER) hh:mm:ss a"
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_HK_POSIX")
+        dateFormatter.timeZone = NSTimeZone.init(forSecondsFromGMT: 0)
+        
+        dateFormatter.dateFormat = "\(_DATEFORMATTER) hh:mm:ss a"
+        let formattedDate = dateFormatter.dateFromString(dateString)
+        */
         let dfmatter2 = NSDateFormatter()
         dfmatter2.dateFormat = "\(_DATEFORMATTER) HH:mm:ss a"
-        
+ 
         guard let newFormattedDate = formattedDate else{
             return ""
         }
@@ -1542,13 +1556,25 @@ extension UITextField {
             
             Cache_Dropdown_Instance!.dropdownData = listData as! [String]
             
-            let adjustheight = listData.count*50 < 250 ? listData.count*50 : 250
+            let actualHeight = listData.count*50
+            let adjustheight = actualHeight < 250 ? actualHeight : 250
+            var actualMinX = sender.frame.minX
             
-            if (sender.frame.minX + width) > 768 {
-                Cache_Dropdown_Instance!.frame = CGRect.init(x: 768-width, y: sender.superview!.frame.minY+sender.frame.minY+sender.frame.size.height, width: width, height: CGFloat(listData.count*50))
-            }else{
-                Cache_Dropdown_Instance!.frame = CGRect.init(x: sender.frame.minX, y: sender.superview!.frame.minY+sender.frame.minY+sender.frame.size.height, width: width, height: CGFloat(adjustheight))
+            if actualMinX + width > 768 {
+                actualMinX = 768 - width
             }
+            
+            var minY = sender.superview!.frame.minY+sender.frame.minY+sender.frame.size.height
+            
+            if String(sender.superview!.classForCoder) != nil {
+                let classCode = String(sender.superview!.classForCoder)
+                
+                if classCode == "UITableViewCellContentView" {
+                    minY = sender.superview!.superview!.frame.minY+sender.superview!.frame.minY+sender.frame.minY+sender.frame.size.height
+                }
+            }
+            
+            Cache_Dropdown_Instance!.frame = CGRect.init(x: actualMinX, y: minY, width: width, height: CGFloat(adjustheight))
             
             Cache_Dropdown_Instance!.sizeWidth = Int(width)
             Cache_Dropdown_Instance!.sizeHeight = adjustheight //Int(height)
@@ -1562,21 +1588,20 @@ extension UITextField {
             Cache_Dropdown_Instance?.tag = tag
             
             if CGFloat(adjustheight) < height {
-                Cache_Dropdown_Instance!.tableView.scrollEnabled = false
+                //Cache_Dropdown_Instance!.tableView.scrollEnabled = false
             }
             
             if requiredHeight != nil {
                 Cache_Dropdown_Instance!.sizeHeight = requiredHeight!
                 Cache_Dropdown_Instance!.frame.size.height = CGFloat(requiredHeight!)
-                
+                /*
                 if adjustheight < requiredHeight {
                     
                     Cache_Dropdown_Instance!.tableView.scrollEnabled = false
                 }else {
                     Cache_Dropdown_Instance!.tableView.scrollEnabled = true
-                }
+                }*/
             }
-
             
             parent.addSubview(Cache_Dropdown_Instance!)
         }else{
