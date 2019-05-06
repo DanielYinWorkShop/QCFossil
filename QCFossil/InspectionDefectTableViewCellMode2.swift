@@ -385,7 +385,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
              */
             let dfElms = defectDataHelper.getDefectTypeElms((Cache_Task_On?.prodTypeId)!, inspType: (Cache_Task_On?.inspectionTypeId)!, elemtType: 2, inspSecId: self.sectionId)
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms)
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms, requiredHeight:500)
             
             return false
         }

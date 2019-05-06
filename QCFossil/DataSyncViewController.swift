@@ -581,12 +581,18 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                taskInspectionDateInTaskStatus = "\"\(self.view.getFormattedStringByDateString(taskInspectionDateValueInTaskStatus))\""
+                let dateStringArray = taskInspectionDateValueInTaskStatus.componentsSeparatedByString(" ")
+                if dateStringArray.count > 0 {
+                
+                //taskInspectionDateInTaskStatus = "\"\(self.view.getFormattedStringByDateString(taskInspectionDateValueInTaskStatus))\""
                 
                 if refTaskIdInTaskStatus == "" || Int(refTaskIdInTaskStatus) < 1 {
-                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
+                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date LIKE \"%\(dateStringArray[0])%\""
+                    print("dbAction in task status update: \(dbAction)")
                 }else {
-                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
+                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date LIKE \"%\(dateStringArray[0])%\""
+                    print("dbAction in task status update: \(dbAction)")
+                }
                 }
                 
             }else if apiName == "_DS_FGPODATA" {
