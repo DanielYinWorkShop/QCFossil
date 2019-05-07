@@ -815,7 +815,7 @@ let _DS_ACKTASKDATA = [
 //Task Status Data Download Request
 let _DS_DL_TASK_STATUS = [
     "NAME" : "Task Status Data Download",
-    "APINAME" : "\(dataSyncServerUsing)dl_task_status_ws2.aspx",
+    "APINAME" : "\(dataSyncServerUsing)dl_task_status_ws3.aspx",
     "ACKNAME" : _DS_ACKTASKSTATUS,
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,

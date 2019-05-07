@@ -181,6 +181,13 @@ class InputMode01View: InputModeSCMaster {
     @IBAction func addCellBtnOnClick(sender: UIButton) {
         NSLog("Add Cell")
         
+        let inputCell = inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),inspItemText: "", inspDetailText: "", inspRemarksText: "", dismissBtnHidden: false, elementDbId: 0, refRecordId: 0, inspElmId: 0, inspPostId: 0, userInteractive: true)
+        
+        inputCell.saveMyselfToGetId()
+        inputCells.append(inputCell)
+        self.updateContentView()
+        
+        /*
         if self.optInspElms.count > 0 {
             let usedInspItems = self.inputCells.filter({ $0.requiredElementFlag == 0 })
             var usedInspItemNames = [String]()
@@ -210,6 +217,7 @@ class InputMode01View: InputModeSCMaster {
             self.updateContentView()
             self.updateOptionalInspElmts(usedInspItemNames)
         }
+         */
     }
 
     func updateOptionalInspElmts(inspElmtNames:[String]=[], action:String="filter") {
