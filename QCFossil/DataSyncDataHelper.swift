@@ -450,15 +450,13 @@ class DataSyncDataHelper:DataHelperMaster {
         return nil
     }
     
-    func updateTaskStatus(taskId:Int, status:Int, refuseDesc:String) ->Bool {
+    func updateTaskStatus(taskId:Int, status:Int, refuseDesc:String, ref_task_id:Int) ->Bool {
         
-        let sql = "UPDATE inspect_task SET task_status = ?, data_refuse_desc = ? WHERE task_id = ?"
+        let sql = "UPDATE inspect_task SET ref_task_id = ?, task_status = ?, data_refuse_desc = ? WHERE task_id = ?"
         var result = false
         
         if db.open() {
-            
-            if db.executeUpdate(sql, withArgumentsInArray: [status, refuseDesc, taskId]) {
-                
+            if db.executeUpdate(sql, withArgumentsInArray: [ref_task_id, status, refuseDesc, taskId]) {
                 result = true
             }
             

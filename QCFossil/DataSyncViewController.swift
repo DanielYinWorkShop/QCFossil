@@ -500,6 +500,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var refTaskIdInTaskStatus = ""
             var taskInspectionNoInTaskStatus = ""
             var taskInspectionDateInTaskStatus = ""
+            var taskInspectionDateValueInTaskStatus = ""
             var dbActionForTaskStatus = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
@@ -533,6 +534,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             taskInspectionNoInTaskStatus = "\"\(value)\""
                         }else if actionFields[data["tableName"]!]![idx] == "inspection_date" {
                             taskInspectionDateInTaskStatus = "\"\(value)\""
+                            taskInspectionDateValueInTaskStatus = value
                         }else {
                             dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
                         }
@@ -579,13 +581,15 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                
-                if taskIdInTaskStatus != "" {
-                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
-                }else {
-                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date = \(taskInspectionDateInTaskStatus)"
+                let dateStringArray = taskInspectionDateValueInTaskStatus.componentsSeparatedByString(" ")
+                if dateStringArray.count > 0 {
+                    
+                    if refTaskIdInTaskStatus == "" || Int(refTaskIdInTaskStatus) < 1 {
+                        dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date LIKE \"%\(dateStringArray[0])%\""
+                    }else {
+                        dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date LIKE \"%\(dateStringArray[0])%\""
+                    }
                 }
-                
             }else if apiName == "_DS_FGPODATA" {
                 
                 if poLineNeedInsert {
@@ -1992,7 +1996,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         for taskStatus in taskStatusList {
             
-            if taskStatus["task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
+            if taskStatus["task_id"] != nil && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
                 
                 if Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Refused").rawValue {
                     taskRefused.append(Int(taskStatus["task_id"]!)!)
@@ -2012,13 +2016,14 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         for taskStatus in taskStatusList {
             
-            if taskStatus["task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
+            if taskStatus["task_id"] != nil && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
                 
-                dataSyncDataHelper.updateTaskStatus(Int(taskStatus["task_id"]!)!, status: Int(taskStatus["task_status"]!)!, refuseDesc: taskStatus["data_refuse_desc"]!)
+                dataSyncDataHelper.updateTaskStatus(Int(taskStatus["task_id"]!)!, status: Int(taskStatus["task_status"]!)!, refuseDesc: taskStatus["data_refuse_desc"]!, ref_task_id: Int(taskStatus["ref_task_id"]!)!)
                 
                 if Cache_Task_On?.taskId == Int(taskStatus["task_id"]!)! {
                     Cache_Task_On?.taskStatus = Int(taskStatus["task_status"]!)!
                     Cache_Task_On?.dataRefuseDesc = taskStatus["data_refuse_desc"]!
+                    Cache_Task_On?.refTaskId = Int(taskStatus["ref_task_id"]!)!
                 }
                 
             }
