@@ -390,6 +390,10 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
                 self.inspElmt?.inspPhotos.append(photo)
                 Cache_Task_On!.myPhotos.append(photo)
                 
+                if let vc = self.inspElmt?.parentVC as? TaskDetailsViewController {
+                    vc.refreshCameraIcon()
+                }
+                
             }else{
                 let photo = image.saveImageToLocal(image, savePath: Cache_Task_Path!, taskId: (Cache_Task_On?.taskId)!, bookingNo: (Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo)!, inspectorName: (Cache_Inspector?.appUserName)!, dataRecordId: self.dataRecordId, dataType: self.dataType, currentDate: self.view.getCurrentDateTime(),originFileName: "originFileName")
                 

@@ -242,7 +242,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
                 listData.append( (_ENGLISH ? optInspElmt.elementNameEn : optInspElmt.elementNameCn)!)
             }
             
-            textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: listData, width: self.inptItemInput.frame.size.width*1.2, height: 250)
+            textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: listData, width: self.inptItemInput.frame.size.width*1.2, height:500)
             
             return false
         }
@@ -251,7 +251,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
 
     @IBAction func showInptDetailVals(sender: UIButton) {
-        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 500, height:250, allowManuallyInput: true)
+        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 500, height:500, allowManuallyInput: true)
         
 
     }

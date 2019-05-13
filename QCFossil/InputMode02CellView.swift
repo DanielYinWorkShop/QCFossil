@@ -185,7 +185,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
             
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, tag: 1000002)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, tag: 1000002, height:500)
             }
         }else if textField == self.cellDPPInput {
             var positName = [String]()
@@ -202,7 +202,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                     clearDropdownviewForSubviews(self.parentView!)
                 }else{
                 
-                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, width:320, height:400, allowMulpSel: true, tag: 1000001)
+                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, width:320, height:500, allowMulpSel: true, tag: 1000001)
                     
                 }
             }

@@ -1544,7 +1544,7 @@ extension NSDate {
 }
 
 extension UITextField {
-    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false, requiredHeight: CGFloat? = nil) /*->DropdownListViewControl*/ {
+    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false) /*->DropdownListViewControl*/ {
         
         if listData.count > 0 {
             //return Cache_Dropdown_Instance!
@@ -1556,8 +1556,8 @@ extension UITextField {
             
             Cache_Dropdown_Instance!.dropdownData = listData as! [String]
             
-            let actualHeight = listData.count*50
-            let adjustheight = actualHeight < 250 ? actualHeight : 250
+            let actualHeight = CGFloat(listData.count*50)
+            let adjustheight = actualHeight < height ? actualHeight : height
             var actualMinX = sender.frame.minX
             
             if actualMinX + width > 768 {
@@ -1575,15 +1575,15 @@ extension UITextField {
             }
             
             let absolutePoint = sender.convertRect(sender.bounds, toView: nil)
-            let adjustMinY = absolutePoint.origin.y + 50 + sender.frame.size.height + (requiredHeight ?? height)
+            let adjustMinY = absolutePoint.origin.y + 50 + sender.frame.size.height + adjustheight
             if adjustMinY > 1024 {
                 minY -= adjustMinY - 1024
             }
 
-            Cache_Dropdown_Instance!.frame = CGRect.init(x: actualMinX, y: minY, width: width, height: CGFloat(adjustheight))
+            Cache_Dropdown_Instance!.frame = CGRect.init(x: actualMinX, y: minY, width: width, height: adjustheight)
             
             Cache_Dropdown_Instance!.sizeWidth = Int(width)
-            Cache_Dropdown_Instance!.sizeHeight = adjustheight //Int(height)
+            Cache_Dropdown_Instance!.sizeHeight = Int(adjustheight) //Int(height)
             
             Cache_Dropdown_Instance!.myParentTextField = sender
             Cache_Dropdown_Instance!.layer.cornerRadius = 5.0
@@ -1592,22 +1592,6 @@ extension UITextField {
             Cache_Dropdown_Instance!.tableView.rowHeight = 50
             Cache_Dropdown_Instance!.handleFun = handle
             Cache_Dropdown_Instance?.tag = tag
-            
-            if CGFloat(adjustheight) < height {
-                //Cache_Dropdown_Instance!.tableView.scrollEnabled = false
-            }
-            
-            if requiredHeight != nil {
-                Cache_Dropdown_Instance!.sizeHeight = Int(requiredHeight!)
-                Cache_Dropdown_Instance!.frame.size.height = CGFloat(requiredHeight!)
-                /*
-                if adjustheight < requiredHeight {
-                    
-                    Cache_Dropdown_Instance!.tableView.scrollEnabled = false
-                }else {
-                    Cache_Dropdown_Instance!.tableView.scrollEnabled = true
-                }*/
-            }
             
             parent.addSubview(Cache_Dropdown_Instance!)
         }else{
