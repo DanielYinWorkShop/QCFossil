@@ -524,9 +524,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
                         
-                        if taskIdInTaskStatus == "" && Int(value) != nil {
-                            refTaskIdInTaskStatus = value
-                        }
+                        refTaskIdInTaskStatus = value
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" {
                         
@@ -581,19 +579,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                let dateStringArray = taskInspectionDateValueInTaskStatus.componentsSeparatedByString(" ")
-                if dateStringArray.count > 0 {
-                
-                //taskInspectionDateInTaskStatus = "\"\(self.view.getFormattedStringByDateString(taskInspectionDateValueInTaskStatus))\""
-                
-                if refTaskIdInTaskStatus == "" || Int(refTaskIdInTaskStatus) < 1 {
-                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date LIKE \"%\(dateStringArray[0])%\""
-                    print("dbAction in task status update: \(dbAction)")
-                }else {
-                    dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND inspection_no = \(taskInspectionNoInTaskStatus) AND inspection_date LIKE \"%\(dateStringArray[0])%\""
-                    print("dbAction in task status update: \(dbAction)")
-                }
-                }
+                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus)"
                 
             }else if apiName == "_DS_FGPODATA" {
                 
@@ -2001,7 +1987,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         for taskStatus in taskStatusList {
             
-            if taskStatus["task_id"] != nil && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
+            if taskStatus["task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
                 
                 if Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Refused").rawValue {
                     taskRefused.append(Int(taskStatus["task_id"]!)!)
