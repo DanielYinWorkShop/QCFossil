@@ -616,6 +616,7 @@ let _DS_FGPODATA = [
         "service_token" : _DS_SERVICETOKEN,
         "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
         "service_type": "FGPO Data Download",
+        "init_service_session": ""
     ],
     
     "ACTIONNAMES" : [
