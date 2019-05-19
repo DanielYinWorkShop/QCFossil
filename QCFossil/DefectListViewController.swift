@@ -110,11 +110,6 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             
             defectItem.cellIdx = sortingDictionary["\(defectItem.inspElmt.cellCatIdx)-\(defectItem.inspElmt.cellIdx)"]!
             defectItem.sortNum = getSortingNum(defectItem.inspElmt.cellCatIdx, elmtFtor: defectItem.inspElmt.cellIdx, cellFtor: defectItem.cellIdx)
-            
-            if defectItem.inputMode == _INPUTMODE02 {
-                let dpDataHelper = DPDataHelper()
-                defectItem.defectpositionPoints = dpDataHelper.getDefectPositionPointsByRecordId(defectItem.inspectRecordId!)
-            }
         }
         
         defectItems = (Cache_Task_On?.defectItems)!
@@ -602,7 +597,15 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
             cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
             cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
-            cellMode2.dppInput.text = defectItem.defectpositionPoints
+            
+            if let parentElement = defectItem.inspElmt as? InputMode02CellView {
+                cellMode2.dppInput.text = parentElement.cellDPPInput.text
+            } else {
+                let dpDataHelper = DPDataHelper()
+                defectItem.defectpositionPoints = dpDataHelper.getDefectPositionPointsByRecordId(defectItem.inspectRecordId!)
+                cellMode2.dppInput.text = defectItem.defectpositionPoints
+            }
+            
             //cellMode2.dpInput.text = _ENGLISH ? defectItem.postnObj.positionNameEn : defectItem.postnObj.positionNameCn
             cellMode2.dtInput.text = _ENGLISH ? defectItem.elmtObj.elementNameEn : defectItem.elmtObj.elementNameCn
             

@@ -139,7 +139,7 @@ class TabBarViewController: UITabBarController {
                             icItemData = taskDataHelper.updateInspDataRecord(icItemData!)
                             
                             
-                            if icItemData!.recordId>0 && icElm.myDefectPositPoints.count>0 {
+                            if icItemData!.recordId>0 /*&& icElm.myDefectPositPoints.count>0*/ {
                                 for dpp in icElm.myDefectPositPoints {
                                     let dppData = TaskInspPosinPoint.init(inspRecordId: icItemData!.recordId!, inspPosinId: dpp.positionId, createUser: (Cache_Inspector?.appUserName)!, createDate: currentDate, modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: currentDate)
                                     

@@ -11,14 +11,63 @@ import UIKit
 
 class DefectDataHelper:DataHelperMaster {
 
-    func getDefectTypeElms(prodType:Int, inspType:Int, elemtType:Int, inspSecId:Int) ->[String] {
-        //let sql = "SELECT * FROM inspect_element_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND element_type = ? AND inspect_section_id = ?"
-        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id INNER JOIN inspect_task_tmpl_section itts ON ise.inspect_section_id = itts.inspect_section_id INNER JOIN inspect_task_tmpl_mstr ittm ON ittm.tmpl_id = itts.tmpl_id WHERE ittm.prod_type_id = ? AND ittm.inspect_type_id = ? AND iem.element_type = ? AND ise.inspect_section_id = ?"
+    func getDefectTypeByTaskDefectDataRecordId(Id:Int) ->[String] {
+        let sql = "SELECT distinct iem.element_name_en, iem.element_name_cn FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN task_inspect_position_point tipp ON ipe.inspect_position_id = tipp.inspect_position_id INNER JOIN task_defect_data_record tddr ON tipp.inspect_record_id = tddr.inspect_record_id WHERE tddr.record_id = ?"
         var defectTypeElms = [String]()
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [prodType, inspType, elemtType, inspSecId]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id]) {
+                while rs.next() {
+                    
+                    let elementNameEn = rs.stringForColumn("element_name_en")
+                    let elementNameCn = rs.stringForColumn("element_name_cn")
+
+                    defectTypeElms.append( _ENGLISH ? elementNameEn:elementNameCn)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return defectTypeElms
+    }
+    
+    func getDefectTypeByTaskInspectDataRecordId(Id:Int) ->[PositPointObj] {
+        let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN task_inspect_position_point tipp ON ipm.position_id = tipp.inspect_position_id WHERE tipp.inspect_record_id = ?"
+        var defectTypeElms = [PositPointObj]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id]) {
+                while rs.next() {
+                    let positionId = Int(rs.intForColumn("position_id"))
+                    let parentId = Int(rs.intForColumn("parent_position_id"))
+                    let elementNameEn = rs.stringForColumn("position_name_en")
+                    let elementNameCn = rs.stringForColumn("position_name_cn")
+                    
+                    let positionObject = PositPointObj(positionId: positionId, parentId: parentId, positionNameEn: elementNameEn, positionNameCn: elementNameCn)
+                    
+                    defectTypeElms.append(positionObject)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return defectTypeElms
+    }
+    
+    func getDefectTypeElms(positionIds:[String]) ->[String] {
+        var sql = "SELECT distinct iem.element_name_en, iem.element_name_cn FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id WHERE iem.element_type = 2 AND ipe.inspect_position_id IN "
+        var defectTypeElms = [String]()
+        
+        let positions = positionIds.joinWithSeparator(",")
+        sql += "(\(positions))"
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 while rs.next() {
                     //let elementId = Int(rs.intForColumn("element_id"))
                     let elementNameEn = rs.stringForColumn("element_name_en")

@@ -193,6 +193,10 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                 break
             }
         }
+            
+        if (handleFun != nil){
+            handleFun!(myParentTextField!)
+        }
         }
     }
     

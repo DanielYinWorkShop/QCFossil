@@ -294,30 +294,6 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             })
         })
     }
-    /*
-    override func saveMyselfToGetId() {
-        //Save self to DB to get the taskDataRecordId
-        let taskDataHelper = TaskDataHelper()
-        let taskInspDataRecord = TaskInspDataRecord.init(recordId: self.taskInspDataRecordId,taskId: (Cache_Task_On?.taskId)!, refRecordId: self.refRecordId!, inspectSectionId: self.cellCatIdx, inspectElementId: self.inspElmId!, inspectPositionId: self.inspPostId!, inspectPositionDesc: "", inspectDetail: "", inspectRemarks: "", resultValueId: self.resultValueId, requestSectionId: 0, requestElementDesc: "", createUser: (Cache_Inspector?.appUserName)!, createDate: self.getCurrentDateTime(), modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: self.getCurrentDateTime())
-        
-        if self.taskInspDataRecordId < 1 {
-            self.taskInspDataRecordId = taskDataHelper.insertTaskInspDataRecord(taskInspDataRecord!)
-        }else{
-            taskDataHelper.updateInspDataRecord(taskInspDataRecord!)
-        }
-        
-        if self.taskInspDataRecordId>0 && self.myDefectPositPoints.count>0 {
-            var dppDatas = [TaskInspPosinPoint]()
-            for dpp in self.myDefectPositPoints {
-                let dppData = TaskInspPosinPoint.init(inspRecordId: self.taskInspDataRecordId!, inspPosinId: dpp.positionId, createUser: (Cache_Inspector?.appUserName)!, createDate: self.getCurrentDateTime(), modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: self.getCurrentDateTime())
-                    
-                dppDatas.append(dppData!)
-            }
-                
-            let dpDataHelper = DPDataHelper()
-            dppDatas = dpDataHelper.updateDefectPositionPoints(self.taskInspDataRecordId!,defectPositionPoints: dppDatas)
-        }
-    }*/
     
     override func saveMyselfToGetId() {
         //Save self to DB to get the taskDataRecordId
@@ -327,7 +303,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             
             self.taskInspDataRecordId = taskDataHelper.insertTaskInspDataRecord(taskInspDataRecord!)
             
-            if self.taskInspDataRecordId>0 && self.myDefectPositPoints.count>0 {
+            if self.taskInspDataRecordId>0 /*&& self.myDefectPositPoints.count>0*/ {
                 var dppDatas = [TaskInspPosinPoint]()
                 for dpp in self.myDefectPositPoints {
                     let dppData = TaskInspPosinPoint.init(inspRecordId: self.taskInspDataRecordId!, inspPosinId: dpp.positionId, createUser: (Cache_Inspector?.appUserName)!, createDate: self.getCurrentDateTime(), modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: self.getCurrentDateTime())

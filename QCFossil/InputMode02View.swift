@@ -170,6 +170,9 @@ class InputMode02View: InputModeSCMaster {
         inputCellViewObj?.inspAreaText = dpText
         inputCellViewObj?.inspItemText = dppText
         
+        let defectDataHelper = DefectDataHelper()
+        inputCellViewObj?.myDefectPositPoints = defectDataHelper.getDefectTypeByTaskInspectDataRecordId(taskInspDataRecordId)
+        
         if !dismissBtnHidden {
             inputCellViewObj?.showDismissButton()
         }

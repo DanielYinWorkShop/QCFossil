@@ -425,9 +425,21 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
              1: Inspect Item
              2: Defect Item
              */
-            let dfElms = defectDataHelper.getDefectTypeElms((Cache_Task_On?.prodTypeId)!, inspType: (Cache_Task_On?.inspectionTypeId)!, elemtType: 2, inspSecId: self.sectionId)
             
-            textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms)
+            if let parentCellView = self.inspItem as? InputMode02CellView {
+                let positionIds = parentCellView.myDefectPositPoints
+                let positionIdArray = positionIds.map({ position in
+                    return "\(position.positionId)"
+                })
+                
+                let dfElms = defectDataHelper.getDefectTypeElms(positionIdArray)
+                textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms, height: 500)
+            } else {
+                
+                guard let id = self.taskDefectDataRecordId else {return false}
+                let dfElms = defectDataHelper.getDefectTypeByTaskDefectDataRecordId(id)
+                textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms, height: 500)
+            }
             
             return false
         }
@@ -563,5 +575,10 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
         NSNotificationCenter.defaultCenter().postNotificationName("reloadPhotos", object: nil, userInfo: ["photoSelected":photo])
         
         //
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        self.pVC.view.clearDropdownviewForSubviews((self.pVC?.view)!)
     }
 }
