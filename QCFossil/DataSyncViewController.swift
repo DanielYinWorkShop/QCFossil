@@ -137,43 +137,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
      // Pass the selected object to the new view controller.
      }
      */
-    /*
-     var defaultSession: NSURLSession {
-     struct MydefaultSession {
-     static var defaultSessionStaticSelf: DataSyncViewController!
-     static var defaultSessionInstance: NSURLSession = {
-     
-     var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-     configuration.timeoutIntervalForRequest = 300
-     configuration.timeoutIntervalForResource = 300
-     configuration.sessionSendsLaunchEvents = true
-     configuration.discretionary = true
-     
-     return NSURLSession(configuration: configuration, delegate: defaultSessionStaticSelf, delegateQueue: nil)
-     }()
-     }
-     MydefaultSession.defaultSessionStaticSelf = self
-     return MydefaultSession.defaultSessionInstance
-     }
-    
-    
-     var backgroundSession: NSURLSession {
-     struct MybackgroundSession {
-     static var backgroundSessionStaticSelf: DataSyncViewController!
-     static var backgroundSessionInstance: NSURLSession = {
-     
-     var configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("com.pacmobile.fossilqc")
-     configuration.timeoutIntervalForRequest = 60
-     configuration.timeoutIntervalForResource = 60
-     configuration.sessionSendsLaunchEvents = true
-     configuration.discretionary = true
-     
-     return NSURLSession(configuration: configuration, delegate: backgroundSessionStaticSelf, delegateQueue: nil)
-     }()
-     }
-     MybackgroundSession.backgroundSessionStaticSelf = self
-     return MybackgroundSession.backgroundSessionInstance
-     }*/
     
     func updateLocalizedString(){
         self.navigationItem.leftBarButtonItem?.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("App Menu")
@@ -360,68 +323,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         }
     }
     
-    /*
-     func processingDownloadData(apiName:String, jsonData:NSDictionary) {
-     
-     let actionNames = self.dsDataObj!["ACTIONNAMES"] as! [String]
-     let actionFields:Dictionary<String, [String]> = self.dsDataObj!["ACTIONFIELDS"] as! Dictionary
-     let actionTables:Dictionary<String, String> = self.dsDataObj!["ACTIONTABLES"] as! Dictionary
-     let ackName = self.dsDataObj!["ACKNAME"]
-     //dataSet = [Dictionary<String, String>]()
-     
-     var recCountInTable = Dictionary<String, Int>()
-     var currActTable = ""
-     var currCount = 1
-     
-     if actionNames.count > 0 {
-     for idx in 0...actionNames.count-1 {
-     var dataObj = Dictionary<String, String>()
-     dataObj["tableName"] = actionNames[idx]
-     dataObj["apiName"] = apiName
-     /*
-     if dataObj["tableName"] == "inspect_task_list" {
-     print("jsonData: \(jsonData)")
-     }*/
-     
-     if let mstrData = jsonData[actionNames[idx]] as? [[String: AnyObject]] {
-     for data in mstrData {
-     for idx2 in 0...actionFields[actionNames[idx]]!.count-1 {
-     if let value = data[actionFields[actionNames[idx]]![idx2]] as? String {
-     dataObj[actionFields[actionNames[idx]]![idx2]] = value
-     }
-     }
-     
-     if currActTable != actionNames[idx] {
-     currCount = 1
-     }
-     
-     currActTable = actionNames[idx]
-     
-     recCountInTable[actionTables[actionNames[idx]]!+"_count"] = currCount
-     currCount += 1
-     
-     dataSet.append(dataObj)
-     }
-     
-     }else if let mstrData = jsonData[actionNames[idx]] as? [String: AnyObject] {
-     for (key, value) in mstrData {
-     
-     dataObj[key] = value as? String
-     }
-     
-     dataSet.append(dataObj)
-     }
-     }
-     }
-     
-     self.updateDLProcessLabel("Sending \(apiName) Acknowledgement...")
-     recCountInTable["service_session"] = Int(_DS_SESSION)
-     self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
-     
-     
-     }*/
-    
-    
     func processingDownloadData(apiName:String, jsonData:NSDictionary) {
         
         let dataSyncDataHelper = DataSyncDataHelper()
@@ -496,11 +397,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             //-------------------------
             var poLineNeedInsert = true
             var poItemId = ""
-            var taskIdInTaskStatus = ""
             var refTaskIdInTaskStatus = ""
-            var taskInspectionNoInTaskStatus = ""
-            var taskInspectionDateInTaskStatus = ""
-            var taskInspectionDateValueInTaskStatus = ""
             var dbActionForTaskStatus = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
@@ -516,26 +413,13 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             dbFields += ","+actionFields[data["tableName"]!]![idx]
                             dbValues += ",\"\(value)\""
                         }
-                    }else if apiName == "_DS_DL_TASK_STATUS" && actionFields[data["tableName"]!]![idx] == "task_id" {
-                        
-                        if Int(value) != nil {
-                            taskIdInTaskStatus = value
-                        }
-                        
                     }else if apiName == "_DS_DL_TASK_STATUS" && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
                         
                         refTaskIdInTaskStatus = value
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" {
                         
-                        if actionFields[data["tableName"]!]![idx] == "inspection_no" {
-                            taskInspectionNoInTaskStatus = "\"\(value)\""
-                        }else if actionFields[data["tableName"]!]![idx] == "inspection_date" {
-                            taskInspectionDateInTaskStatus = "\"\(value)\""
-                            taskInspectionDateValueInTaskStatus = value
-                        }else {
-                            dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
-                        }
+                        dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
                         
                     }else if apiName == "_DS_MSTRDATA" && actionFields[data["tableName"]!]![idx] == "vdr_sign_name" {
                         
@@ -565,9 +449,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         
                     }else if apiName == "_DS_FGPODATA" && actionFields[data["tableName"]!]![idx] == "item_id" {
                         poItemId = value
-                        
-                    }else if apiName == "_DS_DL_TASK_STATUS" && actionFields[data["tableName"]!]![idx] == "task_id" {
-                        taskIdInTaskStatus = value
                         
                     }
                 }
@@ -626,7 +507,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             let totalReqCnt = Int("\(jsonData["total_req_cnt"]!)")
             let downloadReqCnt = Int("\(jsonData["download_req_cnt"]!)")
             
+            #if DEBUG
             print("total: \(totalReqCnt), download: \(downloadReqCnt)")
+            #endif
             
             self.totalReqCnt = totalReqCnt!
             self.downloadReqCnt = downloadReqCnt!
@@ -928,12 +811,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.updateULProcessLabel("Sending Request...")
         self.buffer = NSMutableData()
         
-        /*
-         let config = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("123")//defaultSessionConfiguration()
-         config.timeoutIntervalForRequest = 300
-         config.timeoutIntervalForResource = 300
-         session = NSURLSession(configuration: config, delegate: self, delegateQueue: nil)
-         */
         //session = backgroundSession
         makeULPostRequest(_DS_ULTASKDATA)
         
@@ -1073,8 +950,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
         }
         
+        #if DEBUG
         print("Download Request: \(param)")
-        
+        #endif
+            
         let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
         request.HTTPMethod = "POST"
         request.timeoutInterval = 300
@@ -1120,8 +999,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         param += "}"
         param = param.stringByReplacingOccurrencesOfString(",}", withString: "}")
         
+        #if DEBUG
         print("param: \(param), Name: \(self.dsDataObj!["NAME"])")
-        
+        #endif
+            
         if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
             if self.downloadReqCnt == self.totalReqCnt {
                 self.updateProgressBar(0.9)
@@ -1134,7 +1015,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             //sleep(1)
         }
         
+        #if DEBUG
         print("\(dsData["APINAME"] as! String) ACK Response: \(param)")
+        #endif
         
         let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
         request.HTTPMethod = "POST"
@@ -1303,7 +1186,11 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         //here you can get full lenth of your content
         expectedContentLength = Int(response.expectedContentLength)
+        
+        #if DEBUG
         print("expectedContentLength: \(expectedContentLength)")
+        #endif
+        
         completionHandler(NSURLSessionResponseDisposition.Allow)
     }
     
@@ -1315,7 +1202,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             completionHandler()
         }
         
+        #if DEBUG
         print("All tasks are finished")
+        #endif
     }
     
     func errorMsgByCode(code:Int) ->String {
@@ -1384,13 +1273,16 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                    
                 self.processingDownloadData("_DS_MSTRDATA", jsonData: jsonData)
-                //self.processingDownloadData("Master Data Download", jsonData: jsonData)
-            }
-            catch {
+            } catch {
                 
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1416,14 +1308,19 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                        
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_INPTSETUP)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
-               
+                #endif
+                
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
                     updateDLProcessLabel("Master Data ACK Error: \(errorMsgByCode((error as NSError).code))")
@@ -1444,19 +1341,27 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 updateDLProcessLabel("Preparing Inspection Setup Data...")
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
-                //buffer.setData(NSMutableData())
+                
+                #if DEBUG
+                print("jsonData: \(jsonData)")
+                #endif
                 
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                
                 self.processingDownloadData("_DS_INPTSETUP", jsonData: jsonData)
                 //self.processingDownloadData("Inspection Setup Data Download", jsonData: jsonData)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1481,14 +1386,19 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                    
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_FGPODATA)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
-                
+                #endif
+                    
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
                     updateDLProcessLabel("Inspection Setup Data ACK Error: \(errorMsgByCode((error as NSError).code))")
@@ -1517,12 +1427,17 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                
                 self.processingDownloadData("_DS_FGPODATA", jsonData: jsonData)
                 //self.processingDownloadData("FGPO Data Download", jsonData: jsonData)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1552,13 +1467,18 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     return
                 }
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_TASKDATA)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1588,13 +1508,18 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                    
                 self.processingDownloadData("_DS_TASKDATA", jsonData: jsonData)
                 //self.processingDownloadData("Task Booking Data Download", jsonData: jsonData)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
-                
+                #endif
+                    
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
                     updateDLProcessLabel("Task Booking Data Error: \(errorMsgByCode((error as NSError).code))")
@@ -1621,22 +1546,12 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.updateProgressBar(1)
                 //task status download request
                 self.makeDLPostRequest(_DS_DL_TASK_STATUS)
-                /*
-                 dispatch_async(dispatch_get_main_queue(), {
-                 self.updateDLProcessLabel("Complete")
-                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
-                 NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
-                 
-                 self.lastDownloadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
-                 
-                 NSNotificationCenter.defaultCenter().postNotificationName("reloadTaskSearchTableView", object: nil)
-                 
-                 let keyValueDataHelper = KeyValueDataHelper()
-                 keyValueDataHelper.updateLastDownloadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
-                 })*/
+                
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1665,12 +1580,17 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
                 
+                #if DEBUG
                 print("session result: \(session_result)")
+                #endif
+                
                 self.processingDownloadData("_DS_DL_TASK_STATUS", jsonData: jsonData)
                 //self.processingDownloadData("Task Status Data Download", jsonData: jsonData)
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1750,7 +1670,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
             }
             catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1872,7 +1794,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 //resultSet = dataSet
             } catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1926,7 +1850,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     var result = (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
                     result += (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
                     
+                    #if DEBUG
                     print("result: \(result)")
+                    #endif
                     
                     //update photo upload date
                     if (Int(dataObj["photo_id"]!) != nil && result.containsString("OK")) {
@@ -1963,7 +1889,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 }
                 
             } catch {
+                #if DEBUG
                 print("error serializing JSON: \(error)")
+                #endif
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
