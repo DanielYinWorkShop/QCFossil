@@ -27,8 +27,15 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectPPIInput: UITextField!
     @IBOutlet weak var defectPositLabel: UILabel!
     @IBOutlet weak var defectPositInput: UITextField!
+    @IBOutlet weak var defectDesc1Label: UILabel!
+    @IBOutlet weak var defectDesc1Input: UITextField!
+    @IBOutlet weak var defectDesc2Label: UILabel!
+    @IBOutlet weak var defectDesc2Input: UITextField!
     
     weak var pVC:InspectionDefectList!
+    
+    var defectValues:[DropdownValue]?
+    var caseValues:[DropdownValue]?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,6 +48,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectTypeInput.delegate = self
         self.defectPPIInput.delegate = self
         self.defectPositInput.delegate = self
+        self.defectDesc1Input.delegate = self
+        self.defectDesc2Input.delegate = self
         
         self.defectDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
         self.defectPositLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position")
@@ -50,6 +59,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectMajorQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Major")
         self.defectMinorQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Minor")
         self.defectTotalQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Total")
+        self.defectDesc1Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 1")
+        self.defectDesc2Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 2")
         
     }
     
@@ -400,22 +411,70 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             }
             
             return false
+        } else if textField == self.defectDesc1Input {
+            
+            self.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(self.inspectElementId ?? 0)
+            var listData = [String]()
+            
+            self.defectValues?.forEach({ value in
+                listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
+            })
+            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:500)
+            
+            return false
+        } else if textField == self.defectDesc2Input {
+            
+            self.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(self.inspectElementId ?? 0)
+            var listData = [String]()
+            
+            self.caseValues?.forEach({ value in
+                listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
+            })
+            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:500)
+
+            return false
         }
         
         return true
     }
     
     func dropdownHandleFunc(textField:UITextField) {
+        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx}).first
+        guard let defectItem = defectItemFilter else {return}
+        
         if textField == self.defectTypeInput {
             
-            let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+            let defectDataHelper = DefectDataHelper()
+            let inspectElementId = defectDataHelper.getInspElementIdByName(textField.text ?? "")
+            defectItem.inspectElementId = inspectElementId
+            self.inspectElementId = inspectElementId
             
-            if defectItemFilter?.count>0 {
-                let defectItem = defectItemFilter![0]
-                let defectDataHelper = DefectDataHelper()
-                
-                defectItem.inspectElementId = defectDataHelper.getInspElementIdByName(textField.text!)
-            }
+        } else if textField == self.defectDesc1Input {
+            
+            guard let defectValueName = self.defectDesc1Input.text else {return}
+            guard let defectValues = self.defectValues else {return}
+            
+            defectValues.forEach({ selectedObject in
+                if selectedObject.valueNameEn == defectValueName || selectedObject.valueNameCn == defectValueName {
+                    self.inspectElementDefectValueId = selectedObject.valueId
+                    defectItem.inspectElementDefectValueId = selectedObject.valueId
+                }
+            })
+            
+        } else if textField == self.defectDesc2Input {
+            
+            guard let caseValueName = self.defectDesc2Input.text else {return}
+            guard let caseValues = self.caseValues else {return}
+            
+            caseValues.forEach({ selectedObject in
+                if selectedObject.valueNameEn == caseValueName || selectedObject.valueNameCn == caseValueName {
+                    self.inspectElementCaseValueId = selectedObject.valueId
+                    defectItem.inspectElementCaseValueId = selectedObject.valueId
+                }
+            })
+            
         }
     }
     

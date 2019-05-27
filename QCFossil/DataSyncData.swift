@@ -309,7 +309,16 @@ let _DS_INPTSETUP = [
         "inspect_element_detail_select_val_list",
         "result_value_mstr_list",
         "result_set_mstr_list",
-        "result_set_value_list"
+        "result_set_value_list",
+        "zone_value_mstr_list",
+        "zone_set_mstr_list",
+        "zone_set_value_list",
+        "case_value_mstr_list",
+        "case_set_mstr_list",
+        "case_set_value_list",
+        "defect_value_mstr_list",
+        "defect_set_mstr_list",
+        "defect_set_value_list"
     ],
     "ACTIONTABLES" : [
         "inspect_type_mstr_list" : "inspect_type_mstr",
@@ -328,8 +337,16 @@ let _DS_INPTSETUP = [
         "inspect_task_tmpl_section_list" : "inspect_task_tmpl_section",
         "inspect_task_tmpl_position_list" : "inspect_task_tmpl_position",
         "inspect_section_element_list" : "inspect_section_element",
-        "inspect_position_element_list" : "inspect_position_element"
-        /*"inspect_task_list" : "inspect_task"*/
+        "inspect_position_element_list" : "inspect_position_element",
+        "zone_value_mstr_list" : "zone_value_mstr",
+        "zone_set_mstr_list" : "zone_set_mstr",
+        "zone_set_value_list" : "zone_set_value",
+        "case_value_mstr_list" : "case_value_mstr",
+        "case_set_mstr_list" : "case_set_mstr",
+        "case_set_value_list" : "case_set_value",
+        "defect_value_mstr_list" : "defect_value_mstr",
+        "defect_set_mstr_list" : "defect_set_mstr",
+        "defect_set_value_list" : "defect_set_value"
     ],
     "ACTIONFIELDS" : [
         "inspect_type_mstr_list" : [
@@ -475,6 +492,7 @@ let _DS_INPTSETUP = [
             "current_level",
             "parent_position_id",
             "position_type",
+            "position_zone_set_id",
             "display_order",
             "rec_status",
             "create_date",
@@ -506,6 +524,8 @@ let _DS_INPTSETUP = [
             "detail_default_value",
             "detail_required_result_set_id",
             "detail_suggest_flag",
+            "inspect_defect_set_id",
+            "inspect_case_set_id",
             "rec_status",
             "create_date",
             "create_user",
@@ -564,6 +584,112 @@ let _DS_INPTSETUP = [
             "create_user",
             "modify_date",
             "modify_user"
+        ],
+        "zone_value_mstr_list" : [
+            "value_id",
+            "value_code",
+            "value_name_en",
+            "value_name_cn",
+            "display_order",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
+        ],
+        "zone_set_mstr_list" : [
+            "set_id",
+            "set_name",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
+        ],
+        "zone_set_value_list" : [
+            "set_id",
+            "value_id",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user"
+        
+        ],
+        "case_value_mstr_list" : [
+            "value_id",
+            "value_code",
+            "value_name_en",
+            "value_name_cn",
+            "display_order",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
+        ],
+        "case_set_mstr_list" : [
+            "set_id",
+            "set_name",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
+        ],
+        "case_set_value_list" : [
+            "set_id",
+            "value_id",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user"
+        ],
+        "defect_value_mstr_list" : [
+            "value_id",
+            "value_code",
+            "value_name_en",
+            "value_name_cn",
+            "display_order",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
+        ],
+        "defect_set_mstr_list" : [
+            "set_id",
+            "set_name",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
+        ],
+        "defect_set_value_list" : [
+            "set_id",
+            "value_id",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user"
         ]
     ]
 ]
@@ -592,7 +718,16 @@ let _DS_ACKINPTSETUP = [
         "inspect_element_detail_select_val_count": "0",
         "result_value_mstr_count": "0",
         "result_set_mstr_count": "0",
-        "result_set_value_count": "0"
+        "result_set_value_count": "0",
+        "zone_value_mstr_count" : "0",
+        "zone_set_mstr_count" : "0",
+        "zone_set_value_count" : "0",
+        "case_value_mstr_count" : "0",
+        "case_set_mstr_count" : "0",
+        "case_set_value_count" : "0",
+        "defect_value_mstr_count" : "0",
+        "defect_set_mstr_count" : "0",
+        "defect_set_value_count" : "0"
     ],
     "ACTIONNAMES" : [
         "novalue"
@@ -1072,6 +1207,7 @@ let _DS_ULTASKDATA = [
             "inspect_section_id" : "",
             "inspect_element_id" : "",
             "inspect_position_id" : "",
+            "inspect_position_zone_value_id" : "",
             "inspect_position_desc" : "",
             "request_section_id" : "",
             "request_element_desc" : "",
@@ -1097,6 +1233,8 @@ let _DS_ULTASKDATA = [
             "inspect_record_id" : "",
             "ref_record_id" : "",
             "inspect_element_id" : "",
+            "inspect_element_defect_value_id" : "",
+            "inspect_element_case_value_id" : "",
             "defect_desc" : "",
             "defect_qty_critical" : "",
             "defect_qty_major" : "",

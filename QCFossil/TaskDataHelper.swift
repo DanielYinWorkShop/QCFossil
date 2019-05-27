@@ -860,9 +860,9 @@ class TaskDataHelper:DataHelperMaster{
             db.beginTransaction()
             
             
-            let sql = "INSERT OR REPLACE INTO task_inspect_data_record  ('record_id','task_id','ref_record_id','inspect_section_id','inspect_element_id','inspect_position_id','inspect_position_desc','inspect_detail','inspect_remarks','result_value_id','create_user','create_date','modify_user','modify_date','request_section_id','request_element_desc') VALUES ((SELECT record_id FROM task_inspect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            let sql = "INSERT OR REPLACE INTO task_inspect_data_record  ('record_id','task_id','ref_record_id','inspect_section_id','inspect_element_id','inspect_position_id','inspect_position_desc','inspect_detail','inspect_remarks','result_value_id','create_user','create_date','modify_user','modify_date','request_section_id','request_element_desc', 'inspect_position_zone_value_id') VALUES ((SELECT record_id FROM task_inspect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 
-            if db.executeUpdate(sql, withArgumentsInArray: [notNilObject(inspDataRecord.recordId)!,inspDataRecord.taskId!,inspDataRecord.refRecordId!,inspDataRecord.inspectSectionId!,inspDataRecord.inspectElementId!,inspDataRecord.inspectPositionId!,inspDataRecord.inspectPositionDesc!,inspDataRecord.inspectDetail!,inspDataRecord.inspectRemarks!,inspDataRecord.resultValueId,inspDataRecord.createUser!,inspDataRecord.createDate!,inspDataRecord.modifyUser!,inspDataRecord.modifyDate!,notNilObject(inspDataRecord.requestSectionId)!,notNilObject(inspDataRecord.requestElementDesc)!]) {
+            if db.executeUpdate(sql, withArgumentsInArray: [notNilObject(inspDataRecord.recordId)!,inspDataRecord.taskId!,inspDataRecord.refRecordId!,inspDataRecord.inspectSectionId!,inspDataRecord.inspectElementId!,inspDataRecord.inspectPositionId!,inspDataRecord.inspectPositionDesc!,inspDataRecord.inspectDetail!,inspDataRecord.inspectRemarks!,inspDataRecord.resultValueId,inspDataRecord.createUser!,inspDataRecord.createDate!,inspDataRecord.modifyUser!,inspDataRecord.modifyDate!,notNilObject(inspDataRecord.requestSectionId)!,notNilObject(inspDataRecord.requestElementDesc)!, inspDataRecord.inspectPositionZoneValueId ?? 0]) {
                     
                 inspDataRecord.recordId = Int(db.lastInsertRowId())
             }else{
@@ -1249,13 +1249,13 @@ class TaskDataHelper:DataHelperMaster{
             
             var lastInsertId = 0
             
-            let sql = "INSERT OR REPLACE INTO task_defect_data_record  ('record_id','task_id','inspect_record_id','ref_record_id','inspect_element_id','defect_desc','defect_qty_critical','defect_qty_major','defect_qty_minor','defect_qty_total','create_user','create_date','modify_user','modify_date') VALUES ((SELECT record_id FROM task_defect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            let sql = "INSERT OR REPLACE INTO task_defect_data_record  ('record_id','task_id','inspect_record_id','ref_record_id','inspect_element_id','defect_desc','defect_qty_critical','defect_qty_major','defect_qty_minor','defect_qty_total','create_user','create_date','modify_user','modify_date','inspect_element_defect_value_id','inspect_element_case_value_id') VALUES ((SELECT record_id FROM task_defect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             
-            if db.executeUpdate(sql, withArgumentsInArray:[notNilObject(taskInspDefectDataRecord.recordId)!,taskInspDefectDataRecord.taskId!,taskInspDefectDataRecord.inspectRecordId!,taskInspDefectDataRecord.refRecordId!,taskInspDefectDataRecord.inspectElementId!,taskInspDefectDataRecord.defectDesc!,taskInspDefectDataRecord.defectQtyCritical,taskInspDefectDataRecord.defectQtyMajor,taskInspDefectDataRecord.defectQtyMinor,taskInspDefectDataRecord.defectQtyTotal,taskInspDefectDataRecord.createUser!,taskInspDefectDataRecord.createDate!,taskInspDefectDataRecord.modifyUser!,taskInspDefectDataRecord.modifyDate!]){
+            if db.executeUpdate(sql, withArgumentsInArray:[notNilObject(taskInspDefectDataRecord.recordId)!,taskInspDefectDataRecord.taskId!,taskInspDefectDataRecord.inspectRecordId!,taskInspDefectDataRecord.refRecordId!,taskInspDefectDataRecord.inspectElementId!,taskInspDefectDataRecord.defectDesc!,taskInspDefectDataRecord.defectQtyCritical,taskInspDefectDataRecord.defectQtyMajor,taskInspDefectDataRecord.defectQtyMinor,taskInspDefectDataRecord.defectQtyTotal,taskInspDefectDataRecord.createUser!,taskInspDefectDataRecord.createDate!,taskInspDefectDataRecord.modifyUser!,taskInspDefectDataRecord.modifyDate!,taskInspDefectDataRecord.inspectElementDefectValueId ?? 0,taskInspDefectDataRecord.inspectElementCaseValueId ?? 0]){
             
                 lastInsertId = Int(db.lastInsertRowId())
             }else{
-                //UIView.init().alertView("Saving Defect Item Error!")
+                
                 db.rollback()
                 db.close()
                 return 0
@@ -1379,8 +1379,9 @@ class TaskDataHelper:DataHelperMaster{
                 let modifyDate = rs.stringForColumn("modify_date")
                 let reqSecId = Int(rs.intForColumn("request_section_id"))
                 let reqElmtDesc = rs.stringForColumn("request_element_desc")
+                let inspectPositionZoneValueId = Int(rs.intForColumn("inspect_position_zone_value_id"))
                 
-                let taskInspDataRecord = TaskInspDataRecord(recordId: recordId, taskId: taskId, refRecordId: refRecordId, inspectSectionId: inspSecId!, inspectElementId: inspElmtId!, inspectPositionId: inspPostnId, inspectPositionDesc: inspPostnDesc, inspectDetail: inspDetail, inspectRemarks: inspRemarks, resultValueId: resultValueId, requestSectionId: reqSecId, requestElementDesc: reqElmtDesc == nil ? "":reqElmtDesc, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)
+                let taskInspDataRecord = TaskInspDataRecord(recordId: recordId, taskId: taskId, refRecordId: refRecordId, inspectSectionId: inspSecId!, inspectElementId: inspElmtId!, inspectPositionId: inspPostnId, inspectPositionDesc: inspPostnDesc, inspectDetail: inspDetail, inspectRemarks: inspRemarks, resultValueId: resultValueId, requestSectionId: reqSecId, requestElementDesc: reqElmtDesc == nil ? "":reqElmtDesc, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, inspectPositionZoneValueId: inspectPositionZoneValueId)
                 
                 taskInspDataRecords.append(taskInspDataRecord!)
             }
@@ -1478,8 +1479,10 @@ class TaskDataHelper:DataHelperMaster{
                 let createDate = rs.stringForColumn("create_date")
                 let modifyUser = rs.stringForColumn("modify_user")
                 let modifyDate = rs.stringForColumn("modify_date")
+                let inspectElementDefectValueId = Int(rs.intForColumn("inspect_element_defect_value_id"))
+                let inspectElementCaseValueId = Int(rs.intForColumn("inspect_element_case_value_id"))
                 
-                let taskDefectDataRecord = TaskInspDefectDataRecord(recordId: recordId, taskId: taskId, inspectRecordId: inspRecordId, refRecordId: refRecordId, inspectElementId: inspElmtId, defectDesc: defectDesc, defectQtyCritical: defectQtyCritical, defectQtyMajor: defectQtyMajor, defectQtyMinor: defectQtyMinor, defectQtyTotal: defectQtyTotal, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)
+                let taskDefectDataRecord = TaskInspDefectDataRecord(recordId: recordId, taskId: taskId, inspectRecordId: inspRecordId, refRecordId: refRecordId, inspectElementId: inspElmtId, defectDesc: defectDesc, defectQtyCritical: defectQtyCritical, defectQtyMajor: defectQtyMajor, defectQtyMinor: defectQtyMinor, defectQtyTotal: defectQtyTotal, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, inspectElementDefectValueId: inspectElementDefectValueId, inspectElementCaseValueId: inspectElementCaseValueId)
                 
                 taskDefectDataRecords.append(taskDefectDataRecord!)
             }

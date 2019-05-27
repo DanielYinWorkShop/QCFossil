@@ -133,7 +133,7 @@ class TabBarViewController: UITabBarController {
                         }
                         
                         //if icElm.dpInput.text != "" && icElm.cellDPPInput.text != "" && icElm.resultValueId > 0 {
-                            var icItemData = TaskInspDataRecord.init(recordId: icElm.taskInspDataRecordId,taskId: (Cache_Task_On?.taskId)!, refRecordId: icElm.refRecordId!, inspectSectionId: icElm.cellCatIdx, inspectElementId: icElm.inspElmId!, inspectPositionId: icElm.inspPostId!, inspectPositionDesc: icElm.dpDescInput.text, inspectDetail: "", inspectRemarks: "", resultValueId: icElm.resultValueId, requestSectionId: 0, requestElementDesc: "", createUser: (Cache_Inspector?.appUserName)!, createDate: currentDate, modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: currentDate)
+                        var icItemData = TaskInspDataRecord.init(recordId: icElm.taskInspDataRecordId,taskId: (Cache_Task_On?.taskId)!, refRecordId: icElm.refRecordId!, inspectSectionId: icElm.cellCatIdx, inspectElementId: icElm.inspElmId!, inspectPositionId: icElm.inspPostId!, inspectPositionDesc: icElm.dpDescInput.text, inspectDetail: "", inspectRemarks: "", resultValueId: icElm.resultValueId, requestSectionId: 0, requestElementDesc: "", inspectPositionZoneValueId: icElm.inspectZoneValueId, createUser: (Cache_Inspector?.appUserName)!, createDate: currentDate, modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: currentDate)
                             
                             //Save To DB
                             icItemData = taskDataHelper.updateInspDataRecord(icItemData!)

@@ -129,6 +129,10 @@
 		BD5A0DAF1C44A9880056B077 /* POSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0DAD1C44A9880056B077 /* POSearchView.swift */; };
 		BD5A0DB01C44A9880056B077 /* POSearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5A0DAE1C44A9880056B077 /* POSearchView.xib */; };
 		BD5A0DB21C44AC050056B077 /* DataSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0DB11C44AC050056B077 /* DataSyncViewController.swift */; };
+		BD73BEC1229A91EC001DE0CC /* ZoneDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */; };
+		BD73BEC2229A96A0001DE0CC /* ZoneDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */; };
+		BD73BEC4229AD708001DE0CC /* InspectZoneValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */; };
+		BD73BEC5229AD92D001DE0CC /* InspectZoneValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */; };
 		BD74FA261DC9F75600C1E891 /* TaskInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74FA251DC9F75600C1E891 /* TaskInspector.swift */; };
 		BD7AD7091DCCF1FD003731ED /* InspectionDefectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7AD7081DCCF1FD003731ED /* InspectionDefectList.swift */; };
 		BD7DF48B1DDDCB5700618D85 /* CreateTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7DF48A1DDDCB5700618D85 /* CreateTaskTableViewCell.swift */; };
@@ -367,7 +371,7 @@
 		9C0848841C61B06B00CAAD88 /* PoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PoItem.swift; sourceTree = "<group>"; };
 		9C0848861C61E08500CAAD88 /* POCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POCellView.xib; sourceTree = "<group>"; };
 		9C0848881C61E0FA00CAAD88 /* POCellViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POCellViewInput.swift; sourceTree = "<group>"; };
-		9C0C36CB1C1E6F7800CF48ED /* QC0519pwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0519pwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C0C36CB1C1E6F7800CF48ED /* QC0523pwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0523pwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C0C36CE1C1E6F7800CF48ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C0C36D01C1E6F7800CF48ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9C0C36D31C1E6F7800CF48ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -517,6 +521,8 @@
 		BD5A0DAD1C44A9880056B077 /* POSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POSearchView.swift; sourceTree = "<group>"; };
 		BD5A0DAE1C44A9880056B077 /* POSearchView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POSearchView.xib; sourceTree = "<group>"; };
 		BD5A0DB11C44AC050056B077 /* DataSyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSyncViewController.swift; sourceTree = "<group>"; };
+		BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneDataHelper.swift; sourceTree = "<group>"; };
+		BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectZoneValue.swift; sourceTree = "<group>"; };
 		BD74FA251DC9F75600C1E891 /* TaskInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInspector.swift; sourceTree = "<group>"; };
 		BD7AD7081DCCF1FD003731ED /* InspectionDefectList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectionDefectList.swift; sourceTree = "<group>"; };
 		BD7DF48A1DDDCB5700618D85 /* CreateTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTaskTableViewCell.swift; sourceTree = "<group>"; };
@@ -546,7 +552,7 @@
 		BDCF870E1C576D0F000B0C38 /* PoDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PoDataHelper.swift; sourceTree = "<group>"; };
 		BDCF87101C57886D000B0C38 /* InspSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspSection.swift; sourceTree = "<group>"; };
 		BDCFCCE01DB4835D00414027 /* InputModeDFMaster2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputModeDFMaster2.swift; sourceTree = "<group>"; };
-		BDD1A3472123472B00AE391E /* QC0519uwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0519uwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDD1A3472123472B00AE391E /* QC0528uwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0528uwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD2E0C11C45048C00CB0C40 /* TaskTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTypeViewController.swift; sourceTree = "<group>"; };
 		BDD51C4E1C3E442000A6E656 /* InputMode04DefectCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode04DefectCellView.swift; sourceTree = "<group>"; };
 		BDD51C501C3E443C00A6E656 /* InputMode04DefectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputMode04DefectCell.xib; sourceTree = "<group>"; };
@@ -626,10 +632,10 @@
 		9C0C36CC1C1E6F7800CF48ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9C0C36CB1C1E6F7800CF48ED /* QC0519pwl.app */,
+				9C0C36CB1C1E6F7800CF48ED /* QC0523pwl.app */,
 				9C0C36DF1C1E6F7800CF48ED /* QCFossilTests.xctest */,
 				9C0C36EA1C1E6F7800CF48ED /* QCFossilUITests.xctest */,
-				BDD1A3472123472B00AE391E /* QC0519uwl.app */,
+				BDD1A3472123472B00AE391E /* QC0528uwl.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -843,6 +849,7 @@
 				9CD5A02B1C62F8C900F52C78 /* Inspector.swift */,
 				9CDB08201C7D8AE5004E871D /* SummaryResultValue.swift */,
 				BDD96F3F1DBF335200806719 /* Brand.swift */,
+				BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1059,6 +1066,7 @@
 				9CDB9D2E1D014D62009E936A /* DataSyncDataHelper.swift */,
 				BDD96F411DC0B23A00806719 /* KeyValueDataHelper.swift */,
 				BDFEE24B1DFFA95A00523B04 /* AppUpgradeDataHelper.swift */,
+				BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1088,7 +1096,7 @@
 			);
 			name = "QCFossil PRD";
 			productName = QCFossil;
-			productReference = 9C0C36CB1C1E6F7800CF48ED /* QC0519pwl.app */;
+			productReference = 9C0C36CB1C1E6F7800CF48ED /* QC0523pwl.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9C0C36DE1C1E6F7800CF48ED /* QCFossilTests */ = {
@@ -1141,7 +1149,7 @@
 			);
 			name = "QCFossil UAT";
 			productName = QCFossil;
-			productReference = BDD1A3472123472B00AE391E /* QC0519uwl.app */;
+			productReference = BDD1A3472123472B00AE391E /* QC0528uwl.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1308,6 +1316,7 @@
 				9CD8617B1C5B5D80005B66EC /* InspCatResult.swift in Sources */,
 				BDF2153D1DBE51CA0026DB39 /* DefectListTableViewCellMode3.swift in Sources */,
 				9CD85A641D74147F004DD641 /* entropy.c in Sources */,
+				BD73BEC1229A91EC001DE0CC /* ZoneDataHelper.swift in Sources */,
 				9CED09D91CA013DE00ABEEEE /* CustomTableViewCell.swift in Sources */,
 				BDDB59EE1C3BD9170023D41C /* InputMode04CellView.swift in Sources */,
 				9CEAEB891CAE7CE000ED8AB8 /* CameraViewController.swift in Sources */,
@@ -1422,6 +1431,7 @@
 				9C25B2E31C4CD236005DCA11 /* CustomExtensionObjects.swift in Sources */,
 				9CDB9D2F1D014D62009E936A /* DataSyncDataHelper.swift in Sources */,
 				9CD2B4DC1C246A250003DE51 /* LeatherFinalViewController.swift in Sources */,
+				BD73BEC4229AD708001DE0CC /* InspectZoneValue.swift in Sources */,
 				9C93B6491C4F569900D7123A /* InputMode03DefectCellView.swift in Sources */,
 				9C25B2E11C4CC53E005DCA11 /* InputMode01CellView.swift in Sources */,
 				BD5A0DA61C44A8FB0056B077 /* CreateTaskViewController.swift in Sources */,
@@ -1456,6 +1466,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD73BEC5229AD92D001DE0CC /* InspectZoneValue.swift in Sources */,
+				BD73BEC2229A96A0001DE0CC /* ZoneDataHelper.swift in Sources */,
 				BDD1A29B2123472B00AE391E /* DataCtrlViewController.swift in Sources */,
 				BDD1A29C2123472B00AE391E /* Brand.swift in Sources */,
 				BDD1A29D2123472B00AE391E /* UserSettingViewController.swift in Sources */,
@@ -1737,7 +1749,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqcprd;
-				PRODUCT_NAME = QC0519pwl;
+				PRODUCT_NAME = QC0523pwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1757,7 +1769,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqcprd;
-				PRODUCT_NAME = QC0519pwl;
+				PRODUCT_NAME = QC0523pwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 			};
@@ -1828,7 +1840,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
-				PRODUCT_NAME = QC0519uwl;
+				PRODUCT_NAME = QC0528uwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1848,7 +1860,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
-				PRODUCT_NAME = QC0519uwl;
+				PRODUCT_NAME = QC0528uwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 			};

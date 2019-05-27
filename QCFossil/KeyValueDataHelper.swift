@@ -260,7 +260,6 @@ class KeyValueDataHelper:DataHelperMaster {
                 if rs.next() {
                     runningNo = Int(rs.stringForColumn("value"))! + 1
                     
-                    //sql = "UPDATE option_key_value SET value = ?, date_added = datetime('now','localtime') WHERE key = ?"
                     sql = "INSERT OR REPLACE INTO option_key_value(key,value,date_added) VALUES(?, ?, datetime('now','localtime'))"
                     
                     if db.executeUpdate(sql, withArgumentsInArray: ["TaskRunningNo-"+userId, runningNo]) {
@@ -269,7 +268,6 @@ class KeyValueDataHelper:DataHelperMaster {
                     
                 }else{
                     
-                    //sql = "UPDATE option_key_value SET value = 0, date_added = datetime('now','localtime') WHERE key = ?"
                     sql = "INSERT OR REPLACE INTO option_key_value(key,value,date_added) VALUES(?, ?, datetime('now','localtime'))"
                     
                     if db.executeUpdate(sql, withArgumentsInArray: ["TaskRunningNo-"+userId, runningNo]) {

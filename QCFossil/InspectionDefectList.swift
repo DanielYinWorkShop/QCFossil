@@ -328,10 +328,18 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode2.defectCriticalQtyInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
             cellMode2.defectTotalQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
             cellMode2.defectPPIInput.text = self.defectPositionPointsDesc
+            cellMode2.inspectElementId = defectItem.inspectElementId
+            
+            cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
+            cellMode2.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
-                cellMode2.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId!)
+                cellMode2.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)
+                
+                cellMode2.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
+                cellMode2.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+                
             }else{
                 cellMode2.defectTypeInput.text = ""
             }
@@ -366,10 +374,18 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
             cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
             cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
+            cellMode1.inspectElementId = defectItem.inspectElementId
+            
+            cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
+            cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
-                cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId!)
+                cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)
+                
+                cellMode1.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
+                cellMode1.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+                
             }else{
                 cellMode1.defectTypeInput.text = ""
             }

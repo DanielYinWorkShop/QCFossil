@@ -280,7 +280,7 @@
 
 "Remove Photo" = "移除相片";
 
-"Defect Description" = "不良项目描述";
+"Defect Description" = "备注";
 
 "Defect Qty" = "不良项目数量";
 
@@ -785,3 +785,9 @@
 "Task Cleaning..." = "数据清理中...";
 
 "Deleting..." = "删除中...";
+
+"Defect Zone" = "问题区域";
+
+"Defect Desc. 1" = "不良描述一";
+
+"Defect Desc. 2" = "不良描述二";

@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputMode01DefectCellView" customModule="QC0427uwl" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputMode01DefectCellView" customModule="QC0523pwl" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="768" height="226"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -72,7 +72,7 @@
                         <outletCollection property="gestureRecognizers" destination="Mh4-ec-hHi" appends="YES" id="vnx-MJ-KI7"/>
                     </connections>
                 </imageView>
-                <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMi-gs-SQK" customClass="CustomButton" customModule="QC0427uwl" customModuleProvider="target">
+                <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMi-gs-SQK" customClass="CustomButton" customModule="QC0523pwl" customModuleProvider="target">
                     <rect key="frame" x="121" y="160" width="15" height="15"/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -89,7 +89,7 @@
                         <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="o8g-c5-BRV"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2hz-HQ-hUw" customClass="CustomButton" customModule="QC0427uwl" customModuleProvider="target">
+                <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2hz-HQ-hUw" customClass="CustomButton" customModule="QC0523pwl" customModuleProvider="target">
                     <rect key="frame" x="183" y="160" width="15" height="15"/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -106,7 +106,7 @@
                         <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="bey-lj-dz4"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucG-BZ-AgN" customClass="CustomButton" customModule="QC0427uwl" customModuleProvider="target">
+                <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucG-BZ-AgN" customClass="CustomButton" customModule="QC0523pwl" customModuleProvider="target">
                     <rect key="frame" x="247" y="160" width="15" height="15"/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -123,7 +123,7 @@
                         <action selector="dismissDfPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="dhF-zc-OQI"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9w7-uP-J2n" customClass="CustomButton" customModule="QC0427uwl" customModuleProvider="target">
+                <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9w7-uP-J2n" customClass="CustomButton" customModule="QC0523pwl" customModuleProvider="target">
                     <rect key="frame" x="312" y="160" width="15" height="15"/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -147,7 +147,7 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3s0-JF-gUv" customClass="CustomButton" customModule="QC0427uwl" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3s0-JF-gUv" customClass="CustomButton" customModule="QC0523pwl" customModuleProvider="target">
                     <rect key="frame" x="8" y="163" width="50" height="50"/>
                     <state key="normal" image="add_photo_btn">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -156,7 +156,7 @@
                         <action selector="addDefectPhotoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="VhZ-Jq-RFu"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3p-6x-eyH" customClass="CustomButton" customModule="QC0427uwl" customModuleProvider="target">
+                <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3p-6x-eyH" customClass="CustomButton" customModule="QC0523pwl" customModuleProvider="target">
                     <rect key="frame" x="377" y="160" width="15" height="15"/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>

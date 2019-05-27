@@ -24,8 +24,11 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var cellDismissButton: UIButton!
     @IBOutlet weak var photoAddedIcon: UIImageView!
     @IBOutlet weak var takePhotoIcon: UIButton!
-    var myDefectPositPoints = [PositPointObj]()
+    @IBOutlet weak var defectZoneLabel: UILabel!
+    @IBOutlet weak var defectZoneInput: UITextField!
     
+    var myDefectPositPoints = [PositPointObj]()
+    var zoneValues:[DropdownValue]?
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -37,6 +40,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         self.cellResultInput.delegate = self
         self.dpInput.delegate = self
         self.cellDPPInput.delegate = self
+        self.defectZoneInput.delegate = self
         
         updateLocalizedString()
     }
@@ -63,6 +67,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         self.dpDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position Description")
         self.cellDPPLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position Points & Info")
         self.cellResultLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Result")
+        self.defectZoneLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Zone")
         
     }
     
@@ -115,10 +120,6 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         }else if textField == self.cellDPPInput {
             self.inspItemText = textField.text!
             myDefectPositPoints = [PositPointObj]()
-            /*
-            textField.text = textField.text!.stringByTrimmingCharactersInSet(
-                NSCharacterSet.whitespaceAndNewlineCharacterSet()
-            )*/
             
             let selectedValues = textField.text!.stringByReplacingOccurrencesOfString(", ", withString: ",")
             
@@ -150,6 +151,17 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             }
             
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
+            
+        }else if textField == self.defectZoneInput {
+            
+            guard let zoneValueName = self.defectZoneInput.text else {return}
+            guard let zoneValues = self.zoneValues else {return}
+            
+            zoneValues.forEach({ zoneValue in
+                if zoneValue.valueNameEn == zoneValueName || zoneValue.valueNameCn == zoneValueName {
+                    self.inspectZoneValueId = zoneValue.valueId
+                }
+            })
         }
     }
     
@@ -206,6 +218,15 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                     
                 }
             }
+        }else if textField == self.defectZoneInput {
+            
+            self.zoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+            var listData = [String]()
+            
+            self.zoneValues?.forEach({ zoneValue in
+                listData.append(_ENGLISH ? zoneValue.valueNameEn ?? "":zoneValue.valueNameCn ?? "")
+            })
+            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: listData, height:500)
         }
         
         return false

@@ -27,6 +27,9 @@ class InputModeDFMaster2: UITableViewCell, UITextFieldDelegate {
     var defectDBId = 0
     weak var inspItem:InputModeICMaster?
     var taskDefectDataRecordId:Int?
+    var inspectElementId:Int?
+    var inspectElementDefectValueId:Int?
+    var inspectElementCaseValueId:Int?
     
     //UI
     var dfCatText = ""

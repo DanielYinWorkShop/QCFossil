@@ -240,7 +240,7 @@
 "Photo" = "Photo";
 "Photo Filename" = "Photo Filename";
 "Description" = "Description";
-"Defect Description" = "Defect Description";
+"Defect Description" = "Remark";
 "Defect Qty." = "Defect Qty.";
 "Add Description" = "Add Description";
 "Cosmetic Inspections" = "Cosmetic Inspections";
@@ -276,3 +276,6 @@
 "Sample Qty" = "Sample Qty(n)";
 "Task Findings" = "Defect List";
 "You haven't done data sync over 3 days!" = "There are no data upload/download over 3 days, please proceed data sync";
+"Defect Zone" = "Defect Zone";
+"Defect Desc. 1" = "Defect Desc. 1";
+"Defect Desc. 2" = "Defect Desc. 2";

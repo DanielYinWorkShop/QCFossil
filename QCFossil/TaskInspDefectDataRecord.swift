@@ -34,6 +34,8 @@ class TaskInspDefectDataRecord {
     var createDate:String?
     var modifyUser:String?
     var modifyDate:String?
+    var inspectElementDefectValueId:Int?
+    var inspectElementCaseValueId:Int?
     
     //Element Display Using
     var sectObj:SectObj = SectObj(sectionId:0, sectionNameEn: "", sectionNameCn: "",inputMode: "")
@@ -49,7 +51,7 @@ class TaskInspDefectDataRecord {
     var cellIdx:Int = 0
     var sortNum:Int = 0
     
-    init?(recordId:Int?=0,taskId:Int, inspectRecordId:Int?, refRecordId:Int?, inspectElementId:Int?, defectDesc:String?, defectQtyCritical:Int=0, defectQtyMajor:Int=0, defectQtyMinor:Int=0, defectQtyTotal:Int=0, createUser:String?="", createDate:String?="", modifyUser:String?="", modifyDate:String?="") {
+    init?(recordId:Int?=0,taskId:Int, inspectRecordId:Int?, refRecordId:Int?, inspectElementId:Int?, defectDesc:String?, defectQtyCritical:Int=0, defectQtyMajor:Int=0, defectQtyMinor:Int=0, defectQtyTotal:Int=0, createUser:String?="", createDate:String?="", modifyUser:String?="", modifyDate:String?="", inspectElementDefectValueId:Int?=0, inspectElementCaseValueId:Int?=0) {
         
         self.recordId = recordId
         self.taskId = taskId
@@ -65,6 +67,8 @@ class TaskInspDefectDataRecord {
         self.createDate = createDate
         self.modifyUser = modifyUser
         self.modifyDate = modifyDate
+        self.inspectElementDefectValueId = inspectElementDefectValueId
+        self.inspectElementCaseValueId = inspectElementCaseValueId
     }
     
 }

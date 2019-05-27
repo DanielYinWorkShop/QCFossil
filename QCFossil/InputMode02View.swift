@@ -73,7 +73,7 @@ class InputMode02View: InputModeSCMaster {
             //if taskInspDataRecord.postnObj?.positionId > 0 {
             
             let dfPositPoints = dpDataHelper.getDefectPositionPointsByRecordId(taskInspDataRecord.recordId!)
-            let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),dpText: (_ENGLISH ? taskInspDataRecord.postnObj?.positionNameEn:taskInspDataRecord.postnObj?.positionNameCn)!, dpDescText: taskInspDataRecord.inspectPositionDesc!, dppText: dfPositPoints, dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId: taskInspDataRecord.postnObj!.positionId, resultValueObj:taskInspDataRecord.resultObj!, taskInspDataRecordId:taskInspDataRecord.recordId!)
+            let inputCell = inputCellInit(idx, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(idx),dpText: (_ENGLISH ? taskInspDataRecord.postnObj?.positionNameEn:taskInspDataRecord.postnObj?.positionNameCn)!, dpDescText: taskInspDataRecord.inspectPositionDesc!, dppText: dfPositPoints, dismissBtnHidden: true, elementDbId: (taskInspDataRecord.elmtObj?.elementId)!, refRecordId: taskInspDataRecord.refRecordId!, inspElmId: (taskInspDataRecord.elmtObj?.elementId)!, inspPostId: taskInspDataRecord.postnObj!.positionId, resultValueObj:taskInspDataRecord.resultObj!, taskInspDataRecordId:taskInspDataRecord.recordId!, inspectPositionZoneValueId: taskInspDataRecord.inspectPositionZoneValueId ?? 0)
             
             inputCell.photoAdded = photoDataHelper.checkPhotoAddedByInspDataRecordId(taskInspDataRecord.recordId!)
             inputCell.updatePhotoNeededStatus((taskInspDataRecord.resultObj?.resultValueNameEn)!)
@@ -137,14 +137,14 @@ class InputMode02View: InputModeSCMaster {
         
         self.addCellButton.frame = CGRect.init(x: 8, y: inputCells.count*cellHeight+10, width: 50, height: 50)
         self.scrollCellView.addSubview(self.addCellButton)
-        resizeScrollView(CGSize.init(width: self.scrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+defectPositPoints.count*10+500)))
+        resizeScrollView(CGSize.init(width: self.scrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+500)))
     }
     
     func resizeScrollView(size:CGSize) {
         self.scrollCellView.contentSize = size
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, dpText:String, dpDescText:String, dppText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0) -> InputMode02CellView {
+    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, dpText:String, dpDescText:String, dppText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspectPositionZoneValueId:Int=0) -> InputMode02CellView {
         
         let inputCellViewObj = InputMode02CellView.loadFromNibNamed("InputMode02Cell")
         
@@ -159,6 +159,8 @@ class InputMode02View: InputModeSCMaster {
         inputCellViewObj?.dpDescInput.text = dpDescText
         inputCellViewObj?.cellDPPInput.text = dppText
         inputCellViewObj?.cellResultInput.text = _ENGLISH ? resultValueObj.resultValueNameEn : resultValueObj.resultValueNameCn
+        inputCellViewObj?.defectZoneInput.text = ZoneDataHelper.sharedInstance.getZoneValueNameById(inspectPositionZoneValueId)
+        inputCellViewObj?.inspectZoneValueId = inspectPositionZoneValueId
         
         //for Save DB
         inputCellViewObj?.refRecordId = refRecordId

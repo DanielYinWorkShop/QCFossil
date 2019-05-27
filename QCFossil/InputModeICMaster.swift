@@ -16,6 +16,7 @@ class InputModeICMaster:UIView {
     var inspPostId:Int?=0
     var resultValueId:Int = 0
     var requiredElementFlag:Int = 0
+    var inspectZoneValueId:Int?
     
     //UI
     var photoAdded = false
