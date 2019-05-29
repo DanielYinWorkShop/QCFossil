@@ -704,23 +704,32 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         if(error != nil) {
             
             buffer.setData(NSMutableData())
+            var errorMsg = ""
             
             if error?.code == NSURLErrorTimedOut {
-                let errorMsg = "The network connection was lost."
+                errorMsg = "The network connection was lost."
                 print("\(errorMsg)")
-                
+                self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg)
+                self.updateButtonsStatus(true)
                 
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
-                let errorMsg = "The internet connection appears to be offline."
-                
+                errorMsg = "The internet connection appears to be offline."
                 print("\(errorMsg)")
                 
-                
-                
             }else{
+                errorMsg = "unknow error."
                 print("error: \(error!.localizedDescription), error code: \(error?.code)")
                 
             }
+            
+            self.updateButtonsStatus(true)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.progressBar.progress = 0
+                self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg)
+            })
+            
+            //Remove Zip File Here
+            self.removeLocalBackupZipFile()
             
         }else if self.typeNow == self.typeListBackupFiles {
             
@@ -741,6 +750,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         dispatch_async(dispatch_get_main_queue(), {
                             self.updateButtonsStatus(true)
                             self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("List Backup History Complete")
+                            self.progressBar.progress = 100
                             self.backupListTableView.reloadData()
                             self.backupListTableView.hidden = false
                             self.backupHistoryLabel.hidden = false
@@ -780,6 +790,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Complete")
+                                self.progressBar.progress = 100
                                 self.updateButtonsStatus(true)
                                 self.backupDesc.text = ""
                                 self.backupListTableView.hidden = true
@@ -811,11 +822,6 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
             buffer.setData(NSMutableData())
         }
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Done")
-            self.progressBar.progress = 100
-        })
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
