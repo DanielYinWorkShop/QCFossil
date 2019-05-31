@@ -13,6 +13,7 @@ class TabBarViewController: UITabBarController {
     weak var taskDetalViewContorller:TaskDetailsViewController!
     weak var photoAlbumViewController:PhotoAlbumViewController!
     weak var defectListViewController:DefectListViewController!
+    var handler:(()->(Bool))?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +62,17 @@ class TabBarViewController: UITabBarController {
         rightButton.target=self
         rightButton.action=Selector(actionName)
         self.navigationItem.rightBarButtonItem=rightButton
+    }
+    
+    func setRightBarItemWithHandler(title:String, actionName:String, handler:(()->(Bool))?) {
+        let rightButton=UIBarButtonItem()
+        rightButton.title=title
+        rightButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
+        rightButton.style=UIBarButtonItemStyle.Plain
+        rightButton.target=self
+        rightButton.action=Selector(actionName)
+        self.navigationItem.rightBarButtonItem=rightButton
+        self.handler = handler
     }
     
     func updateRightBarItem(title:String, actionName:String) {
@@ -293,6 +305,13 @@ class TabBarViewController: UITabBarController {
     }
     
     func updateTask(taskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue) {
+        
+        if let handler = self.handler {
+            if !handler() {
+                return
+            }
+        }
+        
         dispatch_async(dispatch_get_main_queue(), {
             self.view.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Saving..."))
         })

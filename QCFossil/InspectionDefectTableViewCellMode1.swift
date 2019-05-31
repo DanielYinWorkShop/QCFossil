@@ -26,6 +26,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectDesc2Label: UILabel!
     @IBOutlet weak var defectDesc1Input: UITextField!
     @IBOutlet weak var defectDesc2Input: UITextField!
+    @IBOutlet weak var errorMessageLabel: UILabel!
     
     weak var pVC:InspectionDefectList!
     
@@ -53,6 +54,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         self.minorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Minor")
         self.defectDesc1Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 1")
         self.defectDesc2Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 2")
+        self.errorMessageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please enter defect quantity")
         
         self.criticalInput.text = "0"
         self.majorInput.text = "0"
@@ -393,10 +395,6 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             guard let inspectPositionId = self.inspItem?.inspPostId else {return false}
             
             let dfElms = defectDataHelper.getDefectTypesByPositionId(inspectPositionId)
-            
-            //let indexPath = self.pVC.inspectDefectTableview.indexPathForCell(self)
-            //let rectOfCell = self.pVC.inspectDefectTableview.rectForRowAtIndexPath(indexPath!)
-            
             textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms, height:500)
             
             return false
@@ -441,6 +439,21 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             defectItem.inspectElementId = inspectElementId
             self.inspectElementId = inspectElementId
 
+            let defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
+            let caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+            
+            if defectValues.count < 1 {
+                self.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+            } else {
+                self.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+            }
+            
+            if caseValues.count < 1 {
+                self.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+            } else {
+                self.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+            }
+            
         } else if textField == self.defectDesc1Input {
             
             guard let defectValueName = self.defectDesc1Input.text else {return}

@@ -31,6 +31,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectDesc1Input: UITextField!
     @IBOutlet weak var defectDesc2Label: UILabel!
     @IBOutlet weak var defectDesc2Input: UITextField!
+    @IBOutlet weak var errorMessageLabel: UILabel!
     
     weak var pVC:InspectionDefectList!
     
@@ -61,7 +62,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectTotalQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Total")
         self.defectDesc1Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 1")
         self.defectDesc2Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 2")
-        
+        self.errorMessageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please enter defect quantity")
     }
     
     @IBAction func addDefectPhoto(sender: UIButton) {
@@ -450,6 +451,21 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             let inspectElementId = defectDataHelper.getInspElementIdByName(textField.text ?? "")
             defectItem.inspectElementId = inspectElementId
             self.inspectElementId = inspectElementId
+            
+            let defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
+            let caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+            
+            if defectValues.count < 1 {
+                self.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+            } else {
+                self.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+            }
+            
+            if caseValues.count < 1 {
+                self.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+            } else {
+                self.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+            }
             
         } else if textField == self.defectDesc1Input {
             

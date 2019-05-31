@@ -4887,7 +4887,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="395" y="99" width="365" height="21"/>
+                                                        <rect key="frame" x="395" y="109" width="365" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Defect Desc. 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XQT-r5-LSk">
@@ -4896,7 +4896,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="240" y="99" width="147" height="21"/>
+                                                        <rect key="frame" x="240" y="109" width="147" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Defect Desc. 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RNU-dL-6Ir">
@@ -4905,7 +4905,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="99" width="155" height="21"/>
+                                                        <rect key="frame" x="77" y="109" width="155" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eti-UV-pfa" customClass="CustomControlButton" customModule="QC0523pwl" customModuleProvider="target">
@@ -5078,6 +5078,15 @@
                                                         <rect key="frame" x="211" y="138" width="21" height="21"/>
                                                     </variation>
                                                 </button>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please input all defect quantity field" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yi-re-8RP">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="348" y="80" width="412" height="21"/>
+                                                    </variation>
+                                                </label>
                                             </subviews>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -5106,6 +5115,7 @@
                                                     <exclude reference="UAT-zL-rkZ"/>
                                                     <exclude reference="jFa-ey-hPf"/>
                                                     <exclude reference="sGz-hd-szH"/>
+                                                    <exclude reference="1yi-re-8RP"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -5135,6 +5145,7 @@
                                                     <include reference="UAT-zL-rkZ"/>
                                                     <include reference="jFa-ey-hPf"/>
                                                     <include reference="sGz-hd-szH"/>
+                                                    <include reference="1yi-re-8RP"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -5151,6 +5162,7 @@
                                             <outlet property="defectQtyLabel" destination="utX-fe-C6f" id="ezr-sd-Grj"/>
                                             <outlet property="defectTypeInput" destination="Xik-bb-mGY" id="X7V-9Z-Y0Y"/>
                                             <outlet property="defectTypeLabel" destination="TJg-Nq-52r" id="m7e-q5-aLN"/>
+                                            <outlet property="errorMessageLabel" destination="1yi-re-8RP" id="SdF-1f-vZQ"/>
                                             <outlet property="indexLabel" destination="IVt-Fk-AMB" id="Qag-hJ-KuL"/>
                                             <outlet property="majorInput" destination="dVz-PM-0XZ" id="Aju-UY-wHI"/>
                                             <outlet property="majorLabel" destination="Lx8-Ze-RQk" id="74W-uz-EgW"/>
@@ -5171,7 +5183,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="8" y="60" width="61" height="21"/>
+                                                        <rect key="frame" x="8" y="38" width="61" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Defect Position" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Y2-hx-4WV">
@@ -5180,7 +5192,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="27" width="246" height="21"/>
+                                                        <rect key="frame" x="77" y="8" width="246" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Defect Position Points&amp;Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6KI-qg-NRk">
@@ -5189,7 +5201,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="26" width="300" height="21"/>
+                                                        <rect key="frame" x="77" y="7" width="300" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <textField hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YC5-sv-sEc">
@@ -5197,7 +5209,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="56" width="558" height="30"/>
+                                                        <rect key="frame" x="77" y="37" width="558" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <textField hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xIw-al-0Pq">
@@ -5205,7 +5217,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="56" width="249" height="30"/>
+                                                        <rect key="frame" x="77" y="37" width="249" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Defect Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUL-rt-PEM">
@@ -5249,7 +5261,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="8" y="27" width="43" height="21"/>
+                                                        <rect key="frame" x="8" y="7" width="43" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wlj-65-isB">
@@ -5299,7 +5311,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="57" width="331" height="30"/>
+                                                        <rect key="frame" x="77" y="38" width="331" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vli-6e-Ati">
@@ -5322,7 +5334,7 @@
                                                     <rect key="frame" x="384" y="117" width="21" height="21"/>
                                                     <state key="normal" image="select_icon"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="387" y="61" width="21" height="21"/>
+                                                        <rect key="frame" x="387" y="42" width="21" height="21"/>
                                                     </variation>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DoE-ds-dVy">
@@ -5345,7 +5357,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="77" y="28" width="331" height="21"/>
+                                                        <rect key="frame" x="77" y="9" width="331" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0aR-JB-ByI">
@@ -5353,7 +5365,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="416" y="57" width="80" height="30"/>
+                                                        <rect key="frame" x="416" y="38" width="80" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Major" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRc-hY-8AJ">
@@ -5362,7 +5374,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="504" y="28" width="80" height="21"/>
+                                                        <rect key="frame" x="504" y="9" width="80" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hko-5g-Z4Y">
@@ -5370,7 +5382,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="504" y="57" width="80" height="30"/>
+                                                        <rect key="frame" x="504" y="38" width="80" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minor" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoa-bf-9B4">
@@ -5379,7 +5391,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="592" y="28" width="80" height="21"/>
+                                                        <rect key="frame" x="592" y="9" width="80" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Kva-MK-8XI">
@@ -5387,7 +5399,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="592" y="57" width="80" height="30"/>
+                                                        <rect key="frame" x="592" y="38" width="80" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vKV-Em-FQs">
@@ -5396,7 +5408,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="680" y="28" width="80" height="21"/>
+                                                        <rect key="frame" x="680" y="9" width="80" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="reu-Xh-JnR">
@@ -5404,7 +5416,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="680" y="57" width="80" height="30"/>
+                                                        <rect key="frame" x="680" y="38" width="80" height="30"/>
                                                     </variation>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Critical" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NSm-Ht-bYb">
@@ -5413,7 +5425,16 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="416" y="28" width="80" height="21"/>
+                                                        <rect key="frame" x="416" y="9" width="80" height="21"/>
+                                                    </variation>
+                                                </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please input all defect quantity field" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spu-Hq-YCF">
+                                                    <rect key="frame" x="8" y="83" width="400" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="416" y="71" width="344" height="21"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -5448,6 +5469,7 @@
                                                     <exclude reference="vKV-Em-FQs"/>
                                                     <exclude reference="reu-Xh-JnR"/>
                                                     <exclude reference="NSm-Ht-bYb"/>
+                                                    <exclude reference="spu-Hq-YCF"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -5481,6 +5503,7 @@
                                                     <include reference="vKV-Em-FQs"/>
                                                     <include reference="reu-Xh-JnR"/>
                                                     <include reference="NSm-Ht-bYb"/>
+                                                    <include reference="spu-Hq-YCF"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -5505,6 +5528,7 @@
                                             <outlet property="defectTotalQtyLabel" destination="vKV-Em-FQs" id="w45-lZ-8As"/>
                                             <outlet property="defectTypeInput" destination="NTK-dT-Ca7" id="xyH-OQ-N4n"/>
                                             <outlet property="defectTypeLabel" destination="QyD-cz-oe9" id="EXH-sk-SgH"/>
+                                            <outlet property="errorMessageLabel" destination="spu-Hq-YCF" id="FyK-LQ-WbY"/>
                                             <outlet property="indexLabel" destination="qdH-uA-oWO" id="IPa-CL-Ywe"/>
                                         </connections>
                                     </tableViewCell>

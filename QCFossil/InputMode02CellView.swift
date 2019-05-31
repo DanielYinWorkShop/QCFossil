@@ -29,6 +29,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     
     var myDefectPositPoints = [PositPointObj]()
     var zoneValues:[DropdownValue]?
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -134,6 +135,8 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 }
             }
             
+            textField.backgroundColor = UIColor.whiteColor()
+            
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
         }else if textField == self.dpInput {
             
@@ -152,7 +155,17 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
             
-        }else if textField == self.defectZoneInput {
+            let parentPositObjs = (self.parentView as! InputMode02View).defectPosits.filter({$0.positionNameEn == self.dpInput.text || $0.positionNameCn == self.dpInput.text})
+            if parentPositObjs.count > 0 {
+                self.cellDPPInput.backgroundColor = UIColor.whiteColor()
+            }
+            
+            let defectZoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+            if defectZoneValues.count > 0 {
+                defectZoneInput.backgroundColor = UIColor.whiteColor()
+            }
+            
+        } else if textField == self.defectZoneInput {
             
             guard let zoneValueName = self.defectZoneInput.text else {return}
             guard let zoneValues = self.zoneValues else {return}
@@ -162,6 +175,8 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                     self.inspectZoneValueId = zoneValue.valueId
                 }
             })
+            
+            textField.backgroundColor = UIColor.whiteColor()
         }
     }
     
@@ -199,7 +214,9 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             
                 textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, tag: 1000002, height:500)
             }
+            
         }else if textField == self.cellDPPInput {
+            
             var positName = [String]()
             let parentPositObjs = (self.parentView as! InputMode02View).defectPosits.filter({$0.positionNameEn == self.dpInput.text || $0.positionNameCn == self.dpInput.text})
             

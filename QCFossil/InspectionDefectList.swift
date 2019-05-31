@@ -22,6 +22,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
     weak var currentCell:InputModeDFMaster2!
     var defectItems = [TaskInspDefectDataRecord]()
     var defectPositionPointsDesc = ""
+    var validateNow = false
+    var passValidation = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,12 +50,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 self.inspectionTitle1Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspItem?.inspAreaText)!)")
                 self.inspectionTitle2Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspectItem.inptDetailInput.text)!)")
             }
-            /*let dpDataHelper = DPDataHelper()
-            if let elementId = inspItem?.inspElmId {
-                self.inspectionTitle2Input.text = dpDataHelper.getPositionItemByElementId(elementId)
-            }*/
         }
-        
         
         //filter all defectItems belong to the inspItem
         var currIdx = 0
@@ -166,13 +163,43 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         //myParentTabVC.setLeftBarItem("< "+MylocalizedString.sharedLocalizeManager.getLocalizedString("Back"),actionName: "backToTaskDetailFromSignOffPage")
         
         if (Cache_Task_On?.taskStatus != GetTaskStatusId(caseId: "Confirmed").rawValue && Cache_Task_On?.taskStatus != GetTaskStatusId(caseId: "Cancelled").rawValue) || _DEBUG_MODE {
-            myParentTabVC.setRightBarItem(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save"), actionName: "updateTask:")
+            
+            let handler:(()->(Bool)) = { [weak self] in
+                guard let strongSelf = self else {return false}
+                return strongSelf.validation()
+            }
+            
+            myParentTabVC.setRightBarItemWithHandler(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save"), actionName: "updateTask:", handler: handler)
         }
         
         NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
     }
     
+    func validation() ->Bool {
+        self.validateNow = true
+        self.passValidation = true
+        
+        self.inspectDefectTableview.reloadData()
+        
+        for defectItem in self.defectItems {
+            
+            if defectItem.inputMode == _INPUTMODE01 || defectItem.inputMode == _INPUTMODE02 {
+                
+                if defectItem.defectQtyCritical < 1 && defectItem.defectQtyMajor < 1 && defectItem.defectQtyMinor < 1 && defectItem.defectQtyTotal < 1 {
+                    self.passValidation = false
+                }
+            }
+        }
+        
+        return self.passValidation
+    }
+    
     func clearDefectItemsBeforeGOBack() {
+        
+        if !validation() {
+            return
+        }
+        
         let defectDataHelper = DefectDataHelper()
         let defectItemArray = (Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == self.inspItem!.cellCatIdx && $0.inspElmt.cellIdx == self.inspItem!.cellIdx }))!
         
@@ -238,6 +265,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         
         self.defectItems.sortInPlace({ $0.sortNum > $1.sortNum })
         
+        self.validateNow = false
         self.inspectDefectTableview?.reloadData()
     }
     
@@ -273,11 +301,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.defectItems.count
     }
-    /*
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 170
-    }
-    */
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let defectItem = self.defectItems[indexPath.row]
@@ -308,6 +332,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode4.backgroundColor = _TABLECELL_BG_COLOR1
             }
             
+            
+            
             return cellMode4
             
         }else if defectItem.inputMode! == _INPUTMODE02 {
@@ -323,10 +349,10 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode2.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode2.inputMode = _INPUTMODE02
             cellMode2.defectDescInput.text = defectItem.defectDesc!
-            cellMode2.defectMajorQtyInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
-            cellMode2.defectMinorQtyInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
-            cellMode2.defectCriticalQtyInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
-            cellMode2.defectTotalQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode2.defectMajorQtyInput.text = defectItem.defectQtyMajor < 1 ? "0" : String(defectItem.defectQtyMajor)
+            cellMode2.defectMinorQtyInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
+            cellMode2.defectCriticalQtyInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
+            cellMode2.defectTotalQtyInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
             cellMode2.defectPPIInput.text = self.defectPositionPointsDesc
             cellMode2.inspectElementId = defectItem.inspectElementId
             
@@ -339,6 +365,18 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 
                 cellMode2.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
                 cellMode2.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+                
+                if cellMode2.defectValues?.count < 1 {
+                    cellMode2.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+                } else {
+                    cellMode2.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+                }
+                
+                if cellMode2.caseValues?.count < 1 {
+                    cellMode2.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+                } else {
+                    cellMode2.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+                }
                 
             }else{
                 cellMode2.defectTypeInput.text = ""
@@ -353,6 +391,16 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode2.backgroundColor = _TABLECELL_BG_COLOR2
             }else{
                 cellMode2.backgroundColor = _TABLECELL_BG_COLOR1
+            }
+            
+            if validateNow {
+                guard let defectTotalQty = Int(cellMode2.defectTotalQtyInput.text!), let defectCriticalQty = Int(cellMode2.defectCriticalQtyInput.text!), let defectMajorQty = Int(cellMode2.defectMajorQtyInput.text!), let defectMinorQty = Int(cellMode2.defectMinorQtyInput.text!) else {return cellMode2}
+                
+                if defectTotalQty < 1 && defectCriticalQty < 1 && defectMajorQty < 1 && defectMinorQty < 1 {
+                    cellMode2.errorMessageLabel.hidden = false
+                } else {
+                    cellMode2.errorMessageLabel.hidden = true
+                }
             }
             
             return cellMode2
@@ -370,10 +418,10 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode1.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode1.inputMode = _INPUTMODE01
             cellMode1.defectDescInput.text = defectItem.defectDesc!
-            cellMode1.defectQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
-            cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
-            cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
-            cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
+            cellMode1.defectQtyInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
+            cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "0" : String(defectItem.defectQtyMajor)
+            cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
+            cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
             cellMode1.inspectElementId = defectItem.inspectElementId
             
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
@@ -386,6 +434,18 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode1.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
                 cellMode1.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
                 
+                if cellMode1.defectValues?.count < 1 {
+                    cellMode1.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+                } else {
+                    cellMode1.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+                }
+                
+                if cellMode1.caseValues?.count < 1 {
+                    cellMode1.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+                } else {
+                    cellMode1.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+                }
+
             }else{
                 cellMode1.defectTypeInput.text = ""
             }
@@ -399,6 +459,16 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode1.backgroundColor = _TABLECELL_BG_COLOR2
             }else{
                 cellMode1.backgroundColor = _TABLECELL_BG_COLOR1
+            }
+            
+            if validateNow {
+                guard let defectTotalQty = Int(cellMode1.defectQtyInput.text!), let defectCriticalQty = Int(cellMode1.criticalInput.text!), let defectMajorQty = Int(cellMode1.majorInput.text!), let defectMinorQty = Int(cellMode1.minorInput.text!) else {return cellMode1}
+                
+                if defectTotalQty < 1 && defectCriticalQty < 1 && defectMajorQty < 1 && defectMinorQty < 1 {
+                    cellMode1.errorMessageLabel.hidden = false
+                } else {
+                    cellMode1.errorMessageLabel.hidden = true
+                }
             }
             
             return cellMode1

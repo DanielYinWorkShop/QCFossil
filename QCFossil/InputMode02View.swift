@@ -172,8 +172,23 @@ class InputMode02View: InputModeSCMaster {
         inputCellViewObj?.inspAreaText = dpText
         inputCellViewObj?.inspItemText = dppText
         
+        inputCellViewObj?.zoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(inspPostId)
+        
         let defectDataHelper = DefectDataHelper()
         inputCellViewObj?.myDefectPositPoints = defectDataHelper.getDefectTypeByTaskInspectDataRecordId(taskInspDataRecordId)
+        
+        let parentPositObjs = self.defectPosits.filter({$0.positionNameEn == dpText || $0.positionNameCn == dpText})
+        if parentPositObjs.count < 1 {
+            inputCellViewObj?.cellDPPInput.backgroundColor = UIColor.lightGrayColor()
+        } else {
+            inputCellViewObj?.cellDPPInput.backgroundColor = UIColor.whiteColor()
+        }
+        
+        if inputCellViewObj?.zoneValues?.count < 1 {
+            inputCellViewObj?.defectZoneInput.backgroundColor = UIColor.lightGrayColor()
+        } else {
+            inputCellViewObj?.defectZoneInput.backgroundColor = UIColor.whiteColor()
+        }
         
         if !dismissBtnHidden {
             inputCellViewObj?.showDismissButton()

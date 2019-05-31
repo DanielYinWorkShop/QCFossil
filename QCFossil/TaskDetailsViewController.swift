@@ -69,7 +69,7 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
     }
     
     func updateNaviBarMenu(leftBarTitle:String = "Task Search", leftBarActionName:String = "backTaskSearch:", rightBarTitle:String, rightBarActionName:String) {
-        let myParentTabVC = self.parentViewController?.parentViewController as! TabBarViewController
+        if let myParentTabVC = self.parentViewController?.parentViewController as? TabBarViewController {
         
         if leftBarTitle == "Task Search" {
             //myParentTabVC.navigationItem.leftBarButtonItem = myParentTabVC.navigationItem.backBarButtonItem
@@ -82,6 +82,7 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
         
         if !self.view.disableFuns(self.view) {
             myParentTabVC.setRightBarItem(rightBarTitle, actionName: rightBarActionName)
+        }
         }
     }
 
