@@ -86,6 +86,7 @@ let _DATEFORMATTER2 = "MM/dd/yy"
 //iPad default frame
 var _FULLSCRENNFRAME = CGRectMake(0,0,768,1024)
 var _BRUSHSTYLE = ["red":255.0,"green":0.0,"blue":0.0,"brush":2.0]
+let _GREY_BACKGROUD = UIColor.init(red: 211/255, green: 211/255, blue: 211/255, alpha: 1.0)
 
 //Popover Data Type
 let _POPOVERDATATPYE = "DataPick"

@@ -269,8 +269,11 @@ class DataSyncDataHelper:DataHelperMaster {
                     
                     for (key,_) in taskIDRlist {
                         
-                        taskIDRlist[key] = rs.stringForColumn(key)
-                        
+                        if let value = rs.stringForColumn(key) {
+                            taskIDRlist[key] = value
+                        } else {
+                            taskIDRlist[key] = ""
+                        }
                     }
                     
                     taskIDRs.append(taskIDRlist)

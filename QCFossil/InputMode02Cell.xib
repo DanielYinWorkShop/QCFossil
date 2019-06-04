@@ -172,8 +172,10 @@
                 <outlet property="cellPAInput" destination="zml-08-a8h" id="fub-CV-Oe0"/>
                 <outlet property="cellResultInput" destination="r3m-ww-88z" id="MJe-n4-GuT"/>
                 <outlet property="cellResultLabel" destination="DjA-og-2zw" id="oXU-fO-FNh"/>
+                <outlet property="defectPositionPointIcon" destination="Yi7-QN-knw" id="VKh-zp-TTA"/>
                 <outlet property="defectZoneInput" destination="AYP-lg-SS6" id="4w4-kU-iNH"/>
                 <outlet property="defectZoneLabel" destination="dj6-Yp-PYr" id="Gkg-xk-ZSS"/>
+                <outlet property="defectZoneListIcon" destination="ONT-dB-oi5" id="FJf-tD-1V1"/>
                 <outlet property="dpDescInput" destination="mi0-yS-ggd" id="GcE-x2-CwP"/>
                 <outlet property="dpDescLabel" destination="v7X-ph-DB3" id="b41-v6-nDq"/>
                 <outlet property="dpInput" destination="wg0-cs-bdv" id="bEK-cX-R4F"/>
@@ -181,7 +183,7 @@
                 <outlet property="photoAddedIcon" destination="bd3-f2-1Tn" id="aUK-p8-dbW"/>
                 <outlet property="takePhotoIcon" destination="93D-gK-gGq" id="Jhc-gK-oK6"/>
             </connections>
-            <point key="canvasLocation" x="182" y="163"/>
+            <point key="canvasLocation" x="69" y="148"/>
         </view>
     </objects>
     <resources>

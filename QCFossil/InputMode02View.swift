@@ -179,15 +179,19 @@ class InputMode02View: InputModeSCMaster {
         
         let parentPositObjs = self.defectPosits.filter({$0.positionNameEn == dpText || $0.positionNameCn == dpText})
         if parentPositObjs.count < 1 {
-            inputCellViewObj?.cellDPPInput.backgroundColor = UIColor.lightGrayColor()
+            inputCellViewObj?.cellDPPInput.backgroundColor = _GREY_BACKGROUD
+            inputCellViewObj?.defectZoneListIcon.hidden = true
         } else {
             inputCellViewObj?.cellDPPInput.backgroundColor = UIColor.whiteColor()
+            inputCellViewObj?.defectZoneListIcon.hidden = false
         }
         
         if inputCellViewObj?.zoneValues?.count < 1 {
-            inputCellViewObj?.defectZoneInput.backgroundColor = UIColor.lightGrayColor()
+            inputCellViewObj?.defectZoneInput.backgroundColor = _GREY_BACKGROUD
+            inputCellViewObj?.defectPositionPointIcon.hidden = true
         } else {
             inputCellViewObj?.defectZoneInput.backgroundColor = UIColor.whiteColor()
+            inputCellViewObj?.defectPositionPointIcon.hidden = false
         }
         
         if !dismissBtnHidden {

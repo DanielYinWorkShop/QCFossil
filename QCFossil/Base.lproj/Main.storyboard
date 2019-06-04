@@ -5154,8 +5154,10 @@
                                             <outlet property="criticalLabel" destination="UAT-zL-rkZ" id="mIs-Ft-x18"/>
                                             <outlet property="defectDesc1Input" destination="mBa-87-zmZ" id="nBd-ta-wIm"/>
                                             <outlet property="defectDesc1Label" destination="RNU-dL-6Ir" id="geb-mY-PLI"/>
+                                            <outlet property="defectDesc1ListIcon" destination="sGz-hd-szH" id="PQc-BX-V8j"/>
                                             <outlet property="defectDesc2Input" destination="Hae-ih-S5o" id="mPW-Pk-68Q"/>
                                             <outlet property="defectDesc2Label" destination="XQT-r5-LSk" id="eOS-aI-fWf"/>
+                                            <outlet property="defectDesc2ListIcon" destination="jFa-ey-hPf" id="U6P-T9-CwD"/>
                                             <outlet property="defectDescInput" destination="cnc-xv-jEx" id="bOu-sM-dMX"/>
                                             <outlet property="defectDescLabel" destination="w4a-KQ-Rd1" id="WYq-YN-ysG"/>
                                             <outlet property="defectQtyInput" destination="D0Q-Db-QBk" id="2Sc-CI-zag"/>
@@ -5512,8 +5514,10 @@
                                             <outlet property="defectCriticalQtyLabel" destination="NSm-Ht-bYb" id="TS6-hx-Uug"/>
                                             <outlet property="defectDesc1Input" destination="zjL-r6-pXz" id="gPJ-yg-iFn"/>
                                             <outlet property="defectDesc1Label" destination="bdR-5O-Bik" id="fx2-K4-fct"/>
+                                            <outlet property="defectDesc1ListIcon" destination="B4V-qE-3ZB" id="w58-FY-Mns"/>
                                             <outlet property="defectDesc2Input" destination="vli-6e-Ati" id="pHq-lN-tmm"/>
                                             <outlet property="defectDesc2Label" destination="h7m-av-aQw" id="QNl-2K-hBS"/>
+                                            <outlet property="defectDesc2ListIcon" destination="DoE-ds-dVy" id="JAo-xI-ibH"/>
                                             <outlet property="defectDescInput" destination="pIf-x4-0Oq" id="oqF-MC-TdA"/>
                                             <outlet property="defectDescLabel" destination="aUL-rt-PEM" id="BN5-IG-47S"/>
                                             <outlet property="defectMajorQtyInput" destination="hko-5g-Z4Y" id="r0T-qs-PfZ"/>

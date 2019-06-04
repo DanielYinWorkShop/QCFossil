@@ -710,6 +710,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         _DS_TOTALRECORDS_DB["task_inspect_data_record_count"] = String(recordsCount)
         recordsCount = 0
         
+        print("upload Data: \(taskIDRlist)")
         
         //6. Construct Task Inspect Data Record from task_inspect_position_point_list
         let taskIPPFields = taskDataObj["ACTIONFIELDS"]!["task_inspect_position_point_list"] as! Dictionary<String, String>

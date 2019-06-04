@@ -27,7 +27,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectDesc1Input: UITextField!
     @IBOutlet weak var defectDesc2Input: UITextField!
     @IBOutlet weak var errorMessageLabel: UILabel!
-    
+    @IBOutlet weak var defectDesc1ListIcon: UIButton!
+    @IBOutlet weak var defectDesc2ListIcon: UIButton!
     weak var pVC:InspectionDefectList!
     
     var defectValues:[DropdownValue]?
@@ -443,15 +444,19 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             let caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
             
             if defectValues.count < 1 {
-                self.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+                self.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
+                self.defectDesc1ListIcon.hidden = true
             } else {
                 self.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+                self.defectDesc1ListIcon.hidden = false
             }
             
             if caseValues.count < 1 {
-                self.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+                self.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
+                self.defectDesc2ListIcon.hidden = true
             } else {
                 self.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+                self.defectDesc2ListIcon.hidden = false
             }
             
         } else if textField == self.defectDesc1Input {

@@ -26,6 +26,8 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var takePhotoIcon: UIButton!
     @IBOutlet weak var defectZoneLabel: UILabel!
     @IBOutlet weak var defectZoneInput: UITextField!
+    @IBOutlet weak var defectZoneListIcon: UIButton!
+    @IBOutlet weak var defectPositionPointIcon: UIButton!
     
     var myDefectPositPoints = [PositPointObj]()
     var zoneValues:[DropdownValue]?
@@ -136,6 +138,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             }
             
             textField.backgroundColor = UIColor.whiteColor()
+            self.defectPositionPointIcon.hidden = false
             
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
         }else if textField == self.dpInput {
@@ -158,11 +161,13 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             let parentPositObjs = (self.parentView as! InputMode02View).defectPosits.filter({$0.positionNameEn == self.dpInput.text || $0.positionNameCn == self.dpInput.text})
             if parentPositObjs.count > 0 {
                 self.cellDPPInput.backgroundColor = UIColor.whiteColor()
+                self.defectPositionPointIcon.hidden = false
             }
             
             let defectZoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
             if defectZoneValues.count > 0 {
                 defectZoneInput.backgroundColor = UIColor.whiteColor()
+                self.defectZoneListIcon.hidden = false
             }
             
         } else if textField == self.defectZoneInput {
@@ -177,6 +182,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             })
             
             textField.backgroundColor = UIColor.whiteColor()
+            self.defectZoneListIcon.hidden = false
         }
     }
     

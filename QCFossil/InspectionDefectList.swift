@@ -367,15 +367,19 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode2.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
                 
                 if cellMode2.defectValues?.count < 1 {
-                    cellMode2.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+                    cellMode2.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
+                    cellMode2.defectDesc1ListIcon.hidden = true
                 } else {
                     cellMode2.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+                    cellMode2.defectDesc1ListIcon.hidden = false
                 }
                 
                 if cellMode2.caseValues?.count < 1 {
-                    cellMode2.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+                    cellMode2.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
+                    cellMode2.defectDesc2ListIcon.hidden = true
                 } else {
                     cellMode2.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+                    cellMode2.defectDesc2ListIcon.hidden = false
                 }
                 
             }else{
@@ -435,15 +439,19 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode1.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
                 
                 if cellMode1.defectValues?.count < 1 {
-                    cellMode1.defectDesc1Input.backgroundColor = UIColor.lightGrayColor()
+                    cellMode1.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
+                    cellMode1.defectDesc1ListIcon.hidden = true
                 } else {
                     cellMode1.defectDesc1Input.backgroundColor = UIColor.whiteColor()
+                    cellMode1.defectDesc1ListIcon.hidden = false
                 }
                 
                 if cellMode1.caseValues?.count < 1 {
-                    cellMode1.defectDesc2Input.backgroundColor = UIColor.lightGrayColor()
+                    cellMode1.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
+                    cellMode1.defectDesc2ListIcon.hidden = true
                 } else {
                     cellMode1.defectDesc2Input.backgroundColor = UIColor.whiteColor()
+                    cellMode1.defectDesc2ListIcon.hidden = false
                 }
 
             }else{
