@@ -795,3 +795,5 @@
 "unknow error." = "未知错误。";
 
 "Please enter defect quantity" = "请输入缺陷数目";
+
+"Please enter defect point info" = "请先输入不良项目资料";

@@ -184,6 +184,12 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         for defectItem in self.defectItems {
             
             if defectItem.inputMode == _INPUTMODE01 || defectItem.inputMode == _INPUTMODE02 {
+            
+                if let defectType = defectItem.defectType {
+                    if defectType == "" {
+                        return true
+                    }
+                }
                 
                 if defectItem.defectQtyCritical < 1 && defectItem.defectQtyMajor < 1 && defectItem.defectQtyMinor < 1 && defectItem.defectQtyTotal < 1 {
                     self.passValidation = false
@@ -231,7 +237,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             }
         }
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(false)
     }
     
     override func didReceiveMemoryWarning() {
@@ -362,6 +368,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
                 cellMode2.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)
+                defectItem.defectType = cellMode2.defectTypeInput.text
                 
                 cellMode2.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
                 cellMode2.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
@@ -384,6 +391,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 
             }else{
                 cellMode2.defectTypeInput.text = ""
+                defectItem.defectType = ""
             }
             
             cellMode2.refreshImageviews()
@@ -434,7 +442,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
                 cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)
-                
+                defectItem.defectType = cellMode1.defectTypeInput.text
+                    
                 cellMode1.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
                 cellMode1.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
                 
@@ -456,6 +465,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
 
             }else{
                 cellMode1.defectTypeInput.text = ""
+                defectItem.defectType = ""
             }
             
             cellMode1.refreshImageviews()

@@ -26,6 +26,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var takePhotoIcon: UIButton!
     @IBOutlet weak var inptDetailItemList: UIButton!
     @IBOutlet weak var inptDetailItemsListBtn: UIButton!
+    @IBOutlet weak var errorMessageLabel: UILabel!
     
     var selectValues = [String]()
     //weak var parentView = InputMode01View()
@@ -68,6 +69,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         self.inptDetailLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Details")
         self.cellRemarksLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Remarks")
         self.cellResultLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Result")
+        self.errorMessageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please enter defect point info")
     }
     
     override func didMoveToSuperview() {
@@ -95,6 +97,16 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
 
     @IBAction func defectBtnOnClick(sender: UIButton) {
  
+        //check if defect input and defect position points nil, then return
+        if let value = inptDetailInput.text {
+            if value == "" || value.isEmpty {
+                self.errorMessageLabel.hidden = false
+                return
+            } else {
+                self.errorMessageLabel.hidden = true
+            }
+        }
+        
         let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
         
@@ -156,34 +168,39 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             releaseInspItems.append(self.inptItemInput.text!)
             (self.parentView as! InputMode01View).updateOptionalInspElmts(releaseInspItems,action: "add")
             
-            //Delete Relative Defect Items From DB
-            //NSNotificationCenter.defaultCenter().postNotificationName("deleteDefectItemsByInspItem", object: nil, userInfo: ["inspElmt":self])
+            // Delete Relative Defect Items From DB
+            self.deleteDefectItems()
+        })
+    }
+    
+    func deleteDefectItems() {
+
+        let defectItemsArray = Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == self.cellCatIdx && $0.inspElmt.cellIdx == self.cellIdx })
         
-            let defectItemsArray = Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == self.cellCatIdx && $0.inspElmt.cellIdx == self.cellIdx })
-            
-            if defectItemsArray?.count > 0 {
-                for defectItem in defectItemsArray! {
-                    let index = Cache_Task_On?.defectItems.indexOf({ $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
-                    Cache_Task_On?.defectItems.removeAtIndex(index!)
-                    
-                    //remove DB data
-                    if defectItem.photoNames != nil && defectItem.photoNames?.count>0 {
-                        for photoName in defectItem.photoNames! {
-                            //Remove defect photo to Photo Album
-                            let photoDataHelper = PhotoDataHelper()
-                            photoDataHelper.updatePhotoDatasByPhotoName(photoName, dataType:PhotoDataType(caseId: "TASK").rawValue, dataRecordId:0)
-                        }
-                    }
-                    
-                    //Delete Record From DB
-                    if defectItem.recordId > 0 {
-                        let taskDataHelper = TaskDataHelper()
-                        taskDataHelper.deleteTaskInspDefectDataRecordById(defectItem.recordId!)
-                        
+        if defectItemsArray?.count > 0 {
+            for defectItem in defectItemsArray! {
+
+                if let defectItems = Cache_Task_On?.defectItems.filter({$0.inspElmt != self}) {
+                    Cache_Task_On?.defectItems = defectItems
+                }
+                
+                //remove DB data
+                if defectItem.photoNames != nil && defectItem.photoNames?.count>0 {
+                    for photoName in defectItem.photoNames! {
+                        //Remove defect photo to Photo Album
+                        let photoDataHelper = PhotoDataHelper()
+                        photoDataHelper.updatePhotoDatasByPhotoName(photoName, dataType:PhotoDataType(caseId: "TASK").rawValue, dataRecordId:0)
                     }
                 }
+                
+                //Delete Record From DB
+                if defectItem.recordId > 0 {
+                    let taskDataHelper = TaskDataHelper()
+                    taskDataHelper.deleteTaskInspDefectDataRecordById(defectItem.recordId!)
+                    
+                }
             }
-        })
+        }
     }
     
     func showDismissButton() {
@@ -198,6 +215,12 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             
             updatePhotoAddediConStatus(textField.text!, photoTakenIcon: self.photoAddedIcon)
         }else if textField == self.inptItemInput {
+            
+            if self.inspAreaText != textField.text! {
+                // delete all defect items if not match
+                self.deleteDefectItems()
+            }
+            
             //Update Parent InspElmt
             self.inspAreaText = textField.text!
             

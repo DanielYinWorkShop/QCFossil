@@ -53,6 +53,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectPositInput.delegate = self
         self.defectDesc1Input.delegate = self
         self.defectDesc2Input.delegate = self
+        self.defectTotalQtyInput.userInteractionEnabled = false
         
         self.defectDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
         self.defectPositLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Position")
@@ -438,9 +439,22 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:500)
 
             return false
+        } else if textField == self.defectMajorQtyInput || textField == self.defectMinorQtyInput || textField == self.defectCriticalQtyInput {
+            
+            if textField.text == "0" {
+                textField.text = ""
+            }
         }
         
         return true
+    }
+    
+    override func textFieldDidEndEditing(textField: UITextField) {
+        if textField == self.defectMajorQtyInput || textField == self.defectMinorQtyInput || textField == self.defectCriticalQtyInput {
+            if textField.text == "" {
+                textField.text = "0"
+            }
+        }
     }
     
     func dropdownHandleFunc(textField:UITextField) {
@@ -453,6 +467,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             let inspectElementId = defectDataHelper.getInspElementIdByName(textField.text ?? "")
             defectItem.inspectElementId = inspectElementId
             self.inspectElementId = inspectElementId
+            defectItem.defectType = textField.text ?? ""
             
             let defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
             let caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)

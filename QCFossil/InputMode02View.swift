@@ -20,7 +20,7 @@ class InputMode02View: InputModeSCMaster {
     var defectPositPoints = [PositPointObj]()
     let inputCellCount = 6
     let cellWidth = 768
-    let cellHeight = 140
+    let cellHeight = 160
     
     /*
     // Only override drawRect: if you perform custom drawing.

@@ -17,7 +17,7 @@ class InputMode01View: InputModeSCMaster {
     var inputCells = [InputMode01CellView]()
     let inputCellCount = 6
     let cellWidth = 768
-    let cellHeight = 140
+    let cellHeight = 160
 
     
     /*
@@ -186,47 +186,15 @@ class InputMode01View: InputModeSCMaster {
         inputCell.saveMyselfToGetId()
         inputCells.append(inputCell)
         self.updateContentView()
-        
-        /*
-        if self.optInspElms.count > 0 {
-            let usedInspItems = self.inputCells.filter({ $0.requiredElementFlag == 0 })
-            var usedInspItemNames = [String]()
-            
-            for usedInspItem in usedInspItems {
-                usedInspItemNames.append(usedInspItem.inptItemInput.text!)
-            }
-            
-            let optInspElm = self.optInspElms[0]
-            usedInspItemNames.append((_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!)
-            
-            let dpDataHelper = DPDataHelper()
-            var inspectPositionId = 0
-            if let elementId = optInspElm.elementId {
-                inspectPositionId = dpDataHelper.getPositionIdByElementId(elementId)
-            }
-            
-            
-            let inputCell = inputCellInit(inputCells.count+1, sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),inspItemText: (_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!, inspDetailText: "", inspRemarksText: "", dismissBtnHidden: false, elementDbId: 0, refRecordId: 0, inspElmId: optInspElm.elementId!, inspPostId: inspectPositionId, userInteractive: true)
-            
-            inputCell.saveMyselfToGetId()
-            inputCells.append(inputCell)
-            
-            inputCell.inspReqCatText = categoryName
-            inputCell.inspAreaText = (_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!
-            //inputCell.inspItemText = (_ENGLISH ? optInspElm.elementNameEn:optInspElm.elementNameCn)!
-            self.updateContentView()
-            self.updateOptionalInspElmts(usedInspItemNames)
-        }
-         */
     }
 
     func updateOptionalInspElmts(inspElmtNames:[String]=[], action:String="filter") {
         
         if action == "filter" {
-            /*self.optInspElms = self.optInspElmsMaster
+            self.optInspElms = self.optInspElmsMaster
             for inspElmtName in inspElmtNames {
                 self.optInspElms = self.optInspElms.filter({ _ENGLISH ? $0.elementNameEn != inspElmtName : $0.elementNameCn != inspElmtName })
-            }*/
+            }
         }else{
             for inspElmtName in inspElmtNames {
                 let inspElmt = self.optInspElmsMaster.filter({ _ENGLISH ? $0.elementNameEn == inspElmtName : $0.elementNameCn == inspElmtName })

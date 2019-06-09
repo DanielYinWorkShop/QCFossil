@@ -423,9 +423,23 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:500)
             
             return false
+        } else if textField == self.majorInput || textField == self.minorInput || textField == self.criticalInput {
+            
+            if textField.text == "0" {
+                textField.text = ""
+            }
         }
         
         return true
+    }
+    
+    override func textFieldDidEndEditing(textField: UITextField) {
+        if textField == self.majorInput || textField == self.minorInput || textField == self.criticalInput {
+            
+            if textField.text == "" {
+                textField.text = "0"
+            }
+        }
     }
     
     func dropdownHandleFunc(textField:UITextField) {
@@ -439,7 +453,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             let inspectElementId = defectDataHelper.getInspElementIdByName(textField.text ?? "")
             defectItem.inspectElementId = inspectElementId
             self.inspectElementId = inspectElementId
-
+            defectItem.defectType = textField.text ?? ""
+            
             let defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
             let caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
             

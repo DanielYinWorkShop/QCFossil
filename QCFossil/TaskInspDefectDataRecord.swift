@@ -36,6 +36,7 @@ class TaskInspDefectDataRecord {
     var modifyDate:String?
     var inspectElementDefectValueId:Int?
     var inspectElementCaseValueId:Int?
+    var defectType:String?
     
     //Element Display Using
     var sectObj:SectObj = SectObj(sectionId:0, sectionNameEn: "", sectionNameCn: "",inputMode: "")
