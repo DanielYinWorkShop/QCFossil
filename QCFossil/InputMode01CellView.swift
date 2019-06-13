@@ -99,7 +99,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
  
         //check if defect input and defect position points nil, then return
         if let value = inptDetailInput.text {
-            if value == "" || value.isEmpty {
+            if inptDetailItemsListBtn.hidden == false && (value == "" || value.isEmpty) {
                 self.errorMessageLabel.hidden = false
                 return
             } else {

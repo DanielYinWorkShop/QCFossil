@@ -373,6 +373,8 @@ class TabBarViewController: UITabBarController {
                 self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save fail!"))
             }
         }
+        
+        handler = nil
     }
     
     func confirmTask() {
