@@ -25,6 +25,7 @@ class InptCategoryCell: UIView {
     var frameWidth:CGFloat = 90.0
     var frameHeight:CGFloat = 21.0
     var frameTop:CGFloat = 9
+    var sectionId:Int?
     
     let marginX1:CGFloat = 191
     let marginX2:CGFloat = 289

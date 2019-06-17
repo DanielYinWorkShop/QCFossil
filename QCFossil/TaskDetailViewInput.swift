@@ -214,6 +214,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             let catBtnTitle = (_ENGLISH ? section?.sectionNameEn:section?.sectionNameCn)!+"(\(itemCount))"
             inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, forState: UIControlState.Normal)
             inputInptCatViewObj?.parentView = self
+            inputInptCatViewObj?.sectionId = section?.sectionId
             
             let sectionResultValues = resultValues.filter({$0.sectionId == section?.sectionId})
             for resultValue in sectionResultValues {

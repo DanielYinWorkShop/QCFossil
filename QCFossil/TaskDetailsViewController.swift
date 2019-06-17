@@ -254,11 +254,11 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                 if $0.classForCoder == InptCategoryCell.classForCoder() {
                     let icSecs = self.categoriesDetail
                     var itemsCount = 0
+                    let inspectionCategoryCell = $0 as? InptCategoryCell
                     
                     for icSec in icSecs {
                         
-                        //if icSec.inspSection?.sectionNameEn == ($0 as! InptCategoryCell).inptCatButton.titleLabel?.text || icSec.inspSection?.sectionNameCn == ($0 as! InptCategoryCell).inptCatButton.titleLabel?.text {
-                        if ($0 as! InptCategoryCell).inptCatButton.titleLabel?.text?.rangeOfString(icSec.inspSection!.sectionNameEn!) != nil || ($0 as! InptCategoryCell).inptCatButton.titleLabel?.text?.rangeOfString(icSec.inspSection!.sectionNameCn!) != nil {
+                        if inspectionCategoryCell?.sectionId == icSec.categoryIdx {
                             let resultSetValues = ($0 as! InptCategoryCell).resultSetValues
                             for resultSetValue in resultSetValues{
                                 resultSetValue.clear()
@@ -316,9 +316,9 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                             default:break
                             }
                             
-                            ($0 as! InptCategoryCell).updateSummaryResultValues(resultSetValues)
+                            inspectionCategoryCell?.updateSummaryResultValues(resultSetValues)
                             let title = _ENGLISH ? icSec.inspSection!.sectionNameEn:icSec.inspSection!.sectionNameCn
-                            ($0 as! InptCategoryCell).inptCatButton.setTitle(title!+"(\(itemsCount))", forState: UIControlState.Normal)
+                            inspectionCategoryCell?.inptCatButton.setTitle(title!+"(\(itemsCount))", forState: UIControlState.Normal)
                         }
                     }
                 }
