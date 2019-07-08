@@ -96,9 +96,10 @@ class InputMode04CellView: InputModeICMaster, UITextFieldDelegate {
     
     func dropdownHandleFunc(textField:UITextField) {
         if textField == subResultInput {
-            let taskDataHelper = TaskDataHelper()
-            self.resultValueId = taskDataHelper.getResultValueIdByResultValue(subResultInput.text!, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
             
+            guard let resultText = subResultInput.text else {return}
+            
+            self.resultValueId = self.parentView.resultKeyValues[resultText] ?? 0
             updatePhotoAddediConStatus(textField.text!,photoTakenIcon: self.photoAddedIcon)
             
         }else if textField == inspectionAreaLabel {

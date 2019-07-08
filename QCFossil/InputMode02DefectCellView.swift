@@ -302,12 +302,12 @@ class InputMode02DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
                 })
                 
                 let dfElms = defectDataHelper.getDefectTypeElms(positionIdArray)
-                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: dfElms, height:500)
+                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: dfElms, height:750)
             } else {
                 
                 guard let id = self.taskDefectDataRecordId else {return false}
                 let dfElms = defectDataHelper.getDefectTypeByTaskDefectDataRecordId(id)
-                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: dfElms, height:500)
+                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: dfElms, height:750)
             }
             
             return false

@@ -115,12 +115,14 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
-        let taskDataHelper = TaskDataHelper()
         
         if textField == self.cellResultInput {
-            self.resultValueId = taskDataHelper.getResultValueIdByResultValue(cellResultInput.text!, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
             
-            updatePhotoAddediConStatus(textField.text!, photoTakenIcon: self.photoAddedIcon)
+            guard let resultText = cellResultInput.text else {return}
+            
+            self.resultValueId = self.parentView.resultKeyValues[resultText] ?? 0
+            updatePhotoAddediConStatus(resultText, photoTakenIcon: self.photoAddedIcon)
+            
         }else if textField == self.cellDPPInput {
             self.inspItemText = textField.text!
             myDefectPositPoints = [PositPointObj]()
@@ -222,7 +224,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
             
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, tag: 1000002, height:500)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, tag: 1000002, height:750)
             }
             
         }else if textField == self.cellDPPInput {
@@ -241,7 +243,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                     clearDropdownviewForSubviews(self.parentView!)
                 }else{
                 
-                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, width:320, height:500, allowMulpSel: true, tag: 1000001)
+                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, width:320, height:750, allowMulpSel: true, tag: 1000001)
                     
                 }
             }
@@ -253,7 +255,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             self.zoneValues?.forEach({ zoneValue in
                 listData.append(_ENGLISH ? zoneValue.valueNameEn ?? "":zoneValue.valueNameCn ?? "")
             })
-            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: listData, height:500)
+            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: listData, height:750)
         }
         
         return false

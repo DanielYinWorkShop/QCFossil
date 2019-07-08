@@ -208,12 +208,12 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
-        let taskDataHelper = TaskDataHelper()
         
         if textField == self.cellResultInput {
-            self.resultValueId = taskDataHelper.getResultValueIdByResultValue(cellResultInput.text!, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
+            guard let resultText = cellResultInput.text else {return}
             
-            updatePhotoAddediConStatus(textField.text!, photoTakenIcon: self.photoAddedIcon)
+            self.resultValueId = self.parentView.resultKeyValues[resultText] ?? 0
+            updatePhotoAddediConStatus(resultText, photoTakenIcon: self.photoAddedIcon)
         }else if textField == self.inptItemInput {
             
             if self.inspAreaText != textField.text! {
@@ -265,7 +265,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
                 listData.append( (_ENGLISH ? optInspElmt.elementNameEn : optInspElmt.elementNameCn)!)
             }
             
-            textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: listData, width: self.inptItemInput.frame.size.width*1.2, height:500)
+            textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: listData, width: self.inptItemInput.frame.size.width*1.2, height:750)
             
             return false
         }
@@ -274,7 +274,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
 
     @IBAction func showInptDetailVals(sender: UIButton) {
-        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 500, height:500, allowManuallyInput: true)
+        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.selectValues, width: 500, height:750, allowManuallyInput: true)
         
 
     }

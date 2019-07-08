@@ -348,17 +348,6 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspect Result Cannot Be Nil!"))
                 return false
                 
-            }else if self.inspResultBottomInput.text!.lowercaseString.rangeOfString("c.a.") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("fail") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("hold") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("reject (comment)") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("Reject (Document)") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("有条件批准") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("不合格") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("保留") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("拒绝 (待评语)") != nil || self.inspResultBottomInput.text!.lowercaseString.rangeOfString("拒绝 (欠文件)") != nil{
-            
-                if self.inspCommentInput.text == "" || self.vendorNotesInput.text == "" {
-                    self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please fill in: 1. Inspector Comment 2. Vendor Notes!"))
-                    return false
-                }
-            }
-        }else{
-            if self.inspCommentInput.text == "" || self.vendorNotesInput.text == "" {
-                self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please fill in: 1. Inspector Comment 2. Vendor Notes!"))
-                return false
             }
         }
         

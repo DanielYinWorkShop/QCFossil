@@ -827,6 +827,32 @@ class TaskDataHelper:DataHelperMaster{
         return nil
     }
     
+    func getResultKeyValueBySetId(rsId:Int) ->[String:Int]? {
+        let sql = "SELECT v.value_id,v.value_name_en,v.value_name_cn FROM result_set_value as s INNER JOIN result_value_mstr as v ON s.value_id=v.value_id WHERE s.set_id = ? AND (v.rec_status = 0 AND v.deleted_flag = 0) ORDER BY v.display_order"
+        var resultKeyValues = [String:Int]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [rsId]) {
+                
+                while rs.next() {
+                    
+                    if _ENGLISH {
+                        resultKeyValues[rs.stringForColumn("value_name_en")] = Int(rs.intForColumn("value_id"))
+                    }else{
+                        resultKeyValues[rs.stringForColumn("value_name_cn")] = Int(rs.intForColumn("value_id"))
+                    }
+                }
+            }
+            
+            db.close()
+            
+            return resultKeyValues
+        }
+        
+        return nil
+    }
+    
     func updateInspDataRecord(inspDataRecords:[TaskInspDataRecord]) ->[TaskInspDataRecord] {
         
         if db.open() && inspDataRecords.count > 0 {
@@ -901,7 +927,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getOptInspSecElementsByIds(prodTypeId:Int, inspTypeId:Int, inspSectionId:Int) ->[InspSectionElement]? {
         //let sql = "SELECT * FROM inspect_element_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND inspect_section_id = ? AND required_element_flag = 0 ORDER BY element_name_en ASC"
-        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 AND iem.element_type = 1 AND (iem.rec_status = 0 AND iem.deleted_flag = 0) ORDER BY iem.element_name_en ASC"
+        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 AND iem.element_type = 1 AND (iem.rec_status = 0 AND iem.deleted_flag = 0) " + (_ENGLISH ? "ORDER BY iem.element_name_en ASC" : "ORDER BY iem.element_name_cn ASC")
         var inspSecElms = [InspSectionElement]()
         
         if db.open() {
@@ -2248,7 +2274,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getInptElementDetailSelectValueByElementId(elementId: Int) ->[String] {
         
-        let sql = "SELECT * FROM inspect_element_detail_select_val WHERE element_id = ?"
+        let sql = "SELECT * FROM inspect_element_detail_select_val WHERE element_id = ? ORDER BY select_text_en ASC"
         
         var values = [String]()
         
