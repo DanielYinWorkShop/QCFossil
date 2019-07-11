@@ -173,6 +173,10 @@ class ShapeView: UIView {
             return arrowShape(CGPointMake(10, 100), to: CGPointMake(100, 10), tailWidth: 10, headWidth: 25, headLength: 40)
         }
         
+        if (shapeType == 10) {
+            return arrowShape(CGPointMake(100, 100), to: CGPointMake(10, 10), tailWidth: 10, headWidth: 25, headLength: 40)
+        }
+        
         return starPathInRect(insetRect)
     }
     
@@ -209,7 +213,7 @@ class ShapeView: UIView {
         
         super.init(frame: CGRectMake(0.0, 0.0, size, size))
         
-        if shapeType == 7 || shapeType == 8 || shapeType == 9 {
+        if shapeType == 7 || shapeType == 8 || shapeType == 9 || shapeType == 10 {
             self.fillColor = UIColor.init(red: CGFloat(_BRUSHSTYLE["red"]!), green: CGFloat(_BRUSHSTYLE["green"]!), blue: CGFloat(_BRUSHSTYLE["blue"]!), alpha: 1.0)
         }else{
             self.fillColor = UIColor.clearColor()//randomColor()

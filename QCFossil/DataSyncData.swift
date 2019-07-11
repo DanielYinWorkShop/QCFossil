@@ -38,6 +38,7 @@ var _DS_TOTALRECORDS_DB:Dictionary<String, String> = [
     "task_inspect_data_record_count" : "0",
     "inspect_task_item_count" : "0",
     "inspect_task_count" : "0",
+    "inspect_task_qc_info_count" : "0",
     "task_defect_data_record_count" : "0",
     "task_inspect_photo_file_count" : "0",
     "task_inspect_position_point_count" : "0",
@@ -318,7 +319,8 @@ let _DS_INPTSETUP = [
         "case_set_value_list",
         "defect_value_mstr_list",
         "defect_set_mstr_list",
-        "defect_set_value_list"
+        "defect_set_value_list",
+        "task_selection_option_mstr_list"
     ],
     "ACTIONTABLES" : [
         "inspect_type_mstr_list" : "inspect_type_mstr",
@@ -346,7 +348,8 @@ let _DS_INPTSETUP = [
         "case_set_value_list" : "case_set_value",
         "defect_value_mstr_list" : "defect_value_mstr",
         "defect_set_mstr_list" : "defect_set_mstr",
-        "defect_set_value_list" : "defect_set_value"
+        "defect_set_value_list" : "defect_set_value",
+        "task_selection_option_mstr_list" : "task_selection_option_mstr"
     ],
     "ACTIONFIELDS" : [
         "inspect_type_mstr_list" : [
@@ -690,10 +693,27 @@ let _DS_INPTSETUP = [
             "create_user",
             "modify_date",
             "modify_user"
+        ],
+        "task_selection_option_mstr_list" : [
+            "option_id",
+            "data_env",
+            "selection_type",
+            "result_code_match_list",
+            "option_val",
+            "option_text_en",
+            "option_text_zh",
+            "display_order",
+            "rec_status",
+            "create_user",
+            "create_date",
+            "modify_user",
+            "modify_date",
+            "deleted_flag",
+            "delete_user",
+            "delete_date"
         ]
     ]
 ]
-
 
 //Inspection Setup Data Download Acknowledgement
 let _DS_ACKINPTSETUP = [
@@ -727,7 +747,8 @@ let _DS_ACKINPTSETUP = [
         "case_set_value_count" : "0",
         "defect_value_mstr_count" : "0",
         "defect_set_mstr_count" : "0",
-        "defect_set_value_count" : "0"
+        "defect_set_value_count" : "0",
+        "task_selection_option_mstr_count" : "0"
     ],
     "ACTIONNAMES" : [
         "novalue"
@@ -778,6 +799,7 @@ let _DS_FGPODATA = [
             "vdr_display_name",
             "ref_line_id",
             "po_line_no",
+            "ship_mode_name",
             "ref_prod_id",
             "sku_no",
             "prod_type_code",
@@ -815,7 +837,9 @@ let _DS_FGPODATA = [
             "modify_date",
             "deleted_flag",
             "delete_date",
-            "prod_desc"
+            "prod_desc",
+            "material_category",
+            "market"
         ]
     ]
 ]
@@ -856,13 +880,15 @@ let _DS_TASKDATA = [
     "ACTIONNAMES" : [
         "inspect_task_list",
         "inspect_task_inspector_list",
-        "inspect_task_item_list"
+        "inspect_task_item_list",
+        "inspect_task_qc_info_list"
     ],
     
     "ACTIONTABLES" : [
         "inspect_task_list" : "inspect_task",
         "inspect_task_inspector_list" : "inspect_task_inspector",
-        "inspect_task_item_list" : "inspect_task_item"
+        "inspect_task_item_list" : "inspect_task_item",
+        "inspect_task_qc_info_list" : "inspect_task_qc_info"
     ],
     
     "ACTIONFIELDS" : [
@@ -882,6 +908,8 @@ let _DS_TASKDATA = [
             "tmpl_id",
             "task_remarks",
             "vdr_notes",
+            "qc_remarks_option_list",
+            "additional_admin_item_option_list",
             "inspect_result_value_id",
             "inspector_sign_image_file",
             "vdr_sign_name",
@@ -917,8 +945,53 @@ let _DS_TASKDATA = [
             "create_user",
             "modify_date",
             "modify_user"
+        ],
+        "inspect_task_qc_info_list" : [
+            "task_id",
+            "aql_qty",
+            "product_class",
+            "quality_standard",
+            "adjust_time",
+            "preinspect_detail",
+            "ca_form",
+            "caseback_marking",
+            "upc_orbid_status",
+            "ts_report_no",
+            "ts_submit_date",
+            "ts_result",
+            "qc_booking_ref_no",
+            "ss_comment_readyvarchar",
+            "ss_ready",
+            "ss_photo_name",
+            "battery_production_code",
+            "with_quesiton_pending",
+            "wth_same_po_rejected_bef",
+            "assortment",
+            "consigned_styles",
+            "qc_inspect_type",
+            "net_weight",
+            "inspect_method",
+            "length_requirement",
+            "inspection_sample_ready",
+            "fty_packing_info",
+            "fty_droptest_info",
+            "movt_origin",
+            "battery_type",
+            "pre_inspect_result",
+            "pre_inspect_remark",
+            "reliability_remark",
+            "jwl_marking",
+            "combine_qc_remarks",
+            "links_remarks",
+            "dusttest_remark",
+            "smartlink_remark",
+            "precise_report",
+            "smartlink_report",
+            "create_user",
+            "create_date",
+            "modify_user",
+            "modify_date"
         ]
-        
     ]
 ]
 
@@ -931,7 +1004,8 @@ let _DS_ACKTASKDATA = [
         "service_session": _DS_SESSION,
         "inspect_task_count": "0",
         "inspect_task_inspector_count": "0",
-        "inspect_task_item_count": "0"
+        "inspect_task_item_count": "0",
+        "inspect_task_qc_info_count" : "0"
     ],
     
     "ACTIONNAMES" : [
@@ -946,7 +1020,6 @@ let _DS_ACKTASKDATA = [
         ]
     ]
 ]
-
 
 //Task Status Data Download Request
 let _DS_DL_TASK_STATUS = [
@@ -997,6 +1070,60 @@ let _DS_ACKTASKSTATUS = [
         "inspect_task_count": "0"
     ],
     
+    "ACTIONNAMES" : [
+        "novalue"
+    ],
+    "ACTIONTABLES" : [
+        "novalue"
+    ],
+    "ACTIONFIELDS" : [
+        "nokey" : [
+            "novalue"
+        ]
+    ]
+]
+
+//Style Photo Data Download Request
+let _DS_DL_STYLE_PHOTO = [
+    "NAME" : "Style Photo Download",
+    "APINAME" : "\(dataSyncServerUsing)dl_style_photo.aspx",
+    "ACKNAME" : _DS_ACKSTYLEPHOTO,
+    "APIPARA" : [
+        "service_token" : _DS_SERVICETOKEN,
+        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "service_type": "Style Photo Download",
+    ],
+    "ACTIONNAMES" : [
+        "style_photo_list"
+    ],
+    "ACTIONTABLES" : [
+        "style_photo_list" : "style_photo"
+    ],
+    "ACTIONFIELDS" : [
+        "style_photo_list" : [
+            "photo_id",
+            "data_env",
+            "style_no",
+            "ss_photo_name",
+            "ss_photo_file",
+            "create_user",
+            "create_date",
+            "modify_date",
+            "deleted_flag",
+            "delete_date"
+        ]
+    ]
+]
+
+//Style Photo Data Download Acknowledgement
+let _DS_ACKSTYLEPHOTO = [
+    "NAME" : "Style Photo Download Acknowledgement",
+    "APINAME" : "\(dataSyncServerUsing)ack_style_photo.aspx",
+    "APIPARA" : [
+        "service_token": _DS_SERVICETOKEN,
+        "service_session": _DS_SESSION,
+        "inspect_task_count": "0"
+    ],
     "ACTIONNAMES" : [
         "novalue"
     ],
@@ -1236,6 +1363,8 @@ let _DS_ULTASKDATA = [
             "inspect_element_defect_value_id" : "",
             "inspect_element_case_value_id" : "",
             "defect_desc" : "",
+            "defect_remarks_option_list" : "",
+            "other_remarks" : "",
             "defect_qty_critical" : "",
             "defect_qty_major" : "",
             "defect_qty_minor" : "",

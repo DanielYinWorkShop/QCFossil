@@ -226,7 +226,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.pVC!.categories.append(inputInptCatViewObj!)
         }
         
-        self.commentWarpperView.frame = CGRectMake(0, self.inptCatWrapperView.frame.origin.y+self.inptCatWrapperView.frame.size.height+CGFloat(cellHeight), self.commentWarpperView.frame.size.width, self.commentWarpperView.frame.size.height)
+        self.commentWarpperView.frame = CGRectMake(0, self.inptCatWrapperView.frame.origin.y+self.inptCatWrapperView.frame.size.height+CGFloat(cellHeight), self.commentWarpperView.frame.size.width, 450)
         
         self.addSubview(self.commentWarpperView)
         

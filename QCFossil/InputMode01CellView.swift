@@ -148,6 +148,8 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func deleteInspItem() {
+        
+        clearDropdownviewForSubviews(self.parentView!)
         self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete?"), parentVC:(self.parentView?.parentVC)!, handlerFun: { (action:UIAlertAction!) in
             
             (self.parentView as! InputMode01View).inputCells.removeAtIndex(self.cellPhysicalIdx)

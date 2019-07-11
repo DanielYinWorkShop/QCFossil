@@ -263,6 +263,24 @@ class AppUpgradeDataHelper:DataHelperMaster {
                         result = false
                     }
                 
+                    // Add table task_selection_option_mstr
+                    sql = "CREATE TABLE IF NOT EXISTS `task_selection_option_mstr` ( `option_id` NUMERIC(10,0) NOT NULL, `data_env` VARCHAR(30) NOT NULL, `selection_type` NUMERIC(2,0) NOT NULL, `result_code_match_list` VARCHAR(1000), `option_val` VARCHAR(100) NOT NULL, `option_text_en` VARCHAR(1000) NOT NULL, `option_text_zh` VARCHAR(1000) NOT NULL, `display_order` NUMERIC(10,0) NOT NULL, `rec_status` NUMERIC(2,0) NOT NULL, `create_user` VARCHAR(30) NOT NULL, `create_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `deleted_flag` NUMERIC(1,0) NOT NULL, `delete_user` VARCHAR(30), `delete_date` DATETIME, PRIMARY KEY(`option_id`) )"
+                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        result = false
+                    }
+                    
+                    // Add table inspect_task_qc_info
+                    sql = "CREATE TABLE IF NOT EXISTS `inspect_task_qc_info` ( `task_id` numeric(10,0) NOT NULL, `aql_qty` numeric(10,0), `product_class` varchar(50), `quality_standard` varchar(50), `adjust_time` varchar(50), `preinspect_detail` TEXT, `ca_form` varchar(50), `caseback_marking` varchar(50), `upc_orbid_status` varchar(50), `ts_report_no` varchar(50), `ts_submit_date` DATETIME, `ts_result` nvarchar(50), `qc_booking_ref_no` varchar(50), `ss_comment_ready`varchar(50), `ss_ready` varchar(50), `ss_photo_name` varchar(50), `battery_production_code` varchar(50), `with_quesiton_pending` varchar(50), `wth_same_po_rejected_bef` varchar(50), `assortment` varchar(50), `consigned_styles` varchar(50), `qc_inspect_type` varchar(50), `net_weight` varchar(50), `inspect_method` varchar(50), `length_requirement` varchar(50), `inspection_sample_ready` varchar(50), `fty_packing_info` varchar(50), `fty_droptest_info` varchar(50), `movt_origin` varchar(100), `battery_type` varchar(50), `pre_inspect_result` nvarchar(50), `pre_inspect_remark` TEXT, `reliability_remark` TEXT, `jwl_marking` varchar(50), `combine_qc_remarks` varchar(150), `links_remarks` nvarchar(50), `dusttest_remark` nvarchar(50), `smartlink_remark` nvarchar(50), `precise_report` nvarchar(50), `smartlink_report` nvarchar(50), `create_user` varchar(30) NOT NULL, `create_date` DATETIME NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` DATETIME NOT NULL, PRIMARY KEY(`task_id`) )"
+                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        result = false
+                    }
+                    
+                    // Add table style_photo
+                    sql = "CREATE TABLE IF NOT EXISTS `style_photo` ( `photo_id` numeric(10,0) NOT NULL, `data_env` varchar(30) NOT NULL, `style_no` varchar(30) NOT NULL, `ss_photo_name` varchar(50) NOT NULL, `create_date` datetime NOT NULL, `modify_date` datetime NOT NULL, `deleted_flag` numeric(1,0) NOT NULL, `delete_date` datetime, PRIMARY KEY(`photo_id`) )"
+                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        result = false
+                    }
+                    
                     // Add new field to task_inspect_data_record
                     sql = "ALTER TABLE task_inspect_data_record ADD COLUMN inspect_position_zone_value_id VARCHAR(10)"
                     if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_inspect_data_record)", withArgumentsInArray: nil) {
@@ -308,6 +326,111 @@ class AppUpgradeDataHelper:DataHelperMaster {
                         }
                     }
                     
+                    // Add new field to qc_remarks_option_list
+                    sql = "ALTER TABLE inspect_task ADD COLUMN qc_remarks_option_list TEXT"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "qc_remarks_option_list" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to additional_admin_item_option_list
+                    sql = "ALTER TABLE inspect_task ADD COLUMN additional_admin_item_option_list TEXT"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "additional_admin_item_option_list" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to defect_remarks_option_list
+                    sql = "ALTER TABLE task_defect_data_record ADD COLUMN defect_remarks_option_list TEXT"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "defect_remarks_option_list" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to defect_remarks_option_list
+                    sql = "ALTER TABLE task_defect_data_record ADD COLUMN other_remarks TEXT"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "other_remarks" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to fgpo_line_item
+                    sql = "ALTER TABLE fgpo_line_item ADD COLUMN market varchar(20)"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "market" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to fgpo_line_item
+                    sql = "ALTER TABLE fgpo_line_item ADD COLUMN material_category varchar(20)"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "material_category" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to fgpo_line_item
+                    sql = "ALTER TABLE fgpo_line_item ADD COLUMN ship_mode_name varchar(20)"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "ship_mode_name" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+
                     //----------------------------------------------------------------------------------
                     
                     if result {

@@ -128,7 +128,7 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
         }else{
             
             let popoverContent = PopoverViewController()
-            popoverContent.preferredContentSize = CGSizeMake(320,240 + _NAVIBARHEIGHT/*350 + _NAVIBARHEIGHT*/)
+            popoverContent.preferredContentSize = CGSizeMake(320,/*240 + _NAVIBARHEIGHT*/350 + _NAVIBARHEIGHT)
             
             popoverContent.parentTextFieldView = nil
             popoverContent.sourceType = _SHAPEPREVIEWTYPE

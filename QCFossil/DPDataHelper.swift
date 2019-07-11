@@ -37,7 +37,7 @@ class DPDataHelper:DataHelperMaster {
     }
     
     func getAllDefectPositPoints() ->[PositPointObj] {
-        let sql = "SELECT * FROM inspect_position_mstr WHERE current_level = 2"
+        let sql = "SELECT * FROM inspect_position_mstr WHERE current_level = 2 " + (_ENGLISH ? "ORDER BY position_name_en ASC" : "ORDER BY position_name_cn ASC")
         var defectPositPoints = [PositPointObj]()
         
         if db.open() {

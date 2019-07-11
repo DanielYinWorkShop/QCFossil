@@ -129,7 +129,7 @@ class PopoverViewController: UIViewController {
             return
         }else if dataType == _SHAPEDATATYPE {
             shapepreview = ShapePreviewViewInput.loadFromNibNamed("ShapePreviewView")!
-            shapepreview.frame = CGRectMake(0, _NAVIBARHEIGHT, 330, 220+_NAVIBARHEIGHT/*330+_NAVIBARHEIGHT*/)
+            shapepreview.frame = CGRectMake(0, _NAVIBARHEIGHT, 330, /*220+_NAVIBARHEIGHT*/330+_NAVIBARHEIGHT)
             shapepreview.parentView = self.parentView
             self.view.addSubview(shapepreview)
             
