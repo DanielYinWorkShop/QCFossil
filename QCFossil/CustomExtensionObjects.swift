@@ -994,6 +994,11 @@ extension UIView {
         
         return nil
     }
+    
+    func sortStringArrayByName(arrayString:[String]) ->[String] {
+        let locale = _ENGLISH ? NSLocale(localeIdentifier: "en_HK") : NSLocale(localeIdentifier: "zh_HK")
+        return arrayString.sort({$0.compare($1, locale: locale) == .OrderedAscending})
+    }
 }
 
 extension UIImageView {

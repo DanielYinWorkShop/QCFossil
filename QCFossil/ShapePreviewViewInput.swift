@@ -66,12 +66,12 @@ class ShapePreviewViewInput: UIView {
         shapeView6.frame = CGRect(x: 220, y: 140, width: 110, height: 110)
         shapeView6.userInteractionEnabled = false
         self.addSubview(shapeView6)
-        /*
-        let shapeView7 = ShapeView(origin: self.parentView.center, shapeType: 7, shapeSize: 105)
+        
+        let shapeView7 = ShapeView(origin: self.parentView.center, shapeType: 10, shapeSize: 105)
         shapeView7.frame = CGRect(x: 0, y: 260, width: 110, height: 110)
         shapeView7.userInteractionEnabled = false
         self.addSubview(shapeView7)
-        
+        /*
         let shapeView8 = ShapeView(origin: self.parentView.center, shapeType: 8, shapeSize: 105)
         shapeView8.frame = CGRect(x: 110, y: 260, width: 110, height: 110)
         shapeView8.userInteractionEnabled = false
@@ -125,7 +125,7 @@ class ShapePreviewViewInput: UIView {
             (self.parentView as! ImagePreviewViewInput).imageView.addSubview(shapeView)
             break
         case 7:
-            let shapeView = ShapeView(origin: CGPointMake(self.parentView.center.x - 100, self.parentView.center.y - 100), shapeType: 7)
+            let shapeView = ShapeView(origin: CGPointMake(self.parentView.center.x - 100, self.parentView.center.y - 100), shapeType: 10)
             shapeView.tag = _SHAPEVIEWTAG
             (self.parentView as! ImagePreviewViewInput).imageView.addSubview(shapeView)
             break
