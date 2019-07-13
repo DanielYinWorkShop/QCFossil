@@ -22,6 +22,7 @@ class InputModeSCMaster:UIView {
     var optInspPostsMaster = [InspSectionPosition]()
     var optInspElms = [InspSectionElement]()
     var optInspPosts = [InspSectionPosition]()
+    var resultKeyValues = [String:Int]()
     
     func initSegmentControlView(inputMode:String, apyToAllBtn:UIButton) {
         let taskDataHelper = TaskDataHelper()
@@ -32,7 +33,8 @@ class InputModeSCMaster:UIView {
             
             resultSetId = otherInspSec![0].resultSetId!
             resultValues = taskDataHelper.getResultSetValueBySetId(resultSetId)!
-            
+            resultKeyValues = taskDataHelper.getResultKeyValueBySetId(resultSetId)!
+
             if resultValues.count>0 {
                 
                 resultForAll = resultValues[0]

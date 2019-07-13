@@ -827,6 +827,32 @@ class TaskDataHelper:DataHelperMaster{
         return nil
     }
     
+    func getResultKeyValueBySetId(rsId:Int) ->[String:Int]? {
+        let sql = "SELECT v.value_id,v.value_name_en,v.value_name_cn FROM result_set_value as s INNER JOIN result_value_mstr as v ON s.value_id=v.value_id WHERE s.set_id = ? AND (v.rec_status = 0 AND v.deleted_flag = 0) ORDER BY v.display_order"
+        var resultKeyValues = [String:Int]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [rsId]) {
+                
+                while rs.next() {
+                    
+                    if _ENGLISH {
+                        resultKeyValues[rs.stringForColumn("value_name_en")] = Int(rs.intForColumn("value_id"))
+                    }else{
+                        resultKeyValues[rs.stringForColumn("value_name_cn")] = Int(rs.intForColumn("value_id"))
+                    }
+                }
+            }
+            
+            db.close()
+            
+            return resultKeyValues
+        }
+        
+        return nil
+    }
+
     func updateInspDataRecord(inspDataRecords:[TaskInspDataRecord]) ->[TaskInspDataRecord] {
         
         if db.open() && inspDataRecords.count > 0 {
