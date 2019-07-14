@@ -33,7 +33,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     
     var defectValues:[DropdownValue]?
     var caseValues:[DropdownValue]?
-
+    var defectTypeKeyValues = [String:Int]()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -61,6 +62,18 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         self.majorInput.text = "0"
         self.minorInput.text = "0"
         self.defectQtyInput.text = "0"
+    }
+    
+    override func didMoveToSuperview() {
+        
+        guard let inspectPositionId = self.inspItem?.inspPostId else {return}
+        
+        let defectDataHelper = DefectDataHelper()
+        let dfElms = defectDataHelper.getDefectObjectsByPositionId(inspectPositionId)
+        dfElms.forEach({ dfElm in
+            defectTypeKeyValues[_ENGLISH ? dfElm.valueNameEn ?? "": dfElm.valueNameCn ?? ""] = dfElm.valueId
+        })
+
     }
     
     @IBAction func addDefectPhoto(sender: UIButton) {
@@ -385,17 +398,18 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if textField == self.defectTypeInput {
-            let defectDataHelper = DefectDataHelper()
+            
             /*
              Element Type
              1: Inspect Item
              2: Defect Item
              */
+
+            var dfElms = [String]()
+            for key in defectTypeKeyValues.keys {
+                dfElms.append(key)
+            }
             
-            
-            guard let inspectPositionId = self.inspItem?.inspPostId else {return false}
-            
-            let dfElms = defectDataHelper.getDefectTypesByPositionId(inspectPositionId)
             textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
 
             return false
@@ -455,9 +469,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         
         if textField == self.defectTypeInput {
             
-            let defectDataHelper = DefectDataHelper()
-            let inspectElementId = defectDataHelper.getInspElementIdByName(textField.text ?? "")
-            defectItem.inspectElementId = inspectElementId
+            defectItem.inspectElementId = defectTypeKeyValues[textField.text ?? ""]
             self.inspectElementId = inspectElementId
             defectItem.defectType = textField.text ?? ""
             

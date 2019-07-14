@@ -29,6 +29,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var errorMessageLabel: UILabel!
     
     var selectValues = [String]()
+    var inspectItemKeyValues = [String:Int]()
     //weak var parentView = InputMode01View()
     
     /*
@@ -61,7 +62,6 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         inptItemInput.delegate = self
         
         updateLocalizedString()
-        
     }
     
     func updateLocalizedString() {
@@ -79,6 +79,11 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         
         self.inspReqCatText = self.cellCatName
         updatePhotoAddediConStatus("",photoTakenIcon: self.photoAddedIcon)
+        
+        for optInspElmt in self.parentView!.optInspElms {
+            guard let nameEn = optInspElmt.elementNameEn, nameCn = optInspElmt.elementNameCn else {continue}
+            inspectItemKeyValues[_ENGLISH ? nameEn : nameCn] = optInspElmt.elementId
+        }
         
         fetchDetailSelectedValues()
     }
@@ -228,12 +233,13 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             
             updateParentOptionElmts()
             
-            let defectDataHelper = DefectDataHelper()
-            let inspElementId = defectDataHelper.getInspElementIdByName(textField.text!, elementType: 1)
+            guard let text = textField.text else {return}
+            let inspElementId = self.inspectItemKeyValues[text] ?? 0
             
             if inspElementId != self.inspElmId {
                 self.inptDetailInput.text = ""
                 self.inspElmId = inspElementId
+                let defectDataHelper = DefectDataHelper()
                 self.inspPostId = defectDataHelper.getPositionIdByElementId(inspElementId)
                 
                 fetchDetailSelectedValues()
@@ -263,8 +269,8 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             return false
         }else if textField == self.inptItemInput {
             var listData = [String]()
-            for optInspElmt in self.parentView!.optInspElms {
-                listData.append( (_ENGLISH ? optInspElmt.elementNameEn : optInspElmt.elementNameCn)!)
+            for key in self.inspectItemKeyValues.keys {
+                listData.append(key)
             }
             
             textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: self.sortStringArrayByName(listData), width: self.inptItemInput.frame.size.width*1.2, height:_DROPDOWNLISTHEIGHT)

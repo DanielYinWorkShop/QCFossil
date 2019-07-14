@@ -174,6 +174,28 @@ class DefectDataHelper:DataHelperMaster {
         return defectTypes
     }
 
+    func getDefectObjectsByPositionId(positionId:Int) ->[DropdownValue] {
+        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON ipe.inspect_element_id = iem.element_id WHERE ipe.inspect_position_id = ? AND iem.element_type = 2"
+        var defectTypes = [DropdownValue]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [positionId]) {
+                while rs.next() {
+                    let valueId = Int(rs.intForColumn("element_id"))
+                    let valueNameEn = rs.stringForColumn("element_name_en")
+                    let valueNameCn = rs.stringForColumn("element_name_cn")
+                    let defectType = DropdownValue(valueId: valueId, valueNameEn: valueNameEn, valueNameCn: valueNameCn)
+                    
+                    defectTypes.append(defectType)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return defectTypes
+    }
     
     func getTaskInspDataRcordNameById(recordId:Int) ->TaskInspDataRecord? {
         let sql = "SELECT * FROM task_inspect_data_record WHERE record_id = ?"

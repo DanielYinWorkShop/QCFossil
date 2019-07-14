@@ -85,19 +85,6 @@ class TabBarViewController: UITabBarController {
         taskDetalViewContorller!.startTask()
     }
     
-    func saveIC() {
-        print("Save Inspection Category")
-        /*
-        var title = "Save success."
-        
-        if !saveICItems() {
-            title = "Save fail."
-        }
-        
-        self.view.alertView(title)
-        */
-    }
-    
     func saveICItems(needValidate:Bool) ->Bool {
         let taskDataHelper = TaskDataHelper()
         let dpDataHelper = DPDataHelper()

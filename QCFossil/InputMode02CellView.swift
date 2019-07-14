@@ -32,6 +32,9 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     
     var myDefectPositPoints = [PositPointObj]()
     var zoneValues:[DropdownValue]?
+    var inspectItemKeyValues = [String:Int]()
+    var zoneItemKeyValues = [String:Int]()
+    var defectPositionPoints = [String:Int]()
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -47,6 +50,26 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         self.defectZoneInput.delegate = self
         
         updateLocalizedString()
+    }
+    
+    override func didMoveToSuperview() {
+        
+        guard let parentView = self.parentView as? InputMode02View else {return}
+
+        for dfPosit in parentView.defectPosits {
+            inspectItemKeyValues[_ENGLISH ? dfPosit.positionNameEn : dfPosit.positionNameCn] = dfPosit.positionId
+        }
+        
+        let zoneItems = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+        zoneItems.forEach({ zoneItem in
+            zoneItemKeyValues[_ENGLISH ? zoneItem.valueNameEn ?? "" : zoneItem.valueNameCn ?? ""] = zoneItem.valueId
+        })
+        
+        let defectPositPoints = (self.parentView as! InputMode02View).defectPositPoints.filter({ $0.parentId == self.inspPostId ?? 0})
+        defectPositPoints.forEach({ defectPositPoint in
+            defectPositionPoints[_ENGLISH ? defectPositPoint.positionNameEn ?? "" : defectPositPoint.positionNameCn ?? ""] = defectPositPoint.positionId
+        })
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
@@ -156,11 +179,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             
             self.inspAreaText = textField.text!
             
-            let inspPostObj = (self.parentView as! InputMode02View).defectPosits.filter({$0.positionNameEn==textField.text || $0.positionNameCn==textField.text})
-            
-            if inspPostObj.count>0 {
-                self.inspPostId=inspPostObj[0].positionId
-            }
+            self.inspPostId = inspectItemKeyValues[textField.text!]
             
             NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
             
@@ -176,16 +195,15 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 self.defectZoneListIcon.hidden = false
             }
             
+            let zoneItems = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+            zoneItems.forEach({ zoneItem in
+                zoneItemKeyValues[_ENGLISH ? zoneItem.valueNameEn ?? "" : zoneItem.valueNameCn ?? ""] = zoneItem.valueId
+            })
+            
         } else if textField == self.defectZoneInput {
             
             guard let zoneValueName = self.defectZoneInput.text else {return}
-            guard let zoneValues = self.zoneValues else {return}
-            
-            zoneValues.forEach({ zoneValue in
-                if zoneValue.valueNameEn == zoneValueName || zoneValue.valueNameCn == zoneValueName {
-                    self.inspectZoneValueId = zoneValue.valueId
-                }
-            })
+            self.inspectZoneValueId = zoneItemKeyValues[zoneValueName]
             
             textField.backgroundColor = UIColor.whiteColor()
             self.defectZoneListIcon.hidden = false
@@ -216,8 +234,8 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         }else if textField == self.dpInput {
             var positName = [String]()
             
-            for dfPosit in (self.parentView as! InputMode02View).defectPosits {
-                positName.append( _ENGLISH ? dfPosit.positionNameEn : dfPosit.positionNameCn)
+            for key in self.inspectItemKeyValues.keys {
+                positName.append(key)
             }
             
             if self.ifExistingSubviewByViewTag(self.parentView, tag: 1000002) {
@@ -230,30 +248,23 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         }else if textField == self.cellDPPInput {
             
             var positName = [String]()
-            let parentPositObjs = (self.parentView as! InputMode02View).defectPosits.filter({$0.positionNameEn == self.dpInput.text || $0.positionNameCn == self.dpInput.text})
-            
-            if parentPositObjs.count > 0 {
-                let defectPositPoints = (self.parentView as! InputMode02View).defectPositPoints.filter({ $0.parentId == parentPositObjs[0].positionId})
-            
-                for dfPosit in defectPositPoints {
-                    positName.append( _ENGLISH ? dfPosit.positionNameEn : dfPosit.positionNameCn)
-                }
-                
-                if self.ifExistingSubviewByViewTag(self.parentView, tag: 1000001) {
-                    clearDropdownviewForSubviews(self.parentView!)
-                }else{
-                
-                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: 1000001)
-                }
+            for key in self.defectPositionPoints.keys {
+                positName.append(key)
             }
+                
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: 1000001) {
+                clearDropdownviewForSubviews(self.parentView!)
+            }else{
+                
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: 1000001)
+            }
+            
         }else if textField == self.defectZoneInput {
             
-            self.zoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
             var listData = [String]()
-            
-            self.zoneValues?.forEach({ zoneValue in
-                listData.append(_ENGLISH ? zoneValue.valueNameEn ?? "":zoneValue.valueNameCn ?? "")
-            })
+            for key in self.zoneItemKeyValues.keys {
+                listData.append(key)
+            }
             
             textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
         }
