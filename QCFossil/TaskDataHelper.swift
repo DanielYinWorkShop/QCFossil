@@ -927,7 +927,7 @@ class TaskDataHelper:DataHelperMaster{
     
     func getOptInspSecElementsByIds(prodTypeId:Int, inspTypeId:Int, inspSectionId:Int) ->[InspSectionElement]? {
         //let sql = "SELECT * FROM inspect_element_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND inspect_section_id = ? AND required_element_flag = 0 ORDER BY element_name_en ASC"
-        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 AND iem.element_type = 1 AND (iem.rec_status = 0 AND iem.deleted_flag = 0) " + (_ENGLISH ? "ORDER BY iem.element_name_en ASC" : "ORDER BY iem.element_name_cn ASC")
+        let sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 0 AND iem.element_type = 1 AND (iem.rec_status = 0 AND iem.deleted_flag = 0)"
         var inspSecElms = [InspSectionElement]()
         
         if db.open() {

@@ -545,15 +545,15 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
                 if self.positionIdOfInspectElement != nil {
                     
                     let dfElms = defectDataHelper.getDefectTypesByPositionId(self.positionIdOfInspectElement!)
-                    textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms, height:750)
+                    textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
                 }
                 
                 return false
             }
             
             let dfElms = defectDataHelper.getDefectTypesByPositionId(inspectPositionId)
-            textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms, height:750)
-            
+            textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+
             return false
         }
         

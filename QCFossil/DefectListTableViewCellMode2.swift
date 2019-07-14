@@ -433,12 +433,14 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
                 })
                 
                 let dfElms = defectDataHelper.getDefectTypeElms(positionIdArray)
-                textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms, height: 500)
+                textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height: 500)
+
             } else {
                 
                 guard let id = self.taskDefectDataRecordId else {return false}
                 let dfElms = defectDataHelper.getDefectTypeByTaskDefectDataRecordId(id)
-                textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: dfElms, height: 500)
+                textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height: 500)
+
             }
             
             return false

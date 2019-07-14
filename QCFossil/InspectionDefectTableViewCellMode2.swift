@@ -406,12 +406,14 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 })
                 
                 let dfElms = defectDataHelper.getDefectTypeElms(positionIdArray)
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms, height:750)
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+
             } else {
                 
                 guard let id = self.taskDefectDataRecordId else {return false}
                 let dfElms = defectDataHelper.getDefectTypeByTaskDefectDataRecordId(id)
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms, height:750)
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+
             }
             
             return false
@@ -424,8 +426,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
             })
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:750)
-            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
+
             return false
         } else if textField == self.defectDesc2Input {
             
@@ -436,7 +438,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
             })
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:750)
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
 
             return false
         } else if textField == self.defectMajorQtyInput || textField == self.defectMinorQtyInput || textField == self.defectCriticalQtyInput {

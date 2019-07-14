@@ -224,7 +224,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
             
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, tag: 1000002, height:750)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), tag: 1000002, height:_DROPDOWNLISTHEIGHT)
             }
             
         }else if textField == self.cellDPPInput {
@@ -243,8 +243,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                     clearDropdownviewForSubviews(self.parentView!)
                 }else{
                 
-                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: positName, width:320, height:750, allowMulpSel: true, tag: 1000001)
-                    
+                    textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: 1000001)
                 }
             }
         }else if textField == self.defectZoneInput {
@@ -255,7 +254,8 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             self.zoneValues?.forEach({ zoneValue in
                 listData.append(_ENGLISH ? zoneValue.valueNameEn ?? "":zoneValue.valueNameCn ?? "")
             })
-            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: listData, height:750)
+            
+            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
         }
         
         return false

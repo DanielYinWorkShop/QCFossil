@@ -837,9 +837,9 @@ let _DS_FGPODATA = [
             "modify_date",
             "deleted_flag",
             "delete_date",
-            "prod_desc",
-            "material_category",
-            "market"
+            "prod_desc"
+            //"material_category",
+            //"market"
         ]
     ]
 ]

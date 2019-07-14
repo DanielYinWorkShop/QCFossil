@@ -396,8 +396,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             guard let inspectPositionId = self.inspItem?.inspPostId else {return false}
             
             let dfElms = defectDataHelper.getDefectTypesByPositionId(inspectPositionId)
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: dfElms, height:750)
-            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+
             return false
         } else if textField == self.defectDesc1Input {
             
@@ -408,8 +408,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
             })
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:750)
-            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
+
             return false
         } else if textField == self.defectDesc2Input {
             
@@ -420,8 +420,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
             })
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:750)
-            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
+
             return false
         } else if textField == self.majorInput || textField == self.minorInput || textField == self.criticalInput {
             
