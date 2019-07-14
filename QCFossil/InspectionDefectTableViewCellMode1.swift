@@ -439,6 +439,12 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "" {
                 textField.text = "0"
             }
+        } else if textField == self.defectDescInput {
+    
+            let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx}).first
+            guard let defectItem = defectItemFilter else {return}
+    
+            defectItem.defectDesc = textField.text
         }
     }
     
@@ -568,12 +574,6 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             }
             
             return textField.numberOnlyCheck(textField, sourceText: string)
-        }else{
-            if defectItemFilter?.count>0 {
-                let defectItem = defectItemFilter![0]
-                
-                defectItem.defectDesc = inputValue
-            }
         }
         
         return true
