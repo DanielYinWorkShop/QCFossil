@@ -115,12 +115,13 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
-        let taskDataHelper = TaskDataHelper()
         
         if textField == self.cellResultInput {
-            self.resultValueId = taskDataHelper.getResultValueIdByResultValue(cellResultInput.text!, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
+            guard let resultText = cellResultInput.text else {return}
             
-            updatePhotoAddediConStatus(textField.text!, photoTakenIcon: self.photoAddedIcon)
+            self.resultValueId = self.parentView.resultKeyValues[resultText] ?? 0
+            updatePhotoAddediConStatus(resultText, photoTakenIcon: self.photoAddedIcon)
+
         }else if textField == self.cellDPPInput {
             self.inspItemText = textField.text!
             myDefectPositPoints = [PositPointObj]()

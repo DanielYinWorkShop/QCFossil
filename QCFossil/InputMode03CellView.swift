@@ -82,14 +82,15 @@ class InputMode03CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
-        let taskDataHelper = TaskDataHelper()
         
         if textField == cellResultInput {
-            self.resultValueId = taskDataHelper.getResultValueIdByResultValue(cellResultInput.text!, prodTypeId: (Cache_Task_On?.prodTypeId)!, inspTypeId: (Cache_Task_On?.inspectionTypeId)!)
-            
-            updatePhotoAddediConStatus(textField.text!,photoTakenIcon: self.photoTakenIcon)
+            guard let resultText = cellResultInput.text else {return}
+            self.resultValueId = self.parentView.resultKeyValues[resultText] ?? 0
+            updatePhotoAddediConStatus(resultText, photoTakenIcon: self.photoTakenIcon)
             
         }else if textField == icInput {
+            let taskDataHelper = TaskDataHelper()
+
             self.requestSectionId = taskDataHelper.getReqSectionIdByName(icInput.text!)
             self.inspReqCatText = icInput.text!
             
