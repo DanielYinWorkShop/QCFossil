@@ -129,6 +129,7 @@
 		BD5A0DAF1C44A9880056B077 /* POSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0DAD1C44A9880056B077 /* POSearchView.swift */; };
 		BD5A0DB01C44A9880056B077 /* POSearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5A0DAE1C44A9880056B077 /* POSearchView.xib */; };
 		BD5A0DB21C44AC050056B077 /* DataSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0DB11C44AC050056B077 /* DataSyncViewController.swift */; };
+		BD63916C22DCCA4A0005F58D /* QCInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD63916B22DCCA4A0005F58D /* QCInfoViewController.swift */; };
 		BD73BEC1229A91EC001DE0CC /* ZoneDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */; };
 		BD73BEC2229A96A0001DE0CC /* ZoneDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */; };
 		BD73BEC4229AD708001DE0CC /* InspectZoneValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */; };
@@ -521,6 +522,7 @@
 		BD5A0DAD1C44A9880056B077 /* POSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POSearchView.swift; sourceTree = "<group>"; };
 		BD5A0DAE1C44A9880056B077 /* POSearchView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POSearchView.xib; sourceTree = "<group>"; };
 		BD5A0DB11C44AC050056B077 /* DataSyncViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSyncViewController.swift; sourceTree = "<group>"; };
+		BD63916B22DCCA4A0005F58D /* QCInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QCInfoViewController.swift; sourceTree = "<group>"; };
 		BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoneDataHelper.swift; sourceTree = "<group>"; };
 		BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectZoneValue.swift; sourceTree = "<group>"; };
 		BD74FA251DC9F75600C1E891 /* TaskInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInspector.swift; sourceTree = "<group>"; };
@@ -894,6 +896,7 @@
 				BD08F3281E309EB100FFBB2D /* InspectionDefectTableViewCellMode1.swift */,
 				BD38B8DC1DF7D9B300E29CEF /* UserSettingViewController.swift */,
 				BD11D3281E2E0D7500888BDE /* BackupTableViewCell.swift */,
+				BD63916B22DCCA4A0005F58D /* QCInfoViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1389,6 +1392,7 @@
 				BDD83F321C291958005806D7 /* SignoffViewController.swift in Sources */,
 				BDF11FD11DCE3386003C43DA /* InspectionDefectTableViewCellMode4.swift in Sources */,
 				9C8B6CDC1CDC95CE003EA9A5 /* DataControlView.swift in Sources */,
+				BD63916C22DCCA4A0005F58D /* QCInfoViewController.swift in Sources */,
 				BD11D3291E2E0D7500888BDE /* BackupTableViewCell.swift in Sources */,
 				9C25B2DD1C4CBF88005DCA11 /* InputMode01View.swift in Sources */,
 				9CD85A691D74147F004DD641 /* sha1.c in Sources */,
