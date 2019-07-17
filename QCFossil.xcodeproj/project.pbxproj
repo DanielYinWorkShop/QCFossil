@@ -130,6 +130,7 @@
 		BD5A0DB01C44A9880056B077 /* POSearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5A0DAE1C44A9880056B077 /* POSearchView.xib */; };
 		BD5A0DB21C44AC050056B077 /* DataSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0DB11C44AC050056B077 /* DataSyncViewController.swift */; };
 		BD63916C22DCCA4A0005F58D /* QCInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD63916B22DCCA4A0005F58D /* QCInfoViewController.swift */; };
+		BD63916D22DCDB7C0005F58D /* QCInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD63916B22DCCA4A0005F58D /* QCInfoViewController.swift */; };
 		BD73BEC1229A91EC001DE0CC /* ZoneDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */; };
 		BD73BEC2229A96A0001DE0CC /* ZoneDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC0229A91EC001DE0CC /* ZoneDataHelper.swift */; };
 		BD73BEC4229AD708001DE0CC /* InspectZoneValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */; };
@@ -1470,6 +1471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD63916D22DCDB7C0005F58D /* QCInfoViewController.swift in Sources */,
 				BD73BEC5229AD92D001DE0CC /* InspectZoneValue.swift in Sources */,
 				BD73BEC2229A96A0001DE0CC /* ZoneDataHelper.swift in Sources */,
 				BDD1A29B2123472B00AE391E /* DataCtrlViewController.swift in Sources */,
