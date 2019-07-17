@@ -200,6 +200,11 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 zoneItemKeyValues[_ENGLISH ? zoneItem.valueNameEn ?? "" : zoneItem.valueNameCn ?? ""] = zoneItem.valueId
             })
             
+            let defectPositPoints = (self.parentView as! InputMode02View).defectPositPoints.filter({ $0.parentId == self.inspPostId ?? 0})
+            defectPositPoints.forEach({ defectPositPoint in
+                defectPositionPoints[_ENGLISH ? defectPositPoint.positionNameEn ?? "" : defectPositPoint.positionNameCn ?? ""] = defectPositPoint.positionId
+            })
+            
         } else if textField == self.defectZoneInput {
             
             guard let zoneValueName = self.defectZoneInput.text else {return}
