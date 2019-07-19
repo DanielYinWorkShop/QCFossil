@@ -430,6 +430,37 @@ class AppUpgradeDataHelper:DataHelperMaster {
                             result = false
                         }
                     }
+                    
+                    // Add new field to inspect_task_item
+                    sql = "ALTER TABLE inspect_task_item ADD COLUMN item_barcode varchar(30)"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "item_barcode" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_item
+                    sql = "ALTER TABLE inspect_task_item ADD COLUMN retail_price NUMERIC(12,2)"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "retail_price" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
 
                     //----------------------------------------------------------------------------------
                     

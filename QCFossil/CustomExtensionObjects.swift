@@ -92,6 +92,15 @@ extension TaskDetailViewInput {
     }
 }
 
+extension TaskQCInfoView {
+    class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> TaskQCInfoView? {
+        return UINib(
+            nibName: nibNamed,
+            bundle: bundle
+            ).instantiateWithOwner(nil, options: nil)[0] as? TaskQCInfoView
+    }
+}
+
 /* Input Mode 01 */
 extension InputMode01View {
     class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> InputMode01View? {

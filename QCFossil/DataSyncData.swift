@@ -837,9 +837,9 @@ let _DS_FGPODATA = [
             "modify_date",
             "deleted_flag",
             "delete_date",
-            "prod_desc"
-            //"material_category",
-            //"market"
+            "prod_desc",
+            "material_category",
+            "market"
         ]
     ]
 ]
@@ -941,6 +941,8 @@ let _DS_TASKDATA = [
             "avail_inspect_qty",
             "sampling_qty",
             "inspect_enable_flag",
+            "item_barcode",
+            "retail_price",
             "create_date",
             "create_user",
             "modify_date",
@@ -1311,6 +1313,8 @@ let _DS_ULTASKDATA = [
             "avail_inspect_qty" : "",
             "sampling_qty" : "",
             "inspect_enable_flag" : "",
+            "item_barcode" : "",
+            "retail_price" : "",
             "create_date" : "",
             "create_user" : "",
             "modify_date" : "",
