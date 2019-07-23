@@ -28,6 +28,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var inptDetailItemsListBtn: UIButton!
     @IBOutlet weak var errorMessageLabel: UILabel!
     
+    
     var selectValues = [String]()
     var inspectItemKeyValues = [String:Int]()
     //weak var parentView = InputMode01View()

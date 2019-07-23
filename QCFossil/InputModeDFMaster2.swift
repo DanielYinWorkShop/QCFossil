@@ -30,6 +30,7 @@ class InputModeDFMaster2: UITableViewCell, UITextFieldDelegate {
     var inspectElementId:Int?
     var inspectElementDefectValueId:Int?
     var inspectElementCaseValueId:Int?
+    var defectRemarksOptionList:String? 
     
     //UI
     var dfCatText = ""

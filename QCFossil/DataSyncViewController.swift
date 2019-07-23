@@ -402,7 +402,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
                 
-                if let value = data[actionFields[data["tableName"]!]![idx]] {
+                if var value = data[actionFields[data["tableName"]!]![idx]] {
+                    value = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
                     
                     if apiName == "_DS_TASKDATA" && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
                         

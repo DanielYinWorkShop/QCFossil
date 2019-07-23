@@ -88,6 +88,8 @@ class TaskDataHelper:DataHelperMaster{
                 let tmplId = Int(rs.intForColumn("tmpl_id"))
                 var cancelDate = rs.stringForColumn("cancel_date")
                 let dataRefuseDesc = rs.stringForColumn("data_refuse_desc")
+                let qcRemarks = rs.stringForColumn("qc_remarks_option_list")
+                let additionalAdministrativeItems = rs.stringForColumn("additional_admin_item_option_list")
                 
                 if bookingDate != nil && bookingDate != "" {
                     let bookingDateTmp = bookingDate
@@ -135,7 +137,7 @@ class TaskDataHelper:DataHelperMaster{
                 //extension
                 inspTypeId = inspectionTypeId
                 
-                task = Task(taskId: taskId, prodTypeId: prodTypeId, inspectionTypeId: inspectionTypeId, bookingNo: bookingNo, bookingDate: bookingDate, vdrLocationId: vdrLocationId, reportInspectorId: reportInspectorId, reportPrefix: reportPrefix, inspectionNo: inspectionNo, inspectionDate: inspectionDate, taskRemarks: taskRemarks, vdrNotes: vdrNotes, inspectionResultValueId: inspectionResultValueId, inspectionSignImageFile: inspectionSignImageFile, vdrSignName: vdrSignName, vdrSignImageFile: vdrSignImageFile, taskStatus: taskStatus, uploadInspectorId: uploadInspectorId, uploadDeviceId: uploadDeviceId, refTaskId: refTaskId, recStatus: recStatus, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, deleteFlag: deleteFlag, deleteUser: deleteUser, deleteDate: deleteDate)
+                task = Task(taskId: taskId, prodTypeId: prodTypeId, inspectionTypeId: inspectionTypeId, bookingNo: bookingNo, bookingDate: bookingDate, vdrLocationId: vdrLocationId, reportInspectorId: reportInspectorId, reportPrefix: reportPrefix, inspectionNo: inspectionNo, inspectionDate: inspectionDate, taskRemarks: taskRemarks, vdrNotes: vdrNotes, inspectionResultValueId: inspectionResultValueId, inspectionSignImageFile: inspectionSignImageFile, vdrSignName: vdrSignName, vdrSignImageFile: vdrSignImageFile, taskStatus: taskStatus, uploadInspectorId: uploadInspectorId, uploadDeviceId: uploadDeviceId, refTaskId: refTaskId, recStatus: recStatus, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, deleteFlag: deleteFlag, deleteUser: deleteUser, deleteDate: deleteDate, qcRemarks: qcRemarks, additionalAdministrativeItems: additionalAdministrativeItems)
                 
                 task.tmplId = tmplId
                 task.cancelDate = cancelDate
@@ -1316,14 +1318,14 @@ class TaskDataHelper:DataHelperMaster{
     
     func updateTask(task:Task) ->Bool {
         //let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=datetime('now','localtime'),cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
-        let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=?,cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
+        let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=?,cancel_date=?,report_prefix=?,report_inspector_id=?,qc_remarks_option_list=?,additional_admin_item_option_list=? WHERE task_id = ?"
         
         if db.open() {
             db.beginTransaction()
             
             let vdrSignDate = (task.vdrSignDate != nil) ? task.vdrSignDate:UIView.init().getCurrentDateTime()
             
-            if !db.executeUpdate(sql, withArgumentsInArray: [task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,vdrSignDate!,task.cancelDate,task.reportPrefix!,task.reportInspectorId!,task.taskId!]) {
+            if !db.executeUpdate(sql, withArgumentsInArray: [task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,vdrSignDate!,task.cancelDate,task.reportPrefix!,task.reportInspectorId!,task.qcRemarks ?? "",task.additionalAdministrativeItems ?? "",task.taskId!]) {
                 
                 db.rollback()
                 db.close()
@@ -2297,4 +2299,78 @@ class TaskDataHelper:DataHelperMaster{
         
     }
 
+    func getQCRemarksOptionList() ->[DropdownValue] {
+        
+        let sql = "SELECT option_id, option_text_en, option_text_zh FROM task_selection_option_mstr WHERE selection_type = 2"
+        var values = [DropdownValue]()
+            
+        if db.open() {
+                
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
+                while rs.next() {
+                        
+                    let id = Int(rs.intForColumn("option_id"))
+                    let nameEn = rs.stringForColumn("option_text_en")
+                    let nameCn = rs.stringForColumn("option_text_zh")
+                    let value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                        
+                    values.append(value)
+                }
+            }
+                
+            db.close()
+        }
+            
+        return values
+    }
+    
+    func getAdditionalAdministrativeItemOptionList() ->[DropdownValue] {
+        
+        let sql = "SELECT option_id, option_text_en, option_text_zh FROM task_selection_option_mstr WHERE selection_type = 3"
+        var values = [DropdownValue]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
+                while rs.next() {
+                    
+                    let id = Int(rs.intForColumn("option_id"))
+                    let nameEn = rs.stringForColumn("option_text_en")
+                    let nameCn = rs.stringForColumn("option_text_zh")
+                    let value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                    
+                    values.append(value)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return values
+    }
+    
+    func getRemarksOptionList() ->[DropdownValue] {
+        
+        let sql = "SELECT option_id, option_text_en, option_text_zh FROM task_selection_option_mstr WHERE selection_type = 1"
+        var values = [DropdownValue]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
+                while rs.next() {
+                    
+                    let id = Int(rs.intForColumn("option_id"))
+                    let nameEn = rs.stringForColumn("option_text_en")
+                    let nameCn = rs.stringForColumn("option_text_zh")
+                    let value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                    
+                    values.append(value)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return values
+    }
 }

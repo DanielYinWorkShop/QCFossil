@@ -439,6 +439,14 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
             cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
+            
+            
+            let taskDataHelper = TaskDataHelper()
+            let remarkValues = taskDataHelper.getRemarksOptionList()
+            remarkValues.forEach({ value in
+                cellMode1.remarkKeyValue[_ENGLISH ? value.valueNameEn ?? "": value.valueNameCn ?? ""] = value.valueId
+            })
+            
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
                 cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)

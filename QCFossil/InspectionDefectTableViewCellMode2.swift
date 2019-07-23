@@ -34,6 +34,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var errorMessageLabel: UILabel!
     @IBOutlet weak var defectDesc1ListIcon: UIButton!
     @IBOutlet weak var defectDesc2ListIcon: UIButton!
+    @IBOutlet weak var othersRemarkLabel: UILabel!
+    @IBOutlet weak var othersRemarkInput: UITextField!
     
     weak var pVC:InspectionDefectList!
     

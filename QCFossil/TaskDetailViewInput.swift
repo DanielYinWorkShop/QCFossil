@@ -47,12 +47,21 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
     @IBOutlet weak var taskStatusDescLabel: UILabel!
     @IBOutlet weak var dataRefuseDesc: UILabel!
     
+    @IBOutlet weak var qcRemarkLabel: UILabel!
+    @IBOutlet weak var qcRemarkInput: UITextField!
+    
+    @IBOutlet weak var additionalAdministrativeItemLabel: UILabel!
+    @IBOutlet weak var additionalAdministrativeItemInput: UITextField!
+    
     weak var pVC:TaskDetailsViewController!
     var cellHeight:Int = 40
     var poCellHeight:Int = 100
     
     var poItems = Cache_Task_On!.poItems
     var poCellItems = [POCellViewInput]()
+    
+    var qcRemarksKeyValue = [String:Int]()
+    var AdditionalAdministrativeItemKeyValue = [String:Int]()
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -66,6 +75,8 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.inspResultBottomInput.delegate = self
         self.inspCommentInput.delegate = self
         self.vendorNotesInput.delegate = self
+        self.qcRemarkInput.delegate = self
+        self.additionalAdministrativeItemInput.delegate = self
         
         var inspResultValueName = ""
         
@@ -89,6 +100,8 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.vendorInput.text = Cache_Task_On?.vendor
         self.inspectorInput.text = Cache_Inspector?.inspectorName
         self.vendorLocInput.text = Cache_Task_On?.vendorLocation
+        self.qcRemarkInput.text = Cache_Task_On?.qcRemarks
+        self.additionalAdministrativeItemInput.text = Cache_Task_On?.additionalAdministrativeItems
         
         if Cache_Task_On!.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue && Cache_Task_On!.cancelDate != "" {
             self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(TaskStatus(caseId: (Cache_Task_On?.taskStatus!)!))) + " (C)"
@@ -128,6 +141,8 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.inspResultBottomLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Result")
         self.inspCatLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Category")
         self.resultSummaryLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Result Summary")
+        self.qcRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Remark")
+        self.additionalAdministrativeItemLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Additional Administrative Item")
         
         self.addPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), forState: UIControlState.Normal)
         self.signoffConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sign-off & Confirm"), forState: UIControlState.Normal)
@@ -232,6 +247,19 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         self.frame.size = CGSize(width: 768, height: self.frame.size.height + 200)
         updateContentView(CGFloat((categoryCount-3)*cellHeight+(poItems.count-1)*poCellHeight))
+        
+        let qcRemarkValues = taskDataHelper.getQCRemarksOptionList()
+        for value in qcRemarkValues {
+            guard let nameEn = value.valueNameEn, nameCn = value.valueNameCn else {continue}
+            self.qcRemarksKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
+        }
+        
+        let AdditionalAdministrativeItemKeyValue = taskDataHelper.getAdditionalAdministrativeItemOptionList()
+        for value in AdditionalAdministrativeItemKeyValue {
+            guard let nameEn = value.valueNameEn, nameCn = value.valueNameCn else {continue}
+            self.AdditionalAdministrativeItemKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
+        }
+        
     }
     
     func getPoList(){
@@ -411,6 +439,22 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             Cache_Task_On?.didModify = true
             
             return false
+        } else if textField == self.qcRemarkInput {
+            var listData = [String]()
+            for key in self.qcRemarksKeyValue.keys {
+                listData.append(key)
+            }
+            
+            textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
+            return false
+        } else if textField == self.additionalAdministrativeItemInput {
+            var listData = [String]()
+            for key in self.AdditionalAdministrativeItemKeyValue.keys {
+                listData.append(key)
+            }
+            
+            textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
+            return false
         }
         
         return true
@@ -432,13 +476,11 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
-        
-        if textField == self.inspResultBottomInput {
-            //let taskDataHelper = TaskDataHelper()
-            //Cache_Task_On?.inspectionResultValueId = taskDataHelper.getResultValueIdByName(self.inspResultBottomInput.text!)
-            
+        if textField == self.qcRemarkInput {
+            Cache_Task_On?.qcRemarks = self.qcRemarkInput.text
+        } else if textField == self.additionalAdministrativeItemInput {
+            Cache_Task_On?.additionalAdministrativeItems = self.additionalAdministrativeItemInput.text
         }
-        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
