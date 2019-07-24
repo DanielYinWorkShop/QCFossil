@@ -949,7 +949,7 @@ let _DS_TASKDATA = [
             "modify_user"
         ],
         "inspect_task_qc_info_list" : [
-            "task_id",
+            "ref_task_id",
             "aql_qty",
             "product_class",
             "quality_standard",
@@ -962,12 +962,12 @@ let _DS_TASKDATA = [
             "ts_submit_date",
             "ts_result",
             "qc_booking_ref_no",
-            "ss_comment_readyvarchar",
+            "ss_comment_ready",
             "ss_ready",
             "ss_photo_name",
             "battery_production_code",
             "with_quesiton_pending",
-            "wth_same_po_rejected_bef",
+            "with_same_po_rejected_bef",
             "assortment",
             "consigned_styles",
             "qc_inspect_type",

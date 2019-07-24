@@ -1804,7 +1804,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "230"
             endingLineNumber = "230"
-            landmarkName = "addDefectCell(_:)"
+            landmarkName = "clearDefectItemsBeforeGOBack()"
             landmarkType = "5">
             <Locations>
                <Location
@@ -1867,7 +1867,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "231"
             endingLineNumber = "231"
-            landmarkName = "addDefectCell(_:)"
+            landmarkName = "clearDefectItemsBeforeGOBack()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1883,7 +1883,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "211"
             endingLineNumber = "211"
-            landmarkName = "prepareForSegue(_:sender:)"
+            landmarkName = "clearDefectItemsBeforeGOBack()"
             landmarkType = "5">
             <Locations>
                <Location
@@ -1946,8 +1946,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "215"
             endingLineNumber = "215"
-            landmarkName = "InspectionDefectList"
-            landmarkType = "3">
+            landmarkName = "clearDefectItemsBeforeGOBack()"
+            landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1994,7 +1994,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
             endingLineNumber = "219"
-            landmarkName = "updateContentView()"
+            landmarkName = "clearDefectItemsBeforeGOBack()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2042,7 +2042,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
             endingLineNumber = "214"
-            landmarkName = "prepareForSegue(_:sender:)"
+            landmarkName = "clearDefectItemsBeforeGOBack()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2298,7 +2298,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "225"
             endingLineNumber = "225"
-            landmarkName = "updateContentView()"
+            landmarkName = "clearDefectItemsBeforeGOBack()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3560,7 +3560,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "107"
             endingLineNumber = "107"
-            landmarkName = "viewWillDisappear(_:)"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3576,7 +3576,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "108"
             endingLineNumber = "108"
-            landmarkName = "viewWillDisappear(_:)"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3848,7 +3848,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "169"
             endingLineNumber = "169"
-            landmarkName = "clearDefectItemsBeforeGOBack()"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4150,22 +4150,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1664"
             endingLineNumber = "1664"
-            landmarkName = "URLSession(_:task:didCompleteWithError:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "QCFossil/DataSyncViewController.swift"
-            timestampString = "577293114.834033"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1381"
-            endingLineNumber = "1381"
             landmarkName = "URLSession(_:task:didCompleteWithError:)"
             landmarkType = "5">
          </BreakpointContent>

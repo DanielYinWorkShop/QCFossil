@@ -343,7 +343,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return cellMode4
             
         }else if defectItem.inputMode! == _INPUTMODE02 {
-            self.inspectDefectTableview.rowHeight = 250
+            self.inspectDefectTableview.rowHeight = 300
             let cellMode2 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode2", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode2
             
             cellMode2.pVC = self
@@ -418,7 +418,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return cellMode2
          
         }else if defectItem.inputMode! == _INPUTMODE01 {
-            self.inspectDefectTableview.rowHeight = 250
+            self.inspectDefectTableview.rowHeight = 300
             let cellMode1 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode1", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode1
             
             cellMode1.pVC = self

@@ -405,7 +405,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 if var value = data[actionFields[data["tableName"]!]![idx]] {
                     value = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
                     
-                    if apiName == "_DS_TASKDATA" && actionFields[data["tableName"]!]![idx] == "ref_task_id" {
+                    if apiName == "_DS_TASKDATA" && actionFields[data["tableName"]!]![idx] == "ref_task_id" && data["tableName"] != "inspect_task_qc_info_list" {
                         
                         dbFields += "task_id"
                         dbValues += "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(value))"
