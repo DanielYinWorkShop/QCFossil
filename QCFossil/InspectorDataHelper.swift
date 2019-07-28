@@ -11,7 +11,7 @@ import Foundation
 class InspectorDataHelper:DataHelperMaster {
     
     func getInspector(userName:String, password:String) ->Inspector? {
-        let sql = "SELECT * FROM inspector_mstr WHERE (lower(app_username) = ? OR app_username = ?) AND app_password = ?"
+        let sql = "SELECT * FROM inspector_mstr im INNER JOIN prod_type_mstr ptm ON im.prod_type_id = ptm.type_id WHERE (lower(app_username) = ? OR app_username = ?) AND app_password = ?"
         var inspector:Inspector?
         
         if db.open() {
@@ -39,8 +39,9 @@ class InspectorDataHelper:DataHelperMaster {
                 let deleteUser = rs.stringForColumn("delete_user")
                 let deleteDate = rs.stringForColumn("delete_date")
                 let chgPwdReqDate = rs.stringForColumn("chg_pwd_req_date")
+                let typeCode = rs.stringForColumn("type_code")
                 
-                inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr)
+                inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode)
                 
                 inspector?.createUser = createUser
                 inspector?.createDate = createDate
@@ -51,6 +52,7 @@ class InspectorDataHelper:DataHelperMaster {
                 inspector?.deleteUser = deleteUser
                 inspector?.deleteDate = deleteDate
                 inspector?.chgPwdReqDate = chgPwdReqDate
+                
             }
             }
             
@@ -118,7 +120,7 @@ class InspectorDataHelper:DataHelperMaster {
                     let phoneNo = rs.stringForColumn("phone_no")
                     let emailAddr = rs.stringForColumn("email_addr")
                     
-                    inspectors.append(Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr))
+                    inspectors.append(Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: ""))
                 }
             }
             

@@ -123,6 +123,10 @@
 		BD5024CD1C33E40F000CF7D6 /* InputMode04View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5024CC1C33E40F000CF7D6 /* InputMode04View.swift */; };
 		BD5024CF1C33EAA5000CF7D6 /* InputMode03.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5024CE1C33EAA5000CF7D6 /* InputMode03.xib */; };
 		BD5024D11C33EABC000CF7D6 /* InputMode03View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5024D01C33EABC000CF7D6 /* InputMode03View.swift */; };
+		BD58710122EE024C00333C3C /* POInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58710022EE024C00333C3C /* POInfoView.swift */; };
+		BD58710222EE026200333C3C /* POInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58710022EE024C00333C3C /* POInfoView.swift */; };
+		BD58710422EE05CC00333C3C /* POInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD58710322EE05CC00333C3C /* POInfoView.xib */; };
+		BD58710522EE062000333C3C /* POInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD58710322EE05CC00333C3C /* POInfoView.xib */; };
 		BD58C8131C3D2049002149C2 /* DefectListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58C8121C3D2049002149C2 /* DefectListViewController.swift */; };
 		BD58C8191C3D2B19002149C2 /* DefectHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD58C8181C3D2B19002149C2 /* DefectHeader.xib */; };
 		BD58C81B1C3D2B67002149C2 /* DefectHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58C81A1C3D2B67002149C2 /* DefectHeaderView.swift */; };
@@ -352,6 +356,8 @@
 		BDF47A871DD5ABFA00F2EA78 /* CustomControlButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF47A861DD5ABFA00F2EA78 /* CustomControlButton.swift */; };
 		BDF9DD561E02984F00D868D1 /* ShapePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDF9DD541E02984F00D868D1 /* ShapePreviewView.xib */; };
 		BDF9DD571E02984F00D868D1 /* ShapePreviewViewInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF9DD551E02984F00D868D1 /* ShapePreviewViewInput.swift */; };
+		BDFCC7EA22ED45D000D8C4EF /* InspectTaskQCInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFCC7E922ED45D000D8C4EF /* InspectTaskQCInfo.swift */; };
+		BDFCC7EB22ED4E5600D8C4EF /* InspectTaskQCInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFCC7E922ED45D000D8C4EF /* InspectTaskQCInfo.swift */; };
 		BDFEE24C1DFFA95A00523B04 /* AppUpgradeDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEE24B1DFFA95A00523B04 /* AppUpgradeDataHelper.swift */; };
 		BDFEE2561DFFEE1400523B04 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEE2551DFFEE1400523B04 /* ShapeView.swift */; };
 /* End PBXBuildFile section */
@@ -519,6 +525,8 @@
 		BD5024CC1C33E40F000CF7D6 /* InputMode04View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode04View.swift; sourceTree = "<group>"; };
 		BD5024CE1C33EAA5000CF7D6 /* InputMode03.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputMode03.xib; sourceTree = "<group>"; };
 		BD5024D01C33EABC000CF7D6 /* InputMode03View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode03View.swift; sourceTree = "<group>"; };
+		BD58710022EE024C00333C3C /* POInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POInfoView.swift; sourceTree = "<group>"; };
+		BD58710322EE05CC00333C3C /* POInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POInfoView.xib; sourceTree = "<group>"; };
 		BD58C8121C3D2049002149C2 /* DefectListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefectListViewController.swift; sourceTree = "<group>"; };
 		BD58C8181C3D2B19002149C2 /* DefectHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DefectHeader.xib; sourceTree = "<group>"; };
 		BD58C81A1C3D2B67002149C2 /* DefectHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefectHeaderView.swift; sourceTree = "<group>"; };
@@ -561,7 +569,7 @@
 		BDCF870E1C576D0F000B0C38 /* PoDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PoDataHelper.swift; sourceTree = "<group>"; };
 		BDCF87101C57886D000B0C38 /* InspSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspSection.swift; sourceTree = "<group>"; };
 		BDCFCCE01DB4835D00414027 /* InputModeDFMaster2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputModeDFMaster2.swift; sourceTree = "<group>"; };
-		BDD1A3472123472B00AE391E /* QC0722uwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0722uwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDD1A3472123472B00AE391E /* QC0724uwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0724uwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD2E0C11C45048C00CB0C40 /* TaskTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTypeViewController.swift; sourceTree = "<group>"; };
 		BDD51C4E1C3E442000A6E656 /* InputMode04DefectCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode04DefectCellView.swift; sourceTree = "<group>"; };
 		BDD51C501C3E443C00A6E656 /* InputMode04DefectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputMode04DefectCell.xib; sourceTree = "<group>"; };
@@ -586,6 +594,7 @@
 		BDF47A861DD5ABFA00F2EA78 /* CustomControlButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomControlButton.swift; sourceTree = "<group>"; };
 		BDF9DD541E02984F00D868D1 /* ShapePreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShapePreviewView.xib; sourceTree = "<group>"; };
 		BDF9DD551E02984F00D868D1 /* ShapePreviewViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapePreviewViewInput.swift; sourceTree = "<group>"; };
+		BDFCC7E922ED45D000D8C4EF /* InspectTaskQCInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectTaskQCInfo.swift; sourceTree = "<group>"; };
 		BDFEE24B1DFFA95A00523B04 /* AppUpgradeDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUpgradeDataHelper.swift; sourceTree = "<group>"; };
 		BDFEE2551DFFEE1400523B04 /* ShapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -644,7 +653,7 @@
 				9C0C36CB1C1E6F7800CF48ED /* QC0721pwl.app */,
 				9C0C36DF1C1E6F7800CF48ED /* QCFossilTests.xctest */,
 				9C0C36EA1C1E6F7800CF48ED /* QCFossilUITests.xctest */,
-				BDD1A3472123472B00AE391E /* QC0722uwl.app */,
+				BDD1A3472123472B00AE391E /* QC0724uwl.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -859,6 +868,7 @@
 				9CDB08201C7D8AE5004E871D /* SummaryResultValue.swift */,
 				BDD96F3F1DBF335200806719 /* Brand.swift */,
 				BD73BEC3229AD708001DE0CC /* InspectZoneValue.swift */,
+				BDFCC7E922ED45D000D8C4EF /* InspectTaskQCInfo.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1027,6 +1037,8 @@
 			children = (
 				BD4AD87122E1813A00CDC833 /* TaskQCInfoView.swift */,
 				BD4AD87322E1816700CDC833 /* TaskQCInfoView.xib */,
+				BD58710022EE024C00333C3C /* POInfoView.swift */,
+				BD58710322EE05CC00333C3C /* POInfoView.xib */,
 			);
 			name = QCInfo;
 			sourceTree = "<group>";
@@ -1169,7 +1181,7 @@
 			);
 			name = "QCFossil UAT";
 			productName = QCFossil;
-			productReference = BDD1A3472123472B00AE391E /* QC0722uwl.app */;
+			productReference = BDD1A3472123472B00AE391E /* QC0724uwl.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1244,6 +1256,7 @@
 				9C0C37001C1EA70800CF48ED /* Localizable.strings in Resources */,
 				9C25B2F11C4CF7CE005DCA11 /* InputMode02.xib in Resources */,
 				9C25B2ED1C4CEA7A005DCA11 /* InputMode01DefectCell.xib in Resources */,
+				BD58710422EE05CC00333C3C /* POInfoView.xib in Resources */,
 				9C25B2DB1C4CBCF5005DCA11 /* InputMode01.xib in Resources */,
 				BD5A0DB01C44A9880056B077 /* POSearchView.xib in Resources */,
 				BDA1B5C3212AFF6F001C3C5D /* QCFossil-UAT-Info.plist in Resources */,
@@ -1287,6 +1300,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD58710522EE062000333C3C /* POInfoView.xib in Resources */,
 				BD4AD87622E1D63C00CDC833 /* TaskQCInfoView.xib in Resources */,
 				BDD1A3232123472B00AE391E /* fossil_qc_prd.sqlite in Resources */,
 				BDD1A3242123472B00AE391E /* ShapePreviewView.xib in Resources */,
@@ -1358,6 +1372,7 @@
 				9CD85A6D1D74147F004DD641 /* unzip.c in Sources */,
 				BD08F32D1E30BF5500FFBB2D /* DefectListTableViewCellMode1.swift in Sources */,
 				BDDAA71F1C2A9561006A5D40 /* PhotoAlbumCellTableViewCell.swift in Sources */,
+				BD58710122EE024C00333C3C /* POInfoView.swift in Sources */,
 				9CD9D8731C2911F2002411CF /* ScrollViewController.swift in Sources */,
 				9CE39ABD1DB0E308002695D8 /* DefectListTableViewCell.swift in Sources */,
 				BDCF870B1C573892000B0C38 /* VendorDataHelper.swift in Sources */,
@@ -1387,6 +1402,7 @@
 				BDCF87111C57886D000B0C38 /* InspSection.swift in Sources */,
 				BDCC90131C56020C009A5AB7 /* EmbedContainerController.swift in Sources */,
 				9CD2B4CC1C2175070003DE51 /* Task.swift in Sources */,
+				BDFCC7EA22ED45D000D8C4EF /* InspectTaskQCInfo.swift in Sources */,
 				9CD85A651D74147F004DD641 /* fileenc.c in Sources */,
 				9C0C37111C212EC700CF48ED /* UserForgetViewController.swift in Sources */,
 				9CD2B4D81C22A0C10003DE51 /* CommonData.swift in Sources */,
@@ -1490,6 +1506,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD58710222EE026200333C3C /* POInfoView.swift in Sources */,
+				BDFCC7EB22ED4E5600D8C4EF /* InspectTaskQCInfo.swift in Sources */,
 				BD4AD87522E1D62700CDC833 /* TaskQCInfoView.swift in Sources */,
 				BD63916D22DCDB7C0005F58D /* QCInfoViewController.swift in Sources */,
 				BD73BEC5229AD92D001DE0CC /* InspectZoneValue.swift in Sources */,
@@ -1866,7 +1884,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
-				PRODUCT_NAME = QC0722uwl;
+				PRODUCT_NAME = QC0724uwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1886,7 +1904,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
-				PRODUCT_NAME = QC0722uwl;
+				PRODUCT_NAME = QC0724uwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 			};

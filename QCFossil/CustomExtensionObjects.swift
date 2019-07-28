@@ -101,6 +101,15 @@ extension TaskQCInfoView {
     }
 }
 
+extension POInfoView {
+    class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> POInfoView? {
+        return UINib(
+            nibName: nibNamed,
+            bundle: bundle
+            ).instantiateWithOwner(nil, options: nil)[0] as? POInfoView
+    }
+}
+
 /* Input Mode 01 */
 extension InputMode01View {
     class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> InputMode01View? {
@@ -625,7 +634,7 @@ extension UIView {
         return dateFormatter.stringFromDate(todaysDate)
     }
     
-    func getCurrentDateTime(dateFormat:String=_DATEFORMATTER + " HH:mm:ss a") ->String {
+    func getCurrentDateTime(dateFormat:String=_DATEFORMATTER + " hh:mm:ss a") ->String {
         
         
         let todaysDate:NSDate = NSDate()

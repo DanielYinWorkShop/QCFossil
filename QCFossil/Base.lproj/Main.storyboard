@@ -5580,7 +5580,6 @@
                                             <outlet property="defectDesc2Input" destination="vli-6e-Ati" id="pHq-lN-tmm"/>
                                             <outlet property="defectDesc2Label" destination="h7m-av-aQw" id="QNl-2K-hBS"/>
                                             <outlet property="defectDesc2ListIcon" destination="DoE-ds-dVy" id="JAo-xI-ibH"/>
-                                            <outlet property="defectDescInput" destination="pIf-x4-0Oq" id="oqF-MC-TdA"/>
                                             <outlet property="defectDescLabel" destination="aUL-rt-PEM" id="BN5-IG-47S"/>
                                             <outlet property="defectMajorQtyInput" destination="hko-5g-Z4Y" id="r0T-qs-PfZ"/>
                                             <outlet property="defectMajorQtyLabel" destination="YRc-hY-8AJ" id="EEC-nV-pzb"/>
@@ -5590,6 +5589,7 @@
                                             <outlet property="defectPPILabel" destination="6KI-qg-NRk" id="tvr-gV-Krq"/>
                                             <outlet property="defectPositInput" destination="xIw-al-0Pq" id="azG-2i-69N"/>
                                             <outlet property="defectPositLabel" destination="9Y2-hx-4WV" id="CeA-i0-b1C"/>
+                                            <outlet property="defectRemarkOptionList" destination="pIf-x4-0Oq" id="g4u-Ty-anR"/>
                                             <outlet property="defectTotalQtyInput" destination="reu-Xh-JnR" id="xZi-F3-r9w"/>
                                             <outlet property="defectTotalQtyLabel" destination="vKV-Em-FQs" id="w45-lZ-8As"/>
                                             <outlet property="defectTypeInput" destination="NTK-dT-Ca7" id="xyH-OQ-N4n"/>
@@ -7857,6 +7857,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="QCInfo" image="qc_info" selectedImage="qc_info" id="HS8-Qu-84C">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="azm-DA-sfC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kHy-sO-sUl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8129,6 +8132,7 @@
         <image name="photo_album2" width="50" height="50"/>
         <image name="photo_camera" width="50" height="50"/>
         <image name="photo_library" width="50" height="50"/>
+        <image name="qc_info" width="64" height="64"/>
         <image name="remove" width="64" height="64"/>
         <image name="select_icon" width="40" height="40"/>
         <image name="task_form" width="37" height="37"/>
@@ -8136,6 +8140,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="PTu-VT-TfV"/>
         <segue reference="Afp-MC-Qc2"/>
-        <segue reference="HDg-CQ-EiX"/>
+        <segue reference="Vf6-iS-709"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -52,6 +52,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         self.defectDesc1Input.delegate = self
         self.defectDesc2Input.delegate = self
         self.defectDescInput.delegate = self
+        self.othersRemarkInput.delegate = self
         
         self.defectDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
         self.defectQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Total")
@@ -69,17 +70,6 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         self.defectQtyInput.text = "0"
     }
     
-    override func didMoveToSuperview() {
-        
-        guard let inspectPositionId = self.inspItem?.inspPostId else {return}
-        
-        let defectDataHelper = DefectDataHelper()
-        let dfElms = defectDataHelper.getDefectObjectsByPositionId(inspectPositionId)
-        dfElms.forEach({ dfElm in
-            self.defectTypeKeyValues[_ENGLISH ? dfElm.valueNameEn ?? "": dfElm.valueNameCn ?? ""] = dfElm.valueId
-        })
-    }
-    
     @IBAction func addDefectPhoto(sender: UIButton) {
         print("add Cell photo")
         
@@ -95,6 +85,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         self.criticalInput.resignFirstResponder()
         self.majorInput.resignFirstResponder()
         self.minorInput.resignFirstResponder()
+        self.othersRemarkInput.resignFirstResponder()
         
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .PhotoLibrary
@@ -413,7 +404,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             for key in defectTypeKeyValues.keys {
                 dfElms.append(key)
             }
-            
+ 
             textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
 
             return false
@@ -452,7 +443,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 listData.append(key)
             }
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
             return false
         }
         
@@ -465,12 +456,12 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "" {
                 textField.text = "0"
             }
-        } else if textField == self.defectDescInput {
+        } else if textField == self.othersRemarkInput {
             
             let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx}).first
             guard let defectItem = defectItemFilter else {return}
             
-            defectItem.defectDesc = textField.text
+            defectItem.othersRemark = textField.text
         }
     }
     
@@ -529,7 +520,8 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             })
             
         } else if textField == self.defectDescInput {
-            self.defectRemarksOptionList = self.defectDescInput.text
+            defectItem.defectRemarksOptionList = self.defectDescInput.text
+            
         }
     }
     

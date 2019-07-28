@@ -283,4 +283,113 @@ class DPDataHelper:DataHelperMaster {
         
         return positionId
     }
+ 
+    func getQCInfoByRefTaskId(id:Int) ->InspectTaskQCInfo? {
+        
+        let sql = "SELECT * FROM inspect_task_qc_info WHERE ref_task_id = ?"
+        var qcInfo:InspectTaskQCInfo? = nil
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [id]) {
+                if rs.next() {
+                    
+                    let refTaskId = Int(rs.stringForColumn("ref_task_id"))
+                    let aqlQty = Int(rs.stringForColumn("aql_qty"))
+                    let productClass = rs.stringForColumn("product_class")
+                    let qualityStandard = rs.stringForColumn("quality_standard")
+                    let adjustTime = rs.stringForColumn("adjust_time")
+                    let preinspectDetail = rs.stringForColumn("preinspect_detail")
+                    let caForm = rs.stringForColumn("ca_form")
+                    let casebackMarking = rs.stringForColumn("caseback_marking")
+                    let upcOrbidStatus = rs.stringForColumn("upc_orbid_status")
+                    let tsReportNo = rs.stringForColumn("ts_report_no")
+                    let tsSubmitDate = rs.stringForColumn("ts_submit_date")
+                    let tsResult = rs.stringForColumn("ts_result")
+                    let qcBookingRefNo = rs.stringForColumn("qc_booking_ref_no")
+                    let ssCommentReady = rs.stringForColumn("ss_comment_ready")
+                    let ssReady = rs.stringForColumn("ss_ready")
+                    let ssPhotoName = rs.stringForColumn("ss_photo_name")
+                    let batteryProductionCode = rs.stringForColumn("battery_production_code")
+                    let withQuesitonPending = rs.stringForColumn("with_quesiton_pending")
+                    let withSamePoRejectedBef = rs.stringForColumn("with_same_po_rejected_bef")
+                    let assortment = rs.stringForColumn("assortment")
+                    let consignedStyles = rs.stringForColumn("consigned_styles")
+                    let qcInspectType = rs.stringForColumn("qc_inspect_type")
+                    let netWeight = rs.stringForColumn("net_weight")
+                    let inspectMethod = rs.stringForColumn("inspect_method")
+                    let lengthRequirement = rs.stringForColumn("length_requirement")
+                    let inspectionSampleReady = rs.stringForColumn("inspection_sample_ready")
+                    let ftyPackingInfo = rs.stringForColumn("fty_packing_info")
+                    let ftyDroptestInfo = rs.stringForColumn("fty_droptest_info")
+                    let movtOrigin = rs.stringForColumn("movt_origin")
+                    let batteryType = rs.stringForColumn("battery_type")
+                    let preInspectResult = rs.stringForColumn("pre_inspect_result")
+                    let preInspectRemark = rs.stringForColumn("pre_inspect_remark")
+                    let reliabilityRemark = rs.stringForColumn("reliability_remark")
+                    let jwlMarking = rs.stringForColumn("jwl_marking")
+                    let combineQcRemarks = rs.stringForColumn("combine_qc_remarks")
+                    let linksRemarks = rs.stringForColumn("links_remarks")
+                    let dusttestRemark = rs.stringForColumn("dusttest_remark")
+                    let smartlinkRemark = rs.stringForColumn("smartlink_remark")
+                    let preciseReport = rs.stringForColumn("precise_report")
+                    let smartlinkReport = rs.stringForColumn("smartlink_report")
+                    let createUser = rs.stringForColumn("create_user")
+                    let createDate = rs.stringForColumn("create_date")
+                    let modifyUser = rs.stringForColumn("modify_user")
+                    let modifyDate = rs.stringForColumn("modify_date")
+                    
+                    qcInfo = InspectTaskQCInfo(refTaskId: refTaskId, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)
+                    qcInfo?.aqlQty = aqlQty
+                    qcInfo?.productClass = productClass
+                    qcInfo?.qualityStandard = qualityStandard
+                    qcInfo?.adjustTime = adjustTime
+                    qcInfo?.preinspectDetail = preinspectDetail
+                    qcInfo?.caForm = caForm
+                    qcInfo?.casebackMarking = casebackMarking
+                    qcInfo?.upcOrbidStatus = upcOrbidStatus
+                    qcInfo?.tsReportNo = tsReportNo
+                    qcInfo?.tsSubmitDate = tsSubmitDate
+                    qcInfo?.tsResult = tsResult
+                    qcInfo?.qcBookingRefNo = qcBookingRefNo
+                    qcInfo?.ssCommentReady = ssCommentReady
+                    qcInfo?.ssReady = ssReady
+                    qcInfo?.ssPhotoName = ssPhotoName
+                    qcInfo?.batteryProductionCode = batteryProductionCode
+                    qcInfo?.withQuesitonPending = withQuesitonPending
+                    qcInfo?.withSamePoRejectedBef = withSamePoRejectedBef
+                    qcInfo?.assortment = assortment
+                    qcInfo?.consignedStyles = consignedStyles
+                    qcInfo?.qcInspectType = qcInspectType
+                    qcInfo?.netWeight = netWeight
+                    qcInfo?.inspectMethod = inspectMethod
+                    qcInfo?.lengthRequirement = lengthRequirement
+                    qcInfo?.inspectionSampleReady = inspectionSampleReady
+                    qcInfo?.ftyPackingInfo = ftyPackingInfo
+                    qcInfo?.ftyDroptestInfo = ftyDroptestInfo
+                    qcInfo?.movtOrigin = movtOrigin
+                    qcInfo?.batteryType = batteryType
+                    qcInfo?.preInspectResult = preInspectResult
+                    qcInfo?.preInspectRemark = preInspectRemark
+                    qcInfo?.reliabilityRemark = reliabilityRemark
+                    qcInfo?.jwlMarking = jwlMarking
+                    qcInfo?.combineQcRemarks = combineQcRemarks
+                    qcInfo?.linksRemarks = linksRemarks
+                    qcInfo?.dusttestRemark = dusttestRemark
+                    qcInfo?.smartlinkRemark = smartlinkRemark
+                    qcInfo?.preciseReport = preciseReport
+                    qcInfo?.smartlinkReport = smartlinkReport
+                    
+                    /*
+                     qcInfo = InspectTaskQCInfo(refTaskId: refTaskId, aqlQty: aqlQty, productClass: productClass, qualityStandard: qualityStandard, adjustTime: adjustTime, preinspectDetail: preinspectDetail, caForm: caForm, casebackMarking: casebackMarking, upcOrbidStatus: upcOrbidStatus, tsReportNo: tsReportNo, tsSubmitDate: tsSubmitDate, tsResult: tsResult, qcBookingRefNo: qcBookingRefNo, ssCommentReady: ssCommentReady, ssReady: ssReady, ssPhotoName: ssPhotoName, batteryProductionCode: batteryProductionCode, withQuesitonPending: withQuesitonPending, withSamePoRejectedBef: withSamePoRejectedBef, assortment: assortment, consignedStyles: consignedStyles, qcInspectType: qcInspectType, netWeight: netWeight, inspectMethod: inspectMethod, lengthRequirement: lengthRequirement, inspectionSampleReady: inspectionSampleReady, ftyPackingInfo: ftyPackingInfo, ftyDroptestInfo: ftyDroptestInfo, movtOrigin: movtOrigin, batteryType: batteryType, preInspectResult: preInspectResult, preInspectRemark: preInspectRemark, reliabilityRemark: reliabilityRemark, jwlMarking: jwlMarking, combineQcRemarks: combineQcRemarks, linksRemarks: linksRemarks, dusttestRemark: dusttestRemark, smartlinkRemark: smartlinkRemark, preciseReport: preciseReport, smartlinkReport: smartlinkReport, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)
+                     */
+                    
+                }
+            }
+            
+            db.close()
+        }
+        
+        return qcInfo
+    }
 }

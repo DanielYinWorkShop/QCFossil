@@ -206,6 +206,9 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return
         }
         
+        let myParentTabVC = self.parentViewController?.parentViewController as! TabBarViewController
+        myParentTabVC.handler = nil
+        
         let defectDataHelper = DefectDataHelper()
         let defectItemArray = (Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == self.inspItem!.cellCatIdx && $0.inspElmt.cellIdx == self.inspItem!.cellIdx }))!
         
@@ -354,16 +357,41 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode2.cellIdx = defectItem.cellIdx
             cellMode2.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode2.inputMode = _INPUTMODE02
-            cellMode2.defectDescInput.text = defectItem.defectDesc!
+            //cellMode2.defectDescInput.text = defectItem.defectDesc!
             cellMode2.defectMajorQtyInput.text = defectItem.defectQtyMajor < 1 ? "0" : String(defectItem.defectQtyMajor)
             cellMode2.defectMinorQtyInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
             cellMode2.defectCriticalQtyInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
             cellMode2.defectTotalQtyInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
             cellMode2.defectPPIInput.text = self.defectPositionPointsDesc
             cellMode2.inspectElementId = defectItem.inspectElementId
+            cellMode2.defectRemarkOptionList.text = defectItem.defectRemarksOptionList
+            cellMode2.othersRemarkInput.text = defectItem.othersRemark
             
             cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
             cellMode2.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
+            
+            let taskDataHelper = TaskDataHelper()
+            let remarkValues = taskDataHelper.getRemarksOptionList("\(cellMode2.inspItem?.resultValueId)")
+            remarkValues.forEach({ value in
+                cellMode2.remarkKeyValue[_ENGLISH ? value.valueNameEn ?? "": value.valueNameCn ?? ""] = value.valueId
+            })
+            
+            var myRemarkValues = cellMode2.defectRemarkOptionList.text?.characters.split{$0 == ","}.map(String.init)
+            if let values = myRemarkValues {
+                for value in values {
+                    let trimValue = value.stringByTrimmingCharactersInSet(
+                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                    )
+                    
+                    if cellMode2.remarkKeyValue[trimValue] == nil {
+                        myRemarkValues = myRemarkValues!.filter { $0 != value }
+                    }
+                }
+            }
+            
+            if let values = myRemarkValues {
+                cellMode2.defectRemarkOptionList.text = values.joinWithSeparator(",")
+            }
             
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
@@ -429,23 +457,45 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode1.cellIdx = defectItem.cellIdx
             cellMode1.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode1.inputMode = _INPUTMODE01
-            cellMode1.defectDescInput.text = defectItem.defectDesc!
             cellMode1.defectQtyInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
             cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "0" : String(defectItem.defectQtyMajor)
             cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
             cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
             cellMode1.inspectElementId = defectItem.inspectElementId
+            cellMode1.defectDescInput.text = defectItem.defectRemarksOptionList
+            cellMode1.othersRemarkInput.text = defectItem.othersRemark
             
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
             cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
-            
+            let defectDataHelper = DefectDataHelper()
+            let dfElms = defectDataHelper.getDefectObjectsByPositionId(cellMode1.inspItem?.inspPostId ?? 0)
+            dfElms.forEach({ dfElm in
+                cellMode1.defectTypeKeyValues[_ENGLISH ? dfElm.valueNameEn ?? "": dfElm.valueNameCn ?? ""] = dfElm.valueId
+            })
             
             let taskDataHelper = TaskDataHelper()
-            let remarkValues = taskDataHelper.getRemarksOptionList()
+            let remarkValues = taskDataHelper.getRemarksOptionList(String(cellMode1.inspItem!.resultValueId))
             remarkValues.forEach({ value in
                 cellMode1.remarkKeyValue[_ENGLISH ? value.valueNameEn ?? "": value.valueNameCn ?? ""] = value.valueId
             })
+            
+            var myRemarkValues = cellMode1.defectDescInput.text?.characters.split{$0 == ","}.map(String.init)
+            if let values = myRemarkValues {
+                for value in values {
+                    let trimValue = value.stringByTrimmingCharactersInSet(
+                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                    )
+                    
+                    if cellMode1.remarkKeyValue[trimValue] == nil {
+                        myRemarkValues = myRemarkValues!.filter { $0 != value }
+                    }
+                }
+            }
+            
+            if let values = myRemarkValues {
+                cellMode1.defectDescInput.text = values.joinWithSeparator(",")
+            }
             
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()

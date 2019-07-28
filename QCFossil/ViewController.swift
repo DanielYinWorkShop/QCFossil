@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "07222019"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "07242019"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
@@ -262,7 +262,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                     dispatch_async(dispatch_get_main_queue(), {
                         
                         if result![0]["inspector_id"] != nil && result![0]["prod_type_id"] != nil && result![0]["rec_status"] != nil {
-                            let inspector = Inspector(inspectorId: Int(result![0]["inspector_id"]!), inspectorName: result![0]["inspector_name"]!, prodTypeId: Int(result![0]["prod_type_id"]!), appUserName: result![0]["app_username"]!, appPassword: result![0]["app_password"]!, serviceToken: result![0]["service_token"]!, reportPrefix: result![0]["report_prefix"]!, reportRunningNo: result![0]["report_running_no"]!, phoneNo: result![0]["phone_no"]!, emailAddr: result![0]["email_addr"]!)
+                            let inspector = Inspector(inspectorId: Int(result![0]["inspector_id"]!), inspectorName: result![0]["inspector_name"]!, prodTypeId: Int(result![0]["prod_type_id"]!), appUserName: result![0]["app_username"]!, appPassword: result![0]["app_password"]!, serviceToken: result![0]["service_token"]!, reportPrefix: result![0]["report_prefix"]!, reportRunningNo: result![0]["report_running_no"]!, phoneNo: result![0]["phone_no"]!, emailAddr: result![0]["email_addr"]!, typeCode: "")
                                 
                             inspector.recStatus = Int(result![0]["rec_status"]!)
                             inspector.createUser = result![0]["create_user"]

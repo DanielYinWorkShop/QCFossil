@@ -12,7 +12,7 @@ import UIKit
 class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var indexLabel: UILabel!
     @IBOutlet weak var defectDescLabel: UILabel!
-    @IBOutlet weak var defectDescInput: UITextField!
+    //@IBOutlet weak var defectDescInput: UITextField!
     @IBOutlet weak var defectCriticalQtyLabel: UILabel!
     @IBOutlet weak var defectCriticalQtyInput: UITextField!
     @IBOutlet weak var defectMajorQtyLabel: UILabel!
@@ -36,16 +36,19 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectDesc2ListIcon: UIButton!
     @IBOutlet weak var othersRemarkLabel: UILabel!
     @IBOutlet weak var othersRemarkInput: UITextField!
+    @IBOutlet weak var defectRemarkOptionList: UITextField!
     
     weak var pVC:InspectionDefectList!
     
     var defectValues:[DropdownValue]?
     var caseValues:[DropdownValue]?
+    var remarkKeyValue = [String:Int]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.defectDescInput.delegate = self
+        //self.defectDescInput.delegate = self
+        self.defectRemarkOptionList.delegate = self
         self.defectCriticalQtyInput.delegate = self
         self.defectMajorQtyInput.delegate = self
         self.defectMinorQtyInput.delegate = self
@@ -55,6 +58,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectPositInput.delegate = self
         self.defectDesc1Input.delegate = self
         self.defectDesc2Input.delegate = self
+        self.othersRemarkInput.delegate = self
         self.defectTotalQtyInput.userInteractionEnabled = false
         
         self.defectDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
@@ -80,7 +84,9 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             return
         }
         
-        self.defectDescInput.resignFirstResponder()
+        //self.defectDescInput.resignFirstResponder()
+        self.othersRemarkInput.resignFirstResponder()
+        self.defectRemarkOptionList.resignFirstResponder()
         self.defectCriticalQtyInput.resignFirstResponder()
         self.defectMajorQtyInput.resignFirstResponder()
         self.defectMinorQtyInput.resignFirstResponder()
@@ -448,6 +454,15 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "0" {
                 textField.text = ""
             }
+            
+        } else if textField == self.defectRemarkOptionList {
+            var listData = [String]()
+            for key in self.remarkKeyValue.keys {
+                listData.append(key)
+            }
+            
+            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: listData, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
+            return false
         }
         
         return true
@@ -458,12 +473,12 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "" {
                 textField.text = "0"
             }
-        } else if textField === self.defectDescInput {
+        } else if textField === self.othersRemarkInput {
             
             let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx}).first
             guard let defectItem = defectItemFilter else {return}
             
-            defectItem.defectDesc = textField.text
+            defectItem.othersRemark = textField.text
             
         }
     }
@@ -525,6 +540,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 }
             })
             
+        } else if textField == self.defectRemarkOptionList {
+            defectItem.defectRemarksOptionList = self.defectRemarkOptionList.text
         }
     }
     
