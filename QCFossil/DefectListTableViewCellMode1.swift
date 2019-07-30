@@ -533,6 +533,12 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if textField == self.defectTypeInput {
+            
+            if self.ifExistingSubviewByViewTag(self.pVC.defectTableView, tag: _TAG1) {
+                clearDropdownviewForSubviews(self.pVC.defectTableView)
+                return false
+            }
+            
             let defectDataHelper = DefectDataHelper()
             /*
              Element Type
@@ -545,14 +551,14 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
                 if self.positionIdOfInspectElement != nil {
                     
                     let dfElms = defectDataHelper.getDefectTypesByPositionId(self.positionIdOfInspectElement!)
-                    textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+                    textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
                 }
                 
                 return false
             }
             
             let dfElms = defectDataHelper.getDefectTypesByPositionId(inspectPositionId)
-            textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+            textField.showListData(textField, parent: self.pVC.defectTableView, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
 
             return false
         }

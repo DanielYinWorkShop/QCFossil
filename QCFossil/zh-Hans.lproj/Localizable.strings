@@ -803,3 +803,76 @@
 "Additional Administrative Item" = "附加行政项目";
 
 "QC Info" = "检查标准";
+
+"Other Remark" = "其他备注";
+
+"Product Info" = "产品资讯";
+
+"Vendor" = "供应商";
+
+"QC Internal No" = "预约单编号";
+
+"Brand" = "品牌";
+
+"TS Report No" = "技术办报告编号";
+
+"Material Category" = "Material Category";
+
+"Assortment" = "是否混装";
+
+"Inspector" = "检查员";
+
+"Assortment Style" = "混装型号";
+
+"Season" = "季度";
+
+"Update datetime" = "资讯更新日期/时间";
+
+"QC Info" = "品检资讯";
+
+"Order Qty" = "订单数量";
+
+"Quality Stardard" = "品质收货标准";
+
+"Booked Qty" = "验货数量";
+
+"Marking" = "字印";
+
+"AQL Qty" = "抽数数量";
+
+"Weight" = "重量(g)";
+
+"Adjust Time" = "调较时间";
+
+"Length Req." = "要求长度";
+
+"Product Grade" = "等级";
+
+"Movt(Origin)" = "机芯型号";
+
+"UPC-Orbid Status" = "UPC-Orbid Mark状态";
+
+"Combine QC Remark" = "合抽备注";
+
+"SS/TS Info" = "销售办/技术办状况";
+
+"SS Ready" = "欠销售办";
+
+"SS Comment Ready" = "评语资料内容";
+
+"TS Submit Date" = "技术样办交办日期";
+
+"TS Result" = "技术样办结果";
+
+"Same PO with Reject" = "相同PO是否拒收过";
+
+"Inspect Sample Ready" = "欠验货办";
+
+"Link Test Qty" = "调换珠测试";
+
+"Dust Test Qty" = "防尘测试";
+
+"Smart Link Test Qty" = "Smart Link测试";
+
+"Other Test Qty" = "其他功能测试";
+

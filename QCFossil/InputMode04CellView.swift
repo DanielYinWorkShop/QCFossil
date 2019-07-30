@@ -138,13 +138,18 @@ class InputMode04CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        clearDropdownviewForSubviews(self.parentView!)
+        //clearDropdownviewForSubviews(self.parentView!)
+        if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG1) {
+            clearDropdownviewForSubviews(self.parentView)
+            return false
+        }
+        
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         Cache_Task_On?.didModify = true
         
         if textField == subResultInput {
             
-            textField.showListData(textField, parent: ((self.parentView as! InputMode04View).ScrollCellView)!, handle: handleFun, listData: self.parentView!.resultValues, width: 200,height:250)
+            textField.showListData(textField, parent: ((self.parentView as! InputMode04View).ScrollCellView)!, handle: handleFun, listData: self.parentView!.resultValues, width: 200,height:250, tag: _TAG1)
             
         }else if textField == inspectionAreaLabel {
             var listData = [String]()
@@ -152,7 +157,7 @@ class InputMode04CellView: InputModeICMaster, UITextFieldDelegate {
                 listData.append( _ENGLISH ? optInspPost.positionNameEn! : optInspPost.positionNameCn!)
             }
             
-            textField.showListData(textField, parent: ((self.parentView as! InputMode04View).ScrollCellView)!, handle: handleFun, listData: listData, width: inspectionAreaLabel.frame.size.width*1.2, height: 250)
+            textField.showListData(textField, parent: ((self.parentView as! InputMode04View).ScrollCellView)!, handle: handleFun, listData: listData, width: inspectionAreaLabel.frame.size.width*1.2, height: 250, tag: _TAG1)
             
         }else if textField == inspectionItemLabel {
             var listData = [String]()
@@ -174,7 +179,7 @@ class InputMode04CellView: InputModeICMaster, UITextFieldDelegate {
                     listData.append( _ENGLISH ? optInspElm.elementNameEn! : optInspElm.elementNameCn!)
                 }
             }
-            textField.showListData(textField, parent: ((self.parentView as! InputMode04View).ScrollCellView)!, handle: handleFun, listData: listData, width: inspectionItemLabel.frame.size.width*1.2, height: 250)
+            textField.showListData(textField, parent: ((self.parentView as! InputMode04View).ScrollCellView)!, handle: handleFun, listData: listData, width: inspectionItemLabel.frame.size.width*1.2, height: 250, tag: _TAG1)
             
         }
         

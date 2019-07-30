@@ -4856,7 +4856,7 @@
                                             <outlet property="indexLabel" destination="VQg-Va-OOS" id="STz-px-mTw"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode1" rowHeight="300" id="9Z1-em-5JS" customClass="InspectionDefectTableViewCellMode1" customModule="QC0721pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode1" rowHeight="320" id="9Z1-em-5JS" customClass="InspectionDefectTableViewCellMode1" customModule="QC0721pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Z1-em-5JS" id="5lR-EF-OLv">
@@ -4912,20 +4912,10 @@
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="8" y="247" width="40" height="40"/>
+                                                        <rect key="frame" x="8" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhoto:" destination="9Z1-em-5JS" eventType="touchUpInside" id="qZa-S2-n5W"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UkA-ki-Bbr" customClass="CustomControlButton" customModule="QC0721pwl" customModuleProvider="target">
-                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                                    <state key="normal" title="Button" image="photo_camera"/>
-                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="66" y="247" width="40" height="40"/>
-                                                    </variation>
-                                                    <connections>
-                                                        <action selector="addDefectPhotoFromCamera:" destination="9Z1-em-5JS" eventType="touchUpInside" id="2pd-kH-753"/>
                                                     </connections>
                                                 </button>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D0Q-Db-QBk">
@@ -4965,7 +4955,7 @@
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="remove"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="708" y="247" width="40" height="40"/>
+                                                        <rect key="frame" x="708" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="removeDefectCell:" destination="9Z1-em-5JS" eventType="touchUpInside" id="A3C-Iy-Qay"/>
@@ -5050,7 +5040,7 @@
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="124" y="247" width="40" height="40"/>
+                                                        <rect key="frame" x="124" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhotoFromAlbum:" destination="9Z1-em-5JS" eventType="touchUpInside" id="W9n-fN-bxJ"/>
@@ -5111,6 +5101,16 @@
                                                         <rect key="frame" x="739" y="138" width="21" height="21"/>
                                                     </variation>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UkA-ki-Bbr" customClass="CustomControlButton" customModule="QC0721pwl" customModuleProvider="target">
+                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <state key="normal" title="Button" image="photo_camera"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="66" y="265" width="40" height="40"/>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="addDefectPhotoFromCamera:" destination="9Z1-em-5JS" eventType="touchUpInside" id="2pd-kH-753"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -5120,7 +5120,6 @@
                                                     <exclude reference="XQT-r5-LSk"/>
                                                     <exclude reference="RNU-dL-6Ir"/>
                                                     <exclude reference="eti-UV-pfa"/>
-                                                    <exclude reference="UkA-ki-Bbr"/>
                                                     <exclude reference="D0Q-Db-QBk"/>
                                                     <exclude reference="cnc-xv-jEx"/>
                                                     <exclude reference="LBe-wJ-29v"/>
@@ -5143,6 +5142,7 @@
                                                     <exclude reference="sGz-hd-szH"/>
                                                     <exclude reference="1yi-re-8RP"/>
                                                     <exclude reference="2IE-HS-fiD"/>
+                                                    <exclude reference="UkA-ki-Bbr"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -5153,7 +5153,6 @@
                                                     <include reference="XQT-r5-LSk"/>
                                                     <include reference="RNU-dL-6Ir"/>
                                                     <include reference="eti-UV-pfa"/>
-                                                    <include reference="UkA-ki-Bbr"/>
                                                     <include reference="D0Q-Db-QBk"/>
                                                     <include reference="cnc-xv-jEx"/>
                                                     <include reference="LBe-wJ-29v"/>
@@ -5176,6 +5175,7 @@
                                                     <include reference="sGz-hd-szH"/>
                                                     <include reference="1yi-re-8RP"/>
                                                     <include reference="2IE-HS-fiD"/>
+                                                    <include reference="UkA-ki-Bbr"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -5204,7 +5204,7 @@
                                             <outlet property="othersRemarkLabel" destination="LBe-wJ-29v" id="Wdh-Mw-lkP"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode2" rowHeight="300" id="Sh6-Jo-XQX" customClass="InspectionDefectTableViewCellMode2" customModule="QC0721pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode2" rowHeight="320" id="Sh6-Jo-XQX" customClass="InspectionDefectTableViewCellMode2" customModule="QC0721pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sh6-Jo-XQX" id="JmH-D2-Jxf">
@@ -5304,7 +5304,7 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="708" y="248" width="40" height="40"/>
+                                                        <rect key="frame" x="708" y="268" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="removeDefectCell:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="aIN-X8-FT5"/>
@@ -5314,7 +5314,7 @@
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="8" y="245" width="40" height="40"/>
+                                                        <rect key="frame" x="8" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhoto:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="iD5-Le-2Aj"/>
@@ -5324,7 +5324,7 @@
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_camera"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="66" y="245" width="40" height="40"/>
+                                                        <rect key="frame" x="66" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhotoFromCamera:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="l3k-3D-17h"/>
@@ -5334,7 +5334,7 @@
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="124" y="245" width="40" height="40"/>
+                                                        <rect key="frame" x="124" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhotoFromAlbum:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="AOs-X5-fGS"/>
@@ -8132,7 +8132,7 @@
         <image name="photo_album2" width="50" height="50"/>
         <image name="photo_camera" width="50" height="50"/>
         <image name="photo_library" width="50" height="50"/>
-        <image name="qc_info" width="64" height="64"/>
+        <image name="qc_info" width="37" height="37"/>
         <image name="remove" width="64" height="64"/>
         <image name="select_icon" width="40" height="40"/>
         <image name="task_form" width="37" height="37"/>
@@ -8140,6 +8140,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="PTu-VT-TfV"/>
         <segue reference="Afp-MC-Qc2"/>
-        <segue reference="Vf6-iS-709"/>
+        <segue reference="HDg-CQ-EiX"/>
     </inferredMetricsTieBreakers>
 </document>

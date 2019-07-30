@@ -229,11 +229,11 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         
         if textField == self.cellResultInput {
             
-            if self.ifExistingSubviewByViewTag(self.parentView, tag: 1000003) {
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG3) {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
                 
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height: 250, tag: 1000003)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height: 250, tag: _TAG3)
             }
             
         }else if textField == self.dpInput {
@@ -243,11 +243,11 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 positName.append(key)
             }
             
-            if self.ifExistingSubviewByViewTag(self.parentView, tag: 1000002) {
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG2) {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
             
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), tag: 1000002, height:_DROPDOWNLISTHEIGHT)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), tag: _TAG2, height:_DROPDOWNLISTHEIGHT)
             }
             
         }else if textField == self.cellDPPInput {
@@ -257,11 +257,11 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 positName.append(key)
             }
                 
-            if self.ifExistingSubviewByViewTag(self.parentView, tag: 1000001) {
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG1) {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
                 
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: 1000001)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
             }
             
         }else if textField == self.defectZoneInput {
@@ -271,7 +271,12 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 listData.append(key)
             }
             
-            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG1) {
+                clearDropdownviewForSubviews(self.parentView)
+                return false
+            }
+            
+            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
         }
         
         return false

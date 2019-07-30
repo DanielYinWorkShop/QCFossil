@@ -69,6 +69,9 @@ class PoItem {
     var market:String?
     var materialCategory:String?
     var shipModeName:String?
+    var itemBarCode:String?
+    var retailPrice:String?
+    var targetInspectQty:String?
     
     //UI
     var availableQty:Int

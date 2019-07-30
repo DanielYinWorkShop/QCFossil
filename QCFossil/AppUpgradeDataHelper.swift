@@ -270,7 +270,7 @@ class AppUpgradeDataHelper:DataHelperMaster {
                     }
                     
                     // Add table inspect_task_qc_info
-                    sql = "CREATE TABLE IF NOT EXISTS `inspect_task_qc_info` ( `ref_task_id` numeric(10,0) NOT NULL, `aql_qty` numeric(10,0), `product_class` varchar(50), `quality_standard` varchar(50), `adjust_time` varchar(50), `preinspect_detail` TEXT, `ca_form` varchar(50), `caseback_marking` varchar(50), `upc_orbid_status` varchar(50), `ts_report_no` varchar(50), `ts_submit_date` DATETIME, `ts_result` nvarchar(50), `qc_booking_ref_no` varchar(50), `ss_comment_ready`varchar(50), `ss_ready` varchar(50), `ss_photo_name` varchar(50), `battery_production_code` varchar(50), `with_quesiton_pending` varchar(50), `with_same_po_rejected_bef` varchar(50), `assortment` varchar(50), `consigned_styles` varchar(50), `qc_inspect_type` varchar(50), `net_weight` varchar(50), `inspect_method` varchar(50), `length_requirement` varchar(50), `inspection_sample_ready` varchar(50), `fty_packing_info` varchar(50), `fty_droptest_info` varchar(50), `movt_origin` varchar(100), `battery_type` varchar(50), `pre_inspect_result` nvarchar(50), `pre_inspect_remark` TEXT, `reliability_remark` TEXT, `jwl_marking` varchar(50), `combine_qc_remarks` varchar(150), `links_remarks` nvarchar(50), `dusttest_remark` nvarchar(50), `smartlink_remark` nvarchar(50), `precise_report` nvarchar(50), `smartlink_report` nvarchar(50), `create_user` varchar(30) NOT NULL, `create_date` DATETIME NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` DATETIME NOT NULL, PRIMARY KEY(`task_id`) )"
+                    sql = "CREATE TABLE IF NOT EXISTS `inspect_task_qc_info` ( `ref_task_id` numeric(10,0) NOT NULL, `aql_qty` numeric(10,0), `product_class` varchar(50), `quality_standard` varchar(50), `adjust_time` varchar(50), `preinspect_detail` TEXT, `ca_form` varchar(50), `caseback_marking` varchar(50), `upc_orbid_status` varchar(50), `ts_report_no` varchar(50), `ts_submit_date` DATETIME, `ts_result` nvarchar(50), `qc_booking_ref_no` varchar(50), `ss_comment_ready`varchar(50), `ss_ready` varchar(50), `ss_photo_name` varchar(50), `battery_production_code` varchar(50), `with_quesiton_pending` varchar(50), `with_same_po_rejected_bef` varchar(50), `assortment` varchar(50), `consigned_styles` varchar(50), `qc_inspect_type` varchar(50), `net_weight` varchar(50), `inspect_method` varchar(50), `length_requirement` varchar(50), `inspection_sample_ready` varchar(50), `fty_packing_info` varchar(50), `fty_droptest_info` varchar(50), `movt_origin` varchar(100), `battery_type` varchar(50), `pre_inspect_result` nvarchar(50), `pre_inspect_remark` TEXT, `reliability_remark` TEXT, `jwl_marking` varchar(50), `combine_qc_remarks` varchar(150), `links_remarks` nvarchar(50), `dusttest_remark` nvarchar(50), `smartlink_remark` nvarchar(50), `precise_report` nvarchar(50), `smartlink_report` nvarchar(50), `create_user` varchar(30) NOT NULL, `create_date` DATETIME NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` DATETIME NOT NULL, inspector_names varchar(1000), PRIMARY KEY(`task_id`) )"
                     if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
                         result = false
                     }
@@ -461,6 +461,20 @@ class AppUpgradeDataHelper:DataHelperMaster {
                         }
                     }
                     
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN inspector_names varchar(1000)"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "inspector_names" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
 
                     //----------------------------------------------------------------------------------
                     

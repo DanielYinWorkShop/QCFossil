@@ -96,7 +96,48 @@ class TaskQCInfoView: UIView {
     @IBOutlet weak var salesmanPhoto: UIImageView!
 
     override func awakeFromNib() {
-        self.qcInternalNoInput.userInteractionEnabled = false
+        self.userInteractionEnabled = false
+        self.caseBackPhoto.hidden = true
+        self.salesmanPhoto.hidden = true
     }
 
+    override func didMoveToSuperview() {
+        self.sectionHeaderLabel1.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Product Info")
+        self.vendorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor")
+        self.qcInternalNoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Internal No")
+        self.brandLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Brand")
+        self.tsReportNoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("TS Report No")
+        self.materialCategoryLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Material Category")
+        self.assortmentLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Assortment")
+        self.inspectorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspector")
+        self.assortmentStyleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Assortment Style")
+        self.seasonLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Season")
+        self.updateTimeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Update datetime")
+        
+        self.sectionHeaderLabel2.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
+        self.orderQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Order Qty")
+        self.qualityStardardLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Quality Stardard")
+        self.bookedQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Booked Qty")
+        self.markingLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Marking")
+        self.aqlQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("AQL Qty")
+        self.weightLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Weight")
+        self.adjustTimeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Adjust Time")
+        self.lengthReqLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Length Req.")
+        self.productGradeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Product Grade")
+        self.movtLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Movt(Origin)")
+        self.upcOrbidStatusLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("UPC-Orbid Status")
+        self.combineQCRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Combine QC Remark")
+        
+        self.sectionHeaderLabel3.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("SS/TS Info")
+        self.ssReadyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("SS Ready")
+        self.ssCommentReadyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("SS Comment Ready")
+        self.tsSubmitDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("TS Submit Date")
+        self.tsResultLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("TS Result")
+        self.samePOWithRejectLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Same PO with Reject")
+        self.inspectSampleReadyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspect Sample Ready")
+        self.linkTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Link Test Qty")
+        self.dustTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Dust Test Qty")
+        self.smartLinkTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Smart Link Test Qty")
+        self.otherTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Other Test Qty")
+    }
 }

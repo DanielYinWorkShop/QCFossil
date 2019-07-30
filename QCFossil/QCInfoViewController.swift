@@ -12,6 +12,12 @@ class QCInfoViewController: UIViewController, UIScrollViewDelegate {
     
     var ScrollView = UIScrollView()
 
+    override func viewWillAppear(animated: Bool) {
+        if let myParentTabVC = self.parentViewController?.parentViewController as? TabBarViewController {
+            myParentTabVC.setRightBarItem("", actionName: "")
+        }
+    }
+    
     override func viewDidLoad() {
         self.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
         
@@ -19,35 +25,57 @@ class QCInfoViewController: UIViewController, UIScrollViewDelegate {
         
         self.ScrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 50, width: 768, height: 1024))
         
-        self.ScrollView.contentSize = CGSize.init(width: 768, height: 1700)
         self.ScrollView.delegate = self
         
         self.view.addSubview(self.ScrollView)
         
         self.ScrollView.addSubview(taskQCInfoView)
         
-        
-        let poInfoView = POInfoView.loadFromNibNamed("POInfoView")!
-        let poInfoView2 = POInfoView.loadFromNibNamed("POInfoView")!
-        let poInfoView3 = POInfoView.loadFromNibNamed("POInfoView")!
-        let poInfoView4 = POInfoView.loadFromNibNamed("POInfoView")!
-        poInfoView.frame = CGRect(x: 0, y: 0, width: 768, height: 105)
-        poInfoView2.frame = CGRect(x: 0, y: 105, width: 768, height: 105)
-        poInfoView3.frame = CGRect(x: 0, y: 210, width: 768, height: 105)
+        if let poItems = Cache_Task_On?.poItems {
+            /*let stackView = UIStackView()
+            stackView.axis = .Vertical
+            stackView.alignment = .Fill
+            stackView.distribution = .Fill
+            stackView.spacing = 0
+            */
+            var index = 0
+            for poItem in poItems {
+                let poInfoView = POInfoView.loadFromNibNamed("POInfoView")!
+                poInfoView.PONoDisplay.text = poItem.poNo
+                poInfoView.SAPPONoDisplay.text = poItem.refOrderNo
+                poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!), \(poItem.dimen1!)"
+                poInfoView.shipToDisplay.text = poItem.buyerLocationCode
+                poInfoView.shipModeDisplay.text = poItem.shipModeName
+                poInfoView.barcodeDisplay.text = ""
+                
+                poInfoView.frame = CGRect(x: 0, y: CGFloat(105 * index), width: poInfoView.frame.size.width, height: 105)
+                taskQCInfoView.poView.addSubview(poInfoView)
+                
+                index += 1
+                
+                /*
+                stackView.addArrangedSubview(poInfoView)
+                poInfoView.leadingAnchor.constraintEqualToAnchor(stackView.leadingAnchor).active = true
+                poInfoView.trailingAnchor.constraintEqualToAnchor(stackView.trailingAnchor).active = true
+                poInfoView.heightAnchor.constraintEqualToConstant(105).active = true
+                 */
+            }
+            
+            //taskQCInfoView.poView.addSubview(stackView)
 
-        taskQCInfoView.poView.addSubview(poInfoView)
-        taskQCInfoView.poView.addSubview(poInfoView2)
-        taskQCInfoView.poView.addSubview(poInfoView3)
-   
-        taskQCInfoView.poView.frame.size = CGSize(width: 768, height: 420)
-        /*
+        }
+        
+        let newHeight:CGFloat = CGFloat(105 * (Cache_Task_On?.poItems.count ?? 0))
+        
         taskQCInfoView.poView.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 9.0, *) {
-            taskQCInfoView.poView.heightAnchor.constraintEqualToConstant(420).active = true
+            taskQCInfoView.poView.heightAnchor.constraintEqualToConstant(newHeight).active = true
         } else {
-            // Fallback on earlier versions
-        }*/
+            taskQCInfoView.frame = CGRect(x: taskQCInfoView.frame.origin.x, y: taskQCInfoView.frame.origin.y, width: taskQCInfoView.frame.size.width, height: newHeight)
+        }
         
+        self.ScrollView.contentSize = CGSize.init(width: 768, height: 1500 + newHeight)
+
         let dpDataHelper = DPDataHelper()
         let taskQCInfo = dpDataHelper.getQCInfoByRefTaskId(Cache_Task_On?.refTaskId ?? 0)
         

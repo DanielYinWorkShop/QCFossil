@@ -106,6 +106,9 @@ class PoDataHelper:DataHelperMaster {
                 let market = rs.stringForColumn("market")
                 let materialCategory = rs.stringForColumn("material_category")
                 let shipModeName = rs.stringForColumn("ship_mode_name")
+                let itemBarcode = rs.stringForColumn("item_barcode")
+                let retailPrice = rs.stringForColumn("retail_price")
+                let targetInspectQty = rs.stringForColumn("target_inspect_qty")
                 
                 if (prodDesc == nil) {
                     prodDesc = ""
@@ -147,6 +150,9 @@ class PoDataHelper:DataHelperMaster {
                 poItem?.market = market
                 poItem?.materialCategory = materialCategory
                 poItem?.shipModeName = shipModeName
+                poItem?.itemBarCode = itemBarcode
+                poItem?.retailPrice = retailPrice
+                poItem?.targetInspectQty = targetInspectQty
                 
                 poItems.append(poItem!)
             }

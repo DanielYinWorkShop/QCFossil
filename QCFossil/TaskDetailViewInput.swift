@@ -221,10 +221,6 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             
             let section = Cache_Task_On?.inspSections[idx]
             let itemCount = taskDataHelper.getCatItemCountById((Cache_Task_On?.taskId)!,sectionId: (section?.sectionId)!)
-            /*
-            if section?.inputModeCode == _INPUTMODE02 {
-                itemCount = itemCount - 1
-            }*/
             
             let catBtnTitle = (_ENGLISH ? section?.sectionNameEn:section?.sectionNameCn)!+"(\(itemCount))"
             inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, forState: UIControlState.Normal)
@@ -248,13 +244,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.frame.size = CGSize(width: 768, height: self.frame.size.height + 200)
         updateContentView(CGFloat((categoryCount-3)*cellHeight+(poItems.count-1)*poCellHeight))
         
-        let qcRemarkValues = taskDataHelper.getQCRemarksOptionList()
+        let qcRemarkValues = taskDataHelper.getQCRemarksOptionList(String(Cache_Task_On?.inspectionResultValueId) ?? "0")
         for value in qcRemarkValues {
             guard let nameEn = value.valueNameEn, nameCn = value.valueNameCn else {continue}
             self.qcRemarksKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
         }
         
-        let AdditionalAdministrativeItemKeyValue = taskDataHelper.getAdditionalAdministrativeItemOptionList()
+        let AdditionalAdministrativeItemKeyValue = taskDataHelper.getAdditionalAdministrativeItemOptionList(String(Cache_Task_On?.inspectionResultValueId) ?? "0")
         for value in AdditionalAdministrativeItemKeyValue {
             guard let nameEn = value.valueNameEn, nameCn = value.valueNameCn else {continue}
             self.AdditionalAdministrativeItemKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
@@ -281,21 +277,24 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 poItemCellView?.shipWinInput.text = String(poItem.shipWin)
                 poItemCellView?.sampleQtyInput.text = poItem.samplingQty < 1 ? "":String(poItem.samplingQty)
                 poItemCellView?.opdRsdInput.text = poItem.opdRsd
-                poItemCellView?.bookingQtyInput.text = String(poItem.qcBookedQty)//String(poItem.orderQty - poItem.samplingQty)
+                poItemCellView?.bookingQtyInput.text = String(poItem.targetInspectQty!)//String(poItem.orderQty - poItem.samplingQty)
                 poItemCellView?.sampleQtyDB = poItem.samplingQty
                 poItemCellView?.prodDesc = "\(poItem.dimen2!) / \(poItem.prodDesc!)"
                 
+                if let targetInspectQty = poItem.targetInspectQty {
+                    poItemCellView?.bookingQtyDB = Int(targetInspectQty)!
+                } else {
+                    poItemCellView?.bookingQtyDB = 0
+                }
+                
                 if poItem.isEnable == 1 && Cache_Task_On?.bookingNo != "" {
-                    poItemCellView?.bookingQtyDB = poItem.qcBookedQty//poItem.orderQty - poItem.samplingQty
-                    poItemCellView!.bookingQtyInput.text = String(poItem.qcBookedQty)
+                    poItemCellView!.bookingQtyInput.text = String(poItem.targetInspectQty!)
                 }else if poItem.isEnable == 0 && Cache_Task_On?.bookingNo != "" {
-                    poItemCellView?.bookingQtyDB = poItem.qcBookedQty
                     poItemCellView!.bookingQtyInput.text = "0"
                     poItemCellView?.availInspectQtyInput.userInteractionEnabled = false
                     poItemCellView?.sampleQtyInput.userInteractionEnabled = false
                 }else if poItem.isEnable == 1 {
-                    poItemCellView?.bookingQtyDB = 0
-                    poItemCellView!.bookingQtyInput.text = "0"
+                    
                 }else{
                     poItemCellView?.bookingQtyDB = 0
                     poItemCellView!.bookingQtyInput.text = "0"
@@ -426,16 +425,21 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        self.clearDropdownviewForSubviews(self)
+        
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
         if textField == self.inspResultBottomInput {
             let taskDataHelper = TaskDataHelper()
             let resultSetId = taskDataHelper.getResultSetIdByTmplId((Cache_Task_On?.tmplId)!)
             let resultSet = taskDataHelper.getResultSetValueBySetId(resultSetId)
-            //resultSet?.append(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"))
             
-            textField.showListData(textField, parent: self, handle: handleFun, listData: resultSet!, width: 250, height:250)
+            if self.ifExistingSubviewByViewTag(self, tag: _TAG6) {
+                clearDropdownviewForSubviews(self)
+            }else{
+                
+                textField.showListData(textField, parent: self, handle: handleFun, listData: resultSet!, width: 250, height:250, tag: _TAG6)
+            }
+            
             Cache_Task_On?.didModify = true
             
             return false
@@ -445,7 +449,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 listData.append(key)
             }
             
-            textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
+            if self.ifExistingSubviewByViewTag(self, tag: _TAG7) {
+                clearDropdownviewForSubviews(self)
+            }else{
+                
+                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG7)
+            }
+            
             return false
         } else if textField == self.additionalAdministrativeItemInput {
             var listData = [String]()
@@ -453,7 +463,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 listData.append(key)
             }
             
-            textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true)
+            if self.ifExistingSubviewByViewTag(self, tag: _TAG8) {
+                clearDropdownviewForSubviews(self)
+            }else{
+                
+                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG8)
+            }
+            
             return false
         }
         
@@ -480,6 +496,34 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             Cache_Task_On?.qcRemarks = self.qcRemarkInput.text
         } else if textField == self.additionalAdministrativeItemInput {
             Cache_Task_On?.additionalAdministrativeItems = self.additionalAdministrativeItemInput.text
+        } else if textField == self.inspResultBottomInput {
+            
+            var myQCRemarkValues = self.qcRemarkInput.text?.characters.split{$0 == ","}.map(String.init)
+            if let values = myQCRemarkValues {
+                for value in values {
+                    let trimValue = value.stringByTrimmingCharactersInSet(
+                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                    )
+                    
+                    if self.qcRemarksKeyValue[trimValue] == nil {
+                        myQCRemarkValues = myQCRemarkValues!.filter { $0 != value }
+                    }
+                }
+            }
+            
+            var myAARemarkValues = self.additionalAdministrativeItemInput.text?.characters.split{$0 == ","}.map(String.init)
+            if let values = myAARemarkValues {
+                for value in values {
+                    let trimValue = value.stringByTrimmingCharactersInSet(
+                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                    )
+                    
+                    if self.AdditionalAdministrativeItemKeyValue[trimValue] == nil {
+                        myAARemarkValues = myAARemarkValues!.filter { $0 != value }
+                    }
+                }
+            }
+
         }
     }
     

@@ -137,6 +137,28 @@ class DefectDataHelper:DataHelperMaster {
         return name
     }
     
+    func getInspElementValueById(id:Int) ->DropdownValue {
+        let sql = "SELECT element_id, element_name_en, element_name_cn FROM inspect_element_mstr WHERE element_id = ? AND element_type = 2"
+        var value = DropdownValue(valueId: 0, valueNameEn: "", valueNameCn: "")
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [id]) {
+                if rs.next() {
+                    
+                    let id = Int(rs.intForColumn("element_id"))
+                    let nameEn = rs.stringForColumn("element_name_en")
+                    let nameCn = rs.stringForColumn("element_name_cn")
+                    value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return value
+    }
+    
     func getInspPositionNameById(id:Int) ->String {
         let sql = "SELECT * FROM inspect_position_mstr WHERE position_id = ? AND position_type = 1"
         var name = ""

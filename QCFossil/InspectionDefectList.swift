@@ -346,7 +346,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return cellMode4
             
         }else if defectItem.inputMode! == _INPUTMODE02 {
-            self.inspectDefectTableview.rowHeight = 300
+            self.inspectDefectTableview.rowHeight = 320
             let cellMode2 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode2", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode2
             
             cellMode2.pVC = self
@@ -395,6 +395,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
+                
                 cellMode2.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)
                 defectItem.defectType = cellMode2.defectTypeInput.text
                 
@@ -446,7 +447,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return cellMode2
          
         }else if defectItem.inputMode! == _INPUTMODE01 {
-            self.inspectDefectTableview.rowHeight = 300
+            self.inspectDefectTableview.rowHeight = 320
             let cellMode1 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode1", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode1
             
             cellMode1.pVC = self
@@ -499,11 +500,12 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             
             if Int(defectItem.inspectElementId!) > 0 {
                 let defectDataHelper = DefectDataHelper()
-                cellMode1.defectTypeInput.text = defectDataHelper.getInspElementNameById(defectItem.inspectElementId ?? 0)
+                let defectTypeObject = defectDataHelper.getInspElementValueById(defectItem.inspectElementId ?? 0)
+                cellMode1.defectTypeInput.text = _ENGLISH ? defectTypeObject.valueNameEn : defectTypeObject.valueNameCn
                 defectItem.defectType = cellMode1.defectTypeInput.text
                     
-                cellMode1.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
-                cellMode1.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+                cellMode1.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectTypeObject.valueId ?? 0)
+                cellMode1.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectTypeObject.valueId ?? 0)
                 
                 if cellMode1.defectValues?.count < 1 {
                     cellMode1.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
