@@ -35,7 +35,7 @@ class TabBarViewController: UITabBarController {
         qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
         qcInfoViewController.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
         
-        self.childViewControllers[3].removeFromParentViewController()
+        //self.childViewControllers[3].removeFromParentViewController()
     }
 
     override func didReceiveMemoryWarning() {

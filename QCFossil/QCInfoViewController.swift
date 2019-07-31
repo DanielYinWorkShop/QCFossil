@@ -14,7 +14,10 @@ class QCInfoViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewWillAppear(animated: Bool) {
         if let myParentTabVC = self.parentViewController?.parentViewController as? TabBarViewController {
+            myParentTabVC.setLeftBarItem("< "+MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Form"),actionName: "backToTaskDetailFromPADF")
             myParentTabVC.setRightBarItem("", actionName: "")
+            
+            myParentTabVC.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
         }
     }
     

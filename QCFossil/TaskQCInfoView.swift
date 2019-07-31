@@ -139,5 +139,14 @@ class TaskQCInfoView: UIView {
         self.dustTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Dust Test Qty")
         self.smartLinkTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Smart Link Test Qty")
         self.otherTestQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Other Test Qty")
+        
+        self.sectionHeaderLabel4.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Additional Info")
+        self.caFormLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("CA Form")
+        self.precisionReportLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Precision Report")
+        self.smartLinkReportLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Smart Link Report")
+        self.reliabilityTestRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Reliability Test Remark")
+        self.ftyPackInfoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Fty Pack Info")
+        self.ftyDroptestInfoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Fty Droptest Info")
+        
     }
 }

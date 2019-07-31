@@ -216,6 +216,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
+        Cache_Task_On?.didModify = true
         
         if textField == self.cellResultInput {
             guard let resultText = cellResultInput.text else {return}

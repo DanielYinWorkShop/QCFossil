@@ -876,3 +876,28 @@
 
 "Other Test Qty" = "其他功能测试";
 
+"CA Form" = "CA Form";
+
+"Precision Report" = "精确度报告";
+
+"Smart Link Report" = "Smart Link测试";
+
+"Reliability Test Remark" = "上次功能测试";
+
+"Fty Pack Info" = "厂方提供包装图片/日期";
+
+"Fty Droptest Info" = "厂方提供堕箱测试报告/日期";
+
+"PO No" = "订单编号";
+
+"SAP PO No" = "SAP单号";
+
+"Style, Size" = "款式型号/尺寸";
+
+"Ship To" = "目的地";
+
+"Ship Mode" = "装运模式";
+
+"Retail Price" = "UPC挂牌价钱";
+
+"Barcode" = "UPC挂牌编号";

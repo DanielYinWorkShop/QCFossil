@@ -418,7 +418,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
                     clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
                 } else {
-                    textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+                    textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
                 }
                 
             } else {
@@ -429,7 +429,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
                     clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
                 } else {
-                    textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+                    textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
                 }
                 
             }
@@ -447,7 +447,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
                 clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
             } else {
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
             }
             
 
@@ -464,7 +464,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
                 clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
             } else {
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
             }
             
 

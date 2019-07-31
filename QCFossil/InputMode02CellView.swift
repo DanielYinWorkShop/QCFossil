@@ -138,6 +138,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
+        Cache_Task_On?.didModify = true
         
         if textField == self.cellResultInput {
             

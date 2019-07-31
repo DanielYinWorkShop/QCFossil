@@ -1996,8 +1996,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "504"
             endingLineNumber = "504"
-            landmarkName = "tableView(_:willSelectRowAtIndexPath:)"
-            landmarkType = "5">
+            landmarkName = "PhotoAlbumViewController"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -3363,11 +3363,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/DataSyncViewController.swift"
-            timestampString = "577293059.323474"
+            timestampString = "586253544.6811219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1664"
-            endingLineNumber = "1664"
+            startingLineNumber = "1666"
+            endingLineNumber = "1666"
             landmarkName = "URLSession(_:task:didCompleteWithError:)"
             landmarkType = "5">
          </BreakpointContent>
