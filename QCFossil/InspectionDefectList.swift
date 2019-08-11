@@ -103,7 +103,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         self.inspectDefectTableview.frame.size.height = 823
         
         dispatch_async(dispatch_get_main_queue(), {
-            self.parentViewController!.parentViewController!.view.removeActivityIndicator()
+            self.parentViewController?.parentViewController?.view.removeActivityIndicator()
         })
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InspectionDefectList.reloadDefectItems), name: "reloadDefectItems", object: nil)

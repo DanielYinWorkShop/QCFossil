@@ -134,3 +134,8 @@ let _TAG8 = 1000008
 let _TAG9 = 1000009
 let _TAG20 = 1000010
 
+enum TypeCode:String {
+    case WATCH = "WATCH"
+    case JEWELRY = "JEWELRY"
+    case LEATHER = "LEATHER"
+}

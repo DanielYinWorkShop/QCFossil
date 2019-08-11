@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QCInfoViewController: UIViewController, UIScrollViewDelegate {
+class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     
     var ScrollView = UIScrollView()
 
@@ -46,10 +46,15 @@ class QCInfoViewController: UIViewController, UIScrollViewDelegate {
                 let poInfoView = POInfoView.loadFromNibNamed("POInfoView")!
                 poInfoView.PONoDisplay.text = poItem.poNo
                 poInfoView.SAPPONoDisplay.text = poItem.refOrderNo
-                poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!), \(poItem.dimen1!)"
                 poInfoView.shipToDisplay.text = poItem.buyerLocationCode
                 poInfoView.shipModeDisplay.text = poItem.shipModeName
-                poInfoView.barcodeDisplay.text = ""
+                poInfoView.barcodeDisplay.text = poItem.brandCode
+                poInfoView.retailPriceDisplay.text = poItem.retailPrice
+                
+                if poItem.dimen1 == nil || poItem.dimen1 == "" {
+                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+                    poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!)"
+                }
                 
                 poInfoView.frame = CGRect(x: 0, y: CGFloat(105 * index), width: poInfoView.frame.size.width, height: 105)
                 taskQCInfoView.poView.addSubview(poInfoView)
@@ -95,11 +100,11 @@ class QCInfoViewController: UIViewController, UIScrollViewDelegate {
         taskQCInfoView.seasonInput.text = poItem?.market
         taskQCInfoView.updateTimeInput.text = self.view.getCurrentDateTime()
         
-        taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty)
+        taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty ?? 0)
         taskQCInfoView.qualityStardardInput.text = taskQCInfo?.qualityStandard
         taskQCInfoView.bookedQtyInput.text = ""
         taskQCInfoView.markingInput.text = Cache_Inspector?.typeCode == "WATCH" ? taskQCInfo?.casebackMarking : taskQCInfo?.jwlMarking
-        taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty)
+        taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         taskQCInfoView.lengthReqInput.text = taskQCInfo?.netWeight
         taskQCInfoView.productGradeInput.text = taskQCInfo?.productClass
         taskQCInfoView.movtInput.text = taskQCInfo?.movtOrigin
@@ -115,7 +120,7 @@ class QCInfoViewController: UIViewController, UIScrollViewDelegate {
         taskQCInfoView.linkTestQtyInput.text = taskQCInfo?.linksRemarks
         taskQCInfoView.dustTestQtyInput.text = taskQCInfo?.dusttestRemark
         taskQCInfoView.smartLinkTestQtyInput.text = taskQCInfo?.smartlinkRemark
-        taskQCInfoView.otherTestQtyInput.text = String(taskQCInfo?.aqlQty)
+        taskQCInfoView.otherTestQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         
         taskQCInfoView.caFormInput.text = taskQCInfo?.caForm
         taskQCInfoView.precisionReportInput.text = taskQCInfo?.preciseReport

@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "07312019"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "08072019"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
@@ -285,8 +285,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                             
                             let inspectorDataHelper = InspectorDataHelper()
                             inspectorDataHelper.updateInspector(inspector)
-                                
-                            Cache_Inspector = inspector
+                            
+                            Cache_Inspector = inspectorDataHelper.getInspectorById(inspector.inspectorId ?? 0)
+                            if Cache_Inspector == nil {
+                                Cache_Inspector = inspector
+                            }
                             Cache_Inspector?.lastLoginDate = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
                                 
                             let keyValueDataHelper = KeyValueDataHelper()

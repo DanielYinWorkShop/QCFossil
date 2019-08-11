@@ -416,7 +416,7 @@
 
 "OPD/RSD" = "OPD/RSD";
 
-"OS QC Qty" = "未预约验货数";
+"OS QC Qty" = "待检查数(成品)";
 
 "User Login" = "用户登录";
 
@@ -894,6 +894,8 @@
 
 "Style, Size" = "款式型号/尺寸";
 
+"Style" = "款式型号";
+
 "Ship To" = "目的地";
 
 "Ship Mode" = "装运模式";
@@ -901,3 +903,5 @@
 "Retail Price" = "UPC挂牌价钱";
 
 "Barcode" = "UPC挂牌编号";
+
+"-Style Photo" = "-Style Photo";

@@ -53,6 +53,10 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
     @IBOutlet weak var additionalAdministrativeItemLabel: UILabel!
     @IBOutlet weak var additionalAdministrativeItemInput: UITextField!
     
+    @IBOutlet weak var qcRemarkDropdownIcon: UIImageView!
+    @IBOutlet weak var additionalAdministrativeItemDropdownIcon: UIImageView!
+    @IBOutlet weak var resultDropdownIcon: UIImageView!
+    
     weak var pVC:TaskDetailsViewController!
     var cellHeight:Int = 40
     var poCellHeight:Int = 100
@@ -256,6 +260,32 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.AdditionalAdministrativeItemKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
         }
         
+        switch Cache_Inspector?.typeCode ?? "LEATHER" {
+        case TypeCode.LEATHER.rawValue:
+            
+            qcRemarkInput.hidden = true
+            qcRemarkLabel.hidden = true
+            additionalAdministrativeItemLabel.hidden = true
+            additionalAdministrativeItemInput.hidden = true
+            qcRemarkDropdownIcon.hidden = true
+            additionalAdministrativeItemDropdownIcon.hidden = true
+            
+            inspResultBottomLabel.frame = CGRect(x: inspResultBottomLabel.frame.origin.x, y: inspResultBottomLabel.frame.origin.y - 100, width: inspResultBottomLabel.frame.size.width, height: inspResultBottomLabel.frame.size.height)
+            
+            if #available(iOS 9.0, *) {
+                inspResultBottomLabel.topAnchor.constraintEqualToAnchor(self.commentWarpperView.topAnchor, constant: 185).active = true
+                inspResultBottomInput.topAnchor.constraintEqualToAnchor(self.commentWarpperView.topAnchor, constant: 180).active = true
+                resultDropdownIcon.topAnchor.constraintEqualToAnchor(self.commentWarpperView.topAnchor, constant: 185).active = true
+            } else {
+                // Fallback on earlier versions
+            }
+            
+            break
+        case TypeCode.WATCH.rawValue, TypeCode.JEWELRY.rawValue:
+            break
+        default:
+            break
+        }
     }
     
     func getPoList(){

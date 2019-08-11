@@ -53,6 +53,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     @IBOutlet weak var cleanTaskLabel: UILabel!
     @IBOutlet weak var cleanTaskProcessBar: UIProgressView!
     @IBOutlet weak var cleanTaskStatus: UILabel!
+    @IBOutlet weak var stylePhotoLabel: UILabel!
+    @IBOutlet weak var stylePhotoPrecessBar: UIProgressView!
+    @IBOutlet weak var stylePhotoStatus: UILabel!
     
     
     var subCounter = 1
@@ -160,6 +163,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.lastUploadDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Upload")
         self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Sync")
         self.cleanTaskLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Clean Task")
+        self.stylePhotoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Style Photo")
         
         self.view.setButtonCornerRadius(self.downloadBtn)
         self.view.setButtonCornerRadius(self.uploadBtn)
@@ -183,6 +187,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.taskPhotoProcessBar.progress = 0.0
         self.taskStatusDataProcessBar.progress = 0.0
         self.cleanTaskProcessBar.progress = 0.0
+        self.stylePhotoPrecessBar.progress = 0.0
         self.downloadProcessBar.hidden = true
         self.uploadProcessBar.hidden = true
         self.downloadProcessLabel.hidden = true
@@ -214,6 +219,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.taskDataProcessBar.progress = 0.0
         self.taskStatusDataProcessBar.progress = 0.0
         self.cleanTaskProcessBar.progress = 0.0
+        self.stylePhotoPrecessBar.progress = 0.0
         
         self.totalReqCnt = 0
         self.downloadReqCnt = 0
@@ -224,7 +230,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             "_DS_INPTSETUP" : [String](),
             "_DS_FGPODATA" : [String](),
             "_DS_TASKDATA" : [String](),
-            "_DS_DL_TASK_STATUS" : [String]()
+            "_DS_DL_TASK_STATUS" : [String](),
+            "_DS_DL_STYLE_PHOTO" : [String]()
         ]
         
         updateButtonStatus("Disable",btn: self.downloadBtn)
@@ -271,7 +278,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.taskDataStatus.text = ""
                 self.taskStatusDataStatus.text = ""
                 self.cleanTaskStatus.text = ""
-                
+                self.stylePhotoStatus.text = ""
             })
         }
     }
@@ -1603,7 +1610,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 }
             }
             
-        }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Status Data Download Acknowledgement" {
+        } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Status Data Download Acknowledgement" {
             //buffer.setData(NSMutableData())
             
             do {
@@ -1616,13 +1623,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
-                
-                
-                
-                let fileManager = NSFileManager.defaultManager()
-                if fileManager.fileExistsAtPath(getDataJsonPath()) {
-                    try fileManager.removeItemAtPath(getDataJsonPath())
-                }
                 
                 //Send local notification for Task Done.
                 self.updateProgressBar(1)
@@ -1662,14 +1662,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 while let id = invalidTaskIds.popLast() {
                     self.view.deleteTask(id)
                 }
-                //
                 
-                //Send local notification for Task Done.
-                self.presentLocalNotification("Data Download Complete.")
-
-                self.updateDLProcessLabel("Complete")
-                self.updateButtonStatus("Enable",btn: self.downloadBtn)
-                
+                //task status download request
+                self.makeDLPostRequest(_DS_DL_STYLE_PHOTO)
             }
             catch {
                 #if DEBUG
@@ -1684,30 +1679,103 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     updateULProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
-        }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
+        } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download" {
+    
+            do {
+    
+                updateDLProcessLabel("Preparing Style Photo Data...")
+                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
+                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+    
+                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
+    
+                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
+                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+    
+                #if DEBUG
+                    print("session result: \(session_result)")
+                #endif
+    
+                self.processingDownloadData("_DS_DL_STYLE_PHOTO", jsonData: jsonData)
+            }
+            catch {
+                #if DEBUG
+                    print("error serializing JSON: \(error)")
+                #endif
+    
+                if self.actionType < 1 {
+                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateDLProcessLabel("Style Photo Data Error: \(errorMsgByCode((error as NSError).code))")
+                }else {
+                    updateButtonStatus("Enable",btn: self.uploadBtn)
+                    updateULProcessLabel("Style Photo Data Error: \(errorMsgByCode((error as NSError).code))")
+                }
+            }
+    
+        } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download Acknowledgement" {
+            
+            do {
+                updateDLProcessLabel("Sending Style Photo Data Download Acknowledgement...")
+                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
+                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+    
+                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
+    
+                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
+                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+    
+                let fileManager = NSFileManager.defaultManager()
+                if fileManager.fileExistsAtPath(getDataJsonPath()) {
+                    try fileManager.removeItemAtPath(getDataJsonPath())
+                }
+    
+                //Send local notification for Task Done.
+                self.updateProgressBar(1)
+    
+                //Send local notification for Task Done.
+                self.presentLocalNotification("Data Download Complete.")
+    
+                self.updateDLProcessLabel("Complete")
+                self.updateButtonStatus("Enable",btn: self.downloadBtn)
+    
+            }
+            catch {
+                #if DEBUG
+                    print("error serializing JSON: \(error)")
+                #endif
+    
+                if self.actionType < 1 {
+                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateDLProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                }else {
+                    updateButtonStatus("Enable",btn: self.uploadBtn)
+                    updateULProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                }
+            }
+        } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
             //Handle data in NSData type
             updateULProcessLabel("Processing Response...")
-            
+    
             do {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.taskUploadDataStatus.text = "100%"
                     self.taskResultDataProcessBar.progress = 100
                 })
-                
+    
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
-                
+    
                 if jsonData.count > 0 {
-                    
+    
                     for (key,value) in jsonData {
                         //print("key: \(key) value: \(value)")
-                        
+    
                         if key as! String == "task_status_list" {
                             //Remove reviewed task here
                             //Get Delete Flag Here
                             //let taskStatusList = try NSJSONSerialization.JSONObjectWithData(value as! NSData, options: .AllowFragments) as! NSDictionary
                             taskStatusList = value as! [[String : String]]
-                            
+    
                         }else{
                             if value as? String != _DS_TOTALRECORDS_DB[key as! String] && (key as! String) != "service_session" {
                                 print("\(key) mismatch response value: \(value), but \(_DS_TOTALRECORDS_DB[key as! String])")
@@ -2056,6 +2124,13 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.taskStatusDataProcessBar.progress =  percentageDownloaded
                 
             })
+        }else if "Style Photo Download" == self.dsDataObj!["NAME"] as! String {
+            updateDLProcessLabel("Downloading Data...")
+            dispatch_async(dispatch_get_main_queue(), {
+                self.stylePhotoStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
+                self.stylePhotoPrecessBar.progress =  percentageDownloaded
+    
+            })
         }else if "FGPO Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
             
             dispatch_async(dispatch_get_main_queue(), {
@@ -2098,6 +2173,14 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 if self.taskStatusDataProcessBar.progress < percentageDownloaded{
                     self.taskStatusDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.taskStatusDataProcessBar.progress = percentageDownloaded
+                }
+                
+            })
+        }else if "Style Photo Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
+            dispatch_async(dispatch_get_main_queue(), {
+                if self.stylePhotoPrecessBar.progress < percentageDownloaded{
+                    self.stylePhotoStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
+                    self.stylePhotoPrecessBar.progress = percentageDownloaded
                 }
                 
             })

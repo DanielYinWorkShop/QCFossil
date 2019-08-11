@@ -96,11 +96,33 @@ class TaskQCInfoView: UIView {
     @IBOutlet weak var salesmanPhoto: UIImageView!
 
     override func awakeFromNib() {
-        self.userInteractionEnabled = false
+
+        //self.subviews.forEach({if $0.classForCoder == UITextField.classForCoder() {$0.userInteractionEnabled = false} })
+        updateCell(self)
+        
         self.caseBackPhoto.hidden = true
         self.salesmanPhoto.hidden = true
     }
 
+    func updateCell(view:UIView) {
+        
+        // Get the subviews of the view
+        let subviews = view.subviews
+        
+        // Return if there are no subviews
+        if subviews.count < 1 {
+            return
+        }
+        
+        subviews.forEach({
+            if $0.classForCoder == UITextField.classForCoder() {
+                $0.userInteractionEnabled = false
+            }
+            
+            updateCell($0)
+        })
+    }
+    
     override func didMoveToSuperview() {
         self.sectionHeaderLabel1.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Product Info")
         self.vendorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor")
@@ -149,4 +171,50 @@ class TaskQCInfoView: UIView {
         self.ftyDroptestInfoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Fty Droptest Info")
         
     }
+    
+    @IBAction func showFullText(sender: UIButton) {
+        
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
+        
+        popoverContent.dataType = _POPOVERPRODDESC
+        
+        switch sender.tag {
+        case 1:
+            popoverContent.selectedValue = self.caFormInput.text ?? ""
+            break
+        case 2:
+            popoverContent.selectedValue = self.combineQCRemarkInput.text ?? ""
+            break
+        default:
+            popoverContent.selectedValue = self.caFormInput.text ?? ""
+            break
+        }
+        
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover!.delegate = sender.parentVC as! PopoverMaster
+        popover!.sourceView = sender
+       
+        
+        switch sender.tag {
+        case 1:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 2:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 200,sender.frame.size.width,sender.frame.size.height)
+            break
+        default:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+            break
+        }
+        
+        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+    }
+
 }

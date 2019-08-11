@@ -26,6 +26,8 @@ class POInfoView: UIView {
     @IBOutlet weak var barcodeDisplay: UILabel!
     @IBOutlet weak var topBarLine: UILabel!
     
+    var styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+    
     override func awakeFromNib() {
         
         
@@ -34,7 +36,7 @@ class POInfoView: UIView {
     override func didMoveToSuperview() {
         self.PONoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("PO No")
         self.SAPPONoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("SAP PO No")
-        self.styleSizeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+        self.styleSizeLabel.text = styleSizeLabelText
         self.shipToLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Ship To")
         self.shipModeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Ship Mode")
         self.retailPriceLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Retail Price")
