@@ -96,12 +96,7 @@ class TaskQCInfoView: UIView {
     @IBOutlet weak var salesmanPhoto: UIImageView!
 
     override func awakeFromNib() {
-
-        //self.subviews.forEach({if $0.classForCoder == UITextField.classForCoder() {$0.userInteractionEnabled = false} })
         updateCell(self)
-        
-        self.caseBackPhoto.hidden = true
-        self.salesmanPhoto.hidden = true
     }
 
     func updateCell(view:UIView) {

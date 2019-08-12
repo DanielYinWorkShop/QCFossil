@@ -440,13 +440,35 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             }
                         }
                         
+                    }else if apiName == "_DS_DL_STYLE_PHOTO" && actionFields[data["tableName"]!]![idx] == "ss_photo_file" {
+                    
+                        for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
+                            if actionFields[data["tableName"]!]![sIdx] == "ss_photo_name" {
+                                let imageName = data[actionFields[data["tableName"]!]![sIdx]]!
+                                //Save images to physical local storage
+                                let savePath = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
+                                UIImage().saveImageToLocal(savePath, image: UIImage().fromBase64(value), imageName: imageName)
+                                break
+                            }
+                        }
+                        
+                    }else if apiName == "_DS_DL_STYLE_PHOTO" && actionFields[data["tableName"]!]![idx] == "cb_photo_file" {
+                        
+                        for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
+                            if actionFields[data["tableName"]!]![sIdx] == "cb_photo_name" {
+                                let imageName = data[actionFields[data["tableName"]!]![sIdx]]!
+                                //Save images to physical local storage
+                                UIImage().saveImageToLocal(_CASEBACKPHOTOSPHYSICALPATH, image: UIImage().fromBase64(value), imageName: imageName)
+                                break
+                            }
+                        }
+                        
                     }else{
                         dbFields += actionFields[data["tableName"]!]![idx]
                         dbValues += "\"\(value)\""
-                        
                     }
                     
-                    if idx < actionFields[data["tableName"]!]!.count-1 {
+                    if idx < actionFields[data["tableName"]!]!.count-1 && actionFields[data["tableName"]!]![idx] != "ss_photo_file" && actionFields[data["tableName"]!]![idx] != "cb_photo_file" {
                         dbFields += ","
                         dbValues += ","
                     }
@@ -490,10 +512,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
             
-            
-             if apiName == "_DS_DL_TASK_STATUS" {
-                print("action: \(dbAction)")
-             }
+//             if apiName == "_DS_DL_TASK_STATUS" {
+//                print("action: \(dbAction)")
+//             }
             
             _DS_RECORDS[apiName]!.append("\(dbAction)")
             

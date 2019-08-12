@@ -49,7 +49,10 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 poInfoView.shipToDisplay.text = poItem.buyerLocationCode
                 poInfoView.shipModeDisplay.text = poItem.shipModeName
                 poInfoView.barcodeDisplay.text = poItem.brandCode
-                poInfoView.retailPriceDisplay.text = poItem.retailPrice
+                
+                if poItem.retailPrice != nil {
+                    poInfoView.retailPriceDisplay.text = "US$\(poItem.retailPrice!)"
+                }
                 
                 if poItem.dimen1 == nil || poItem.dimen1 == "" {
                     poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
@@ -102,8 +105,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         
         taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty ?? 0)
         taskQCInfoView.qualityStardardInput.text = taskQCInfo?.qualityStandard
-        taskQCInfoView.bookedQtyInput.text = ""
-        taskQCInfoView.markingInput.text = Cache_Inspector?.typeCode == "WATCH" ? taskQCInfo?.casebackMarking : taskQCInfo?.jwlMarking
+        taskQCInfoView.bookedQtyInput.text = "" 
+        taskQCInfoView.markingInput.text = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? taskQCInfo?.casebackMarking : taskQCInfo?.jwlMarking
         taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         taskQCInfoView.lengthReqInput.text = taskQCInfo?.netWeight
         taskQCInfoView.productGradeInput.text = taskQCInfo?.productClass
@@ -129,6 +132,15 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.ftyPackInfoInput.text = taskQCInfo?.ftyPackingInfo
         taskQCInfoView.ftyDroptestInfoInput.text = taskQCInfo?.ftyDroptestInfo
         
+        let photoDataHelper = PhotoDataHelper()
+        let stylePhotos = photoDataHelper.getStylePhotoByStyleNo(Cache_Task_On?.taskId ?? 0)
+        
+        stylePhotos.ssPhotoName
+        let ssPhotoPath = (Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH) + stylePhotos.ssPhotoName
+        let cbPhotoPath = _CASEBACKPHOTOSPHYSICALPATH + stylePhotos.cbPhotoName
+        
+        taskQCInfoView.salesmanPhoto.image = UIImage(contentsOfFile: ssPhotoPath)
+        taskQCInfoView.caseBackPhoto.image = UIImage(contentsOfFile: cbPhotoPath)
     }
     
     

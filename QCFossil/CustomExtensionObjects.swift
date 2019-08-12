@@ -1414,6 +1414,24 @@ extension UIImage {
         return UIImage.init()
     }
     
+    func saveImageToLocal(savePath:String, image:UIImage, imageName:String) {
+        let dataInPNG:NSData = UIImageJPEGRepresentation(image, 1.0)!
+        let path = savePath+imageName
+        let filemgr = NSFileManager.defaultManager()
+        
+        if !filemgr.fileExistsAtPath(savePath) {
+            
+            do {
+                try filemgr.createDirectoryAtPath(savePath, withIntermediateDirectories: true, attributes: nil)
+                
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        
+        dataInPNG.writeToFile(path, atomically: true)
+    }
+    
     convenience init(view: UIView) {
         UIGraphicsBeginImageContext(view.frame.size)
         view.layer.renderInContext(UIGraphicsGetCurrentContext()!)

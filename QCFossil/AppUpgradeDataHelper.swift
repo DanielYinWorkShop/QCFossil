@@ -477,11 +477,11 @@ class AppUpgradeDataHelper:DataHelperMaster {
                     }
                     
                     // Add new field to style_photo
-                    sql = "ALTER TABLE style_photo ADD COLUMN ss_photo_file TEXT"
+                    sql = "ALTER TABLE style_photo ADD COLUMN ss_photo_avail_date datetime"
                     if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsInArray: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "ss_photo_file" {
+                            if tableInfo.stringForColumn("name") == "ss_photo_avail_date" {
                                 noNeedUpdate = true
                             }
                         }
@@ -507,11 +507,11 @@ class AppUpgradeDataHelper:DataHelperMaster {
                     }
                     
                     // Add new field to style_photo
-                    sql = "ALTER TABLE style_photo ADD COLUMN cb_photo_file TEXT"
+                    sql = "ALTER TABLE style_photo ADD COLUMN cb_photo_avail_date datetime"
                     if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsInArray: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "cb_photo_file" {
+                            if tableInfo.stringForColumn("name") == "cb_photo_avail_date" {
                                 noNeedUpdate = true
                             }
                         }

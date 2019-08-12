@@ -155,6 +155,12 @@ enum PhotoDataType:Int {
     }
 }
 
+enum TypeCode:String {
+    case WATCH = "WATCH"
+    case JEWELRY = "JEWELRY"
+    case LEATHER = "LEATHER"
+}
+
 struct ElmtObj{
     var elementId:Int
     var elementNameEn:String
@@ -192,6 +198,12 @@ struct ResultValueObj{
 struct DefectPhoto {
     var image:UIImage
     var photoFileName:String
+}
+
+
+struct StylePhoto {
+    var ssPhotoName:String
+    var cbPhotoName:String
 }
 
 /*

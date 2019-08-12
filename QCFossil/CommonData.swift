@@ -76,6 +76,9 @@ let _SHAPEVIEWTAG = 999999996
 var _INSPECTORWORKINGPATH = ""
 let _TASKSPHYSICALPATHPREFIX = NSHomeDirectory()+"/Documents/"
 var _TASKSPHYSICALPATH = NSHomeDirectory()+"/Documents/Tasks/"
+let _CASEBACKPHOTOSPHYSICALPATH = NSHomeDirectory()+"/Documents/style_photo/caseback/"
+let _WATCHSSPHOTOSPHYSICALPATH = NSHomeDirectory()+"/Documents/style_photo/watch_ss/"
+let _JEWELRYSSPHOTOSPHYSICALPATH = NSHomeDirectory()+"/Documents/style_photo/jewelry_ss/"
 let _TASKSPHYSICALFOLDERNAME = "Tasks"
 let _THUMBSPHYSICALNAME = "Thumbs"
 
@@ -133,9 +136,3 @@ let _TAG7 = 1000007
 let _TAG8 = 1000008
 let _TAG9 = 1000009
 let _TAG20 = 1000010
-
-enum TypeCode:String {
-    case WATCH = "WATCH"
-    case JEWELRY = "JEWELRY"
-    case LEATHER = "LEATHER"
-}
