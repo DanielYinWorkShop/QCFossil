@@ -894,6 +894,8 @@
 
 "Style, Size" = "款式型号/尺寸";
 
+"Additional Info" = "附加报告/资料";
+
 "Style" = "款式型号";
 
 "Ship To" = "目的地";
@@ -906,6 +908,6 @@
 
 "-Style Photo" = "-Style Photo";
 
-"Salesman Photo" = "Salesman Photo";
+"Salesman Photo" = "销售办图片";
 
 "Case Back" = "底盖外字印";

@@ -967,7 +967,7 @@ let _DS_TASKDATA = [
             "ss_photo_name",
             "battery_production_code",
             "with_quesiton_pending",
-            "with_same_po_rejected_bef",
+            "wth_same_po_rejected_bef",
             "assortment",
             "consigned_styles",
             "qc_inspect_type",
@@ -1319,17 +1319,18 @@ let _DS_ULTASKDATA = [
         "inspect_task_item_list": [
             "task_id" : "",
             "po_item_id" : "",
-            "ref_qc_plan_line_id" : "",
             "target_inspect_qty" : "",
             "avail_inspect_qty" : "",
-            "sampling_qty" : "",
             "inspect_enable_flag" : "",
+            "create_user" : "",
+            "create_date" : "",
+            "modify_user" : "",
+            "modify_date" : "",
+            "ref_qc_plan_line_id" : "",
+            "sampling_qty" : "",
             "item_barcode" : "",
             "retail_price" : "",
-            "create_date" : "",
-            "create_user" : "",
-            "modify_date" : "",
-            "modify_user" : ""
+            "currency" : ""
         ],
         "task_inspect_field_value_list": [
             "value_id" : "",

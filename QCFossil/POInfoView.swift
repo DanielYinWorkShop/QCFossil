@@ -26,7 +26,7 @@ class POInfoView: UIView {
     @IBOutlet weak var barcodeDisplay: UILabel!
     @IBOutlet weak var topBarLine: UILabel!
     
-    var styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+    var styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
     
     override func awakeFromNib() {
         

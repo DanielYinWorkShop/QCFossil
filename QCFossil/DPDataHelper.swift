@@ -312,7 +312,7 @@ class DPDataHelper:DataHelperMaster {
                     let ssPhotoName = rs.stringForColumn("ss_photo_name")
                     let batteryProductionCode = rs.stringForColumn("battery_production_code")
                     let withQuesitonPending = rs.stringForColumn("with_quesiton_pending")
-                    let withSamePoRejectedBef = rs.stringForColumn("with_same_po_rejected_bef")
+                    let withSamePoRejectedBef = rs.stringForColumn("wth_same_po_rejected_bef")
                     let assortment = rs.stringForColumn("assortment")
                     let consignedStyles = rs.stringForColumn("consigned_styles")
                     let qcInspectType = rs.stringForColumn("qc_inspect_type")

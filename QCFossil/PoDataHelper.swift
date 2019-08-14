@@ -109,6 +109,7 @@ class PoDataHelper:DataHelperMaster {
                 let itemBarcode = rs.stringForColumn("item_barcode")
                 let retailPrice = rs.stringForColumn("retail_price")
                 let targetInspectQty = rs.stringForColumn("target_inspect_qty")
+                let currency = rs.stringForColumn("currency")
                 
                 if (prodDesc == nil) {
                     prodDesc = ""
@@ -153,6 +154,7 @@ class PoDataHelper:DataHelperMaster {
                 poItem?.itemBarCode = itemBarcode
                 poItem?.retailPrice = retailPrice
                 poItem?.targetInspectQty = targetInspectQty
+                poItem?.currency = currency
                 
                 poItems.append(poItem!)
             }

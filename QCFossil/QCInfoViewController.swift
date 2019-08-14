@@ -25,15 +25,14 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         self.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
+        self.view.frame = CGRect.init(x: 0, y: 80, width: 768, height: 1024)
         
         let taskQCInfoView = TaskQCInfoView.loadFromNibNamed("TaskQCInfoView")!
         
-        self.ScrollView = UIScrollView.init(frame: CGRect.init(x: 0, y: 50, width: 768, height: 1024))
-        
+        self.ScrollView = UIScrollView.init(frame: self.view.frame)
         self.ScrollView.delegate = self
         
         self.view.addSubview(self.ScrollView)
-        
         self.ScrollView.addSubview(taskQCInfoView)
         
         if let poItems = Cache_Task_On?.poItems {
@@ -53,13 +52,14 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 poInfoView.barcodeDisplay.text = poItem.brandCode
                 
                 if poItem.retailPrice != nil {
-                    poInfoView.retailPriceDisplay.text = "US$\(poItem.retailPrice!)"
+                    poInfoView.retailPriceDisplay.text = "\(poItem.currency)\(poItem.retailPrice!)"
                 }
                 
-                poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!), \(poItem.dimen1)"
-                if poItem.dimen1 == nil || poItem.dimen1 == "" {
-                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
-                    poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!)"
+                poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+                poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!)"
+                if poItem.dimen1 != nil || poItem.dimen1 != "" {
+                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+                    poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!), \(poItem.dimen1!)"
                 }
                 
                 poInfoView.frame = CGRect(x: 0, y: CGFloat(105 * index), width: poInfoView.frame.size.width, height: 105)
@@ -88,8 +88,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
             taskQCInfoView.frame = CGRect(x: taskQCInfoView.frame.origin.x, y: taskQCInfoView.frame.origin.y, width: taskQCInfoView.frame.size.width, height: newHeight)
         }
         
-        self.ScrollView.contentSize = CGSize.init(width: 768, height: 1700 + newHeight)
-
+        self.ScrollView.contentSize = CGSize.init(width: 768, height: 1900 + newHeight)
+        taskQCInfoView.frame.size = CGSize.init(width: 768, height: 1900 + newHeight)
+        
         let dpDataHelper = DPDataHelper()
         let taskQCInfo = dpDataHelper.getQCInfoByRefTaskId(Cache_Task_On?.refTaskId ?? 0)
         
@@ -111,11 +112,13 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.bookedQtyInput.text = poItem?.targetInspectQty
         taskQCInfoView.markingInput.text = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? taskQCInfo?.casebackMarking : taskQCInfo?.jwlMarking
         taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
-        taskQCInfoView.lengthReqInput.text = taskQCInfo?.netWeight
+        taskQCInfoView.lengthReqInput.text = taskQCInfo?.lengthRequirement
         taskQCInfoView.productGradeInput.text = taskQCInfo?.productClass
         taskQCInfoView.movtInput.text = taskQCInfo?.movtOrigin
         taskQCInfoView.upcOrbidStatusInput.text = taskQCInfo?.upcOrbidStatus
         taskQCInfoView.combineQCRemarkInput.text = taskQCInfo?.combineQcRemarks
+        taskQCInfoView.adjustTimeInput.text = taskQCInfo?.adjustTime
+        taskQCInfoView.weightInput.text = taskQCInfo?.netWeight
         
         taskQCInfoView.ssReadyInput.text = taskQCInfo?.ssReady
         taskQCInfoView.ssCommentReadyInput.text = taskQCInfo?.ssCommentReady
@@ -143,7 +146,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         self.cbPhotoPath = _CASEBACKPHOTOSPHYSICALPATH + stylePhotos.cbPhotoName
         
         taskQCInfoView.salesmanPhoto.image = UIImage(contentsOfFile: ssPhotoPath)
+//        taskQCInfoView.salesmanPhoto.contentMode = .ScaleAspectFit
         taskQCInfoView.caseBackPhoto.image = UIImage(contentsOfFile: cbPhotoPath)
+//        taskQCInfoView.caseBackPhoto.contentMode = .ScaleAspectFit
         
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ssPhotoPreviewTapOnClick(_:)))
         taskQCInfoView.salesmanPhoto.userInteractionEnabled = true
@@ -175,6 +180,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         preview?.parentView = container
         preview?.startEditBtn.hidden = true
         preview?.imageView.image = UIImage(contentsOfFile: self.ssPhotoPath)
+        preview?.imageView.contentMode = .ScaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
         preview?.BackgroundView.addSubview((preview?.imageView)!)
         
@@ -204,6 +210,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         preview?.parentView = container
         preview?.startEditBtn.hidden = true
         preview?.imageView.image = UIImage(contentsOfFile: self.cbPhotoPath)
+        preview?.imageView.contentMode = .ScaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
         preview?.BackgroundView.addSubview((preview?.imageView)!)
         
