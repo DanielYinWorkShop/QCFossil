@@ -11,7 +11,9 @@ import UIKit
 class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     
     var ScrollView = UIScrollView()
-
+    var ssPhotoPath = ""
+    var cbPhotoPath = ""
+    
     override func viewWillAppear(animated: Bool) {
         if let myParentTabVC = self.parentViewController?.parentViewController as? TabBarViewController {
             myParentTabVC.setLeftBarItem("< "+MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Form"),actionName: "backToTaskDetailFromPADF")
@@ -54,6 +56,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                     poInfoView.retailPriceDisplay.text = "US$\(poItem.retailPrice!)"
                 }
                 
+                poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!), \(poItem.dimen1)"
                 if poItem.dimen1 == nil || poItem.dimen1 == "" {
                     poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
                     poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!)"
@@ -85,7 +88,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
             taskQCInfoView.frame = CGRect(x: taskQCInfoView.frame.origin.x, y: taskQCInfoView.frame.origin.y, width: taskQCInfoView.frame.size.width, height: newHeight)
         }
         
-        self.ScrollView.contentSize = CGSize.init(width: 768, height: 1500 + newHeight)
+        self.ScrollView.contentSize = CGSize.init(width: 768, height: 1700 + newHeight)
 
         let dpDataHelper = DPDataHelper()
         let taskQCInfo = dpDataHelper.getQCInfoByRefTaskId(Cache_Task_On?.refTaskId ?? 0)
@@ -105,7 +108,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         
         taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty ?? 0)
         taskQCInfoView.qualityStardardInput.text = taskQCInfo?.qualityStandard
-        taskQCInfoView.bookedQtyInput.text = "" 
+        taskQCInfoView.bookedQtyInput.text = poItem?.targetInspectQty
         taskQCInfoView.markingInput.text = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? taskQCInfo?.casebackMarking : taskQCInfo?.jwlMarking
         taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         taskQCInfoView.lengthReqInput.text = taskQCInfo?.netWeight
@@ -136,12 +139,76 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         let stylePhotos = photoDataHelper.getStylePhotoByStyleNo(Cache_Task_On?.taskId ?? 0)
         
         stylePhotos.ssPhotoName
-        let ssPhotoPath = (Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH) + stylePhotos.ssPhotoName
-        let cbPhotoPath = _CASEBACKPHOTOSPHYSICALPATH + stylePhotos.cbPhotoName
+        self.ssPhotoPath = (Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH) + stylePhotos.ssPhotoName
+        self.cbPhotoPath = _CASEBACKPHOTOSPHYSICALPATH + stylePhotos.cbPhotoName
         
         taskQCInfoView.salesmanPhoto.image = UIImage(contentsOfFile: ssPhotoPath)
         taskQCInfoView.caseBackPhoto.image = UIImage(contentsOfFile: cbPhotoPath)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ssPhotoPreviewTapOnClick(_:)))
+        taskQCInfoView.salesmanPhoto.userInteractionEnabled = true
+        taskQCInfoView.salesmanPhoto.addGestureRecognizer(tapGestureRecognizer)
+        
+        let tapGestureRecognizer2 = UITapGestureRecognizer(target:self, action:#selector(cbPhotoPreviewTapOnClick(_:)))
+        taskQCInfoView.caseBackPhoto.userInteractionEnabled = true
+        taskQCInfoView.caseBackPhoto.addGestureRecognizer(tapGestureRecognizer2)
     }
     
+    func ssPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
+        let container: UIView = UIView()
+        container.tag = _MASKVIEWTAG
+        container.hidden = false
+        container.frame = self.view.frame
+        container.center = self.view.center
+        container.backgroundColor = UIColor.clearColor()
+        
+        let layer = UIView()
+        layer.frame = self.view.frame
+        layer.center = self.view.center
+        layer.backgroundColor = UIColor.blackColor()
+        layer.alpha = 0.7
+        container.addSubview(layer)
+        
+        let preview = ImagePreviewViewInput.loadFromNibNamed("ImagePreviewView")
+        preview!.frame = CGRectMake(0,0,600,850)
+        preview?.center = container.center
+        preview?.parentView = container
+        preview?.startEditBtn.hidden = true
+        preview?.imageView.image = UIImage(contentsOfFile: self.ssPhotoPath)
+        preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
+        preview?.BackgroundView.addSubview((preview?.imageView)!)
+        
+        container.addSubview(preview!)
+        
+        self.view.addSubview(container)
+    }
     
+    func cbPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
+        let container: UIView = UIView()
+        container.tag = _MASKVIEWTAG
+        container.hidden = false
+        container.frame = self.view.frame
+        container.center = self.view.center
+        container.backgroundColor = UIColor.clearColor()
+        
+        let layer = UIView()
+        layer.frame = self.view.frame
+        layer.center = self.view.center
+        layer.backgroundColor = UIColor.blackColor()
+        layer.alpha = 0.7
+        container.addSubview(layer)
+        
+        let preview = ImagePreviewViewInput.loadFromNibNamed("ImagePreviewView")
+        preview!.frame = CGRectMake(0,0,600,850)
+        preview?.center = container.center
+        preview?.parentView = container
+        preview?.startEditBtn.hidden = true
+        preview?.imageView.image = UIImage(contentsOfFile: self.cbPhotoPath)
+        preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
+        preview?.BackgroundView.addSubview((preview?.imageView)!)
+        
+        container.addSubview(preview!)
+        
+        self.view.addSubview(container)
+    }
 }

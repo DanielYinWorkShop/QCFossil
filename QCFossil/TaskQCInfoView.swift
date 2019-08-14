@@ -92,6 +92,8 @@ class TaskQCInfoView: UIView {
     @IBOutlet weak var ftyDroptestInfoLabel: UILabel!
     @IBOutlet weak var ftyDroptestInfoInput: UITextField!
 
+    @IBOutlet weak var salesmanLabel: UILabel!
+    @IBOutlet weak var caseBackLabel: UILabel!
     @IBOutlet weak var caseBackPhoto: UIImageView!
     @IBOutlet weak var salesmanPhoto: UIImageView!
 
@@ -165,6 +167,9 @@ class TaskQCInfoView: UIView {
         self.ftyPackInfoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Fty Pack Info")
         self.ftyDroptestInfoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Fty Droptest Info")
         
+        self.salesmanLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Salesman Photo")
+        self.caseBackLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Case Back")
+        
     }
     
     @IBAction func showFullText(sender: UIButton) {
@@ -172,7 +177,7 @@ class TaskQCInfoView: UIView {
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
         
-        popoverContent.dataType = _POPOVERPRODDESC
+        popoverContent.dataType = _POPOVERNOTITLE
         
         switch sender.tag {
         case 1:
@@ -180,6 +185,21 @@ class TaskQCInfoView: UIView {
             break
         case 2:
             popoverContent.selectedValue = self.combineQCRemarkInput.text ?? ""
+            break
+        case 3:
+            popoverContent.selectedValue = self.reliabilityTestRemarkInput.text ?? ""
+            break
+        case 4:
+            popoverContent.selectedValue = self.ssReadyInput.text ?? ""
+            break
+        case 5:
+            popoverContent.selectedValue = self.ssCommentReadyInput.text ?? ""
+            break
+        case 6:
+            popoverContent.selectedValue = self.tsSubmitDateInput.text ?? ""
+            break
+        case 7:
+            popoverContent.selectedValue = self.tsResultInput.text ?? ""
             break
         default:
             popoverContent.selectedValue = self.caFormInput.text ?? ""
@@ -202,7 +222,16 @@ class TaskQCInfoView: UIView {
             popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
             break
         case 2:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 200,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 250,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 3:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 6:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 7:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
             break
         default:
             popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)

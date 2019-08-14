@@ -299,7 +299,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 poItemCellView?.poNoText.text = poItem.poNo
                 poItemCellView?.poLineNoText.text = poItem.poLineNo
                 poItemCellView?.brandText.text = poItem.brandName
-                poItemCellView?.styleText.text = poItem.styleNo
+                
+                poItemCellView?.styleText.text = "\(poItem.styleNo!), \(poItem.dimen1)"
+                if poItem.dimen1 == nil || poItem.dimen1 == "" {
+                    poItemCellView?.styleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+                    poItemCellView?.styleText.text = poItem.styleNo
+                }
+                
                 poItemCellView?.orderQtyText.text = String(poItem.orderQty)
                 poItemCellView?.shipToText.text = poItem.shipTo
                 poItemCellView?.poItemId = poItem.itemId

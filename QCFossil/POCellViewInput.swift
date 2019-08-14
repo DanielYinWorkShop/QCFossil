@@ -153,7 +153,7 @@ class POCellViewInput: UIView, UITextFieldDelegate {
         self.poNoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("PO No.")
         self.poLineNoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("PO Line No.")
         self.brandLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Brand")
-        self.styleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+        self.styleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
         self.orderQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Order Qty")
         self.shipToLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Ship To")
         self.availInspectQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Avail. Qty")

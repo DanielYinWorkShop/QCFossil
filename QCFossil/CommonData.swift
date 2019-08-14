@@ -101,6 +101,7 @@ let _SHAPEDATATYPE = "ShapeDataType"
 let _POPOVERPRODDESC = "ProdDesc"
 let _POPOVERPOPDRSD = "OpdRsd"
 let _DEFECTPPDESC = "DefectPPDesc"
+let _POPOVERNOTITLE = "NoTitle"
 
 //Sing Images Name
 let _INSPECTORSIGNIMAGE = "inspectorSignImage.jpg"
