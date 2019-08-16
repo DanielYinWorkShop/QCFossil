@@ -97,6 +97,16 @@ class TaskQCInfoView: UIView {
     @IBOutlet weak var caseBackPhoto: UIImageView!
     @IBOutlet weak var salesmanPhoto: UIImageView!
 
+    var caFormInputText = ""
+    var combineQCRemarkInputText = ""
+    var reliabilityTestRemarkInputText = ""
+    var ssReadyInputText = ""
+    var ssCommentReadyInputText = ""
+    var tsSubmitDateInputText = ""
+    var tsResultInputText = ""
+    var qualityStardardInputText = ""
+    var inspectors = ""
+    
     override func awakeFromNib() {
         updateCell(self)
     }
@@ -110,6 +120,8 @@ class TaskQCInfoView: UIView {
         if subviews.count < 1 {
             return
         }
+        
+        self.qualityStardardInput.userInteractionEnabled = false
         
         subviews.forEach({
             if $0.classForCoder == UITextField.classForCoder() {
@@ -135,7 +147,7 @@ class TaskQCInfoView: UIView {
         
         self.sectionHeaderLabel2.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
         self.orderQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Order Qty")
-        self.qualityStardardLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Quality Stardard")
+        self.qualityStardardLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Quality Standard")
         self.bookedQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Booked Qty")
         self.markingLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Marking")
         self.aqlQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("AQL Qty")
@@ -181,28 +193,34 @@ class TaskQCInfoView: UIView {
         
         switch sender.tag {
         case 1:
-            popoverContent.selectedValue = self.caFormInput.text ?? ""
+            popoverContent.selectedValue = self.caFormInputText ?? ""
             break
         case 2:
-            popoverContent.selectedValue = self.combineQCRemarkInput.text ?? ""
+            popoverContent.selectedValue = self.combineQCRemarkInputText ?? ""
             break
         case 3:
-            popoverContent.selectedValue = self.reliabilityTestRemarkInput.text ?? ""
+            popoverContent.selectedValue = self.reliabilityTestRemarkInputText ?? ""
             break
         case 4:
-            popoverContent.selectedValue = self.ssReadyInput.text ?? ""
+            popoverContent.selectedValue = self.ssReadyInputText ?? ""
             break
         case 5:
-            popoverContent.selectedValue = self.ssCommentReadyInput.text ?? ""
+            popoverContent.selectedValue = self.ssCommentReadyInputText ?? ""
             break
         case 6:
-            popoverContent.selectedValue = self.tsSubmitDateInput.text ?? ""
+            popoverContent.selectedValue = self.tsSubmitDateInputText ?? ""
             break
         case 7:
-            popoverContent.selectedValue = self.tsResultInput.text ?? ""
+            popoverContent.selectedValue = self.tsResultInputText ?? ""
+            break
+        case 8:
+            popoverContent.selectedValue = self.qualityStardardInputText ?? ""
+            break
+        case 9:
+            popoverContent.selectedValue = self.inspectors ?? ""
             break
         default:
-            popoverContent.selectedValue = self.caFormInput.text ?? ""
+            popoverContent.selectedValue = self.caFormInputText ?? ""
             break
         }
         
@@ -231,6 +249,12 @@ class TaskQCInfoView: UIView {
             popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
             break
         case 7:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 8:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 9:
             popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
             break
         default:

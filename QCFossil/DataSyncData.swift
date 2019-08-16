@@ -943,6 +943,7 @@ let _DS_TASKDATA = [
             "inspect_enable_flag",
             "item_barcode",
             "retail_price",
+            "currency",
             "create_date",
             "create_user",
             "modify_date",
@@ -992,7 +993,8 @@ let _DS_TASKDATA = [
             "create_user",
             "create_date",
             "modify_user",
-            "modify_date"
+            "modify_date",
+            "inspector_names"
         ]
     ]
 ]

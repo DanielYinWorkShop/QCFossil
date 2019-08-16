@@ -49,17 +49,29 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 poInfoView.SAPPONoDisplay.text = poItem.refOrderNo
                 poInfoView.shipToDisplay.text = poItem.buyerLocationCode
                 poInfoView.shipModeDisplay.text = poItem.shipModeName
-                poInfoView.barcodeDisplay.text = poItem.brandCode
+                poInfoView.barcodeDisplay.text = poItem.itemBarCode
                 
                 if poItem.retailPrice != nil {
-                    poInfoView.retailPriceDisplay.text = "\(poItem.currency)\(poItem.retailPrice!)"
+                    
+                    if let currency = poItem.currency {
+                        poInfoView.retailPriceDisplay.text = "\(currency)\(poItem.retailPrice!)"
+                    } else {
+                        poInfoView.retailPriceDisplay.text = "\(poItem.retailPrice!)"
+                    }
+                } else {
+                    poInfoView.retailPriceDisplay.text = ""
                 }
                 
-                poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
-                poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!)"
-                if poItem.dimen1 != nil || poItem.dimen1 != "" {
-                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
-                    poInfoView.styleSizeDisplay.text = "\(poItem.styleNo!), \(poItem.dimen1!)"
+                if let styleNo = poItem.styleNo {
+                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+                    poInfoView.styleSizeDisplay.text = "\(styleNo)"
+                }
+                
+                if let dimen1 = poItem.dimen1, let styleNo = poItem.styleNo {
+                    if dimen1 != "" {
+                        poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+                        poInfoView.styleSizeDisplay.text = "\(styleNo), \(dimen1)"
+                    }
                 }
                 
                 poInfoView.frame = CGRect(x: 0, y: CGFloat(105 * index), width: poInfoView.frame.size.width, height: 105)
@@ -102,21 +114,37 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.tsReportNoInput.text = taskQCInfo?.tsReportNo
         taskQCInfoView.materialCategoryInput.text = poItem?.materialCategory
         taskQCInfoView.assortmentInput.text = taskQCInfo?.assortment
-        taskQCInfoView.inspectorInput.text = Cache_Inspector?.inspectorName
+        taskQCInfoView.inspectorInput.text = taskQCInfo?.inspectorNames
+//        self.textDisplayRule(taskQCInfoView.inspectorInput)
+        
         taskQCInfoView.assortmentStyleInput.text = taskQCInfo?.consignedStyles
         taskQCInfoView.seasonInput.text = poItem?.market
         taskQCInfoView.updateTimeInput.text = self.view.getCurrentDateTime()
         
         taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty ?? 0)
         taskQCInfoView.qualityStardardInput.text = taskQCInfo?.qualityStandard
+//        self.textDisplayRule(taskQCInfoView.qualityStardardInput)
+        
         taskQCInfoView.bookedQtyInput.text = poItem?.targetInspectQty
-        taskQCInfoView.markingInput.text = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? taskQCInfo?.casebackMarking : taskQCInfo?.jwlMarking
+        
+        if Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue {
+            taskQCInfoView.markingInput.text = taskQCInfo?.casebackMarking
+        } else {
+            taskQCInfoView.markingInput.text = taskQCInfo?.jwlMarking
+        }
+        
         taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         taskQCInfoView.lengthReqInput.text = taskQCInfo?.lengthRequirement
+//        self.textDisplayRule(taskQCInfoView.lengthReqInput)
+        
         taskQCInfoView.productGradeInput.text = taskQCInfo?.productClass
         taskQCInfoView.movtInput.text = taskQCInfo?.movtOrigin
+//        self.textDisplayRule(taskQCInfoView.movtInput)
+        
         taskQCInfoView.upcOrbidStatusInput.text = taskQCInfo?.upcOrbidStatus
         taskQCInfoView.combineQCRemarkInput.text = taskQCInfo?.combineQcRemarks
+//        self.textDisplayRule(taskQCInfoView.combineQCRemarkInput)
+        
         taskQCInfoView.adjustTimeInput.text = taskQCInfo?.adjustTime
         taskQCInfoView.weightInput.text = taskQCInfo?.netWeight
         
@@ -132,31 +160,64 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.otherTestQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         
         taskQCInfoView.caFormInput.text = taskQCInfo?.caForm
+//        self.textDisplayRule(taskQCInfoView.caFormInput)
+        
         taskQCInfoView.precisionReportInput.text = taskQCInfo?.preciseReport
         taskQCInfoView.smartLinkReportInput.text = taskQCInfo?.smartlinkReport
         taskQCInfoView.reliabilityTestRemarkInput.text = taskQCInfo?.reliabilityRemark
         taskQCInfoView.ftyPackInfoInput.text = taskQCInfo?.ftyPackingInfo
         taskQCInfoView.ftyDroptestInfoInput.text = taskQCInfo?.ftyDroptestInfo
         
+        taskQCInfoView.caFormInputText = taskQCInfo?.caForm ?? ""
+        taskQCInfoView.combineQCRemarkInputText = taskQCInfo?.combineQcRemarks ?? ""
+        taskQCInfoView.reliabilityTestRemarkInputText = taskQCInfo?.reliabilityRemark ?? ""
+        taskQCInfoView.ssReadyInputText = taskQCInfo?.ssReady ?? ""
+        taskQCInfoView.ssCommentReadyInputText = taskQCInfo?.ssCommentReady ?? ""
+        taskQCInfoView.tsSubmitDateInputText = taskQCInfo?.tsSubmitDate ?? ""
+        taskQCInfoView.tsResultInputText = taskQCInfo?.tsResult ?? ""
+        taskQCInfoView.qualityStardardInputText = taskQCInfo?.qualityStandard ?? ""
+        taskQCInfoView.inspectors = taskQCInfo?.inspectorNames ?? ""
+        
         let photoDataHelper = PhotoDataHelper()
         let stylePhotos = photoDataHelper.getStylePhotoByStyleNo(Cache_Task_On?.taskId ?? 0)
         
         stylePhotos.ssPhotoName
         self.ssPhotoPath = (Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH) + stylePhotos.ssPhotoName
+        
+        if Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue {
+            self.ssPhotoPath = _WATCHSSPHOTOSPHYSICALPATH + stylePhotos.ssPhotoName
+        } else {
+            self.ssPhotoPath = _JEWELRYSSPHOTOSPHYSICALPATH + stylePhotos.ssPhotoName
+        }
+        
         self.cbPhotoPath = _CASEBACKPHOTOSPHYSICALPATH + stylePhotos.cbPhotoName
         
-        taskQCInfoView.salesmanPhoto.image = UIImage(contentsOfFile: ssPhotoPath)
-//        taskQCInfoView.salesmanPhoto.contentMode = .ScaleAspectFit
-        taskQCInfoView.caseBackPhoto.image = UIImage(contentsOfFile: cbPhotoPath)
-//        taskQCInfoView.caseBackPhoto.contentMode = .ScaleAspectFit
+        let filemgr = NSFileManager.defaultManager()
+        if stylePhotos.ssPhotoName != "" && filemgr.fileExistsAtPath(ssPhotoPath) {
+            do {
+                taskQCInfoView.salesmanPhoto.image = UIImage(contentsOfFile: ssPhotoPath)
+                let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ssPhotoPreviewTapOnClick(_:)))
+                taskQCInfoView.salesmanPhoto.userInteractionEnabled = true
+                taskQCInfoView.salesmanPhoto.addGestureRecognizer(tapGestureRecognizer)
+                
+            }
+        } else {
+            taskQCInfoView.salesmanLabel.hidden = true
+            taskQCInfoView.salesmanPhoto.hidden = true
+        }
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ssPhotoPreviewTapOnClick(_:)))
-        taskQCInfoView.salesmanPhoto.userInteractionEnabled = true
-        taskQCInfoView.salesmanPhoto.addGestureRecognizer(tapGestureRecognizer)
-        
-        let tapGestureRecognizer2 = UITapGestureRecognizer(target:self, action:#selector(cbPhotoPreviewTapOnClick(_:)))
-        taskQCInfoView.caseBackPhoto.userInteractionEnabled = true
-        taskQCInfoView.caseBackPhoto.addGestureRecognizer(tapGestureRecognizer2)
+        if stylePhotos.cbPhotoName != "" && filemgr.fileExistsAtPath(cbPhotoPath) {
+            do {
+                taskQCInfoView.caseBackPhoto.image = UIImage(contentsOfFile: cbPhotoPath)
+                let tapGestureRecognizer2 = UITapGestureRecognizer(target:self, action:#selector(cbPhotoPreviewTapOnClick(_:)))
+                taskQCInfoView.caseBackPhoto.userInteractionEnabled = true
+                taskQCInfoView.caseBackPhoto.addGestureRecognizer(tapGestureRecognizer2)
+                
+            } 
+        } else {
+            taskQCInfoView.caseBackLabel.hidden = true
+            taskQCInfoView.caseBackPhoto.hidden = true
+        }
     }
     
     func ssPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
@@ -217,5 +278,30 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         container.addSubview(preview!)
         
         self.view.addSubview(container)
+    }
+    
+    func textDisplayRule(textField: UITextField) {
+        
+        if textField.text?.characters.count > 15 {
+            textField.text = substringWithRange(textField.text!, start: 0, end: 15) + "..."
+        }
+        
+    }
+    
+    func substringWithRange(text:String, start: Int, end: Int) -> String
+    {
+        if (start < 0 || start > text.characters.count)
+        {
+            print("start index \(start) out of bounds")
+            return ""
+        }
+        else if end < 0 || end > text.characters.count
+        {
+            print("end index \(end) out of bounds")
+            return ""
+        }
+        let range = Range(start: text.startIndex.advancedBy(start), end: text.startIndex.advancedBy(end))
+        
+        return text.substringWithRange(range)
     }
 }

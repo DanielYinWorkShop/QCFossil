@@ -676,7 +676,7 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="150" y="44" width="39" height="21"/>
+                                                        <rect key="frame" x="150" y="44" width="113" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PO List/Material" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O4x-cb-Sn8">
@@ -802,7 +802,7 @@
                                                         <color key="titleColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="148" y="42" width="94" height="21"/>
+                                                        <rect key="frame" x="148" y="42" width="115" height="21"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="showProdDescOnClick:" destination="VA7-MR-VTR" eventType="touchUpInside" id="ZCo-pX-OZK"/>

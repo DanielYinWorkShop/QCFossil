@@ -49,6 +49,7 @@ class InspectTaskQCInfo {
     var smartlinkRemark:String?
     var preciseReport:String?
     var smartlinkReport:String?
+    var inspectorNames:String?
     var createUser:String
     var createDate:String
     var modifyUser:String

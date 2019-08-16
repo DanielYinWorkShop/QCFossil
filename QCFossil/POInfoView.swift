@@ -29,8 +29,7 @@ class POInfoView: UIView {
     var styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
     
     override func awakeFromNib() {
-        
-        
+        self.backgroundColor = _TABLECELL_BG_COLOR1
     }
     
     override func didMoveToSuperview() {
@@ -43,4 +42,40 @@ class POInfoView: UIView {
         self.barcodeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Barcode")
     }
     
+    @IBAction func displayFullTextDidPress(sender: UIButton) {
+        
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
+        
+        popoverContent.dataType = _POPOVERNOTITLE
+        
+        switch sender.tag {
+        case 1:
+            popoverContent.selectedValue = self.styleSizeDisplay.text ?? ""
+            break
+        default:
+            popoverContent.selectedValue = self.styleSizeDisplay.text ?? ""
+            break
+        }
+        
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover!.delegate = sender.parentVC as! PopoverMaster
+        popover!.sourceView = sender
+        
+        
+        switch sender.tag {
+        default:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+            break
+        }
+        
+        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+    }
+
 }

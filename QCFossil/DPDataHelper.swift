@@ -307,7 +307,7 @@ class DPDataHelper:DataHelperMaster {
                     let tsSubmitDate = rs.stringForColumn("ts_submit_date")
                     let tsResult = rs.stringForColumn("ts_result")
                     let qcBookingRefNo = rs.stringForColumn("qc_booking_ref_no")
-                    let ssCommentReady = rs.stringForColumn("ss_comment_ready")
+                    let ssCommentReady = rs.stringForColumn("pre_inspect_remark") == "" ? rs.stringForColumn("ss_comment_ready") : rs.stringForColumn("pre_inspect_remark")
                     let ssReady = rs.stringForColumn("ss_ready")
                     let ssPhotoName = rs.stringForColumn("ss_photo_name")
                     let batteryProductionCode = rs.stringForColumn("battery_production_code")
@@ -338,6 +338,7 @@ class DPDataHelper:DataHelperMaster {
                     let createDate = rs.stringForColumn("create_date")
                     let modifyUser = rs.stringForColumn("modify_user")
                     let modifyDate = rs.stringForColumn("modify_date")
+                    let inspectorNames = rs.stringForColumn("inspector_names")
                     
                     qcInfo = InspectTaskQCInfo(refTaskId: refTaskId, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)
                     qcInfo?.aqlQty = aqlQty
@@ -379,6 +380,7 @@ class DPDataHelper:DataHelperMaster {
                     qcInfo?.smartlinkRemark = smartlinkRemark
                     qcInfo?.preciseReport = preciseReport
                     qcInfo?.smartlinkReport = smartlinkReport
+                    qcInfo?.inspectorNames = inspectorNames
                     
                     /*
                      qcInfo = InspectTaskQCInfo(refTaskId: refTaskId, aqlQty: aqlQty, productClass: productClass, qualityStandard: qualityStandard, adjustTime: adjustTime, preinspectDetail: preinspectDetail, caForm: caForm, casebackMarking: casebackMarking, upcOrbidStatus: upcOrbidStatus, tsReportNo: tsReportNo, tsSubmitDate: tsSubmitDate, tsResult: tsResult, qcBookingRefNo: qcBookingRefNo, ssCommentReady: ssCommentReady, ssReady: ssReady, ssPhotoName: ssPhotoName, batteryProductionCode: batteryProductionCode, withQuesitonPending: withQuesitonPending, withSamePoRejectedBef: withSamePoRejectedBef, assortment: assortment, consignedStyles: consignedStyles, qcInspectType: qcInspectType, netWeight: netWeight, inspectMethod: inspectMethod, lengthRequirement: lengthRequirement, inspectionSampleReady: inspectionSampleReady, ftyPackingInfo: ftyPackingInfo, ftyDroptestInfo: ftyDroptestInfo, movtOrigin: movtOrigin, batteryType: batteryType, preInspectResult: preInspectResult, preInspectRemark: preInspectRemark, reliabilityRemark: reliabilityRemark, jwlMarking: jwlMarking, combineQcRemarks: combineQcRemarks, linksRemarks: linksRemarks, dusttestRemark: dusttestRemark, smartlinkRemark: smartlinkRemark, preciseReport: preciseReport, smartlinkReport: smartlinkReport, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)

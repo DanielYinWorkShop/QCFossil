@@ -197,6 +197,7 @@ class TaskDataHelper:DataHelperMaster{
             
             if poItem.dimen2 != nil && poItem.prodDesc != nil {
                 let prodDesc = "\(poItem.dimen2!) / \(poItem.prodDesc!)"
+//                let prodDesc = "\(poItem.styleNo!) / \(poItem.dimen1!)"
                 task.prodDesc = prodDesc
             }
             

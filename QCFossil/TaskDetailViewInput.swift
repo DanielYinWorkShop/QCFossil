@@ -300,10 +300,16 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 poItemCellView?.poLineNoText.text = poItem.poLineNo
                 poItemCellView?.brandText.text = poItem.brandName
                 
-                poItemCellView?.styleText.text = "\(poItem.styleNo!), \(poItem.dimen1)"
-                if poItem.dimen1 == nil || poItem.dimen1 == "" {
+                if let styleNo = poItem.styleNo {
                     poItemCellView?.styleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
-                    poItemCellView?.styleText.text = poItem.styleNo
+                    poItemCellView?.styleText.text = styleNo
+                }
+                
+                if let dimen1 = poItem.dimen1, let styleNo = poItem.styleNo {
+                    if dimen1 != "" {
+                        poItemCellView?.styleLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+                        poItemCellView?.styleText.text = "\(styleNo), \(dimen1)"
+                    }
                 }
                 
                 poItemCellView?.orderQtyText.text = String(poItem.orderQty)
@@ -316,6 +322,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 poItemCellView?.bookingQtyInput.text = String(poItem.targetInspectQty!)//String(poItem.orderQty - poItem.samplingQty)
                 poItemCellView?.sampleQtyDB = poItem.samplingQty
                 poItemCellView?.prodDesc = "\(poItem.dimen2!) / \(poItem.prodDesc!)"
+//                poItemCellView?.prodDesc = "\(poItem.styleNo!) / \(poItem.dimen1!)"
                 
                 if let targetInspectQty = poItem.targetInspectQty {
                     poItemCellView?.bookingQtyDB = Int(targetInspectQty)!
