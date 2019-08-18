@@ -1127,7 +1127,7 @@ let _DS_ACKSTYLEPHOTO = [
     "APIPARA" : [
         "service_token": _DS_SERVICETOKEN,
         "service_session": _DS_SESSION,
-        "inspect_task_count": "0"
+        "style_photo_count": "0"
     ],
     "ACTIONNAMES" : [
         "novalue"

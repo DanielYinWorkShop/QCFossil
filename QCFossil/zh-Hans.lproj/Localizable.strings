@@ -816,7 +816,7 @@
 
 "TS Report No" = "技术办报告编号";
 
-"Material Category" = "Material Category";
+"Material Category" = "产品类别";
 
 "Assortment" = "是否混装";
 
@@ -856,9 +856,9 @@
 
 "SS/TS Info" = "销售办/技术办状况";
 
-"SS Ready" = "欠销售办";
+"SS Ready" = "有销售办";
 
-"SS Comment Ready" = "评语资料内容";
+"SS Comment Ready" = "评语资料";
 
 "TS Submit Date" = "技术样办交办日期";
 
@@ -866,7 +866,7 @@
 
 "Same PO with Reject" = "相同PO是否拒收过";
 
-"Inspect Sample Ready" = "欠验货办";
+"Inspect Sample Ready" = "有验货办";
 
 "Link Test Qty" = "调换珠测试";
 
@@ -906,7 +906,9 @@
 
 "Barcode" = "UPC挂牌编号";
 
-"-Style Photo" = "-Style Photo";
+"-Style Photo" = "-产品图片";
+
+"-Clean Style Photo" = "-清理产品图片";
 
 "Salesman Photo" = "销售办图片";
 

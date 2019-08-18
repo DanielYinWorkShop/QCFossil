@@ -56,6 +56,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     @IBOutlet weak var stylePhotoLabel: UILabel!
     @IBOutlet weak var stylePhotoPrecessBar: UIProgressView!
     @IBOutlet weak var stylePhotoStatus: UILabel!
+    @IBOutlet weak var stylePhotoCleanLabel: UILabel!
+    @IBOutlet weak var stylePhotoCleanProcessBar: UIProgressView!
+    @IBOutlet weak var stylePhotoCleanStatus: UILabel!
     
     
     var subCounter = 1
@@ -75,6 +78,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     var dsDataObj:AnyObject?
     var dataSet = [Dictionary<String, String>]()
     var taskStatusList = [[String:String]]()
+    var stylePhotoDeletePaths = [String]()
     var actionType = 0 //0: Download Action 1: Upload Action
     var uploadPhotos = [Photo]()
     var _UPDATE_DB_DATA = false
@@ -164,6 +168,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Sync")
         self.cleanTaskLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Clean Task")
         self.stylePhotoLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Style Photo")
+        self.stylePhotoCleanLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Clean Style Photo")
         
         self.view.setButtonCornerRadius(self.downloadBtn)
         self.view.setButtonCornerRadius(self.uploadBtn)
@@ -188,6 +193,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.taskStatusDataProcessBar.progress = 0.0
         self.cleanTaskProcessBar.progress = 0.0
         self.stylePhotoPrecessBar.progress = 0.0
+        self.stylePhotoCleanProcessBar.progress = 0.0
         self.downloadProcessBar.hidden = true
         self.uploadProcessBar.hidden = true
         self.downloadProcessLabel.hidden = true
@@ -220,6 +226,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.taskStatusDataProcessBar.progress = 0.0
         self.cleanTaskProcessBar.progress = 0.0
         self.stylePhotoPrecessBar.progress = 0.0
+        self.stylePhotoCleanProcessBar.progress = 0.0
         
         self.totalReqCnt = 0
         self.downloadReqCnt = 0
@@ -445,10 +452,20 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
                             if actionFields[data["tableName"]!]![sIdx] == "ss_photo_name" {
                                 let imageName = data[actionFields[data["tableName"]!]![sIdx]]!
-                                //Save images to physical local storage
-                                let savePath = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
-                                UIImage().saveImageToLocal(savePath, image: UIImage().fromBase64(value), imageName: imageName)
-                                break
+                                
+                                if value == "" {
+                                    
+                                    // Add to delete list
+                                    let photoPath = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
+                                    self.stylePhotoDeletePaths.append(photoPath + imageName)
+                                    
+                                } else {
+                                
+                                    //Save images to physical local storage
+                                    let savePath = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
+                                    UIImage().saveImageToLocal(savePath, image: UIImage().fromBase64(value), imageName: imageName)
+                                    break
+                                }
                             }
                         }
                         
@@ -457,9 +474,18 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         for sIdx in 0...actionFields[data["tableName"]!]!.count-1 {
                             if actionFields[data["tableName"]!]![sIdx] == "cb_photo_name" {
                                 let imageName = data[actionFields[data["tableName"]!]![sIdx]]!
-                                //Save images to physical local storage
-                                UIImage().saveImageToLocal(_CASEBACKPHOTOSPHYSICALPATH, image: UIImage().fromBase64(value), imageName: imageName)
-                                break
+                                
+                                if value == "" {
+                                    
+                                    // Add to delete list
+                                    self.stylePhotoDeletePaths.append(_CASEBACKPHOTOSPHYSICALPATH + imageName)
+                                    
+                                } else {
+                                
+                                    //Save images to physical local storage
+                                    UIImage().saveImageToLocal(_CASEBACKPHOTOSPHYSICALPATH, image: UIImage().fromBase64(value), imageName: imageName)
+                                    break
+                                }
                             }
                         }
                         
@@ -1611,7 +1637,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
                 
                 self.processingDownloadData("_DS_DL_TASK_STATUS", jsonData: jsonData)
@@ -1619,7 +1645,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 
                 if self.actionType < 1 {
@@ -1666,7 +1692,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         
                         self.cleanTaskProcessBar.progress = percent
                     })
-
+                    
                 }
                 
                 if self.cleanTaskCnt < 1 {
@@ -1684,12 +1710,20 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     self.view.deleteTask(id)
                 }
                 
-                //task status download request
+                let fileManager = NSFileManager.defaultManager()
+                if fileManager.fileExistsAtPath(getDataJsonPath()) {
+                    try fileManager.removeItemAtPath(getDataJsonPath())
+                }
+                
+                //Send local notification for Task Done.
+                self.updateProgressBar(1)
+                
                 self.makeDLPostRequest(_DS_DL_STYLE_PHOTO)
+
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 
                 if self.actionType < 1 {
@@ -1700,30 +1734,30 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     updateULProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
-        } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download" {
-    
+        }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download" {
+            
             do {
-    
+                
                 updateDLProcessLabel("Preparing Style Photo Data...")
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
-    
+                
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-    
+                
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
-    
+                
                 #if DEBUG
                     print("session result: \(session_result)")
                 #endif
-    
+                
                 self.processingDownloadData("_DS_DL_STYLE_PHOTO", jsonData: jsonData)
             }
             catch {
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
-    
+                
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
                     updateDLProcessLabel("Style Photo Data Error: \(errorMsgByCode((error as NSError).code))")
@@ -1732,39 +1766,79 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     updateULProcessLabel("Style Photo Data Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
-    
+            
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download Acknowledgement" {
             
             do {
                 updateDLProcessLabel("Sending Style Photo Data Download Acknowledgement...")
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
-    
+                
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-    
+                
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
-    
-                let fileManager = NSFileManager.defaultManager()
-                if fileManager.fileExistsAtPath(getDataJsonPath()) {
-                    try fileManager.removeItemAtPath(getDataJsonPath())
+                
+                // Delete Style Photos
+                let photoDataHelper = PhotoDataHelper()
+                var paths = photoDataHelper.selectStylePhotosToRemove()
+                let totalDeletePhotosCount = self.stylePhotoDeletePaths.count + paths.count
+                
+                // clean style photos
+                // case 1, photo_name exist, photo_file no value
+                var cleanStylePhotoCount = 0
+                while let path = self.stylePhotoDeletePaths.popLast() {
+                    UIImage().removeImageFromLocalByPath(path)
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.updateDLProcessLabel("Style Photo Cleaning...")
+                        cleanStylePhotoCount += 1
+                        
+                        self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
+                        let percent = Float(self.cleanTaskCnt)/Float(totalDeletePhotosCount)
+                        
+                        self.cleanTaskProcessBar.progress = percent
+                    })
                 }
-    
+                
+                // case 2, deleted_flag is 1 in style_photo table, remove photo and record
+                // clean SS style photos
+                
+                while let path = paths.popLast() {
+                    UIImage().removeImageFromLocalByPath(path)
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        cleanStylePhotoCount += 1
+                        
+                        self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
+                        let percent = Float(self.cleanTaskCnt)/Float(totalDeletePhotosCount)
+                    
+                        self.cleanTaskProcessBar.progress = percent
+                    })
+                }
+                
+                // remove all records deleted flag is 1
+                photoDataHelper.removeStylePhotosMarkDeleted()
+                
+                if cleanStylePhotoCount < 1 {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.stylePhotoCleanStatus.text = "0"
+                        self.stylePhotoCleanProcessBar.progress = 1.0
+                    })
+                }
+                
                 //Send local notification for Task Done.
                 self.updateProgressBar(1)
-    
-                //Send local notification for Task Done.
                 self.presentLocalNotification("Data Download Complete.")
-    
+                
                 self.updateDLProcessLabel("Complete")
                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
-    
             }
             catch {
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
-    
+                
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
                     updateDLProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")

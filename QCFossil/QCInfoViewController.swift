@@ -25,7 +25,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         self.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
-        self.view.frame = CGRect.init(x: 0, y: 80, width: 768, height: 1024)
+        self.view.frame = CGRect.init(x: 0, y: 12, width: 768, height: 1024)
         
         let taskQCInfoView = TaskQCInfoView.loadFromNibNamed("TaskQCInfoView")!
         
@@ -199,6 +199,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ssPhotoPreviewTapOnClick(_:)))
                 taskQCInfoView.salesmanPhoto.userInteractionEnabled = true
                 taskQCInfoView.salesmanPhoto.addGestureRecognizer(tapGestureRecognizer)
+                taskQCInfoView.salesmanPhoto.backgroundColor = _TABLECELL_BG_COLOR1
                 
             }
         } else {
@@ -212,6 +213,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 let tapGestureRecognizer2 = UITapGestureRecognizer(target:self, action:#selector(cbPhotoPreviewTapOnClick(_:)))
                 taskQCInfoView.caseBackPhoto.userInteractionEnabled = true
                 taskQCInfoView.caseBackPhoto.addGestureRecognizer(tapGestureRecognizer2)
+                taskQCInfoView.caseBackPhoto.backgroundColor = _TABLECELL_BG_COLOR1
                 
             } 
         } else {
