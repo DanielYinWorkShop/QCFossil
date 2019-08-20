@@ -9,69 +9,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "QCFossil/TaskTableViewCell.swift"
-            timestampString = "472038778.256504"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "11"
-            endingLineNumber = "11"
-            landmarkName = "TaskTableViewCell"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "QCFossil.TaskTableViewCell.__deallocating_deinit"
-                  moduleName = "QCFossil"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/pacmobile/Downloads/QCFossil/QCFossil/TaskTableViewCell.swift"
-                  timestampString = "472038778.267472"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "12">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "QCFossil.TaskTableViewCell.init (QCFossil.TaskTableViewCell.Type)(style : __C.UITableViewCellStyle, reuseIdentifier : Swift.Optional&lt;Swift.String&gt;) -&gt; QCFossil.TaskTableViewCell"
-                  moduleName = "QCFossil"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/pacmobile/Downloads/QCFossil/QCFossil/TaskTableViewCell.swift"
-                  timestampString = "472038778.271296"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "58">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "QCFossil.TaskTableViewCell.init (QCFossil.TaskTableViewCell.Type)(coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;QCFossil.TaskTableViewCell&gt;"
-                  moduleName = "QCFossil"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/pacmobile/Downloads/QCFossil/QCFossil/TaskTableViewCell.swift"
-                  timestampString = "472038778.271567"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "19">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "QCFossil/PhotoAlbumCellTableViewCell.swift"
             timestampString = "472553055.828544"
             startingColumnNumber = "9223372036854775807"
@@ -887,11 +824,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/PoDataHelper.swift"
-            timestampString = "587488011.850625"
+            timestampString = "587922884.2869329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "getAllPoItems()"
             landmarkType = "5">
          </BreakpointContent>
@@ -903,11 +840,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/PoDataHelper.swift"
-            timestampString = "587488011.850625"
+            timestampString = "587922884.2869329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "getAllPoItems()"
             landmarkType = "5">
          </BreakpointContent>
@@ -919,11 +856,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/PoDataHelper.swift"
-            timestampString = "587488011.850625"
+            timestampString = "587922884.2869329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
             landmarkName = "getAllPoItems()"
             landmarkType = "5">
          </BreakpointContent>

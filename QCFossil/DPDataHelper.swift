@@ -339,6 +339,16 @@ class DPDataHelper:DataHelperMaster {
                     let modifyUser = rs.stringForColumn("modify_user")
                     let modifyDate = rs.stringForColumn("modify_date")
                     let inspectorNames = rs.stringForColumn("inspector_names")
+                    let substrInspectorNames = rs.stringForColumn("substr_inspector_names")
+                    let substrQualityStandard = rs.stringForColumn("substr_quality_standard")
+                    let substrLengthRequirement = rs.stringForColumn("substr_length_requirement")
+                    let substrMovtOrigin = rs.stringForColumn("substr_movt_origin")
+                    let substrCombineQCRemarks = rs.stringForColumn("substr_combine_qc_remarks")
+                    let substrSSReady = rs.stringForColumn("substr_ss_ready")
+                    let substrPreInspectRemark = rs.stringForColumn("substr_pre_inspect_remark")
+                    let substrSSCommentReady = rs.stringForColumn("pre_inspect_remark") == "" ? rs.stringForColumn("substr_ss_comment_ready") : rs.stringForColumn("substr_pre_inspect_remark")
+                    let substrCAForm = rs.stringForColumn("substr_ca_form")
+                    let substrReliabilityRemark = rs.stringForColumn("substr_reliability_remark")
                     
                     qcInfo = InspectTaskQCInfo(refTaskId: refTaskId, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)
                     qcInfo?.aqlQty = aqlQty
@@ -381,6 +391,16 @@ class DPDataHelper:DataHelperMaster {
                     qcInfo?.preciseReport = preciseReport
                     qcInfo?.smartlinkReport = smartlinkReport
                     qcInfo?.inspectorNames = inspectorNames
+                    qcInfo?.substrInspectorNames = substrInspectorNames
+                    qcInfo?.substrQualityStandard = substrQualityStandard
+                    qcInfo?.substrLengthRequirement = substrLengthRequirement
+                    qcInfo?.substrMovtOrigin = substrMovtOrigin
+                    qcInfo?.substrCombineQCRemarks = substrCombineQCRemarks
+                    qcInfo?.substrSSReady = substrSSReady
+                    qcInfo?.substrPreInspectRemark = substrPreInspectRemark
+                    qcInfo?.substrSSCommentReady = substrSSCommentReady
+                    qcInfo?.substrCAForm = substrCAForm
+                    qcInfo?.substrReliabilityRemark = substrReliabilityRemark
                     
                     /*
                      qcInfo = InspectTaskQCInfo(refTaskId: refTaskId, aqlQty: aqlQty, productClass: productClass, qualityStandard: qualityStandard, adjustTime: adjustTime, preinspectDetail: preinspectDetail, caForm: caForm, casebackMarking: casebackMarking, upcOrbidStatus: upcOrbidStatus, tsReportNo: tsReportNo, tsSubmitDate: tsSubmitDate, tsResult: tsResult, qcBookingRefNo: qcBookingRefNo, ssCommentReady: ssCommentReady, ssReady: ssReady, ssPhotoName: ssPhotoName, batteryProductionCode: batteryProductionCode, withQuesitonPending: withQuesitonPending, withSamePoRejectedBef: withSamePoRejectedBef, assortment: assortment, consignedStyles: consignedStyles, qcInspectType: qcInspectType, netWeight: netWeight, inspectMethod: inspectMethod, lengthRequirement: lengthRequirement, inspectionSampleReady: inspectionSampleReady, ftyPackingInfo: ftyPackingInfo, ftyDroptestInfo: ftyDroptestInfo, movtOrigin: movtOrigin, batteryType: batteryType, preInspectResult: preInspectResult, preInspectRemark: preInspectRemark, reliabilityRemark: reliabilityRemark, jwlMarking: jwlMarking, combineQcRemarks: combineQcRemarks, linksRemarks: linksRemarks, dusttestRemark: dusttestRemark, smartlinkRemark: smartlinkRemark, preciseReport: preciseReport, smartlinkReport: smartlinkReport, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate)

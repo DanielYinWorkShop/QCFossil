@@ -110,6 +110,8 @@ class PoDataHelper:DataHelperMaster {
                 let retailPrice = rs.stringForColumn("retail_price")
                 let targetInspectQty = rs.stringForColumn("target_inspect_qty")
                 let currency = rs.stringForColumn("currency")
+                let styleSize = rs.stringForColumn("style_size")
+                let substrStyleSize = rs.stringForColumn("substr_style_size")
                 
                 if (prodDesc == nil) {
                     prodDesc = ""
@@ -155,6 +157,8 @@ class PoDataHelper:DataHelperMaster {
                 poItem?.retailPrice = retailPrice
                 poItem?.targetInspectQty = targetInspectQty
                 poItem?.currency = currency
+                poItem?.styleSize = styleSize
+                poItem?.substrStyleSize = substrStyleSize
                 
                 poItems.append(poItem!)
             }

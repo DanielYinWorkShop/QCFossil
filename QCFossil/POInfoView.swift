@@ -25,6 +25,7 @@ class POInfoView: UIView {
     @IBOutlet weak var barcodeLabel: UILabel!
     @IBOutlet weak var barcodeDisplay: UILabel!
     @IBOutlet weak var topBarLine: UILabel!
+    @IBOutlet weak var displayStyleSizeFullTextBtn: UIButton!
     
     var styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
     
@@ -40,6 +41,8 @@ class POInfoView: UIView {
         self.shipModeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Ship Mode")
         self.retailPriceLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Retail Price")
         self.barcodeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Barcode")
+        
+        self.displayStyleSizeFullTextBtn.hidden = true
     }
     
     @IBAction func displayFullTextDidPress(sender: UIButton) {

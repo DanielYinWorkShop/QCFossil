@@ -54,6 +54,16 @@ class InspectTaskQCInfo {
     var createDate:String
     var modifyUser:String
     var modifyDate:String
+    var substrInspectorNames:String?
+    var substrQualityStandard:String?
+    var substrLengthRequirement:String?
+    var substrMovtOrigin:String?
+    var substrCombineQCRemarks:String?
+    var substrSSReady:String?
+    var substrPreInspectRemark:String?
+    var substrSSCommentReady:String?
+    var substrCAForm:String?
+    var substrReliabilityRemark:String?
     
     init?(refTaskId:Int?, createUser:String,  createDate:String, modifyUser:String, modifyDate:String) {
         self.refTaskId = refTaskId ?? 0

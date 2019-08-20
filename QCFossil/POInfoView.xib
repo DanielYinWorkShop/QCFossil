@@ -129,6 +129,7 @@
                 <outlet property="SAPPONoLabel" destination="4nQ-U9-pIJ" id="0WF-jH-5e9"/>
                 <outlet property="barcodeDisplay" destination="HEN-jK-dGU" id="Xz3-oR-foC"/>
                 <outlet property="barcodeLabel" destination="Ze0-Pv-4Uz" id="EUU-qw-ojx"/>
+                <outlet property="displayStyleSizeFullTextBtn" destination="ngd-r2-p6t" id="14p-6P-I1u"/>
                 <outlet property="retailPriceDisplay" destination="xhN-Ie-5gu" id="9m7-p9-TJ4"/>
                 <outlet property="retailPriceLabel" destination="gZH-sP-EJu" id="mIs-HW-Ekj"/>
                 <outlet property="shipModeDisplay" destination="r7c-c6-Wub" id="aK1-eW-bJp"/>

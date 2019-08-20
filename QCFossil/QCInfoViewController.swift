@@ -62,17 +62,26 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                     poInfoView.retailPriceDisplay.text = ""
                 }
                 
-                if let styleNo = poItem.styleNo {
-                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
-                    poInfoView.styleSizeDisplay.text = "\(styleNo)"
-                }
-                
-                if let dimen1 = poItem.dimen1, let styleNo = poItem.styleNo {
-                    if dimen1 != "" {
-                        poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
-                        poInfoView.styleSizeDisplay.text = "\(styleNo), \(dimen1)"
+                poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+                poInfoView.styleSizeDisplay.text = poItem.styleSize
+                if let substrStyleSize = poItem.substrStyleSize {
+                    if substrStyleSize != "" {
+                        poInfoView.styleSizeDisplay.text = substrStyleSize
+                        poInfoView.displayStyleSizeFullTextBtn.hidden = false
                     }
                 }
+                
+//                if let styleNo = poItem.styleNo {
+//                    poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+//                    poInfoView.styleSizeDisplay.text = "\(styleNo)"
+//                }
+//                
+//                if let dimen1 = poItem.dimen1, let styleNo = poItem.styleNo {
+//                    if dimen1 != "" {
+//                        poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
+//                        poInfoView.styleSizeDisplay.text = "\(styleNo), \(dimen1)"
+//                    }
+//                }
                 
                 poInfoView.frame = CGRect(x: 0, y: CGFloat(105 * index), width: poInfoView.frame.size.width, height: 105)
                 taskQCInfoView.poView.addSubview(poInfoView)
@@ -115,15 +124,28 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.materialCategoryInput.text = poItem?.materialCategory
         taskQCInfoView.assortmentInput.text = taskQCInfo?.assortment
         taskQCInfoView.inspectorInput.text = taskQCInfo?.inspectorNames
-//        self.textDisplayRule(taskQCInfoView.inspectorInput)
         
+        if let substrInspectorNames = taskQCInfo?.substrInspectorNames {
+            if substrInspectorNames != "" {
+                taskQCInfoView.inspectorInput.text = substrInspectorNames
+                taskQCInfoView.displayInspectorFullTextBtn.hidden = false
+            }
+        }
+
         taskQCInfoView.assortmentStyleInput.text = taskQCInfo?.consignedStyles
         taskQCInfoView.seasonInput.text = poItem?.market
         taskQCInfoView.updateTimeInput.text = self.view.getCurrentDateTime()
         
         taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty ?? 0)
         taskQCInfoView.qualityStardardInput.text = taskQCInfo?.qualityStandard
-//        self.textDisplayRule(taskQCInfoView.qualityStardardInput)
+        
+        if let substrQualityStandard = taskQCInfo?.substrQualityStandard {
+            if substrQualityStandard != "" {
+                taskQCInfoView.qualityStardardInput.text = substrQualityStandard
+                taskQCInfoView.displayQualityStandardFullTextBtn.hidden = false
+            }
+        }
+
         
         taskQCInfoView.bookedQtyInput.text = poItem?.targetInspectQty
         
@@ -135,21 +157,56 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         
         taskQCInfoView.aqlQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         taskQCInfoView.lengthReqInput.text = taskQCInfo?.lengthRequirement
-//        self.textDisplayRule(taskQCInfoView.lengthReqInput)
+        
+        if let substrLengthRequirement = taskQCInfo?.substrLengthRequirement {
+            if substrLengthRequirement != "" {
+                taskQCInfoView.lengthReqInput.text = substrLengthRequirement
+                taskQCInfoView.displayLengthReqFullTextBtn.hidden = false
+            }
+        }
+        
         
         taskQCInfoView.productGradeInput.text = taskQCInfo?.productClass
         taskQCInfoView.movtInput.text = taskQCInfo?.movtOrigin
-//        self.textDisplayRule(taskQCInfoView.movtInput)
+
+        if let substrMovtOrigin = taskQCInfo?.substrMovtOrigin {
+            if substrMovtOrigin != "" {
+                taskQCInfoView.movtInput.text = substrMovtOrigin
+                taskQCInfoView.displayMovtFullTextBtn.hidden = false
+            }
+        }
         
         taskQCInfoView.upcOrbidStatusInput.text = taskQCInfo?.upcOrbidStatus
         taskQCInfoView.combineQCRemarkInput.text = taskQCInfo?.combineQcRemarks
-//        self.textDisplayRule(taskQCInfoView.combineQCRemarkInput)
+        
+        if let substrCombineQCRemarks = taskQCInfo?.substrCombineQCRemarks {
+            if substrCombineQCRemarks != "" {
+                taskQCInfoView.combineQCRemarkInput.text = substrCombineQCRemarks
+                taskQCInfoView.displayCombineQCRemarkFullTextBtn.hidden = false
+            }
+        }
         
         taskQCInfoView.adjustTimeInput.text = taskQCInfo?.adjustTime
         taskQCInfoView.weightInput.text = taskQCInfo?.netWeight
         
         taskQCInfoView.ssReadyInput.text = taskQCInfo?.ssReady
+        
+        if let substrSSReady = taskQCInfo?.substrSSReady {
+            if substrSSReady != "" {
+                taskQCInfoView.ssReadyInput.text = substrSSReady
+                taskQCInfoView.displaySSReadyFullTextBtn.hidden = false
+            }
+        }
+        
         taskQCInfoView.ssCommentReadyInput.text = taskQCInfo?.ssCommentReady
+        
+        if let substrSSCommentReady = taskQCInfo?.substrSSCommentReady {
+            if substrSSCommentReady != "" {
+                taskQCInfoView.ssCommentReadyInput.text = substrSSCommentReady
+                taskQCInfoView.displaySSCommentReadyFullTextBtn.hidden = false
+            }
+        }
+        
         taskQCInfoView.tsSubmitDateInput.text = taskQCInfo?.tsSubmitDate
         taskQCInfoView.tsResultInput.text = taskQCInfo?.tsResult
         taskQCInfoView.samePOWithRejectInput.text = taskQCInfo?.withSamePoRejectedBef
@@ -160,7 +217,12 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.otherTestQtyInput.text = String(taskQCInfo?.aqlQty ?? 0)
         
         taskQCInfoView.caFormInput.text = taskQCInfo?.caForm
-//        self.textDisplayRule(taskQCInfoView.caFormInput)
+        if let substrCAForm = taskQCInfo?.substrCAForm {
+            if substrCAForm != "" {
+                taskQCInfoView.caFormInput.text = substrCAForm
+                taskQCInfoView.displayCAFormFullTextBtn.hidden = false
+            }
+        }
         
         taskQCInfoView.precisionReportInput.text = taskQCInfo?.preciseReport
         taskQCInfoView.smartLinkReportInput.text = taskQCInfo?.smartlinkReport
@@ -177,6 +239,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.tsResultInputText = taskQCInfo?.tsResult ?? ""
         taskQCInfoView.qualityStardardInputText = taskQCInfo?.qualityStandard ?? ""
         taskQCInfoView.inspectors = taskQCInfo?.inspectorNames ?? ""
+        taskQCInfoView.lengthReqInputText = taskQCInfo?.lengthRequirement ?? ""
+        taskQCInfoView.movtInputText = taskQCInfo?.movtOrigin ?? ""
         
         let photoDataHelper = PhotoDataHelper()
         let stylePhotos = photoDataHelper.getStylePhotoByStyleNo(Cache_Task_On?.taskId ?? 0)

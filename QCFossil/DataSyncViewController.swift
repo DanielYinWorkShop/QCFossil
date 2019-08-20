@@ -538,9 +538,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
             
-//             if apiName == "_DS_DL_TASK_STATUS" {
-//                print("action: \(dbAction)")
-//             }
+             if apiName == "_DS_TASKDATA" {
+                print("action: \(dbAction)")
+             }
             
             _DS_RECORDS[apiName]!.append("\(dbAction)")
             
@@ -1786,18 +1786,21 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 // clean style photos
                 // case 1, photo_name exist, photo_file no value
+                
+                self.updateDLProcessLabel("Style Photo Cleaning...")
                 var cleanStylePhotoCount = 0
                 while let path = self.stylePhotoDeletePaths.popLast() {
-                    UIImage().removeImageFromLocalByPath(path)
-                    
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.updateDLProcessLabel("Style Photo Cleaning...")
-                        cleanStylePhotoCount += 1
+                        if UIImage().removeImageFromLocalByPath(path) {
+                            cleanStylePhotoCount += 1
+                        }
+                    
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
+                            let percent = Float(cleanStylePhotoCount)/Float(totalDeletePhotosCount)
                         
-                        self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
-                        let percent = Float(self.cleanTaskCnt)/Float(totalDeletePhotosCount)
-                        
-                        self.cleanTaskProcessBar.progress = percent
+                            self.cleanTaskProcessBar.progress = percent
+                        })
                     })
                 }
                 
@@ -1805,15 +1808,17 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 // clean SS style photos
                 
                 while let path = paths.popLast() {
-                    UIImage().removeImageFromLocalByPath(path)
-                    
                     dispatch_async(dispatch_get_main_queue(), {
-                        cleanStylePhotoCount += 1
-                        
-                        self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
-                        let percent = Float(self.cleanTaskCnt)/Float(totalDeletePhotosCount)
+                        if UIImage().removeImageFromLocalByPath(path) {
+                            cleanStylePhotoCount += 1
+                        }
                     
-                        self.cleanTaskProcessBar.progress = percent
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
+                            let percent = Float(cleanStylePhotoCount)/Float(totalDeletePhotosCount)
+                    
+                            self.cleanTaskProcessBar.progress = percent
+                        })
                     })
                 }
                 

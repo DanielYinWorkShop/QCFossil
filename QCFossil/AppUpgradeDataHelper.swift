@@ -550,6 +550,186 @@ class AppUpgradeDataHelper:DataHelperMaster {
                             result = false
                         }
                     }
+                    
+                    // Add new field to inspect_task_item
+                    sql = "ALTER TABLE inspect_task_item ADD COLUMN style_size text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "style_size" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_item
+                    sql = "ALTER TABLE inspect_task_item ADD COLUMN substr_style_size text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_style_size" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_inspector_names text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_inspector_names" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_quality_standard text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_quality_standard" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_length_requirement text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_length_requirement" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_movt_origin text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_movt_origin" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_combine_qc_remarks text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_combine_qc_remarks" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_ss_ready text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_ss_ready" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_pre_inspect_remark text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_pre_inspect_remark" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_ss_comment_ready text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_ss_comment_ready" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_ca_form text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_ca_form" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
+                    
+                    // Add new field to inspect_task_qc_info
+                    sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_reliability_remark text"
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                        var noNeedUpdate = false
+                        while tableInfo.next() {
+                            if tableInfo.stringForColumn("name") == "substr_reliability_remark" {
+                                noNeedUpdate = true
+                            }
+                        }
+                        
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                            result = false
+                        }
+                    }
 
                     //----------------------------------------------------------------------------------
                     

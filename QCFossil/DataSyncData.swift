@@ -947,7 +947,9 @@ let _DS_TASKDATA = [
             "create_date",
             "create_user",
             "modify_date",
-            "modify_user"
+            "modify_user",
+            "style_size",
+            "substr_style_size"
         ],
         "inspect_task_qc_info_list" : [
             "ref_task_id",
@@ -994,7 +996,17 @@ let _DS_TASKDATA = [
             "create_date",
             "modify_user",
             "modify_date",
-            "inspector_names"
+            "inspector_names",
+            "substr_inspector_names",
+            "substr_quality_standard",
+            "substr_length_requirement",
+            "substr_movt_origin",
+            "substr_combine_qc_remarks",
+            "substr_ss_ready",
+            "substr_pre_inspect_remark",
+            "substr_ss_comment_ready",
+            "substr_ca_form",
+            "substr_reliability_remark"
         ]
     ]
 ]
@@ -1332,7 +1344,9 @@ let _DS_ULTASKDATA = [
             "sampling_qty" : "",
             "item_barcode" : "",
             "retail_price" : "",
-            "currency" : ""
+            "currency" : "",
+            "style_size" : "",
+            "substr_style_size" : ""
         ],
         "task_inspect_field_value_list": [
             "value_id" : "",

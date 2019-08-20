@@ -73,6 +73,8 @@ class PoItem {
     var retailPrice:String?
     var targetInspectQty:String?
     var currency:String?
+    var styleSize:String?
+    var substrStyleSize:String?
     
     //UI
     var availableQty:Int

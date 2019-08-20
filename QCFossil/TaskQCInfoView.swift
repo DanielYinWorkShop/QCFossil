@@ -97,6 +97,17 @@ class TaskQCInfoView: UIView {
     @IBOutlet weak var caseBackPhoto: UIImageView!
     @IBOutlet weak var salesmanPhoto: UIImageView!
 
+    @IBOutlet weak var displayInspectorFullTextBtn: UIButton!
+    @IBOutlet weak var displayQualityStandardFullTextBtn: UIButton!
+    @IBOutlet weak var displayCombineQCRemarkFullTextBtn: UIButton!
+    @IBOutlet weak var displayLengthReqFullTextBtn: UIButton!
+    @IBOutlet weak var displayMovtFullTextBtn: UIButton!
+    
+    @IBOutlet weak var displaySSReadyFullTextBtn: UIButton!
+    @IBOutlet weak var displaySSCommentReadyFullTextBtn: UIButton!
+    @IBOutlet weak var displayCAFormFullTextBtn: UIButton!
+    @IBOutlet weak var displayReliabilityFullTextBtn: UIButton!
+    
     var caFormInputText = ""
     var combineQCRemarkInputText = ""
     var reliabilityTestRemarkInputText = ""
@@ -106,9 +117,21 @@ class TaskQCInfoView: UIView {
     var tsResultInputText = ""
     var qualityStardardInputText = ""
     var inspectors = ""
+    var lengthReqInputText = ""
+    var movtInputText = ""
     
     override func awakeFromNib() {
         updateCell(self)
+        
+        self.displayMovtFullTextBtn.hidden = true
+        self.displayCAFormFullTextBtn.hidden = true
+        self.displaySSReadyFullTextBtn.hidden = true
+        self.displayInspectorFullTextBtn.hidden = true
+        self.displayLengthReqFullTextBtn.hidden = true
+        self.displayReliabilityFullTextBtn.hidden = true
+        self.displaySSCommentReadyFullTextBtn.hidden = true
+        self.displayCombineQCRemarkFullTextBtn.hidden = true
+        self.displayQualityStandardFullTextBtn.hidden = true
     }
 
     func updateCell(view:UIView) {
@@ -219,6 +242,12 @@ class TaskQCInfoView: UIView {
         case 9:
             popoverContent.selectedValue = self.inspectors ?? ""
             break
+        case 10:
+            popoverContent.selectedValue = self.lengthReqInputText ?? ""
+            break
+        case 11:
+            popoverContent.selectedValue = self.movtInputText ?? ""
+            break
         default:
             popoverContent.selectedValue = self.caFormInputText ?? ""
             break
@@ -256,6 +285,12 @@ class TaskQCInfoView: UIView {
             break
         case 9:
             popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 10:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 200,sender.frame.size.width,sender.frame.size.height)
+            break
+        case 11:
+            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 250,sender.frame.size.width,sender.frame.size.height)
             break
         default:
             popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)

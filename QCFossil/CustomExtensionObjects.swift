@@ -1365,7 +1365,7 @@ extension UIImage {
     func removeImageFromLocalByPath(path:String) ->Bool {
         let fileManager = NSFileManager.defaultManager()
         
-        if !fileManager.fileExistsAtPath(path) {
+        if fileManager.fileExistsAtPath(path) {
             do {
                 try fileManager.removeItemAtPath(path)
             }catch _ as NSError {
