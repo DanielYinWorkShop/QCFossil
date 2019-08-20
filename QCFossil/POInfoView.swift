@@ -28,6 +28,7 @@ class POInfoView: UIView {
     @IBOutlet weak var displayStyleSizeFullTextBtn: UIButton!
     
     var styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style")
+    var styleSizeText = ""
     
     override func awakeFromNib() {
         self.backgroundColor = _TABLECELL_BG_COLOR1
@@ -54,10 +55,10 @@ class POInfoView: UIView {
         
         switch sender.tag {
         case 1:
-            popoverContent.selectedValue = self.styleSizeDisplay.text ?? ""
+            popoverContent.selectedValue = styleSizeText ?? ""
             break
         default:
-            popoverContent.selectedValue = self.styleSizeDisplay.text ?? ""
+            popoverContent.selectedValue = styleSizeText ?? ""
             break
         }
         

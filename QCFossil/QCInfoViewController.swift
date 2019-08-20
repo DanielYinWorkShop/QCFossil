@@ -64,10 +64,13 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 
                 poInfoView.styleSizeLabelText = MylocalizedString.sharedLocalizeManager.getLocalizedString("Style, Size")
                 poInfoView.styleSizeDisplay.text = poItem.styleSize
+                poInfoView.styleSizeText = poItem.styleSize ?? ""
                 if let substrStyleSize = poItem.substrStyleSize {
                     if substrStyleSize != "" {
                         poInfoView.styleSizeDisplay.text = substrStyleSize
-                        poInfoView.displayStyleSizeFullTextBtn.hidden = false
+                        dispatch_async(dispatch_get_main_queue(), {
+                            poInfoView.displayStyleSizeFullTextBtn.hidden = false
+                        })
                     }
                 }
                 
@@ -128,7 +131,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrInspectorNames = taskQCInfo?.substrInspectorNames {
             if substrInspectorNames != "" {
                 taskQCInfoView.inspectorInput.text = substrInspectorNames
-                taskQCInfoView.displayInspectorFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayInspectorFullTextBtn.hidden = false
+                })
             }
         }
 
@@ -142,7 +147,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrQualityStandard = taskQCInfo?.substrQualityStandard {
             if substrQualityStandard != "" {
                 taskQCInfoView.qualityStardardInput.text = substrQualityStandard
-                taskQCInfoView.displayQualityStandardFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayQualityStandardFullTextBtn.hidden = false
+                })
             }
         }
 
@@ -161,7 +168,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrLengthRequirement = taskQCInfo?.substrLengthRequirement {
             if substrLengthRequirement != "" {
                 taskQCInfoView.lengthReqInput.text = substrLengthRequirement
-                taskQCInfoView.displayLengthReqFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayLengthReqFullTextBtn.hidden = false
+                })
             }
         }
         
@@ -172,7 +181,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrMovtOrigin = taskQCInfo?.substrMovtOrigin {
             if substrMovtOrigin != "" {
                 taskQCInfoView.movtInput.text = substrMovtOrigin
-                taskQCInfoView.displayMovtFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayMovtFullTextBtn.hidden = false
+                })
             }
         }
         
@@ -182,7 +193,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrCombineQCRemarks = taskQCInfo?.substrCombineQCRemarks {
             if substrCombineQCRemarks != "" {
                 taskQCInfoView.combineQCRemarkInput.text = substrCombineQCRemarks
-                taskQCInfoView.displayCombineQCRemarkFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayCombineQCRemarkFullTextBtn.hidden = false
+                })
             }
         }
         
@@ -194,7 +207,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrSSReady = taskQCInfo?.substrSSReady {
             if substrSSReady != "" {
                 taskQCInfoView.ssReadyInput.text = substrSSReady
-                taskQCInfoView.displaySSReadyFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displaySSReadyFullTextBtn.hidden = false
+                })
             }
         }
         
@@ -203,7 +218,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrSSCommentReady = taskQCInfo?.substrSSCommentReady {
             if substrSSCommentReady != "" {
                 taskQCInfoView.ssCommentReadyInput.text = substrSSCommentReady
-                taskQCInfoView.displaySSCommentReadyFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displaySSCommentReadyFullTextBtn.hidden = false
+                })
             }
         }
         
@@ -220,13 +237,25 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrCAForm = taskQCInfo?.substrCAForm {
             if substrCAForm != "" {
                 taskQCInfoView.caFormInput.text = substrCAForm
-                taskQCInfoView.displayCAFormFullTextBtn.hidden = false
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayCAFormFullTextBtn.hidden = false
+                })
             }
         }
         
         taskQCInfoView.precisionReportInput.text = taskQCInfo?.preciseReport
         taskQCInfoView.smartLinkReportInput.text = taskQCInfo?.smartlinkReport
+        
         taskQCInfoView.reliabilityTestRemarkInput.text = taskQCInfo?.reliabilityRemark
+        if let substrReliabilityRemark = taskQCInfo?.substrReliabilityRemark {
+            if substrReliabilityRemark != "" {
+                taskQCInfoView.reliabilityTestRemarkInput.text = substrReliabilityRemark
+                dispatch_async(dispatch_get_main_queue(), {
+                    taskQCInfoView.displayReliabilityFullTextBtn.hidden = false
+                })
+            }
+        }
+        
         taskQCInfoView.ftyPackInfoInput.text = taskQCInfo?.ftyPackingInfo
         taskQCInfoView.ftyDroptestInfoInput.text = taskQCInfo?.ftyDroptestInfo
         
