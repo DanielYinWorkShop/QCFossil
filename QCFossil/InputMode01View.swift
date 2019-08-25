@@ -191,10 +191,10 @@ class InputMode01View: InputModeSCMaster {
     func updateOptionalInspElmts(inspElmtNames:[String]=[], action:String="filter") {
         
         if action == "filter" {
-            self.optInspElms = self.optInspElmsMaster
+            /*self.optInspElms = self.optInspElmsMaster
             for inspElmtName in inspElmtNames {
                 self.optInspElms = self.optInspElms.filter({ _ENGLISH ? $0.elementNameEn != inspElmtName : $0.elementNameCn != inspElmtName })
-            }
+            }*/
         }else{
             for inspElmtName in inspElmtNames {
                 let inspElmt = self.optInspElmsMaster.filter({ _ENGLISH ? $0.elementNameEn == inspElmtName : $0.elementNameCn == inspElmtName })

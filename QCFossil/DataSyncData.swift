@@ -837,9 +837,9 @@ let _DS_FGPODATA = [
             "modify_date",
             "deleted_flag",
             "delete_date",
-            "prod_desc"
-            //"material_category",
-            //"market"
+            "prod_desc",
+            "material_category",
+            "market"
         ]
     ]
 ]
@@ -941,13 +941,18 @@ let _DS_TASKDATA = [
             "avail_inspect_qty",
             "sampling_qty",
             "inspect_enable_flag",
+            "item_barcode",
+            "retail_price",
+            "currency",
             "create_date",
             "create_user",
             "modify_date",
-            "modify_user"
+            "modify_user",
+            "style_size",
+            "substr_style_size"
         ],
         "inspect_task_qc_info_list" : [
-            "task_id",
+            "ref_task_id",
             "aql_qty",
             "product_class",
             "quality_standard",
@@ -960,7 +965,7 @@ let _DS_TASKDATA = [
             "ts_submit_date",
             "ts_result",
             "qc_booking_ref_no",
-            "ss_comment_readyvarchar",
+            "ss_comment_ready",
             "ss_ready",
             "ss_photo_name",
             "battery_production_code",
@@ -990,7 +995,18 @@ let _DS_TASKDATA = [
             "create_user",
             "create_date",
             "modify_user",
-            "modify_date"
+            "modify_date",
+            "inspector_names",
+            "substr_inspector_names",
+            "substr_quality_standard",
+            "substr_length_requirement",
+            "substr_movt_origin",
+            "substr_combine_qc_remarks",
+            "substr_ss_ready",
+            "substr_pre_inspect_remark",
+            "substr_ss_comment_ready",
+            "substr_ca_form",
+            "substr_reliability_remark"
         ]
     ]
 ]
@@ -1106,7 +1122,8 @@ let _DS_DL_STYLE_PHOTO = [
             "style_no",
             "ss_photo_name",
             "ss_photo_file",
-            "create_user",
+            "cb_photo_name",
+            "cb_photo_file",
             "create_date",
             "modify_date",
             "deleted_flag",
@@ -1122,7 +1139,7 @@ let _DS_ACKSTYLEPHOTO = [
     "APIPARA" : [
         "service_token": _DS_SERVICETOKEN,
         "service_session": _DS_SESSION,
-        "inspect_task_count": "0"
+        "style_photo_count": "0"
     ],
     "ACTIONNAMES" : [
         "novalue"
@@ -1274,25 +1291,35 @@ let _DS_ULTASKDATA = [
             "report_running_no" : "",
             "inspection_no" : "",
             "inspection_date" : "",
-            "inspect_setup_id" : "",
-            "tmpl_id" : "",
             "task_remarks" : "",
             "vdr_notes" : "",
             "inspect_result_value_id" : "",
             "inspector_sign_image_file" : "",
             "vdr_sign_name" : "",
             "vdr_sign_image_file" : "",
-            "vdr_sign_date" : "",
             "task_status" : "",
+            "upload_inspector_id" : "",
             "ref_task_id" : "",
             "rec_status" : "",
-            "create_date" : "",
             "create_user" : "",
-            "modify_date" : "",
+            "create_date" : "",
             "modify_user" : "",
+            "modify_date" : "",
             "deleted_flag" : "",
+            "delete_user" : "",
             "delete_date" : "",
-            "delete_user" : ""
+            "inspect_setup_id" : "",
+            "vdr_sign_date" : "",
+            "tmpl_id" : "",
+            "data_refuse_desc" : "",
+            "app_ready_purge_date" : "",
+            "review_remarks" : "",
+            "review_user" : "",
+            "review_date" : "",
+            "cancel_date" : "",
+            "confirm_upload_date" : "",
+            "qc_remarks_option_list" : "",
+            "additional_admin_item_option_list" : ""
         ],
         "inspect_task_inspector_list": [
             "task_id" : "",
@@ -1306,15 +1333,20 @@ let _DS_ULTASKDATA = [
         "inspect_task_item_list": [
             "task_id" : "",
             "po_item_id" : "",
-            "ref_qc_plan_line_id" : "",
             "target_inspect_qty" : "",
             "avail_inspect_qty" : "",
-            "sampling_qty" : "",
             "inspect_enable_flag" : "",
-            "create_date" : "",
             "create_user" : "",
+            "create_date" : "",
+            "modify_user" : "",
             "modify_date" : "",
-            "modify_user" : ""
+            "ref_qc_plan_line_id" : "",
+            "sampling_qty" : "",
+            "item_barcode" : "",
+            "retail_price" : "",
+            "currency" : "",
+            "style_size" : "",
+            "substr_style_size" : ""
         ],
         "task_inspect_field_value_list": [
             "value_id" : "",

@@ -183,6 +183,15 @@ class PopoverViewController: UIViewController {
             }
             
             return
+        }else if dataType == _POPOVERNOTITLE {
+            self.navigationItem.title = ""
+            
+            let descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 325,height: 500))
+            descView.text = selectedValue
+            descView.userInteractionEnabled = false
+            
+            self.view.addSubview(descView)
+            
         }else{
             inputview = PopoverViewsInput.loadFromNibNamed("PopoverViews")!
             inputview.initData(sourceType)

@@ -8,7 +8,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -245,7 +245,7 @@
         <!--Task Search-->
         <scene sceneID="DmD-kg-6gc">
             <objects>
-                <viewController storyboardIdentifier="TaskSearch" id="QKC-3l-lzB" customClass="TaskSearchViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TaskSearch" id="QKC-3l-lzB" customClass="TaskSearchViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5e9-cM-Zzi"/>
                         <viewControllerLayoutGuide type="bottom" id="pFK-kJ-klV"/>
@@ -556,7 +556,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskCell" rowHeight="90" id="VA7-MR-VTR" customClass="TaskTableViewCell" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskCell" rowHeight="90" id="VA7-MR-VTR" customClass="TaskTableViewCell" customModule="QC0731pwl" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VA7-MR-VTR" id="FLg-7y-AXn">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="89.5"/>
@@ -676,7 +676,7 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="150" y="44" width="39" height="21"/>
+                                                        <rect key="frame" x="150" y="44" width="113" height="21"/>
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PO List/Material" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O4x-cb-Sn8">
@@ -802,7 +802,7 @@
                                                         <color key="titleColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="148" y="42" width="94" height="21"/>
+                                                        <rect key="frame" x="148" y="42" width="115" height="21"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="showProdDescOnClick:" destination="VA7-MR-VTR" eventType="touchUpInside" id="ZCo-pX-OZK"/>
@@ -1235,7 +1235,7 @@
         <!--PO Search-->
         <scene sceneID="Hee-Z9-Axc">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="mSk-2O-emX" customClass="POSearchViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="mSk-2O-emX" customClass="POSearchViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1OH-ay-ZSX"/>
                         <viewControllerLayoutGuide type="bottom" id="h3j-8z-EOk"/>
@@ -1490,7 +1490,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="poCell" rowHeight="90" id="IFr-QW-GdC" customClass="POSearchTableViewCell" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="poCell" rowHeight="90" id="IFr-QW-GdC" customClass="POSearchTableViewCell" customModule="QC0731pwl" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IFr-QW-GdC" id="JcX-CH-zoF">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="89.5"/>
@@ -1971,7 +1971,7 @@
         <!--Task Form-->
         <scene sceneID="4AW-7p-bAw">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="ZQl-MA-kty" customClass="CreateTaskViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="ZQl-MA-kty" customClass="CreateTaskViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyI-OP-idF"/>
                         <viewControllerLayoutGuide type="bottom" id="2JR-3b-FKh"/>
@@ -2151,7 +2151,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="poCellInCreateTaskVC" rowHeight="100" id="l8L-yX-ZNq" customClass="CreateTaskTableViewCell" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="poCellInCreateTaskVC" rowHeight="100" id="l8L-yX-ZNq" customClass="CreateTaskTableViewCell" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l8L-yX-ZNq" id="v1s-XF-hUf">
@@ -2513,7 +2513,7 @@
         <!--Task Type View Controller-->
         <scene sceneID="yvM-cz-m6Z">
             <objects>
-                <viewController id="oP2-Nv-zKF" customClass="TaskTypeViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oP2-Nv-zKF" customClass="TaskTypeViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cYM-O7-jyz"/>
                         <viewControllerLayoutGuide type="bottom" id="jrS-KY-QJo"/>
@@ -2689,7 +2689,7 @@
         <!--Left Menu View Controller-->
         <scene sceneID="d3j-2O-cLr">
             <objects>
-                <viewController id="LX1-k9-p9p" userLabel="Left Menu View Controller" customClass="LeftMenuViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="LX1-k9-p9p" userLabel="Left Menu View Controller" customClass="LeftMenuViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="20k-el-szY"/>
                         <viewControllerLayoutGuide type="bottom" id="rjF-Qv-ZAI"/>
@@ -2818,7 +2818,7 @@
         <!--Container-->
         <scene sceneID="Mla-kA-PmJ">
             <objects>
-                <viewController title="Container" id="pXB-kh-0oP" customClass="ContainerViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Container" id="pXB-kh-0oP" customClass="ContainerViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dv0-je-B6Q"/>
                         <viewControllerLayoutGuide type="bottom" id="iFW-aR-g20"/>
@@ -2984,7 +2984,7 @@
         <!--Embed Container Controller-->
         <scene sceneID="Xfu-O8-rlZ">
             <objects>
-                <viewController id="hrb-Z9-vhm" customClass="EmbedContainerController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="hrb-Z9-vhm" customClass="EmbedContainerController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mrY-jz-1nt"/>
                         <viewControllerLayoutGuide type="bottom" id="TpG-eq-1CX"/>
@@ -2996,11 +2996,11 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
-                        <segue destination="wgn-qs-fdA" kind="custom" identifier="TaskSearchSegue" customClass="CustomSegue" customModule="QC0617pwl" customModuleProvider="target" id="cGY-Y7-kRQ"/>
-                        <segue destination="zIt-eN-EAw" kind="custom" identifier="PoSearchSegue" customClass="CustomSegue" customModule="QC0617pwl" customModuleProvider="target" id="kyC-I0-5JR"/>
-                        <segue destination="zrB-e2-5R8" kind="custom" identifier="DataSyncSegue" customClass="CustomSegue" customModule="QC0617pwl" customModuleProvider="target" id="AWd-dM-tV7"/>
-                        <segue destination="zyn-pE-H4t" kind="custom" identifier="DataControlSegue" customClass="CustomSegue" customModule="QC0617pwl" customModuleProvider="target" id="gJB-3S-fid"/>
-                        <segue destination="vWA-iu-geN" kind="custom" identifier="UserSettingSegue" customClass="CustomSegue" customModule="QC0617pwl" customModuleProvider="target" id="QLb-02-Jjg"/>
+                        <segue destination="wgn-qs-fdA" kind="custom" identifier="TaskSearchSegue" customClass="CustomSegue" customModule="QC0731pwl" customModuleProvider="target" id="cGY-Y7-kRQ"/>
+                        <segue destination="zIt-eN-EAw" kind="custom" identifier="PoSearchSegue" customClass="CustomSegue" customModule="QC0731pwl" customModuleProvider="target" id="kyC-I0-5JR"/>
+                        <segue destination="zrB-e2-5R8" kind="custom" identifier="DataSyncSegue" customClass="CustomSegue" customModule="QC0731pwl" customModuleProvider="target" id="AWd-dM-tV7"/>
+                        <segue destination="zyn-pE-H4t" kind="custom" identifier="DataControlSegue" customClass="CustomSegue" customModule="QC0731pwl" customModuleProvider="target" id="gJB-3S-fid"/>
+                        <segue destination="vWA-iu-geN" kind="custom" identifier="UserSettingSegue" customClass="CustomSegue" customModule="QC0731pwl" customModuleProvider="target" id="QLb-02-Jjg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KVR-D0-2pk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3028,7 +3028,7 @@
         <!--Data Control-->
         <scene sceneID="doU-X9-V0e">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="1Lk-vc-LVA" customClass="DataCtrlViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="1Lk-vc-LVA" customClass="DataCtrlViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SCC-yP-Bds"/>
                         <viewControllerLayoutGuide type="bottom" id="ulD-nG-PGS"/>
@@ -3251,7 +3251,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BackupFileCell" rowHeight="120" id="1GW-3p-7Gn" customClass="BackupTableViewCell" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BackupFileCell" rowHeight="120" id="1GW-3p-7Gn" customClass="BackupTableViewCell" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1GW-3p-7Gn" id="HqX-0V-frd">
@@ -3527,7 +3527,7 @@
         <!--Data Sync-->
         <scene sceneID="APp-x6-7YP">
             <objects>
-                <viewController id="bzr-g9-cb2" customClass="DataSyncViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bzr-g9-cb2" customClass="DataSyncViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SpG-5c-BAI"/>
                         <viewControllerLayoutGuide type="bottom" id="bpB-9J-vXY"/>
@@ -3560,7 +3560,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="304" y="390" width="381" height="21"/>
+                                    <rect key="frame" x="304" y="483" width="381" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDW-AD-x8S">
@@ -3569,7 +3569,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="304" y="687" width="381" height="21"/>
+                                    <rect key="frame" x="304" y="780" width="381" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Download" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0D-Qo-vgx">
@@ -3587,7 +3587,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="390" width="181" height="21"/>
+                                    <rect key="frame" x="86" y="483" width="181" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Upload Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJ5-oM-T0h">
@@ -3596,7 +3596,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="687" width="181" height="21"/>
+                                    <rect key="frame" x="86" y="780" width="181" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Upload Tasks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdq-6g-D6s">
@@ -3605,7 +3605,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="85" y="649" width="233" height="21"/>
+                                    <rect key="frame" x="85" y="742" width="233" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Upload" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyI-su-fce">
@@ -3614,7 +3614,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="541" width="181" height="21"/>
+                                    <rect key="frame" x="86" y="634" width="181" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-Master Data" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPx-MP-U26">
@@ -3650,7 +3650,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="570" width="160" height="21"/>
+                                    <rect key="frame" x="86" y="663" width="160" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-Task Result Photo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dep-iC-XaM">
@@ -3659,7 +3659,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="599" width="160" height="21"/>
+                                    <rect key="frame" x="86" y="692" width="160" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-Inspection Setup Data" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ew7-vH-n5K">
@@ -3678,7 +3678,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="448" width="120" height="35"/>
+                                    <rect key="frame" x="86" y="541" width="120" height="35"/>
                                 </variation>
                                 <connections>
                                     <action selector="downloadDataOnClick:" destination="bzr-g9-cb2" eventType="touchUpInside" id="G0p-g6-CZR"/>
@@ -3691,7 +3691,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="86" y="742" width="120" height="35"/>
+                                    <rect key="frame" x="86" y="835" width="120" height="35"/>
                                 </variation>
                                 <connections>
                                     <action selector="uploadDataOnClick:" destination="bzr-g9-cb2" eventType="touchUpInside" id="Eo6-f8-VgG"/>
@@ -3700,13 +3700,13 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qyL-pk-yg5">
                                 <rect key="frame" x="0.0" y="-2" width="150" height="2"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="225" y="465" width="460" height="2"/>
+                                    <rect key="frame" x="225" y="558" width="460" height="2"/>
                                 </variation>
                             </progressView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eBz-NE-CEq">
                                 <rect key="frame" x="0.0" y="-2" width="150" height="2"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="225" y="759" width="460" height="2"/>
+                                    <rect key="frame" x="225" y="852" width="460" height="2"/>
                                 </variation>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeG-3h-6s8">
@@ -3715,7 +3715,7 @@
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="225" y="446" width="460" height="21"/>
+                                    <rect key="frame" x="225" y="539" width="460" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jKl-Tt-9cr">
@@ -3724,7 +3724,7 @@
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="225" y="740" width="460" height="21"/>
+                                    <rect key="frame" x="225" y="833" width="460" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tester" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSf-83-CON">
@@ -3778,13 +3778,13 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="K18-xV-qYT">
                                 <rect key="frame" x="0.0" y="-2" width="150" height="2"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="320" y="580" width="365" height="2"/>
+                                    <rect key="frame" x="320" y="673" width="365" height="2"/>
                                 </variation>
                             </progressView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NYl-J9-qam">
                                 <rect key="frame" x="0.0" y="-2" width="150" height="2"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="320" y="609" width="365" height="2"/>
+                                    <rect key="frame" x="320" y="702" width="365" height="2"/>
                                 </variation>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FdV-kQ-vLt">
@@ -3838,7 +3838,7 @@
                                 <color key="textColor" red="0.2745755017" green="0.63488775490000005" blue="0.99022155999999995" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="688" y="568" width="80" height="21"/>
+                                    <rect key="frame" x="688" y="661" width="80" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTX-wp-gfS">
@@ -3847,7 +3847,7 @@
                                 <color key="textColor" red="0.2745755017" green="0.63488775490000005" blue="0.99022155999999995" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="688" y="597" width="80" height="21"/>
+                                    <rect key="frame" x="688" y="690" width="80" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Login Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0GN-hk-lCW">
@@ -3874,7 +3874,31 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                    <rect key="frame" x="304" y="649" width="381" height="21"/>
+                                    <rect key="frame" x="304" y="742" width="381" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-Style Photo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdH-AI-bb4">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="85" y="383" width="160" height="21"/>
+                                </variation>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2ne-P3-Itz">
+                                <rect key="frame" x="0.0" y="-2" width="150" height="2"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="319" y="393" width="365" height="2"/>
+                                </variation>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vZ4-RI-He8">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.2745755017" green="0.63488775490000005" blue="0.99022155999999995" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="697" y="384" width="70" height="21"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-Clean Task" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9A-Xy-8jB">
@@ -3899,6 +3923,30 @@
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
                                     <rect key="frame" x="697" y="354" width="70" height="21"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-Clean Style Photo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ueG-ua-xFz">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="86" y="413" width="160" height="21"/>
+                                </variation>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QMY-En-7vX">
+                                <rect key="frame" x="0.0" y="-2" width="150" height="2"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="320" y="423" width="365" height="2"/>
+                                </variation>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TL4-EM-fMe">
+                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.2745755017" green="0.63488775490000005" blue="0.99022155999999995" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="698" y="414" width="70" height="21"/>
                                 </variation>
                             </label>
                         </subviews>
@@ -3945,9 +3993,15 @@
                                 <exclude reference="0GN-hk-lCW"/>
                                 <exclude reference="Qz8-nl-NXA"/>
                                 <exclude reference="gFB-om-sun"/>
+                                <exclude reference="xdH-AI-bb4"/>
+                                <exclude reference="2ne-P3-Itz"/>
+                                <exclude reference="vZ4-RI-He8"/>
                                 <exclude reference="C9A-Xy-8jB"/>
                                 <exclude reference="5m0-RL-hnC"/>
                                 <exclude reference="eUe-bI-z00"/>
+                                <exclude reference="ueG-ua-xFz"/>
+                                <exclude reference="QMY-En-7vX"/>
+                                <exclude reference="TL4-EM-fMe"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -3992,9 +4046,15 @@
                                 <include reference="0GN-hk-lCW"/>
                                 <include reference="Qz8-nl-NXA"/>
                                 <include reference="gFB-om-sun"/>
+                                <include reference="xdH-AI-bb4"/>
+                                <include reference="2ne-P3-Itz"/>
+                                <include reference="vZ4-RI-He8"/>
                                 <include reference="C9A-Xy-8jB"/>
                                 <include reference="5m0-RL-hnC"/>
                                 <include reference="eUe-bI-z00"/>
+                                <include reference="ueG-ua-xFz"/>
+                                <include reference="QMY-En-7vX"/>
+                                <include reference="TL4-EM-fMe"/>
                             </mask>
                         </variation>
                     </view>
@@ -4036,6 +4096,12 @@
                         <outlet property="masterDataProcessBar" destination="35Z-LZ-BeZ" id="H2e-Sq-hXK"/>
                         <outlet property="mstrDataStatus" destination="FdV-kQ-vLt" id="N0Q-c5-YmI"/>
                         <outlet property="setupDataProcessBar" destination="PGh-a2-tre" id="tZw-rP-KTd"/>
+                        <outlet property="stylePhotoCleanLabel" destination="ueG-ua-xFz" id="SqV-xP-1xQ"/>
+                        <outlet property="stylePhotoCleanProcessBar" destination="QMY-En-7vX" id="rpE-CO-bpG"/>
+                        <outlet property="stylePhotoCleanStatus" destination="TL4-EM-fMe" id="rHG-ej-eCx"/>
+                        <outlet property="stylePhotoLabel" destination="xdH-AI-bb4" id="T50-IR-udj"/>
+                        <outlet property="stylePhotoPrecessBar" destination="2ne-P3-Itz" id="CH4-kO-JcD"/>
+                        <outlet property="stylePhotoStatus" destination="vZ4-RI-He8" id="h6j-H6-u3V"/>
                         <outlet property="taskBookingDataLabel" destination="7Mg-lD-RtB" id="gqw-lp-J0I"/>
                         <outlet property="taskDataProcessBar" destination="mN4-OO-7rE" id="yOC-Zo-pOl"/>
                         <outlet property="taskDataStatus" destination="xe1-Lh-hB7" id="yVr-T4-qDz"/>
@@ -4060,7 +4126,7 @@
         <!--User Setting-->
         <scene sceneID="d4T-hS-Wx3">
             <objects>
-                <viewController id="wkP-fg-Qyf" customClass="UserSettingViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wkP-fg-Qyf" customClass="UserSettingViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mvq-tW-4zG"/>
                         <viewControllerLayoutGuide type="bottom" id="z8N-Pw-puw"/>
@@ -4323,7 +4389,7 @@
         <!--Create Task Form-->
         <scene sceneID="WTT-sn-Aq7">
             <objects>
-                <viewController title="Create Task Form" automaticallyAdjustsScrollViewInsets="NO" id="aPk-6w-Rfo" customClass="TaskDetailsViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Create Task Form" automaticallyAdjustsScrollViewInsets="NO" id="aPk-6w-Rfo" customClass="TaskDetailsViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7yd-Ad-1Dt"/>
                         <viewControllerLayoutGuide type="bottom" id="TET-PL-pla"/>
@@ -4361,7 +4427,7 @@
         <!--Sign-Off & Confirm-->
         <scene sceneID="JmV-Wg-L0o">
             <objects>
-                <viewController id="Twn-dU-IfP" customClass="SignoffViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Twn-dU-IfP" customClass="SignoffViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4ST-By-YPh"/>
                         <viewControllerLayoutGuide type="bottom" id="SHx-ya-R8F"/>
@@ -4370,7 +4436,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dqb-l8-qQg" customClass="SignoffView" customModule="QC0617pwl" customModuleProvider="target">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dqb-l8-qQg" customClass="SignoffView" customModule="QC0731pwl" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -4415,7 +4481,7 @@
                                     <rect key="frame" x="18" y="137" width="80" height="21"/>
                                 </variation>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bNa-g3-ozn" customClass="SignoffView" customModule="QC0617pwl" customModuleProvider="target">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bNa-g3-ozn" customClass="SignoffView" customModule="QC0731pwl" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -4569,7 +4635,7 @@
         <!--Task Finding-->
         <scene sceneID="qhz-g3-GnA">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Ax7-il-iTv" customClass="InspectionDefectList" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Ax7-il-iTv" customClass="InspectionDefectList" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LQF-fx-EYL"/>
                         <viewControllerLayoutGuide type="bottom" id="9mb-Eb-A4c"/>
@@ -4582,7 +4648,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode4" rowHeight="170" id="wxj-MO-lua" customClass="InspectionDefectTableViewCellMode4" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode4" rowHeight="170" id="wxj-MO-lua" customClass="InspectionDefectTableViewCellMode4" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wxj-MO-lua" id="Ijz-vT-pkH">
@@ -4616,7 +4682,7 @@
                                                         <rect key="frame" x="79" y="16" width="669" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wR0-fO-otd" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wR0-fO-otd" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -4626,7 +4692,7 @@
                                                         <action selector="addDefectPhoto:" destination="wxj-MO-lua" eventType="touchUpInside" id="Sze-Hb-gdd"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M32-pP-CNe" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M32-pP-CNe" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_camera"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -4636,7 +4702,7 @@
                                                         <action selector="addDefectPhotoFromCamera:" destination="wxj-MO-lua" eventType="touchUpInside" id="o63-5R-9su"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QUs-3G-rBT" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QUs-3G-rBT" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -4719,7 +4785,7 @@
                                             <outlet property="indexLabel" destination="cya-T8-EeY" id="Xsy-FX-J6x"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode3" rowHeight="170" id="Fcm-U3-dYb" customClass="InspectionDefectTableViewCellMode3" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode3" rowHeight="170" id="Fcm-U3-dYb" customClass="InspectionDefectTableViewCellMode3" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fcm-U3-dYb" id="zqo-8d-gFZ">
@@ -4753,7 +4819,7 @@
                                                         <rect key="frame" x="79" y="16" width="669" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sZJ-Di-9jU" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sZJ-Di-9jU" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -4763,7 +4829,7 @@
                                                         <action selector="addDefectPhoto:" destination="Fcm-U3-dYb" eventType="touchUpInside" id="yox-h0-WeN"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fGk-f4-e15" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fGk-f4-e15" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_camera"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -4808,7 +4874,7 @@
                                                         <rect key="frame" x="572" y="88" width="181" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54m-KC-nQg" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54m-KC-nQg" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -4856,11 +4922,11 @@
                                             <outlet property="indexLabel" destination="VQg-Va-OOS" id="STz-px-mTw"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode1" rowHeight="250" id="9Z1-em-5JS" customClass="InspectionDefectTableViewCellMode1" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode1" rowHeight="320" id="9Z1-em-5JS" customClass="InspectionDefectTableViewCellMode1" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Z1-em-5JS" id="5lR-EF-OLv">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="249.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="319.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="baX-uG-Qay">
@@ -4908,24 +4974,14 @@
                                                         <rect key="frame" x="77" y="109" width="155" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eti-UV-pfa" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eti-UV-pfa" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="8" y="194" width="40" height="40"/>
+                                                        <rect key="frame" x="8" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhoto:" destination="9Z1-em-5JS" eventType="touchUpInside" id="qZa-S2-n5W"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UkA-ki-Bbr" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
-                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                                    <state key="normal" title="Button" image="photo_camera"/>
-                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="66" y="194" width="40" height="40"/>
-                                                    </variation>
-                                                    <connections>
-                                                        <action selector="addDefectPhotoFromCamera:" destination="9Z1-em-5JS" eventType="touchUpInside" id="2pd-kH-753"/>
                                                     </connections>
                                                 </button>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D0Q-Db-QBk">
@@ -4944,11 +5000,28 @@
                                                         <rect key="frame" x="395" y="134" width="365" height="30"/>
                                                     </variation>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Others Remark" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBe-wJ-29v">
+                                                    <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="77" y="184" width="365" height="21"/>
+                                                    </variation>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CMk-w9-X33">
+                                                    <rect key="frame" x="-25" y="-30" width="97" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="77" y="209" width="683" height="30"/>
+                                                    </variation>
+                                                </textField>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0y-4o-Yzm">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="remove"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="708" y="194" width="40" height="40"/>
+                                                        <rect key="frame" x="708" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="removeDefectCell:" destination="9Z1-em-5JS" eventType="touchUpInside" id="A3C-Iy-Qay"/>
@@ -5029,11 +5102,11 @@
                                                         <rect key="frame" x="77" y="16" width="262" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4q-5S-Uet" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4q-5S-Uet" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="124" y="194" width="40" height="40"/>
+                                                        <rect key="frame" x="124" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhotoFromAlbum:" destination="9Z1-em-5JS" eventType="touchUpInside" id="W9n-fN-bxJ"/>
@@ -5087,6 +5160,23 @@
                                                         <rect key="frame" x="348" y="80" width="412" height="21"/>
                                                     </variation>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IE-HS-fiD">
+                                                    <rect key="frame" x="384" y="117" width="21" height="21"/>
+                                                    <state key="normal" image="select_icon"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="739" y="138" width="21" height="21"/>
+                                                    </variation>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UkA-ki-Bbr" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
+                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <state key="normal" title="Button" image="photo_camera"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="66" y="265" width="40" height="40"/>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="addDefectPhotoFromCamera:" destination="9Z1-em-5JS" eventType="touchUpInside" id="2pd-kH-753"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -5096,9 +5186,10 @@
                                                     <exclude reference="XQT-r5-LSk"/>
                                                     <exclude reference="RNU-dL-6Ir"/>
                                                     <exclude reference="eti-UV-pfa"/>
-                                                    <exclude reference="UkA-ki-Bbr"/>
                                                     <exclude reference="D0Q-Db-QBk"/>
                                                     <exclude reference="cnc-xv-jEx"/>
+                                                    <exclude reference="LBe-wJ-29v"/>
+                                                    <exclude reference="CMk-w9-X33"/>
                                                     <exclude reference="F0y-4o-Yzm"/>
                                                     <exclude reference="Aun-Ry-9fu"/>
                                                     <exclude reference="dd1-eC-fHE"/>
@@ -5116,6 +5207,8 @@
                                                     <exclude reference="jFa-ey-hPf"/>
                                                     <exclude reference="sGz-hd-szH"/>
                                                     <exclude reference="1yi-re-8RP"/>
+                                                    <exclude reference="2IE-HS-fiD"/>
+                                                    <exclude reference="UkA-ki-Bbr"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -5126,9 +5219,10 @@
                                                     <include reference="XQT-r5-LSk"/>
                                                     <include reference="RNU-dL-6Ir"/>
                                                     <include reference="eti-UV-pfa"/>
-                                                    <include reference="UkA-ki-Bbr"/>
                                                     <include reference="D0Q-Db-QBk"/>
                                                     <include reference="cnc-xv-jEx"/>
+                                                    <include reference="LBe-wJ-29v"/>
+                                                    <include reference="CMk-w9-X33"/>
                                                     <include reference="F0y-4o-Yzm"/>
                                                     <include reference="Aun-Ry-9fu"/>
                                                     <include reference="dd1-eC-fHE"/>
@@ -5146,6 +5240,8 @@
                                                     <include reference="jFa-ey-hPf"/>
                                                     <include reference="sGz-hd-szH"/>
                                                     <include reference="1yi-re-8RP"/>
+                                                    <include reference="2IE-HS-fiD"/>
+                                                    <include reference="UkA-ki-Bbr"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -5170,15 +5266,25 @@
                                             <outlet property="majorLabel" destination="Lx8-Ze-RQk" id="74W-uz-EgW"/>
                                             <outlet property="minorInput" destination="Aun-Ry-9fu" id="9NF-GE-ufc"/>
                                             <outlet property="minorLabel" destination="dd1-eC-fHE" id="qTw-3M-F4U"/>
+                                            <outlet property="othersRemarkInput" destination="CMk-w9-X33" id="1Zw-fl-eeR"/>
+                                            <outlet property="othersRemarkLabel" destination="LBe-wJ-29v" id="Wdh-Mw-lkP"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode2" rowHeight="250" id="Sh6-Jo-XQX" customClass="InspectionDefectTableViewCellMode2" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InspDefectCellMode2" rowHeight="320" id="Sh6-Jo-XQX" customClass="InspectionDefectTableViewCellMode2" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sh6-Jo-XQX" id="JmH-D2-Jxf">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="249.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="319.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pIf-x4-0Oq">
+                                                    <rect key="frame" x="8" y="112" width="400" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="416" y="130" width="344" height="30"/>
+                                                    </variation>
+                                                </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdH-uA-oWO">
                                                     <rect key="frame" x="8" y="41" width="61" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -5264,37 +5370,37 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="708" y="185" width="40" height="40"/>
+                                                        <rect key="frame" x="708" y="268" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="removeDefectCell:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="aIN-X8-FT5"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cf8-dB-5ae" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cf8-dB-5ae" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="8" y="182" width="40" height="40"/>
+                                                        <rect key="frame" x="8" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhoto:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="iD5-Le-2Aj"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7o3-zf-OhI" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7o3-zf-OhI" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_camera"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="66" y="182" width="40" height="40"/>
+                                                        <rect key="frame" x="66" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhotoFromCamera:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="l3k-3D-17h"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aou-eF-l4Y" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aou-eF-l4Y" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="124" y="182" width="40" height="40"/>
+                                                        <rect key="frame" x="124" y="265" width="40" height="40"/>
                                                     </variation>
                                                     <connections>
                                                         <action selector="addDefectPhotoFromAlbum:" destination="Sh6-Jo-XQX" eventType="touchUpInside" id="AOs-X5-fGS"/>
@@ -5431,17 +5537,34 @@
                                                         <rect key="frame" x="416" y="71" width="344" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pIf-x4-0Oq">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Others Remark" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehf-E9-KHJ">
+                                                    <rect key="frame" x="8" y="83" width="400" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="77" y="178" width="344" height="21"/>
+                                                    </variation>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6oU-19-wAG">
                                                     <rect key="frame" x="8" y="112" width="400" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="416" y="130" width="344" height="30"/>
+                                                        <rect key="frame" x="77" y="207" width="683" height="30"/>
                                                     </variation>
                                                 </textField>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGY-ej-qSZ">
+                                                    <rect key="frame" x="384" y="117" width="21" height="21"/>
+                                                    <state key="normal" image="select_icon"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="738" y="134" width="21" height="21"/>
+                                                    </variation>
+                                                </button>
                                             </subviews>
                                             <variation key="default">
                                                 <mask key="subviews">
+                                                    <exclude reference="pIf-x4-0Oq"/>
                                                     <exclude reference="qdH-uA-oWO"/>
                                                     <exclude reference="9Y2-hx-4WV"/>
                                                     <exclude reference="6KI-qg-NRk"/>
@@ -5471,11 +5594,14 @@
                                                     <exclude reference="reu-Xh-JnR"/>
                                                     <exclude reference="NSm-Ht-bYb"/>
                                                     <exclude reference="spu-Hq-YCF"/>
-                                                    <exclude reference="pIf-x4-0Oq"/>
+                                                    <exclude reference="ehf-E9-KHJ"/>
+                                                    <exclude reference="6oU-19-wAG"/>
+                                                    <exclude reference="tGY-ej-qSZ"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
                                                 <mask key="subviews">
+                                                    <include reference="pIf-x4-0Oq"/>
                                                     <include reference="qdH-uA-oWO"/>
                                                     <include reference="9Y2-hx-4WV"/>
                                                     <include reference="6KI-qg-NRk"/>
@@ -5505,7 +5631,9 @@
                                                     <include reference="reu-Xh-JnR"/>
                                                     <include reference="NSm-Ht-bYb"/>
                                                     <include reference="spu-Hq-YCF"/>
-                                                    <include reference="pIf-x4-0Oq"/>
+                                                    <include reference="ehf-E9-KHJ"/>
+                                                    <include reference="6oU-19-wAG"/>
+                                                    <include reference="tGY-ej-qSZ"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -5518,7 +5646,6 @@
                                             <outlet property="defectDesc2Input" destination="vli-6e-Ati" id="pHq-lN-tmm"/>
                                             <outlet property="defectDesc2Label" destination="h7m-av-aQw" id="QNl-2K-hBS"/>
                                             <outlet property="defectDesc2ListIcon" destination="DoE-ds-dVy" id="JAo-xI-ibH"/>
-                                            <outlet property="defectDescInput" destination="pIf-x4-0Oq" id="oqF-MC-TdA"/>
                                             <outlet property="defectDescLabel" destination="aUL-rt-PEM" id="BN5-IG-47S"/>
                                             <outlet property="defectMajorQtyInput" destination="hko-5g-Z4Y" id="r0T-qs-PfZ"/>
                                             <outlet property="defectMajorQtyLabel" destination="YRc-hY-8AJ" id="EEC-nV-pzb"/>
@@ -5528,12 +5655,15 @@
                                             <outlet property="defectPPILabel" destination="6KI-qg-NRk" id="tvr-gV-Krq"/>
                                             <outlet property="defectPositInput" destination="xIw-al-0Pq" id="azG-2i-69N"/>
                                             <outlet property="defectPositLabel" destination="9Y2-hx-4WV" id="CeA-i0-b1C"/>
+                                            <outlet property="defectRemarkOptionList" destination="pIf-x4-0Oq" id="g4u-Ty-anR"/>
                                             <outlet property="defectTotalQtyInput" destination="reu-Xh-JnR" id="xZi-F3-r9w"/>
                                             <outlet property="defectTotalQtyLabel" destination="vKV-Em-FQs" id="w45-lZ-8As"/>
                                             <outlet property="defectTypeInput" destination="NTK-dT-Ca7" id="xyH-OQ-N4n"/>
                                             <outlet property="defectTypeLabel" destination="QyD-cz-oe9" id="EXH-sk-SgH"/>
                                             <outlet property="errorMessageLabel" destination="spu-Hq-YCF" id="FyK-LQ-WbY"/>
                                             <outlet property="indexLabel" destination="qdH-uA-oWO" id="IPa-CL-Ywe"/>
+                                            <outlet property="othersRemarkInput" destination="6oU-19-wAG" id="Lxh-ga-WoK"/>
+                                            <outlet property="othersRemarkLabel" destination="ehf-E9-KHJ" id="0b9-v9-SON"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -5657,7 +5787,7 @@
         <!--Defect List-->
         <scene sceneID="rr1-OS-y3F">
             <objects>
-                <viewController title="Defect List" automaticallyAdjustsScrollViewInsets="NO" id="IIJ-L9-3zw" customClass="DefectListViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Defect List" automaticallyAdjustsScrollViewInsets="NO" id="IIJ-L9-3zw" customClass="DefectListViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="v9f-pv-xt8"/>
                         <viewControllerLayoutGuide type="bottom" id="YIV-k8-eRI"/>
@@ -5670,7 +5800,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCell" rowHeight="225" id="pdx-Ct-kxZ" customClass="DefectListTableViewCell" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCell" rowHeight="225" id="pdx-Ct-kxZ" customClass="DefectListTableViewCell" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pdx-Ct-kxZ" id="8JX-zr-meS">
@@ -5763,7 +5893,7 @@
                                                         <rect key="frame" x="559" y="134" width="201" height="30"/>
                                                     </variation>
                                                 </textField>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEP-zw-bFh" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEP-zw-bFh" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -5773,7 +5903,7 @@
                                                         <action selector="addDefectPhotoButton:" destination="pdx-Ct-kxZ" eventType="touchUpInside" id="BxP-IZ-kW0"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cIy-xg-ris" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cIy-xg-ris" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_camera"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -5838,7 +5968,7 @@
                                                         <rect key="frame" x="346" y="179" width="40" height="40"/>
                                                     </variation>
                                                 </imageView>
-                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1r-cJ-gnS" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1r-cJ-gnS" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                     <state key="normal" title="-">
@@ -5856,7 +5986,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="pdx-Ct-kxZ" eventType="touchUpInside" id="q4p-Fc-7sP"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNR-A3-5Q7" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNR-A3-5Q7" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                     <state key="normal" title="-">
@@ -5874,7 +6004,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="pdx-Ct-kxZ" eventType="touchUpInside" id="epq-gw-tg8"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PKL-Ch-iMJ" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PKL-Ch-iMJ" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                     <state key="normal" title="-">
@@ -5892,7 +6022,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="pdx-Ct-kxZ" eventType="touchUpInside" id="Wx3-sg-WPN"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if4-23-zE8" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if4-23-zE8" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                     <state key="normal" title="-">
@@ -5910,7 +6040,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="pdx-Ct-kxZ" eventType="touchUpInside" id="fI4-nZ-fb1"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4O2-rf-Ky8" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4O2-rf-Ky8" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                     <state key="normal" title="-">
@@ -5937,7 +6067,7 @@
                                                         <rect key="frame" x="8" y="8" width="752" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqC-By-tVR" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqC-By-tVR" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -6038,7 +6168,7 @@
                                             <outlet property="sectionTitle" destination="34g-9c-Mpz" id="JEh-gf-rbz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCellMode3" rowHeight="225" id="tcJ-Vo-Qds" customClass="DefectListTableViewCellMode3" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCellMode3" rowHeight="225" id="tcJ-Vo-Qds" customClass="DefectListTableViewCellMode3" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tcJ-Vo-Qds" id="E8U-Wu-tIo">
@@ -6130,7 +6260,7 @@
                                                         <rect key="frame" x="214" y="179" width="40" height="40"/>
                                                     </variation>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dYI-Af-Wgq" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dYI-Af-Wgq" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="162" width="50" height="50"/>
                                                     <state key="normal" image="photo_library">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6142,7 +6272,7 @@
                                                         <action selector="addDefectPhotoButton:" destination="tcJ-Vo-Qds" eventType="touchUpInside" id="qxY-9a-Hnr"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQd-dK-iZq" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQd-dK-iZq" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="162" width="50" height="50"/>
                                                     <state key="normal" image="photo_camera">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6223,7 +6353,7 @@
                                                         <rect key="frame" x="8" y="29" width="40" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHf-1a-FNO" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHf-1a-FNO" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="247" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6243,7 +6373,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="tcJ-Vo-Qds" eventType="touchUpInside" id="0WR-Um-qOc"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Vs-7v-Q7o" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Vs-7v-Q7o" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="377" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6263,7 +6393,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="tcJ-Vo-Qds" eventType="touchUpInside" id="l7O-hI-cbP"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pb-Xo-mYX" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pb-Xo-mYX" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="312" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6283,7 +6413,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="tcJ-Vo-Qds" eventType="touchUpInside" id="yop-xh-Tp6"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0an-gH-y0Z" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0an-gH-y0Z" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="183" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6303,7 +6433,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="tcJ-Vo-Qds" eventType="touchUpInside" id="Kpa-c4-rDY"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-Ew-E3c" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-Ew-E3c" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="121" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6323,7 +6453,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="tcJ-Vo-Qds" eventType="touchUpInside" id="w2Q-QY-gKr"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A7n-dC-W4F" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A7n-dC-W4F" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="162" width="50" height="50"/>
                                                     <state key="normal" image="photo_album2">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6425,7 +6555,7 @@
                                             <outlet property="sectionName" destination="DCe-SW-l3d" id="wB1-jR-H0M"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCellMode1" rowHeight="225" id="0Sm-mR-a5K" customClass="DefectListTableViewCellMode1" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCellMode1" rowHeight="225" id="0Sm-mR-a5K" customClass="DefectListTableViewCellMode1" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Sm-mR-a5K" id="p3P-F4-jyJ">
@@ -6501,7 +6631,7 @@
                                                         <rect key="frame" x="214" y="179" width="40" height="40"/>
                                                     </variation>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iTB-1l-wJh" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iTB-1l-wJh" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="162" width="50" height="50"/>
                                                     <state key="normal" image="photo_library">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6513,7 +6643,7 @@
                                                         <action selector="addDefectPhotoButton:" destination="0Sm-mR-a5K" eventType="touchUpInside" id="rXj-dd-xmq"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9jp-CK-viU" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9jp-CK-viU" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="162" width="50" height="50"/>
                                                     <state key="normal" image="photo_camera">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6594,7 +6724,7 @@
                                                         <rect key="frame" x="8" y="29" width="40" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B9p-CH-mfZ" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B9p-CH-mfZ" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="247" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6614,7 +6744,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="0Sm-mR-a5K" eventType="touchUpInside" id="RQn-ke-q5s"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZk-e3-FI1" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZk-e3-FI1" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="377" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6634,7 +6764,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="0Sm-mR-a5K" eventType="touchUpInside" id="kta-0i-pHk"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJK-R5-CLM" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJK-R5-CLM" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="312" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6654,7 +6784,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="0Sm-mR-a5K" eventType="touchUpInside" id="cGE-9t-r4e"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="grh-GU-ue5" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="grh-GU-ue5" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="183" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6674,7 +6804,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="0Sm-mR-a5K" eventType="touchUpInside" id="qlu-IS-M66"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5pu-SA-zZz" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5pu-SA-zZz" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="121" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -6694,7 +6824,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="0Sm-mR-a5K" eventType="touchUpInside" id="21d-7w-ggW"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QWw-8o-yhM" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QWw-8o-yhM" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="162" width="50" height="50"/>
                                                     <state key="normal" image="photo_album2">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6883,7 +7013,7 @@
                                             <outlet property="sectionName" destination="8cp-PI-tcW" id="Upf-nm-YO9"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCellMode2" rowHeight="225" id="kUK-Zu-YsE" customClass="DefectListTableViewCellMode2" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DefectCellMode2" rowHeight="225" id="kUK-Zu-YsE" customClass="DefectListTableViewCellMode2" customModule="QC0731pwl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kUK-Zu-YsE" id="Tgy-dG-I1Z">
@@ -7044,7 +7174,7 @@
                                                         <rect key="frame" x="8" y="32" width="43" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pfA-7T-C0O" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pfA-7T-C0O" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_library"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -7054,7 +7184,7 @@
                                                         <action selector="addDefectPhotoButton:" destination="kUK-Zu-YsE" eventType="touchUpInside" id="V2m-cM-0jx"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imN-Ub-MAw" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imN-Ub-MAw" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_camera"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -7064,7 +7194,7 @@
                                                         <action selector="addDefectPhotoFromCamera:" destination="kUK-Zu-YsE" eventType="touchUpInside" id="tPe-dr-l1e"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p6V-uL-rtd" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p6V-uL-rtd" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <state key="normal" title="Button" image="photo_album2"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -7118,7 +7248,7 @@
                                                         <rect key="frame" x="212" y="175" width="40" height="40"/>
                                                     </variation>
                                                 </imageView>
-                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ALX-Jj-msi" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ALX-Jj-msi" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="247" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -7138,7 +7268,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="kUK-Zu-YsE" eventType="touchUpInside" id="GZA-sT-d3k"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V2Y-kN-xlF" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V2Y-kN-xlF" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="377" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -7158,7 +7288,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="kUK-Zu-YsE" eventType="touchUpInside" id="uz1-nc-H2r"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEq-gm-TFf" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEq-gm-TFf" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="312" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -7178,7 +7308,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="kUK-Zu-YsE" eventType="touchUpInside" id="oXj-Zg-X9a"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Men-L6-USv" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Men-L6-USv" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="183" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -7198,7 +7328,7 @@
                                                         <action selector="dismissDfPhotoButton:" destination="kUK-Zu-YsE" eventType="touchUpInside" id="IEt-QE-AIq"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Gg-wF-a4o" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Gg-wF-a4o" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="121" y="159" width="15" height="15"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
@@ -7467,7 +7597,7 @@
         <!--Photo Album-->
         <scene sceneID="zfH-Ss-Ya1">
             <objects>
-                <viewController autoresizesArchivedViewToFullSize="NO" title="Photo Album" id="2qe-Vl-qpG" customClass="PhotoAlbumViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" title="Photo Album" id="2qe-Vl-qpG" customClass="PhotoAlbumViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Jrc-fe-Cdj"/>
                         <viewControllerLayoutGuide type="bottom" id="Jev-Rp-em7"/>
@@ -7480,7 +7610,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PhotoCell" rowHeight="158" id="Dbs-iN-qw1" userLabel="PhotoCell" customClass="PhotoAlbumCellTableViewCell" customModule="QC0617pwl" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PhotoCell" rowHeight="158" id="Dbs-iN-qw1" userLabel="PhotoCell" customClass="PhotoAlbumCellTableViewCell" customModule="QC0731pwl" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dbs-iN-qw1" id="GRX-GI-VZS">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="157.5"/>
@@ -7595,7 +7725,7 @@
                                                         <rect key="frame" x="353" y="71" width="162" height="22"/>
                                                     </variation>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L3S-MV-7Vr" customClass="CustomButton" customModule="QC0617pwl" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L3S-MV-7Vr" customClass="CustomButton" customModule="QC0731pwl" customModuleProvider="target">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
                                                         <rect key="frame" x="8" y="11" width="128" height="128"/>
@@ -7666,7 +7796,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="64"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2b-pK-vyB" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2b-pK-vyB" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <color key="backgroundColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="From Library">
@@ -7701,7 +7831,7 @@
                                     <action selector="taskHeaderSegmentClick:" destination="QKC-3l-lzB" eventType="valueChanged" id="4iu-XT-uWI"/>
                                 </connections>
                             </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UfU-Su-3aw" customClass="CustomControlButton" customModule="QC0617pwl" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UfU-Su-3aw" customClass="CustomControlButton" customModule="QC0731pwl" customModuleProvider="target">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <color key="backgroundColor" red="0.1137254902" green="0.2156862745" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="From Camera">
@@ -7763,10 +7893,49 @@
             </objects>
             <point key="canvasLocation" x="2779.5" y="2042.25"/>
         </scene>
+        <!--QCInfo-->
+        <scene sceneID="dtO-7B-guc">
+            <objects>
+                <navigationController id="bBj-3S-8BH" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="QCInfo" id="ihr-ga-IxC"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BdT-Eg-n0g">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="g7W-1g-2s5" kind="relationship" relationship="rootViewController" id="RTl-em-9DP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jqD-UC-f3d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4323" y="1086.75"/>
+        </scene>
+        <!--QCINFO-->
+        <scene sceneID="pHS-xF-mcM">
+            <objects>
+                <viewController title="QCINFO" id="g7W-1g-2s5" customClass="QCInfoViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sWJ-N2-8Nl"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q2k-5h-F2N"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lih-hn-ug1">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="QCInfo" image="qc_info" selectedImage="qc_info" id="HS8-Qu-84C">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="azm-DA-sfC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kHy-sO-sUl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4323" y="2042.25"/>
+        </scene>
         <!--Task Form-->
         <scene sceneID="3Fz-kh-CFp">
             <objects>
-                <tabBarController title="Task Form" id="4Xw-ya-RUv" customClass="TabBarViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController title="Task Form" id="4Xw-ya-RUv" customClass="TabBarViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="Task Form" id="Lb8-vK-5w9"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
@@ -7779,6 +7948,7 @@
                         <segue destination="BYB-cE-j7s" kind="relationship" relationship="viewControllers" id="uFI-BN-vC3"/>
                         <segue destination="RDx-qH-gEo" kind="relationship" relationship="viewControllers" id="wyn-aY-baa"/>
                         <segue destination="gGJ-io-Ynj" kind="relationship" relationship="viewControllers" id="Jry-wM-GHd"/>
+                        <segue destination="bBj-3S-8BH" kind="relationship" relationship="viewControllers" id="4rE-FU-fkL"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7v-gq-V1D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -7788,7 +7958,7 @@
         <!--User Forget View Controller-->
         <scene sceneID="bNK-4Y-l8g">
             <objects>
-                <viewController id="F2d-kX-Uo1" customClass="UserForgetViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="F2d-kX-Uo1" customClass="UserForgetViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eai-P0-vp3"/>
                         <viewControllerLayoutGuide type="bottom" id="HeE-c0-zOG"/>
@@ -7893,7 +8063,7 @@
         <!--User Forget View Controller-->
         <scene sceneID="SEl-Oq-28f">
             <objects>
-                <viewController storyboardIdentifier="userForget" id="sHs-hw-seb" customClass="UserForgetViewController" customModule="QC0617pwl" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="userForget" id="sHs-hw-seb" customClass="UserForgetViewController" customModule="QC0731pwl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eMx-J6-b8h"/>
                         <viewControllerLayoutGuide type="bottom" id="B1M-9F-9Je"/>
@@ -8028,6 +8198,7 @@
         <image name="photo_album2" width="50" height="50"/>
         <image name="photo_camera" width="50" height="50"/>
         <image name="photo_library" width="50" height="50"/>
+        <image name="qc_info" width="37" height="37"/>
         <image name="remove" width="64" height="64"/>
         <image name="select_icon" width="40" height="40"/>
         <image name="task_form" width="37" height="37"/>

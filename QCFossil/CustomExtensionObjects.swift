@@ -92,6 +92,24 @@ extension TaskDetailViewInput {
     }
 }
 
+extension TaskQCInfoView {
+    class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> TaskQCInfoView? {
+        return UINib(
+            nibName: nibNamed,
+            bundle: bundle
+            ).instantiateWithOwner(nil, options: nil)[0] as? TaskQCInfoView
+    }
+}
+
+extension POInfoView {
+    class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> POInfoView? {
+        return UINib(
+            nibName: nibNamed,
+            bundle: bundle
+            ).instantiateWithOwner(nil, options: nil)[0] as? POInfoView
+    }
+}
+
 /* Input Mode 01 */
 extension InputMode01View {
     class func loadFromNibNamed(nibNamed: String, bundle : NSBundle? = nil) -> InputMode01View? {
@@ -616,7 +634,7 @@ extension UIView {
         return dateFormatter.stringFromDate(todaysDate)
     }
     
-    func getCurrentDateTime(dateFormat:String=_DATEFORMATTER + " HH:mm:ss a") ->String {
+    func getCurrentDateTime(dateFormat:String=_DATEFORMATTER + " hh:mm:ss a") ->String {
         
         
         let todaysDate:NSDate = NSDate()
@@ -1344,6 +1362,21 @@ extension UIImage {
         }
     }
 
+    func removeImageFromLocalByPath(path:String) ->Bool {
+        let fileManager = NSFileManager.defaultManager()
+        
+        if fileManager.fileExistsAtPath(path) {
+            do {
+                try fileManager.removeItemAtPath(path)
+                return true
+            }catch _ as NSError {
+                return false
+            }
+        }
+        
+        return false
+    }
+    
     func removeImageFromLocal(photo:Photo, path:String) ->Bool {
         //Remove From DB
         let photoDataHelper = PhotoDataHelper()
@@ -1394,6 +1427,24 @@ extension UIImage {
         }
         
         return UIImage.init()
+    }
+    
+    func saveImageToLocal(savePath:String, image:UIImage, imageName:String) {
+        let dataInPNG:NSData = UIImageJPEGRepresentation(image, 1.0)!
+        let path = savePath+imageName
+        let filemgr = NSFileManager.defaultManager()
+        
+        if !filemgr.fileExistsAtPath(savePath) {
+            
+            do {
+                try filemgr.createDirectoryAtPath(savePath, withIntermediateDirectories: true, attributes: nil)
+                
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        
+        dataInPNG.writeToFile(path, atomically: true)
     }
     
     convenience init(view: UIView) {

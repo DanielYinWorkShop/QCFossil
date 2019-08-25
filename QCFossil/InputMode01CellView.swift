@@ -28,6 +28,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     @IBOutlet weak var inptDetailItemsListBtn: UIButton!
     @IBOutlet weak var errorMessageLabel: UILabel!
     
+    
     var selectValues = [String]()
     var inspectItemKeyValues = [String:Int]()
     //weak var parentView = InputMode01View()
@@ -215,12 +216,14 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func dropdownHandleFunc(textField: UITextField) {
+        Cache_Task_On?.didModify = true
         
         if textField == self.cellResultInput {
             guard let resultText = cellResultInput.text else {return}
             
             self.resultValueId = self.parentView.resultKeyValues[resultText] ?? 0
             updatePhotoAddediConStatus(resultText, photoTakenIcon: self.photoAddedIcon)
+            
         }else if textField == self.inptItemInput {
             
             if self.inspAreaText != textField.text! {
@@ -261,11 +264,18 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        clearDropdownviewForSubviews(self.parentView!)
+        
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
         if textField == self.cellResultInput {
-            textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height:250)
+            
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG4) {
+                clearDropdownviewForSubviews(self.parentView!)
+            }else{
+                
+                textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height:250, tag: _TAG4)
+            }
+            
             return false
         }else if textField == self.inptItemInput {
             var listData = [String]()
@@ -273,7 +283,13 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
                 listData.append(key)
             }
             
-            textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: self.sortStringArrayByName(listData), width: self.inptItemInput.frame.size.width*1.2, height:_DROPDOWNLISTHEIGHT)
+            if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG5) {
+                clearDropdownviewForSubviews(self.parentView!)
+            }else{
+                
+                textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: self.sortStringArrayByName(listData), width: self.inptItemInput.frame.size.width*1.2, height:_DROPDOWNLISTHEIGHT, tag: _TAG5)
+            }
+            
 
             return false
         }
@@ -282,7 +298,12 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
 
     @IBAction func showInptDetailVals(sender: UIButton) {
-        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(self.selectValues), width: 500, height:_DROPDOWNLISTHEIGHT, allowManuallyInput: true)
+        if self.ifExistingSubviewByViewTag(self.inptDetailInput, tag: _TAG1) {
+            clearDropdownviewForSubviews(self.inptDetailInput)
+            return
+        }
+        
+        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(self.selectValues), width: 500, height:_DROPDOWNLISTHEIGHT, allowManuallyInput: true, tag: _TAG1)
     }
     
     

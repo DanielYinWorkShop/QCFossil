@@ -120,11 +120,6 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
         return secFtor*1000000 + elmtFtor*1000 + cellFtor
     }
     
-    func initNotificationCenter() {
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DefectListViewController.deleteDefectItemsByInspItem(_:)), name: "deleteDefectItemsByInspItem", object: nil)
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DefectListViewController.updateCellInfo(_:)), name: "updateCellInfo", object: nil)
-    }
-    
     override func viewDidAppear(animated: Bool) {
         self.view.disableAllFunsForView(self.view)
         if self.defectTableView.frame.size.height < 860 {

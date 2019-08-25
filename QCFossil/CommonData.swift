@@ -76,6 +76,9 @@ let _SHAPEVIEWTAG = 999999996
 var _INSPECTORWORKINGPATH = ""
 let _TASKSPHYSICALPATHPREFIX = NSHomeDirectory()+"/Documents/"
 var _TASKSPHYSICALPATH = NSHomeDirectory()+"/Documents/Tasks/"
+let _CASEBACKPHOTOSPHYSICALPATH = NSHomeDirectory()+"/Documents/style_photo/caseback/"
+let _WATCHSSPHOTOSPHYSICALPATH = NSHomeDirectory()+"/Documents/style_photo/watch_ss/"
+let _JEWELRYSSPHOTOSPHYSICALPATH = NSHomeDirectory()+"/Documents/style_photo/jewelry_ss/"
 let _TASKSPHYSICALFOLDERNAME = "Tasks"
 let _THUMBSPHYSICALNAME = "Thumbs"
 
@@ -98,6 +101,7 @@ let _SHAPEDATATYPE = "ShapeDataType"
 let _POPOVERPRODDESC = "ProdDesc"
 let _POPOVERPOPDRSD = "OpdRsd"
 let _DEFECTPPDESC = "DefectPPDesc"
+let _POPOVERNOTITLE = "NoTitle"
 
 //Sing Images Name
 let _INSPECTORSIGNIMAGE = "inspectorSignImage.jpg"
@@ -122,3 +126,14 @@ let _MAXIMUNINT:Int = 10
 var _IS_BACKGROUNDSESSION_MODE = true
 
 let _DROPDOWNLISTHEIGHT:CGFloat = 750
+
+let _TAG1 = 1000001
+let _TAG2 = 1000002
+let _TAG3 = 1000003
+let _TAG4 = 1000004
+let _TAG5 = 1000005
+let _TAG6 = 1000006
+let _TAG7 = 1000007
+let _TAG8 = 1000008
+let _TAG9 = 1000009
+let _TAG20 = 1000010

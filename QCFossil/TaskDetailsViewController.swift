@@ -45,15 +45,6 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
         
         self.view.disableAllFunsForView(self.view)
     }
-    /*
-    override func viewWillDisappear(animated: Bool) {
-        if !inspCatAdded {
-            for idx in 0...(Cache_Task_On?.inspSections.count)!-1 {
-                self.startTask(idx)
-            }
-        }
-    }
-    */
     
     override func viewWillAppear(animated: Bool) {
         refreshCameraIcon()

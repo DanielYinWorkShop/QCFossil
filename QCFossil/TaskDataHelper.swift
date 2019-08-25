@@ -88,6 +88,8 @@ class TaskDataHelper:DataHelperMaster{
                 let tmplId = Int(rs.intForColumn("tmpl_id"))
                 var cancelDate = rs.stringForColumn("cancel_date")
                 let dataRefuseDesc = rs.stringForColumn("data_refuse_desc")
+                let qcRemarks = rs.stringForColumn("qc_remarks_option_list")
+                let additionalAdministrativeItems = rs.stringForColumn("additional_admin_item_option_list")
                 
                 if bookingDate != nil && bookingDate != "" {
                     let bookingDateTmp = bookingDate
@@ -135,7 +137,7 @@ class TaskDataHelper:DataHelperMaster{
                 //extension
                 inspTypeId = inspectionTypeId
                 
-                task = Task(taskId: taskId, prodTypeId: prodTypeId, inspectionTypeId: inspectionTypeId, bookingNo: bookingNo, bookingDate: bookingDate, vdrLocationId: vdrLocationId, reportInspectorId: reportInspectorId, reportPrefix: reportPrefix, inspectionNo: inspectionNo, inspectionDate: inspectionDate, taskRemarks: taskRemarks, vdrNotes: vdrNotes, inspectionResultValueId: inspectionResultValueId, inspectionSignImageFile: inspectionSignImageFile, vdrSignName: vdrSignName, vdrSignImageFile: vdrSignImageFile, taskStatus: taskStatus, uploadInspectorId: uploadInspectorId, uploadDeviceId: uploadDeviceId, refTaskId: refTaskId, recStatus: recStatus, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, deleteFlag: deleteFlag, deleteUser: deleteUser, deleteDate: deleteDate)
+                task = Task(taskId: taskId, prodTypeId: prodTypeId, inspectionTypeId: inspectionTypeId, bookingNo: bookingNo, bookingDate: bookingDate, vdrLocationId: vdrLocationId, reportInspectorId: reportInspectorId, reportPrefix: reportPrefix, inspectionNo: inspectionNo, inspectionDate: inspectionDate, taskRemarks: taskRemarks, vdrNotes: vdrNotes, inspectionResultValueId: inspectionResultValueId, inspectionSignImageFile: inspectionSignImageFile, vdrSignName: vdrSignName, vdrSignImageFile: vdrSignImageFile, taskStatus: taskStatus, uploadInspectorId: uploadInspectorId, uploadDeviceId: uploadDeviceId, refTaskId: refTaskId, recStatus: recStatus, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, deleteFlag: deleteFlag, deleteUser: deleteUser, deleteDate: deleteDate, qcRemarks: qcRemarks, additionalAdministrativeItems: additionalAdministrativeItems)
                 
                 task.tmplId = tmplId
                 task.cancelDate = cancelDate
@@ -152,11 +154,13 @@ class TaskDataHelper:DataHelperMaster{
         let poDataHelper = PoDataHelper()
         task.poItems = poDataHelper.getPoByTaskId(taskId)
         
+        let vendorDataHelper = VendorDataHelper()
+        task.vendorLocation = vendorDataHelper.getVdrLocationCodeById(task.vdrLocationId ?? 0)
+            
         if task.poItems.count>0 {
             let poItem = task.poItems[0]
             
             task.vendor = poItem.vdrDisplayName
-            task.vendorLocation = poItem.vdrLocationCode
             task.brand = poItem.brandName
             task.style = poItem.styleNo
             task.shipWin = poItem.shipWin
@@ -193,6 +197,7 @@ class TaskDataHelper:DataHelperMaster{
             
             if poItem.dimen2 != nil && poItem.prodDesc != nil {
                 let prodDesc = "\(poItem.dimen2!) / \(poItem.prodDesc!)"
+//                let prodDesc = "\(poItem.styleNo!) / \(poItem.dimen1!)"
                 task.prodDesc = prodDesc
             }
             
@@ -1275,9 +1280,9 @@ class TaskDataHelper:DataHelperMaster{
             
             var lastInsertId = 0
             
-            let sql = "INSERT OR REPLACE INTO task_defect_data_record  ('record_id','task_id','inspect_record_id','ref_record_id','inspect_element_id','defect_desc','defect_qty_critical','defect_qty_major','defect_qty_minor','defect_qty_total','create_user','create_date','modify_user','modify_date','inspect_element_defect_value_id','inspect_element_case_value_id') VALUES ((SELECT record_id FROM task_defect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            let sql = "INSERT OR REPLACE INTO task_defect_data_record  ('record_id','task_id','inspect_record_id','ref_record_id','inspect_element_id','defect_desc','defect_qty_critical','defect_qty_major','defect_qty_minor','defect_qty_total','create_user','create_date','modify_user','modify_date','inspect_element_defect_value_id','inspect_element_case_value_id','defect_remarks_option_list','other_remarks') VALUES ((SELECT record_id FROM task_defect_data_record WHERE record_id = ?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             
-            if db.executeUpdate(sql, withArgumentsInArray:[notNilObject(taskInspDefectDataRecord.recordId)!,taskInspDefectDataRecord.taskId!,taskInspDefectDataRecord.inspectRecordId!,taskInspDefectDataRecord.refRecordId!,taskInspDefectDataRecord.inspectElementId!,taskInspDefectDataRecord.defectDesc!,taskInspDefectDataRecord.defectQtyCritical,taskInspDefectDataRecord.defectQtyMajor,taskInspDefectDataRecord.defectQtyMinor,taskInspDefectDataRecord.defectQtyTotal,taskInspDefectDataRecord.createUser!,taskInspDefectDataRecord.createDate!,taskInspDefectDataRecord.modifyUser!,taskInspDefectDataRecord.modifyDate!,taskInspDefectDataRecord.inspectElementDefectValueId ?? 0,taskInspDefectDataRecord.inspectElementCaseValueId ?? 0]){
+            if db.executeUpdate(sql, withArgumentsInArray:[notNilObject(taskInspDefectDataRecord.recordId)!,taskInspDefectDataRecord.taskId!,taskInspDefectDataRecord.inspectRecordId!,taskInspDefectDataRecord.refRecordId!,taskInspDefectDataRecord.inspectElementId!,taskInspDefectDataRecord.defectDesc!,taskInspDefectDataRecord.defectQtyCritical,taskInspDefectDataRecord.defectQtyMajor,taskInspDefectDataRecord.defectQtyMinor,taskInspDefectDataRecord.defectQtyTotal,taskInspDefectDataRecord.createUser!,taskInspDefectDataRecord.createDate!,taskInspDefectDataRecord.modifyUser!,taskInspDefectDataRecord.modifyDate!,taskInspDefectDataRecord.inspectElementDefectValueId ?? 0,taskInspDefectDataRecord.inspectElementCaseValueId ?? 0,taskInspDefectDataRecord.defectRemarksOptionList ?? "",taskInspDefectDataRecord.othersRemark ?? ""]){
             
                 lastInsertId = Int(db.lastInsertRowId())
             }else{
@@ -1316,14 +1321,14 @@ class TaskDataHelper:DataHelperMaster{
     
     func updateTask(task:Task) ->Bool {
         //let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=datetime('now','localtime'),cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
-        let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=?,cancel_date=?,report_prefix=?,report_inspector_id=? WHERE task_id = ?"
+        let sql = "UPDATE inspect_task SET task_remarks=?,vdr_notes=?,inspect_result_value_id=?,inspector_sign_image_file=?,vdr_sign_name=?,vdr_sign_image_file=?,task_status=?,upload_inspector_id=?,upload_device_id=?, vdr_sign_date=?,cancel_date=?,report_prefix=?,report_inspector_id=?,qc_remarks_option_list=?,additional_admin_item_option_list=? WHERE task_id = ?"
         
         if db.open() {
             db.beginTransaction()
             
             let vdrSignDate = (task.vdrSignDate != nil) ? task.vdrSignDate:UIView.init().getCurrentDateTime()
             
-            if !db.executeUpdate(sql, withArgumentsInArray: [task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,vdrSignDate!,task.cancelDate,task.reportPrefix!,task.reportInspectorId!,task.taskId!]) {
+            if !db.executeUpdate(sql, withArgumentsInArray: [task.taskRemarks!,task.vdrNotes!,task.inspectionResultValueId!,task.inspectionSignImageFile!,task.vdrSignName!,task.vdrSignImageFile!,task.taskStatus!,task.uploadInspectorId!,task.uploadDeviceId!,vdrSignDate!,task.cancelDate,task.reportPrefix!,task.reportInspectorId!,task.qcRemarks ?? "",task.additionalAdministrativeItems ?? "",task.taskId!]) {
                 
                 db.rollback()
                 db.close()
@@ -1507,8 +1512,10 @@ class TaskDataHelper:DataHelperMaster{
                 let modifyDate = rs.stringForColumn("modify_date")
                 let inspectElementDefectValueId = Int(rs.intForColumn("inspect_element_defect_value_id"))
                 let inspectElementCaseValueId = Int(rs.intForColumn("inspect_element_case_value_id"))
+                let defectRemarksOptionList = rs.stringForColumn("defect_remarks_option_list")
+                let othersRemark = rs.stringForColumn("other_remarks")
                 
-                let taskDefectDataRecord = TaskInspDefectDataRecord(recordId: recordId, taskId: taskId, inspectRecordId: inspRecordId, refRecordId: refRecordId, inspectElementId: inspElmtId, defectDesc: defectDesc, defectQtyCritical: defectQtyCritical, defectQtyMajor: defectQtyMajor, defectQtyMinor: defectQtyMinor, defectQtyTotal: defectQtyTotal, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, inspectElementDefectValueId: inspectElementDefectValueId, inspectElementCaseValueId: inspectElementCaseValueId)
+                let taskDefectDataRecord = TaskInspDefectDataRecord(recordId: recordId, taskId: taskId, inspectRecordId: inspRecordId, refRecordId: refRecordId, inspectElementId: inspElmtId, defectDesc: defectDesc, defectQtyCritical: defectQtyCritical, defectQtyMajor: defectQtyMajor, defectQtyMinor: defectQtyMinor, defectQtyTotal: defectQtyTotal, createUser: createUser, createDate: createDate, modifyUser: modifyUser, modifyDate: modifyDate, inspectElementDefectValueId: inspectElementDefectValueId, inspectElementCaseValueId: inspectElementCaseValueId, defectRemarksOptionList: defectRemarksOptionList, othersRemark: othersRemark)
                 
                 taskDefectDataRecords.append(taskDefectDataRecord!)
             }
@@ -2297,4 +2304,104 @@ class TaskDataHelper:DataHelperMaster{
         
     }
 
+    func getQCRemarksOptionList(valueCode:String="0") ->[DropdownValue] {
+        
+        let valueCode = getValueCodeByResultId(valueCode)
+        //let sql = "SELECT option_id, option_text_en, option_text_zh FROM task_selection_option_mstr WHERE selection_type = 2"
+        let sql = "SELECT result_code_match_list, option_id, option_text_en, option_text_zh FROM task_selection_option_mstr tsom WHERE tsom.selection_type = 2 AND tsom.rec_status = 0 AND tsom.deleted_flag = 0 AND tsom.data_env IN (SELECT data_env FROM prod_type_mstr ptm INNER JOIN inspector_mstr im ON ptm.type_id = im.prod_type_id WHERE im.deleted_flag = 0 AND ptm.rec_status = 0 AND ptm.deleted_flag = 0 AND im.inspector_id = ?) AND (tsom.result_code_match_list IS NULL OR tsom.result_code_match_list LIKE ? OR tsom.result_code_match_list = '') ORDER BY tsom.display_order ASC"
+        var values = [DropdownValue]()
+            
+        if db.open() {
+                
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [Cache_Inspector?.inspectorId ?? 0, "%"+valueCode+"%"]) {
+                while rs.next() {
+                        
+                    let id = Int(rs.intForColumn("option_id"))
+                    let nameEn = rs.stringForColumn("option_text_en")
+                    let nameCn = rs.stringForColumn("option_text_zh")
+                    let value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                        
+                    values.append(value)
+                }
+            }
+                
+            db.close()
+        }
+            
+        return values
+    }
+    
+    func getAdditionalAdministrativeItemOptionList(valueCode:String="0") ->[DropdownValue] {
+        
+        let valueCode = getValueCodeByResultId(valueCode)
+        //let sql = "SELECT option_id, option_text_en, option_text_zh FROM task_selection_option_mstr WHERE selection_type = 3"
+        let sql = "SELECT result_code_match_list, option_id, option_text_en, option_text_zh FROM task_selection_option_mstr tsom WHERE tsom.selection_type = 3 AND tsom.rec_status = 0 AND tsom.deleted_flag = 0 AND tsom.data_env IN (SELECT data_env FROM prod_type_mstr ptm INNER JOIN inspector_mstr im ON ptm.type_id = im.prod_type_id WHERE im.deleted_flag = 0 AND ptm.rec_status = 0 AND ptm.deleted_flag = 0 AND im.inspector_id = ?) AND (tsom.result_code_match_list IS NULL OR tsom.result_code_match_list LIKE ? OR tsom.result_code_match_list = '') ORDER BY tsom.display_order ASC"
+        var values = [DropdownValue]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [Cache_Inspector?.inspectorId ?? 0, "%"+valueCode+"%"]) {
+                while rs.next() {
+                    
+                    let id = Int(rs.intForColumn("option_id"))
+                    let nameEn = rs.stringForColumn("option_text_en")
+                    let nameCn = rs.stringForColumn("option_text_zh")
+                    let value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                    
+                    values.append(value)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return values
+    }
+    
+    func getValueCodeByResultId(valueId:String) ->String {
+        let sql = "SELECT value_code FROM result_value_mstr WHERE value_id = ?"
+        var valueCode = ""
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [valueId]) {
+                if rs.next() {
+                    valueCode = rs.stringForColumn("value_code")
+                }
+            }
+            
+            db.close()
+        }
+        
+        return valueCode
+
+    }
+    
+    func getRemarksOptionList(valueCode:String="0") ->[DropdownValue] {
+        
+        let valueCode = getValueCodeByResultId(valueCode)
+        
+        //let sql = "SELECT option_id, option_text_en, option_text_zh FROM task_selection_option_mstr WHERE selection_type = 1"
+        let sql = "SELECT result_code_match_list, option_id, option_text_en, option_text_zh FROM task_selection_option_mstr tsom WHERE tsom.selection_type = 1 AND tsom.rec_status = 0 AND tsom.deleted_flag = 0 AND tsom.data_env IN (SELECT data_env FROM prod_type_mstr ptm INNER JOIN inspector_mstr im ON ptm.type_id = im.prod_type_id WHERE im.deleted_flag = 0 AND ptm.rec_status = 0 AND ptm.deleted_flag = 0 AND im.inspector_id = ?) AND (tsom.result_code_match_list IS NULL OR tsom.result_code_match_list LIKE ? OR tsom.result_code_match_list = '') ORDER BY tsom.display_order ASC"
+        var values = [DropdownValue]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [Cache_Inspector?.inspectorId ?? 0, "%"+valueCode+"%"]) {
+                while rs.next() {
+                    
+                    let id = Int(rs.intForColumn("option_id"))
+                    let nameEn = rs.stringForColumn("option_text_en")
+                    let nameCn = rs.stringForColumn("option_text_zh")
+                    let value = DropdownValue(valueId: id, valueNameEn: nameEn, valueNameCn: nameCn)
+                    
+                    values.append(value)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return values
+    }
 }

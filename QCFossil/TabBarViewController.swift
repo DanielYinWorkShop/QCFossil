@@ -13,6 +13,7 @@ class TabBarViewController: UITabBarController {
     weak var taskDetalViewContorller:TaskDetailsViewController!
     weak var photoAlbumViewController:PhotoAlbumViewController!
     weak var defectListViewController:DefectListViewController!
+    weak var qcInfoViewController:QCInfoViewController!
     var handler:(()->(Bool))?
     
     override func viewDidLoad() {
@@ -23,13 +24,26 @@ class TabBarViewController: UITabBarController {
         
         //selected index 2: DefectListViewController
         defectListViewController = self.childViewControllers[2].childViewControllers[0] as? DefectListViewController
-        defectListViewController?.initNotificationCenter()
         defectListViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Findings")
         
         //selected index 1: photoAlbumViewController
         photoAlbumViewController = self.childViewControllers[1].childViewControllers[0] as? PhotoAlbumViewController
         photoAlbumViewController?.initPhotoTakerNotification()
         photoAlbumViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo Album")
+        
+        
+        qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
+        qcInfoViewController.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
+        
+        switch Cache_Inspector?.typeCode ?? "LEATHER" {
+        case TypeCode.LEATHER.rawValue:
+            self.childViewControllers[3].removeFromParentViewController()
+            break
+        case TypeCode.WATCH.rawValue, TypeCode.JEWELRY.rawValue:
+            break
+        default:
+            break
+        }
     }
 
     override func didReceiveMemoryWarning() {

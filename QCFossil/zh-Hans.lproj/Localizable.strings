@@ -416,7 +416,7 @@
 
 "OPD/RSD" = "OPD/RSD";
 
-"OS QC Qty" = "未预约验货数";
+"OS QC Qty" = "待检查数(成品)";
 
 "User Login" = "用户登录";
 
@@ -797,3 +797,119 @@
 "Please enter defect quantity" = "请输入缺陷数目";
 
 "Please enter defect point info" = "请先输入不良项目资料";
+
+"QC Remark" = "品检备注";
+
+"Additional Administrative Item" = "附加行政项目";
+
+"QC Info" = "检查标准";
+
+"Other Remark" = "其他备注";
+
+"Product Info" = "产品资讯";
+
+"Vendor" = "供应商";
+
+"QC Internal No" = "预约单编号";
+
+"Brand" = "品牌";
+
+"TS Report No" = "技术办报告编号";
+
+"Material Category" = "产品类别";
+
+"Assortment" = "是否混装";
+
+"Inspector" = "检查员";
+
+"Assortment Style" = "混装型号";
+
+"Season" = "季度";
+
+"Update datetime" = "资讯更新日期/时间";
+
+"QC Info" = "品检资讯";
+
+"Order Qty" = "订单数量";
+
+"Quality Standard" = "品质收货标准";
+
+"Booked Qty" = "验货数量";
+
+"Marking" = "字印";
+
+"AQL Qty" = "抽数数量";
+
+"Weight" = "重量(g)";
+
+"Adjust Time" = "调较时间";
+
+"Length Req." = "要求长度";
+
+"Product Grade" = "等级";
+
+"Movt(Origin)" = "机芯型号";
+
+"UPC-Orbid Status" = "UPC-Orbid Mark状态";
+
+"Combine QC Remark" = "合抽备注";
+
+"SS/TS Info" = "销售办/技术办状况";
+
+"SS Ready" = "有销售办";
+
+"SS Comment Ready" = "评语资料";
+
+"TS Submit Date" = "技术样办交办日期";
+
+"TS Result" = "技术样办结果";
+
+"Same PO with Reject" = "相同PO是否拒收过";
+
+"Inspect Sample Ready" = "有验货办";
+
+"Link Test Qty" = "调换珠测试";
+
+"Dust Test Qty" = "防尘测试";
+
+"Smart Link Test Qty" = "Smart Link测试";
+
+"Other Test Qty" = "其他功能测试";
+
+"CA Form" = "CA Form";
+
+"Precision Report" = "精确度报告";
+
+"Smart Link Report" = "Smart Link测试";
+
+"Reliability Test Remark" = "上次功能测试";
+
+"Fty Pack Info" = "厂方提供包装图片/日期";
+
+"Fty Droptest Info" = "厂方提供堕箱测试报告/日期";
+
+"PO No" = "订单编号";
+
+"SAP PO No" = "SAP单号";
+
+"Style, Size" = "款式型号/尺寸";
+
+"Additional Info" = "附加报告/资料";
+
+"Style" = "款式型号";
+
+"Ship To" = "目的地";
+
+"Ship Mode" = "装运模式";
+
+"Retail Price" = "UPC挂牌价钱";
+
+"Barcode" = "UPC挂牌编号";
+
+"-Style Photo" = "-产品图片";
+
+"-Clean Style Photo" = "-清理产品图片";
+
+"Salesman Photo" = "销售办图片";
+
+"Case Back" = "底盖外字印";

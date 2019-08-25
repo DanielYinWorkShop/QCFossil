@@ -116,11 +116,16 @@ class InputMode03CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        clearDropdownviewForSubviews(self.parentView!)
+        //clearDropdownviewForSubviews(self.parentView!)
+        if self.ifExistingSubviewByViewTag(self.parentView, tag: _TAG1) {
+            clearDropdownviewForSubviews(self.parentView)
+            return false
+        }
+        
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
         if textField == cellResultInput {
-            textField.showListData(textField, parent: (self.parentView as! InputMode03View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height: 250)
+            textField.showListData(textField, parent: (self.parentView as! InputMode03View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height: 250, tag:_TAG1)
             Cache_Task_On?.didModify = true
             
             return false
@@ -132,7 +137,7 @@ class InputMode03CellView: InputModeICMaster, UITextFieldDelegate {
                 inspCatList.append( _ENGLISH ? inspSec.sectionNameEn! : inspSec.sectionNameCn!)
             }
             
-            textField.showListData(textField, parent: (self.parentView as! InputMode03View).scrollCellView!, handle: handleFun, listData: inspCatList, width: 200, height: 250)
+            textField.showListData(textField, parent: (self.parentView as! InputMode03View).scrollCellView!, handle: handleFun, listData: inspCatList, width: 200, height: 250, tag: _TAG1)
             Cache_Task_On?.didModify = true
             
             return false

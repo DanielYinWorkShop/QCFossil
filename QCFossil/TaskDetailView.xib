@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TaskDetailViewInput" customModule="QC0705pwl" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TaskDetailViewInput" customModule="QC0731pwl" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -217,6 +217,9 @@
             </variation>
             <connections>
                 <outlet property="addPOLineBtn" destination="b0c-Um-AhF" id="GZC-po-mz2"/>
+                <outlet property="additionalAdministrativeItemDropdownIcon" destination="MRO-c7-wBC" id="0o5-yk-wYe"/>
+                <outlet property="additionalAdministrativeItemInput" destination="oZf-6T-Yik" id="a0i-hx-WEr"/>
+                <outlet property="additionalAdministrativeItemLabel" destination="kZB-rX-HUL" id="Axs-UN-gfz"/>
                 <outlet property="basicInfomationSectionLabel" destination="ycT-sM-MIn" id="35V-uV-Aw9"/>
                 <outlet property="bookingDateInput" destination="YEO-Vu-OOH" id="HS2-B8-Sl9"/>
                 <outlet property="bookingDateLabel" destination="Rrl-FN-ra7" id="9Yf-8z-xj4"/>
@@ -240,6 +243,10 @@
                 <outlet property="inspectorInput" destination="dEF-dB-IZ1" id="ark-lV-H5I"/>
                 <outlet property="inspectorLabel" destination="RGb-Y1-T0a" id="3Zx-kV-5jv"/>
                 <outlet property="poListWrapperView" destination="DaF-YO-jUU" id="b4w-d0-AFS"/>
+                <outlet property="qcRemarkDropdownIcon" destination="4dZ-Jj-TGG" id="mKd-Up-87p"/>
+                <outlet property="qcRemarkInput" destination="rc3-Rd-wUm" id="cgR-lM-nr2"/>
+                <outlet property="qcRemarkLabel" destination="z9p-V5-Hoi" id="U64-Pg-VI0"/>
+                <outlet property="resultDropdownIcon" destination="BhL-Ib-bwu" id="KVV-3o-nqo"/>
                 <outlet property="resultSummaryLabel" destination="hPc-Vg-wIy" id="jO8-Kc-Bno"/>
                 <outlet property="signoffConfirmBtn" destination="MZm-UP-He1" id="Air-M1-ccJ"/>
                 <outlet property="taskStatusDescLabel" destination="nZQ-1P-1Ll" id="vz5-4S-Ybj"/>
@@ -267,7 +274,7 @@
                         <rect key="frame" x="20" y="8" width="175" height="21"/>
                     </variation>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zR6-CF-mmN" customClass="CustomTextView" customModule="QC0705pwl" customModuleProvider="target">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zR6-CF-mmN" customClass="CustomTextView" customModule="QC0731pwl" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -301,15 +308,6 @@
                         <rect key="frame" x="20" y="207" width="175" height="21"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QC Remark" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZB-rX-HUL">
-                    <rect key="frame" x="20" y="93" width="170" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                        <rect key="frame" x="20" y="273" width="175" height="21"/>
-                    </variation>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspection Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-wz-DEV">
                     <rect key="frame" x="20" y="180" width="170" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -319,7 +317,7 @@
                         <rect key="frame" x="20" y="335" width="175" height="21"/>
                     </variation>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4aW-nz-nlf" customClass="CustomTextView" customModule="QC0705pwl" customModuleProvider="target">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4aW-nz-nlf" customClass="CustomTextView" customModule="QC0731pwl" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -364,12 +362,6 @@
                         <rect key="frame" x="203" y="203" width="549" height="30"/>
                     </variation>
                 </textField>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="MRO-c7-wBC">
-                    <rect key="frame" x="206" y="37" width="21" height="21"/>
-                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                        <rect key="frame" x="731" y="273" width="21" height="21"/>
-                    </variation>
-                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGM-SD-qz0">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -403,6 +395,21 @@
                         <rect key="frame" x="407" y="335" width="21" height="21"/>
                     </variation>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Additional Administrative Item" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZB-rX-HUL">
+                    <rect key="frame" x="20" y="93" width="170" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="20" y="257" width="175" height="54"/>
+                    </variation>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="MRO-c7-wBC">
+                    <rect key="frame" x="206" y="37" width="21" height="21"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="730" y="273" width="21" height="21"/>
+                    </variation>
+                </imageView>
             </subviews>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -412,17 +419,17 @@
                     <exclude reference="zR6-CF-mmN"/>
                     <exclude reference="MV8-jY-l6U"/>
                     <exclude reference="z9p-V5-Hoi"/>
-                    <exclude reference="kZB-rX-HUL"/>
                     <exclude reference="d8V-wz-DEV"/>
                     <exclude reference="4aW-nz-nlf"/>
                     <exclude reference="MZm-UP-He1"/>
                     <exclude reference="oZf-6T-Yik"/>
                     <exclude reference="rc3-Rd-wUm"/>
-                    <exclude reference="MRO-c7-wBC"/>
                     <exclude reference="AGM-SD-qz0"/>
                     <exclude reference="4dZ-Jj-TGG"/>
                     <exclude reference="KpI-kW-nNV"/>
                     <exclude reference="BhL-Ib-bwu"/>
+                    <exclude reference="kZB-rX-HUL"/>
+                    <exclude reference="MRO-c7-wBC"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
@@ -431,20 +438,20 @@
                     <include reference="zR6-CF-mmN"/>
                     <include reference="MV8-jY-l6U"/>
                     <include reference="z9p-V5-Hoi"/>
-                    <include reference="kZB-rX-HUL"/>
                     <include reference="d8V-wz-DEV"/>
                     <include reference="4aW-nz-nlf"/>
                     <include reference="MZm-UP-He1"/>
                     <include reference="oZf-6T-Yik"/>
                     <include reference="rc3-Rd-wUm"/>
-                    <include reference="MRO-c7-wBC"/>
                     <include reference="AGM-SD-qz0"/>
                     <include reference="4dZ-Jj-TGG"/>
                     <include reference="KpI-kW-nNV"/>
                     <include reference="BhL-Ib-bwu"/>
+                    <include reference="kZB-rX-HUL"/>
+                    <include reference="MRO-c7-wBC"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="360" y="906"/>
+            <point key="canvasLocation" x="360" y="998.5"/>
         </view>
         <view contentMode="scaleToFill" id="7Xb-df-xVh">
             <rect key="frame" x="0.0" y="0.0" width="768" height="148"/>

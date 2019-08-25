@@ -357,7 +357,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         cell.taskScheduledInput.text = ""
         cell.shipWinInput.text = poItem.shipWin
         cell.orInput.text = ""
-        cell.osQCQtyInput.text = String(poItem.outStandQty!)//String(poItem.orderQty-poItem.qcBookedQty)
+        cell.osQCQtyInput.text = String(poItem.orderQty-poItem.qcBookedQty) //String(poItem.outStandQty!)
         cell.shipToInput.text = poItem.shipTo
         cell.orInput.text = poItem.opdRsd
         cell.taskScheduledInput.text = poItem.taskSched

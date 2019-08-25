@@ -49,6 +49,25 @@ class VendorDataHelper:DataHelperMaster{
         return vdrLocation
     }
     
+    func getVdrLocationCodeById(locationId:Int) ->String {
+        let sql = "SELECT location_code FROM vdr_location_mstr WHERE location_id = ?"
+        var vdrLocationCode:String = ""
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [locationId]) {
+                
+                if rs.next() {
+                    vdrLocationCode = rs.stringForColumnIndex(0)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return vdrLocationCode
+    }
+    
     func getVdrLocationIdByName(vdrLocName:String) ->Int {
         let sql = "SELECT location_id FROM vdr_location_mstr WHERE location_name = ?"
         var vdrLocId = 0

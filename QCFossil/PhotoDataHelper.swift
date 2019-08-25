@@ -515,4 +515,63 @@ class PhotoDataHelper:DataHelperMaster {
         
         return photoId
     }
+    
+    func getStylePhotoByStyleNo(taskId:Int) ->StylePhoto {
+        
+        let sql = "SELECT sp.ss_photo_name, sp.cb_photo_name FROM style_photo sp INNER JOIN fgpo_line_item fli ON sp.style_no = fli.style_no INNER JOIN inspect_task_item iti ON fli.item_id = iti.po_item_id WHERE iti.task_id = ?"
+        var stylePhotos = StylePhoto(ssPhotoName: "", cbPhotoName: "")
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [taskId]) {
+                if rs.next() {
+                    stylePhotos = StylePhoto(ssPhotoName: rs.stringForColumn("ss_photo_name"), cbPhotoName: rs.stringForColumn("cb_photo_name"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return stylePhotos
+    }
+    
+    func selectStylePhotosToRemove() ->[String] {
+        
+        let sql = "SELECT ss_photo_name, cb_photo_name FROM style_photo WHERE deleted_flag = 1"
+        var paths = [String]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: nil) {
+                while rs.next() {
+                    
+                    let path = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
+                    paths.append(path + rs.stringForColumn("ss_photo_name"))
+                    paths.append(_CASEBACKPHOTOSPHYSICALPATH + rs.stringForColumn("cb_photo_name"))
+                }
+            }
+            
+            db.close()
+        }
+        
+        return paths
+    }
+    
+    func removeStylePhotosMarkDeleted() ->Bool {
+        
+        let sql = "DELETE FROM style_photo WHERE deleted_flag = 1"
+        
+        if db.open() {
+            
+            if !db.executeUpdate(sql, withArgumentsInArray: nil) {
+                db.close()
+                
+                return false
+            }
+            
+            db.close()
+        }
+        
+        return true
+    }
 }

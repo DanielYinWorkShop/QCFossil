@@ -10,8 +10,62 @@ import Foundation
 
 class InspectorDataHelper:DataHelperMaster {
     
+    func getInspectorById(Id:Int) ->Inspector? {
+        let sql = "SELECT * FROM inspector_mstr im INNER JOIN prod_type_mstr ptm ON im.prod_type_id = ptm.type_id WHERE inspector_id = ?"
+        var inspector:Inspector?
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id]) {
+                
+                if rs.next() {
+                    
+                    let inspectorId = Int(rs.intForColumn("inspector_id"))
+                    let inspectorName = rs.stringForColumn("inspector_name")
+                    let prodTypeId = Int(rs.intForColumn("prod_type_id"))
+                    let appUserName = rs.stringForColumn("app_username")
+                    let appPassword = rs.stringForColumn("app_password")
+                    let serviceToken = rs.stringForColumn("service_token")
+                    let reportPrefix = rs.stringForColumn("report_prefix")
+                    let reportRunningNo = rs.stringForColumn("report_running_no")
+                    let phoneNo = rs.stringForColumn("phone_no")
+                    let emailAddr = rs.stringForColumn("email_addr")
+                    let createUser = rs.stringForColumn("create_user")
+                    let createDate = rs.stringForColumn("create_date")
+                    let modifyUser = rs.stringForColumn("modify_user")
+                    let modifyDate = rs.stringForColumn("modify_date")
+                    let recStatus = Int(rs.intForColumn("rec_status"))
+                    let deleteFlag = Int(rs.intForColumn("deleted_flag"))
+                    let deleteUser = rs.stringForColumn("delete_user")
+                    let deleteDate = rs.stringForColumn("delete_date")
+                    let chgPwdReqDate = rs.stringForColumn("chg_pwd_req_date")
+                    let typeCode = rs.stringForColumn("type_code")
+                    
+                    inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode)
+                    
+                    inspector?.createUser = createUser
+                    inspector?.createDate = createDate
+                    inspector?.modifyUser = modifyUser
+                    inspector?.modifyDate = modifyDate
+                    inspector?.recStatus = recStatus
+                    inspector?.deleteFlag = deleteFlag
+                    inspector?.deleteUser = deleteUser
+                    inspector?.deleteDate = deleteDate
+                    inspector?.chgPwdReqDate = chgPwdReqDate
+                    
+                }
+            }
+            
+            db.close()
+            
+            return inspector
+        }
+        
+        return nil
+    }
+    
     func getInspector(userName:String, password:String) ->Inspector? {
-        let sql = "SELECT * FROM inspector_mstr WHERE (lower(app_username) = ? OR app_username = ?) AND app_password = ?"
+        let sql = "SELECT * FROM inspector_mstr im INNER JOIN prod_type_mstr ptm ON im.prod_type_id = ptm.type_id WHERE (lower(app_username) = ? OR app_username = ?) AND app_password = ?"
         var inspector:Inspector?
         
         if db.open() {
@@ -39,8 +93,9 @@ class InspectorDataHelper:DataHelperMaster {
                 let deleteUser = rs.stringForColumn("delete_user")
                 let deleteDate = rs.stringForColumn("delete_date")
                 let chgPwdReqDate = rs.stringForColumn("chg_pwd_req_date")
+                let typeCode = rs.stringForColumn("type_code")
                 
-                inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr)
+                inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode)
                 
                 inspector?.createUser = createUser
                 inspector?.createDate = createDate
@@ -51,6 +106,7 @@ class InspectorDataHelper:DataHelperMaster {
                 inspector?.deleteUser = deleteUser
                 inspector?.deleteDate = deleteDate
                 inspector?.chgPwdReqDate = chgPwdReqDate
+                
             }
             }
             
@@ -98,7 +154,7 @@ class InspectorDataHelper:DataHelperMaster {
     }
     
     func getAllInspectors() ->[Inspector] {
-        let sql = "SELECT * FROM inspector_mstr"
+        let sql = "SELECT * FROM inspector_mstr im INNER JOIN prod_type_mstr ptm ON im.prod_type_id = ptm.type_id"
         var inspectors = [Inspector]()
         
         if db.open() {
@@ -117,8 +173,9 @@ class InspectorDataHelper:DataHelperMaster {
                     let reportRunningNo = rs.stringForColumn("report_running_no")
                     let phoneNo = rs.stringForColumn("phone_no")
                     let emailAddr = rs.stringForColumn("email_addr")
+                    let typeCode = rs.stringForColumn("type_code")
                     
-                    inspectors.append(Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr))
+                    inspectors.append(Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode))
                 }
             }
             

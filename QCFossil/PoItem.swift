@@ -66,6 +66,15 @@ class PoItem {
     var reportInspectorId:Int? //add 12/20
     var samplingQty:Int
     var prodDesc:String?
+    var market:String?
+    var materialCategory:String?
+    var shipModeName:String?
+    var itemBarCode:String?
+    var retailPrice:String?
+    var targetInspectQty:String?
+    var currency:String?
+    var styleSize:String?
+    var substrStyleSize:String?
     
     //UI
     var availableQty:Int

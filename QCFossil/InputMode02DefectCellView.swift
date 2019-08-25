@@ -288,6 +288,11 @@ class InputMode02DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if textField == self.dtInput {
+            if self.ifExistingSubviewByViewTag(self.pVC!.defectTableView, tag: _TAG1) {
+                clearDropdownviewForSubviews(self.pVC!.defectTableView)
+                return false
+            }
+            
             let defectDataHelper = DefectDataHelper()
             /*
             Element Type
@@ -302,14 +307,14 @@ class InputMode02DefectCellView: InputModeDFMaster2, UIActionSheetDelegate, UIIm
                 })
                 
                 let dfElms = defectDataHelper.getDefectTypeElms(positionIdArray)
-                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
 
             } else {
                 
                 guard let id = self.taskDefectDataRecordId else {return false}
                 
                 let dfElms = defectDataHelper.getDefectTypeByTaskDefectDataRecordId(id)
-                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
+                textField.showListData(textField, parent: self.pVC!.defectTableView!, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
             }
             
             return false

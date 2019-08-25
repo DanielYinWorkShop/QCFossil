@@ -103,6 +103,15 @@ class PoDataHelper:DataHelperMaster {
                 let qcBookedQty = Int(rs.intForColumn("qc_booked_qty"))
                 let samplingQty = Int(rs.intForColumn("sampling_qty"))
                 var prodDesc = rs.stringForColumn("prod_desc")
+                let market = rs.stringForColumn("market")
+                let materialCategory = rs.stringForColumn("material_category")
+                let shipModeName = rs.stringForColumn("ship_mode_name")
+                let itemBarcode = rs.stringForColumn("item_barcode")
+                let retailPrice = rs.stringForColumn("retail_price")
+                let targetInspectQty = rs.stringForColumn("target_inspect_qty")
+                let currency = rs.stringForColumn("currency")
+                let styleSize = rs.stringForColumn("style_size")
+                let substrStyleSize = rs.stringForColumn("substr_style_size")
                 
                 if (prodDesc == nil) {
                     prodDesc = ""
@@ -141,6 +150,16 @@ class PoDataHelper:DataHelperMaster {
                 
                 let poItem = PoItem(itemId: itemId, dataEnv: dataEnv, refHeadId: refHeadId, poNo: poNo, refVdrId: refVdrId, vdrCode: vdrCode, vdrName: vdrName, vdrDisplayName: vdrDisplayName, refLineId: refLineId, poLineNo: poLineNo, refPordId: refPordId, skuNo: skuNo, prodTypeCode: prodTypeCode, styleNo: styleNo, dimen1: dimen1, dimen2: dimen2, dimen3: dimen3, refVdrLocationId: refVdrLocationId, vdrLocationCode: vdrLocationCode, vdrLocationName: vdrLocationName, refBuyerLocationId: refBuyerLocationId, buyerLocationCode: buyerLocationCode, buyerLocationName: buyerLocationName, refOrderNo: refOrderNo, refOrderLine: refOrderLine, refBrandId: refBrandId, brandCode: brandCode, brandName: brandName, reqDelivDate: reqDelivDate, shipWin: shipWin, orderQty: orderQty, lineQtyUom: lineQtyUom, lineStatus: lineStatus, createDate: createDate, modifyDate: modifyDate, deletedFlag: deletedFlag, deleteDate: deleteDate, shipTo: shipTo, opdRsd: opdRsd, qcBookedQty: qcBookedQty, availableQty: availQty, isEnable: inspEnableFlag, samplingQty: samplingQty, prodDesc: prodDesc)
             
+                poItem?.market = market
+                poItem?.materialCategory = materialCategory
+                poItem?.shipModeName = shipModeName
+                poItem?.itemBarCode = itemBarcode
+                poItem?.retailPrice = retailPrice
+                poItem?.targetInspectQty = targetInspectQty
+                poItem?.currency = currency
+                poItem?.styleSize = styleSize
+                poItem?.substrStyleSize = substrStyleSize
+                
                 poItems.append(poItem!)
             }
             }

@@ -12,7 +12,7 @@ import UIKit
 class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var indexLabel: UILabel!
     @IBOutlet weak var defectDescLabel: UILabel!
-    @IBOutlet weak var defectDescInput: UITextField!
+    //@IBOutlet weak var defectDescInput: UITextField!
     @IBOutlet weak var defectCriticalQtyLabel: UILabel!
     @IBOutlet weak var defectCriticalQtyInput: UITextField!
     @IBOutlet weak var defectMajorQtyLabel: UILabel!
@@ -34,16 +34,21 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var errorMessageLabel: UILabel!
     @IBOutlet weak var defectDesc1ListIcon: UIButton!
     @IBOutlet weak var defectDesc2ListIcon: UIButton!
+    @IBOutlet weak var othersRemarkLabel: UILabel!
+    @IBOutlet weak var othersRemarkInput: UITextField!
+    @IBOutlet weak var defectRemarkOptionList: UITextField!
     
     weak var pVC:InspectionDefectList!
     
     var defectValues:[DropdownValue]?
     var caseValues:[DropdownValue]?
+    var remarkKeyValue = [String:Int]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.defectDescInput.delegate = self
+        //self.defectDescInput.delegate = self
+        self.defectRemarkOptionList.delegate = self
         self.defectCriticalQtyInput.delegate = self
         self.defectMajorQtyInput.delegate = self
         self.defectMinorQtyInput.delegate = self
@@ -53,6 +58,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectPositInput.delegate = self
         self.defectDesc1Input.delegate = self
         self.defectDesc2Input.delegate = self
+        self.othersRemarkInput.delegate = self
         self.defectTotalQtyInput.userInteractionEnabled = false
         
         self.defectDescLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Description")
@@ -66,6 +72,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
         self.defectDesc1Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 1")
         self.defectDesc2Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 2")
         self.errorMessageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please enter defect quantity")
+        self.othersRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Other Remark")
     }
     
     @IBAction func addDefectPhoto(sender: UIButton) {
@@ -78,7 +85,9 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             return
         }
         
-        self.defectDescInput.resignFirstResponder()
+        //self.defectDescInput.resignFirstResponder()
+        self.othersRemarkInput.resignFirstResponder()
+        self.defectRemarkOptionList.resignFirstResponder()
         self.defectCriticalQtyInput.resignFirstResponder()
         self.defectMajorQtyInput.resignFirstResponder()
         self.defectMinorQtyInput.resignFirstResponder()
@@ -155,7 +164,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 let pathForImage = Cache_Task_Path! + "/" + _THUMBSPHYSICALNAME + "/" + photoName
                 let imageView = UIImageView.init(image: UIImage(contentsOfFile: pathForImage))
                 
-                imageView.frame = CGRect(x: xPos[idx], y: 187, width: 40, height: 40)
+                imageView.frame = CGRect(x: xPos[idx], y: 265, width: 40, height: 40)
                 imageView.tag = idx + 1
                 
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(InspectionDefectTableViewCellMode2.previewTapOnClick(_:)))
@@ -167,7 +176,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 self.addSubview(imageView)
                 
                 let cBtn = CustomControlButton()
-                cBtn.frame = CGRect.init(x: xPosBtn[idx], y: 174, width: 20, height: 20)
+                cBtn.frame = CGRect.init(x: xPosBtn[idx], y: 255, width: 20, height: 20)
                 cBtn.addTarget(self, action: #selector(InspectionDefectTableViewCellMode2.removeDefectPhotoOnIndex(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cBtn.tag = idx + 1
                 cBtn.setTitle("-", forState: UIControlState.Normal)
@@ -406,39 +415,58 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 })
                 
                 let dfElms = defectDataHelper.getDefectTypeElms(positionIdArray)
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
-
+                if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
+                    clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
+                } else {
+                    textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
+                }
+                
             } else {
                 
                 guard let id = self.taskDefectDataRecordId else {return false}
                 let dfElms = defectDataHelper.getDefectTypeByTaskDefectDataRecordId(id)
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT)
-
+                
+                if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
+                    clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
+                } else {
+                    textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(dfElms), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
+                }
+                
             }
             
             return false
         } else if textField == self.defectDesc1Input {
             
-            self.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(self.inspectElementId ?? 0)
+            //self.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(self.inspectElementId ?? 0)
             var listData = [String]()
             
             self.defectValues?.forEach({ value in
                 listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
             })
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
+            if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
+                clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
+            } else {
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
+            }
+            
 
             return false
         } else if textField == self.defectDesc2Input {
             
-            self.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(self.inspectElementId ?? 0)
+            //self.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(self.inspectElementId ?? 0)
             var listData = [String]()
             
             self.caseValues?.forEach({ value in
                 listData.append(_ENGLISH ? value.valueNameEn ?? "":value.valueNameCn ?? "")
             })
             
-            textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT)
+            if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
+                clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
+            } else {
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
+            }
+            
 
             return false
         } else if textField == self.defectMajorQtyInput || textField == self.defectMinorQtyInput || textField == self.defectCriticalQtyInput {
@@ -446,6 +474,20 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "0" {
                 textField.text = ""
             }
+            
+        } else if textField == self.defectRemarkOptionList {
+            var listData = [String]()
+            for key in self.remarkKeyValue.keys {
+                listData.append(key)
+            }
+            
+            if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
+                clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
+            } else {
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+            }
+            
+            return false
         }
         
         return true
@@ -456,12 +498,12 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "" {
                 textField.text = "0"
             }
-        } else if textField === self.defectDescInput {
+        } else if textField === self.othersRemarkInput {
             
             let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx}).first
             guard let defectItem = defectItemFilter else {return}
             
-            defectItem.defectDesc = textField.text
+            defectItem.othersRemark = textField.text
             
         }
     }
@@ -478,10 +520,15 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             self.inspectElementId = inspectElementId
             defectItem.defectType = textField.text ?? ""
             
-            let defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
-            let caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+            self.defectDesc1Input.text = ""
+            self.defectDesc2Input.text = ""
+            defectItem.inspectElementDefectValueId = 0
+            defectItem.inspectElementCaseValueId = 0
             
-            if defectValues.count < 1 {
+            self.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
+            self.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+            
+            if defectValues?.count < 1 {
                 self.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
                 self.defectDesc1ListIcon.hidden = true
 
@@ -491,7 +538,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
 
             }
             
-            if caseValues.count < 1 {
+            if caseValues?.count < 1 {
                 self.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
                 self.defectDesc2ListIcon.hidden = true
             } else {
@@ -523,6 +570,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
                 }
             })
             
+        } else if textField == self.defectRemarkOptionList {
+            defectItem.defectRemarksOptionList = self.defectRemarkOptionList.text
         }
     }
     
