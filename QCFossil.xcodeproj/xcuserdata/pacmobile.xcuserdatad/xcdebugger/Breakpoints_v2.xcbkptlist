@@ -2168,11 +2168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/CustomExtensionObjects.swift"
-            timestampString = "587837929.85101"
+            timestampString = "588179446.6277829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1551"
-            endingLineNumber = "1551"
+            startingLineNumber = "1552"
+            endingLineNumber = "1552"
             landmarkName = "equalToDate(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2184,11 +2184,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/CustomExtensionObjects.swift"
-            timestampString = "587837929.85101"
+            timestampString = "588179446.6277829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1569"
-            endingLineNumber = "1569"
+            startingLineNumber = "1570"
+            endingLineNumber = "1570"
             landmarkName = "returnDateForMonth(_:year:day:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2376,11 +2376,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/CustomExtensionObjects.swift"
-            timestampString = "587837929.85101"
+            timestampString = "588179446.6277829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1553"
-            endingLineNumber = "1553"
+            startingLineNumber = "1554"
+            endingLineNumber = "1554"
             landmarkName = "addDays(_:)"
             landmarkType = "5">
          </BreakpointContent>

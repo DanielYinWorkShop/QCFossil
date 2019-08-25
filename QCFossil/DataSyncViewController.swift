@@ -286,6 +286,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.taskStatusDataStatus.text = ""
                 self.cleanTaskStatus.text = ""
                 self.stylePhotoStatus.text = ""
+                self.stylePhotoCleanStatus.text = ""
             })
         }
     }
@@ -453,19 +454,19 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             if actionFields[data["tableName"]!]![sIdx] == "ss_photo_name" {
                                 let imageName = data[actionFields[data["tableName"]!]![sIdx]]!
                                 
-                                if value == "" {
+                                if value == "" && imageName != "" {
                                     
                                     // Add to delete list
                                     let photoPath = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
                                     self.stylePhotoDeletePaths.append(photoPath + imageName)
                                     
-                                } else {
+                                } else if value != "" {
                                 
                                     //Save images to physical local storage
                                     let savePath = Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue ? _WATCHSSPHOTOSPHYSICALPATH : _JEWELRYSSPHOTOSPHYSICALPATH
                                     UIImage().saveImageToLocal(savePath, image: UIImage().fromBase64(value), imageName: imageName)
-                                    break
                                 }
+                                break
                             }
                         }
                         
@@ -475,17 +476,17 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                             if actionFields[data["tableName"]!]![sIdx] == "cb_photo_name" {
                                 let imageName = data[actionFields[data["tableName"]!]![sIdx]]!
                                 
-                                if value == "" {
+                                if value == "" && imageName != "" {
                                     
                                     // Add to delete list
                                     self.stylePhotoDeletePaths.append(_CASEBACKPHOTOSPHYSICALPATH + imageName)
                                     
-                                } else {
+                                } else if value != "" {
                                 
                                     //Save images to physical local storage
                                     UIImage().saveImageToLocal(_CASEBACKPHOTOSPHYSICALPATH, image: UIImage().fromBase64(value), imageName: imageName)
-                                    break
                                 }
+                                break
                             }
                         }
                         
@@ -538,7 +539,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
             
-             if apiName == "_DS_TASKDATA" {
+             if apiName == "_DS_DL_STYLE_PHOTO" {
                 print("action: \(dbAction)")
              }
             
@@ -1717,7 +1718,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 //Send local notification for Task Done.
                 self.updateProgressBar(1)
-                
                 self.makeDLPostRequest(_DS_DL_STYLE_PHOTO)
 
             }
@@ -1779,13 +1779,25 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
                 
+                self.updateProgressBar(1)
+                
                 // Delete Style Photos
                 let photoDataHelper = PhotoDataHelper()
                 var paths = photoDataHelper.selectStylePhotosToRemove()
-                let totalDeletePhotosCount = self.stylePhotoDeletePaths.count + paths.count
+                
+                // Merge all paths
+                while let path = paths.popLast() {
+                    if !self.stylePhotoDeletePaths.contains(path) {
+                        self.stylePhotoDeletePaths.append(path)
+                    }
+                }
+                let totalDeletePhotosCount = self.stylePhotoDeletePaths.count
                 
                 // clean style photos
                 // case 1, photo_name exist, photo_file no value
+                
+                // case 2, deleted_flag is 1 in style_photo table, remove photo and record
+                // clean SS style photos
                 
                 self.updateDLProcessLabel("Style Photo Cleaning...")
                 var cleanStylePhotoCount = 0
@@ -1798,26 +1810,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         dispatch_async(dispatch_get_main_queue(), {
                             self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
                             let percent = Float(cleanStylePhotoCount)/Float(totalDeletePhotosCount)
-                        
-                            self.cleanTaskProcessBar.progress = percent
-                        })
-                    })
-                }
-                
-                // case 2, deleted_flag is 1 in style_photo table, remove photo and record
-                // clean SS style photos
-                
-                while let path = paths.popLast() {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if UIImage().removeImageFromLocalByPath(path) {
-                            cleanStylePhotoCount += 1
-                        }
-                    
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
-                            let percent = Float(cleanStylePhotoCount)/Float(totalDeletePhotosCount)
-                    
-                            self.cleanTaskProcessBar.progress = percent
+                            
+                            self.stylePhotoCleanProcessBar.progress = percent
                         })
                     })
                 }
@@ -1833,7 +1827,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 }
                 
                 //Send local notification for Task Done.
-                self.updateProgressBar(1)
                 self.presentLocalNotification("Data Download Complete.")
                 
                 self.updateDLProcessLabel("Complete")

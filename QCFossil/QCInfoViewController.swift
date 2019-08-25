@@ -35,6 +35,9 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         self.view.addSubview(self.ScrollView)
         self.ScrollView.addSubview(taskQCInfoView)
         
+        var orderQty = 0
+        var bookedQty = 0
+        
         if let poItems = Cache_Task_On?.poItems {
             /*let stackView = UIStackView()
             stackView.axis = .Vertical
@@ -50,6 +53,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 poInfoView.shipToDisplay.text = poItem.buyerLocationCode
                 poInfoView.shipModeDisplay.text = poItem.shipModeName
                 poInfoView.barcodeDisplay.text = poItem.itemBarCode
+                orderQty += poItem.orderQty
+                bookedQty += Int(poItem.targetInspectQty ?? "0") ?? 0
                 
                 if poItem.retailPrice != nil {
                     
@@ -98,7 +103,6 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 poInfoView.heightAnchor.constraintEqualToConstant(105).active = true
                  */
             }
-            
             //taskQCInfoView.poView.addSubview(stackView)
 
         }
@@ -141,7 +145,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         taskQCInfoView.seasonInput.text = poItem?.market
         taskQCInfoView.updateTimeInput.text = self.view.getCurrentDateTime()
         
-        taskQCInfoView.orderQtyInput.text = String(poItem?.orderQty ?? 0)
+        taskQCInfoView.orderQtyInput.text = String(orderQty)
         taskQCInfoView.qualityStardardInput.text = taskQCInfo?.qualityStandard
         
         if let substrQualityStandard = taskQCInfo?.substrQualityStandard {
@@ -154,7 +158,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         }
 
         
-        taskQCInfoView.bookedQtyInput.text = poItem?.targetInspectQty
+        taskQCInfoView.bookedQtyInput.text = String(bookedQty)
         
         if Cache_Inspector?.typeCode == TypeCode.WATCH.rawValue {
             taskQCInfoView.markingInput.text = taskQCInfo?.casebackMarking

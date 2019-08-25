@@ -1368,12 +1368,13 @@ extension UIImage {
         if fileManager.fileExistsAtPath(path) {
             do {
                 try fileManager.removeItemAtPath(path)
+                return true
             }catch _ as NSError {
                 return false
             }
         }
         
-        return true
+        return false
     }
     
     func removeImageFromLocal(photo:Photo, path:String) ->Bool {
