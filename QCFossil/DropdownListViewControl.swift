@@ -31,7 +31,28 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
     override func awakeFromNib() {
         tableView.delegate = self
         tableView.dataSource = self
-        
+    }
+    
+    func longPressed(sender: UIGestureRecognizer) {
+        if let cell = sender.view as? UITableViewCell {
+            let popoverContent = PopoverViewController()
+            popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
+            
+            popoverContent.dataType = _POPOVERNOTITLE
+            popoverContent.selectedValue = cell.textLabel?.text ?? ""
+            
+            let nav = UINavigationController(rootViewController: popoverContent)
+            nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+            nav.navigationBar.barTintColor = UIColor.whiteColor()
+            nav.navigationBar.tintColor = UIColor.blackColor()
+            
+            let popover = nav.popoverPresentationController
+            popover!.delegate = nil
+            popover!.sourceView = sender.view
+            popover!.sourceRect = CGRectMake(0,(sender.view?.parentVC?.view.frame.origin.y)!,sender.view!.frame.size.width,sender.view!.frame.size.height)
+            
+            sender.view?.parentVC!.presentViewController(nav, animated: true, completion: nil)
+        }
     }
     
     override func didMoveToSuperview() {
@@ -92,6 +113,9 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             updateBgColor(cell)
         }
         
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DropdownListViewControl.longPressed(_:)))
+        cell.addGestureRecognizer(longPressRecognizer)
+        
         return cell
     }
     
@@ -148,8 +172,6 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                     
                     myParentTextField!.text = oldText + String(dropdownDataFilter[indexPath.row])
                     handleFun?(myParentTextField!)
-                    
-                    //myParentTextField!.endEditing(true)
                 }
                 
                 
@@ -158,7 +180,6 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                 if myParentTextField != nil {
                     myParentTextField?.text = String(dropdownDataFilter[indexPath.row])
                     handleFun?(myParentTextField!)
-                    //myParentTextField!.endEditing(true)
                 }
             }
             

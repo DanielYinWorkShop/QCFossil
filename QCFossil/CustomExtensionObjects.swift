@@ -1021,7 +1021,7 @@ extension UIView {
 
 extension UIImageView {
     func previewImage(index:Int,imageName:String,senderImageView:UIImageView,parentItem:InputModeDFMaster2) {
-        let container: UIView = UIView()
+        let container = UIScrollView()
         container.tag = _MASKVIEWTAG
         container.hidden = false
         container.frame = self.parentVC!.view.frame

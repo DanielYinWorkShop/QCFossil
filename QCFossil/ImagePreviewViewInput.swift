@@ -17,6 +17,9 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
     var imageName:String?
     var photoIndex:Int?
     var inactiveAlpha:CGFloat = 0.2
+    var totalScale:CGFloat = 1.0
+    var scrollView:UIScrollView?
+    var previewOnly = false
     
     @IBOutlet weak var imageView: SignoffView!
     @IBOutlet weak var closeBtn: CustomButton!
@@ -111,6 +114,21 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
 
     override func didMoveToSuperview() {
         setEnableEditing(true)
+        
+        if previewOnly {
+            guard let imageView = self.imageView else {return}
+            
+            imageView.previewOnly = true
+            
+            let gesture = UIPinchGestureRecognizer(target: self, action: #selector(ImagePreviewViewInput.viewPinch(_:)))
+            imageView.addGestureRecognizer(gesture)
+        
+            imageView.userInteractionEnabled = true
+            imageView.multipleTouchEnabled = true
+        
+            imageView.frame.size = (imageView.image?.size)!
+            imageView.frame.origin.y = self.frame.origin.y + 20
+        }
     }
     
     @IBAction func startEditOnClick(sender: UIButton) {
@@ -225,6 +243,47 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
         updateBrushSize()
         updateBrushColor()
         imageView.setBrushStyle(CGFloat(_BRUSHSTYLE["red"]!), green: CGFloat(_BRUSHSTYLE["green"]!), blue: CGFloat(_BRUSHSTYLE["blue"]!), brush: CGFloat(_BRUSHSTYLE["brush"]!))
+    }
+    
+}
+
+extension ImagePreviewViewInput {
+    
+    func viewPinch(sender: UIPinchGestureRecognizer) {
+        guard let imageView = self.imageView else {return}
+        
+        let scale = sender.scale;
+        
+        if(scale > 1.0){
+            if self.totalScale > 3.0 {
+                return
+            }
+        }
+        //缩小情况
+        if (scale < 1.0) {
+            if self.totalScale < 1.0 {
+                return
+            }
+        }
+        
+        if sender.state == .Began || sender.state == .Changed {
+            imageView.transform = CGAffineTransformScale(imageView.transform, sender.scale, sender.scale)
+            sender.scale = 1
+            self.totalScale *= scale
+            
+//            imageView.frame.origin.x -= imageView.frame.origin.x * sender.scale
+//            imageView.frame.origin.y -= imageView.frame.origin.y * sender.scale
+//
+//            self.scrollView?.contentSize = CGSize(width: imageView.frame.width * sender.scale, height: imageView.frame.height * sender.scale)
+            
+            let offsetX = (self.scrollView?.bounds.size.width > self.scrollView?.contentSize.width) ? ((self.scrollView?.bounds.size.width)! - (self.scrollView?.contentSize.width)!) * 0.5 : 0.0
+            let offsetY = (self.scrollView?.bounds.size.height > self.scrollView?.contentSize.height) ?
+                ((self.scrollView?.bounds.size.height)! - (self.scrollView?.contentSize.height)!) * 0.5 : 0.0;
+            imageView.center = CGPointMake((self.scrollView?.contentSize.width)! * 0.5 + offsetX,(self.scrollView?.contentSize.height)! * 0.5 + offsetY)
+            
+            self.scrollView?.contentSize = CGSize(width: imageView.frame.width, height: imageView.frame.height)
+
+        }
     }
     
 }

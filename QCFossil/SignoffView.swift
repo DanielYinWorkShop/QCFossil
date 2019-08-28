@@ -18,6 +18,7 @@ class SignoffView: UIImageView {
     var blue:CGFloat = 0.0
     var brush:CGFloat = 2.0
     var opacity:CGFloat = 1.0
+    var previewOnly = false
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -37,6 +38,10 @@ class SignoffView: UIImageView {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         NSLog("Touches Begin")
         
+        if previewOnly {
+            return
+        }
+        
         mouseSwiped = false
         
         let touch = touches.first! as UITouch
@@ -50,6 +55,10 @@ class SignoffView: UIImageView {
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        if previewOnly {
+            return
+        }
         
         mouseSwiped = true
         let touch =  touches.first! as UITouch
@@ -80,6 +89,10 @@ class SignoffView: UIImageView {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        if previewOnly {
+            return
+        }
         
         for view in self.subviews {
             if view.isKindOfClass(ShapeView) && CGRectContainsPoint(view.frame, lastPoint) {

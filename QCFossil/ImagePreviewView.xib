@@ -7,11 +7,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ImagePreviewViewInput" customModule="QC0705pwl" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ImagePreviewViewInput" customModule="QC0821pwl" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2N9-GW-r3L" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2N9-GW-r3L" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -21,7 +21,7 @@
                         <action selector="setBrushStyle:" destination="iN0-l3-epB" eventType="touchUpInside" id="7jC-1g-Ipf"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGn-7W-oSD" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGn-7W-oSD" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -31,7 +31,7 @@
                         <action selector="setBrushStyle:" destination="iN0-l3-epB" eventType="touchUpInside" id="TAI-1k-0yu"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyI-4i-Ha9" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyI-4i-Ha9" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -41,7 +41,7 @@
                         <action selector="setBrushStyle:" destination="iN0-l3-epB" eventType="touchUpInside" id="OA7-J0-h2U"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vzc-PM-waG" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vzc-PM-waG" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -51,7 +51,7 @@
                         <action selector="setBrushStyle:" destination="iN0-l3-epB" eventType="touchUpInside" id="R6o-76-84P"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7z-oM-vdS" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7z-oM-vdS" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" title="Save">
                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -63,7 +63,7 @@
                         <action selector="saveBtnOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="CyQ-aZ-xAs"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RO-Yu-OAU" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RO-Yu-OAU" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" title="Clear" image="eraser_icon">
                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -75,7 +75,7 @@
                         <action selector="clearBtnOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="Zt2-PW-wG2"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tg6-Hc-RgT" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tg6-Hc-RgT" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" image="brush_icon_m"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -85,7 +85,7 @@
                         <action selector="setBrushStyle:" destination="iN0-l3-epB" eventType="touchUpInside" id="H07-by-pQS"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zF0-Xc-Rqc" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zF0-Xc-Rqc" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" image="brush_icon_l"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -102,7 +102,7 @@
                         <rect key="frame" x="0.0" y="50" width="600" height="800"/>
                     </variation>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oy5-2H-1sj" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oy5-2H-1sj" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" title="Edit"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -112,7 +112,7 @@
                         <action selector="startEditOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="2X0-Cx-sgi"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UF7-Rd-zjx" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UF7-Rd-zjx" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" image="brush_icon_s"/>
                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -122,7 +122,7 @@
                         <action selector="setBrushStyle:" destination="iN0-l3-epB" eventType="touchUpInside" id="krv-gE-mSO"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Enr-hp-5SH" customClass="CustomButton" customModule="QC0705pwl" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Enr-hp-5SH" customClass="CustomButton" customModule="QC0821pwl" customModuleProvider="target">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <state key="normal" title="Close">
                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -187,7 +187,7 @@
             </connections>
             <point key="canvasLocation" x="216" y="210"/>
         </view>
-        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="oud-KS-7Xu" customClass="SignoffView" customModule="QC0705pwl" customModuleProvider="target">
+        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="oud-KS-7Xu" customClass="SignoffView" customModule="QC0821pwl" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
         </imageView>

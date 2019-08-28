@@ -320,7 +320,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     }
     
     func ssPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
-        let container: UIView = UIView()
+        let container = UIScrollView()
         container.tag = _MASKVIEWTAG
         container.hidden = false
         container.frame = self.view.frame
@@ -339,10 +339,17 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         preview?.center = container.center
         preview?.parentView = container
         preview?.startEditBtn.hidden = true
+//        preview?.previewOnly = true
         preview?.imageView.image = UIImage(contentsOfFile: self.ssPhotoPath)
         preview?.imageView.contentMode = .ScaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
-        preview?.BackgroundView.addSubview((preview?.imageView)!)
+        
+        let scrollView = UIScrollView()
+        scrollView.frame = preview?.imageView?.frame ?? CGRect(x: 0,y: 0,width: 600,height: 800)
+        scrollView.addSubview((preview?.imageView)!)
+        
+        preview?.BackgroundView.addSubview(scrollView)
+        preview?.scrollView = scrollView
         
         container.addSubview(preview!)
         
@@ -350,7 +357,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     }
     
     func cbPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
-        let container: UIView = UIView()
+        let container = UIScrollView()
         container.tag = _MASKVIEWTAG
         container.hidden = false
         container.frame = self.view.frame
@@ -369,10 +376,17 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         preview?.center = container.center
         preview?.parentView = container
         preview?.startEditBtn.hidden = true
+//        preview?.previewOnly = true
         preview?.imageView.image = UIImage(contentsOfFile: self.cbPhotoPath)
         preview?.imageView.contentMode = .ScaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
-        preview?.BackgroundView.addSubview((preview?.imageView)!)
+        
+        let scrollView = UIScrollView()
+        scrollView.frame = preview?.imageView?.frame ?? CGRect(x: 0,y: 0,width: 600,height: 800)
+        scrollView.addSubview((preview?.imageView)!)
+        
+        preview?.BackgroundView.addSubview(scrollView)
+        preview?.scrollView = scrollView
         
         container.addSubview(preview!)
         
