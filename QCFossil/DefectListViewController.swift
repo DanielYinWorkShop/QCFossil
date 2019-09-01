@@ -253,7 +253,7 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             inputCell?.criticalInput.text = criticalQty
             inputCell?.majorInput.text = majorQty
             inputCell?.minorInput.text = minorQty
-            inputCell?.frame = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(768), CGFloat(225))
+            inputCell?.frame = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(768), CGFloat(320))
             
             return inputCell!
         case _INPUTMODE02:
@@ -273,7 +273,7 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             inputCell?.criticalInput.text = criticalQty
             inputCell?.majorInput.text = majorQty
             inputCell?.minorInput.text = minorQty
-            inputCell?.frame = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(768), CGFloat(225))
+            inputCell?.frame = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(768), CGFloat(320))
             
             return inputCell!
         case _INPUTMODE03:
@@ -380,6 +380,19 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return (Cache_Task_On?.defectItems.count)!
         return self.defectItems.count
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        let defectItem = self.defectItems[indexPath.row]
+        
+        if defectItem.inputMode! == _INPUTMODE02 {
+            return 320
+        } else if defectItem.inputMode! == _INPUTMODE01 {
+            return 320
+        }
+        
+        return 225
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -501,7 +514,12 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.dismissPhotoButton3.hidden = true
             cellMode1.dismissPhotoButton4.hidden = true
             cellMode1.dismissPhotoButton5.hidden = true
-            
+            cellMode1.defectTypeInput.userInteractionEnabled = false
+            cellMode1.ddInput.text = defectItem.defectRemarksOptionList
+            cellMode1.otherRemarkInput.text = defectItem.othersRemark
+            cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
+            cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
+
             
             let defectDataHelper = DefectDataHelper()
             if Int(defectItem.inspectElementId!) > 0 {

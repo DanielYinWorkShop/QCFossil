@@ -42,6 +42,13 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
     @IBOutlet weak var defectTypeLabel: UILabel!
     @IBOutlet weak var defectTypeInput: UITextField!
     
+    @IBOutlet weak var defectDesc1Label: UILabel!
+    @IBOutlet weak var defectDesc1Input: UITextField!
+    @IBOutlet weak var defectDesc2Label: UILabel!
+    @IBOutlet weak var defectDesc2Input: UITextField!
+    
+    @IBOutlet weak var otherRemarkLabel: UILabel!
+    @IBOutlet weak var otherRemarkInput: UITextField!
     
     weak var pVC:DefectListViewController!
     var positionIdOfInspectElement:Int?
