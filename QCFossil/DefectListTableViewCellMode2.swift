@@ -43,6 +43,14 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
     @IBOutlet weak var addDefectPhotoByAlbum: CustomControlButton!
     @IBOutlet weak var sectionName: UILabel!
     
+    @IBOutlet weak var defectDesc1Label: UILabel!
+    @IBOutlet weak var defectDesc1Input: UITextField!
+    @IBOutlet weak var defectDesc2Label: UILabel!
+    @IBOutlet weak var defectDesc2Input: UITextField!
+    
+    @IBOutlet weak var otherRemarkLabel: UILabel!
+    @IBOutlet weak var otherRemarkInput: UITextField!
+    
     weak var pVC:DefectListViewController!
 
     /*
@@ -72,6 +80,16 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
         self.majorInput.delegate = self
         self.totalInput.delegate = self
         self.dfDescInput.delegate = self
+        
+        self.dtInput.userInteractionEnabled = false
+        self.criticalInput.userInteractionEnabled = false
+        self.minorInput.userInteractionEnabled = false
+        self.majorInput.userInteractionEnabled = false
+        self.totalInput.userInteractionEnabled = false
+        self.dfDescInput.userInteractionEnabled = false
+        self.defectDesc1Input.userInteractionEnabled = false
+        self.defectDesc2Input.userInteractionEnabled = false
+        self.otherRemarkInput.userInteractionEnabled = false
         
         updateLocalizedString()
         
@@ -105,6 +123,9 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
         self.majorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Major")
         self.minorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Minor")
         self.totalLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Total")
+        self.otherRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Other Remark")
+        self.defectDesc1Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 1")
+        self.defectDesc2Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 2")
         
         self.criticalInput.text = "0"
         self.majorInput.text = "0"

@@ -74,9 +74,17 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
         self.minorInput.delegate = self
         self.majorInput.delegate = self
         self.defectTypeInput.delegate = self
-        self.defectTypeInput.userInteractionEnabled = true
         self.ddInput.delegate = self
-        self.ddInput.userInteractionEnabled = true
+        
+        self.defectTypeInput.userInteractionEnabled = false
+        self.ddInput.userInteractionEnabled = false
+        self.dfQtyInput.userInteractionEnabled = false
+        self.criticalInput.userInteractionEnabled = false
+        self.minorInput.userInteractionEnabled = false
+        self.majorInput.userInteractionEnabled = false
+        self.defectDesc1Input.userInteractionEnabled = false
+        self.defectDesc2Input.userInteractionEnabled = false
+        self.otherRemarkInput.userInteractionEnabled = false
         
         updateLocalizedString()
         
@@ -113,6 +121,9 @@ class DefectListTableViewCellMode1: InputModeDFMaster2, UIImagePickerControllerD
         self.majorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Major")
         self.minorLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Minor")
         self.dfQtyLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Total")
+        self.otherRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Other Remark")
+        self.defectDesc1Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 1")
+        self.defectDesc2Label.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Defect Desc. 2")
         
         self.criticalInput.text = "0"
         self.majorInput.text = "0"

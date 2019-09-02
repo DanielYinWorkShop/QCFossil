@@ -45,11 +45,11 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             nav.modalPresentationStyle = UIModalPresentationStyle.Popover
             nav.navigationBar.barTintColor = UIColor.whiteColor()
             nav.navigationBar.tintColor = UIColor.blackColor()
-            
+ 
             let popover = nav.popoverPresentationController
-            popover!.delegate = nil
-            popover!.sourceView = sender.view
-            popover!.sourceRect = CGRectMake(0,(sender.view?.parentVC?.view.frame.origin.y)!,sender.view!.frame.size.width,sender.view!.frame.size.height)
+            popover?.delegate = nil
+            popover?.sourceView = sender.view
+            popover?.sourceRect = CGRectMake(0,(sender.view?.parentVC?.view.frame.origin.y)!,sender.view!.frame.size.width,sender.view!.frame.size.height)
             
             sender.view?.parentVC!.presentViewController(nav, animated: true, completion: nil)
         }

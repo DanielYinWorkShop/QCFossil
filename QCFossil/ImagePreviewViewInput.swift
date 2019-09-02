@@ -126,8 +126,6 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
             imageView.userInteractionEnabled = true
             imageView.multipleTouchEnabled = true
         
-            imageView.frame.size = (imageView.image?.size)!
-            imageView.frame.origin.y = self.frame.origin.y + 20
         }
     }
     
@@ -244,7 +242,6 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
         updateBrushColor()
         imageView.setBrushStyle(CGFloat(_BRUSHSTYLE["red"]!), green: CGFloat(_BRUSHSTYLE["green"]!), blue: CGFloat(_BRUSHSTYLE["blue"]!), brush: CGFloat(_BRUSHSTYLE["brush"]!))
     }
-    
 }
 
 extension ImagePreviewViewInput {
@@ -262,27 +259,28 @@ extension ImagePreviewViewInput {
         //缩小情况
         if (scale < 1.0) {
             if self.totalScale < 1.0 {
+                self.totalScale = 1.0
+                
+                imageView.transform = CGAffineTransformIdentity
+                self.scrollView?.contentSize = CGSize(width: imageView.frame.width, height: imageView.frame.height)
+                self.scrollView?.contentInset = UIEdgeInsets(top: -1 * imageView.frame.origin.y, left: -1*imageView.frame.origin.x, bottom: imageView.frame.origin.y, right: imageView.frame.origin.x)
+                
                 return
             }
         }
-        
+
         if sender.state == .Began || sender.state == .Changed {
+            
+            self.totalScale *= scale
+            if self.totalScale < 1.0 {
+                return
+            }
+            
             imageView.transform = CGAffineTransformScale(imageView.transform, sender.scale, sender.scale)
             sender.scale = 1
-            self.totalScale *= scale
-            
-//            imageView.frame.origin.x -= imageView.frame.origin.x * sender.scale
-//            imageView.frame.origin.y -= imageView.frame.origin.y * sender.scale
-//
-//            self.scrollView?.contentSize = CGSize(width: imageView.frame.width * sender.scale, height: imageView.frame.height * sender.scale)
-            
-            let offsetX = (self.scrollView?.bounds.size.width > self.scrollView?.contentSize.width) ? ((self.scrollView?.bounds.size.width)! - (self.scrollView?.contentSize.width)!) * 0.5 : 0.0
-            let offsetY = (self.scrollView?.bounds.size.height > self.scrollView?.contentSize.height) ?
-                ((self.scrollView?.bounds.size.height)! - (self.scrollView?.contentSize.height)!) * 0.5 : 0.0;
-            imageView.center = CGPointMake((self.scrollView?.contentSize.width)! * 0.5 + offsetX,(self.scrollView?.contentSize.height)! * 0.5 + offsetY)
             
             self.scrollView?.contentSize = CGSize(width: imageView.frame.width, height: imageView.frame.height)
-
+            self.scrollView?.contentInset = UIEdgeInsets(top: -1 * imageView.frame.origin.y, left: -1*imageView.frame.origin.x, bottom: imageView.frame.origin.y, right: imageView.frame.origin.x)
         }
     }
     

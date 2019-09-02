@@ -26,8 +26,8 @@ class InputModeSCMaster:UIView {
     
     func initSegmentControlView(inputMode:String, apyToAllBtn:UIButton) {
         let taskDataHelper = TaskDataHelper()
-        let otherInspSecTmp = Cache_Task_On?.inspSections.filter({$0.inputModeCode == inputMode})
-        var otherInspSec = otherInspSecTmp
+//        let otherInspSecTmp = Cache_Task_On?.inspSections.filter({$0.inputModeCode == inputMode})
+        var otherInspSec = Cache_Task_On?.inspSections
         
         if otherInspSec!.count > 0 {
             
@@ -75,7 +75,7 @@ class InputModeSCMaster:UIView {
                 moveRightBtn.addTarget(self, action: #selector(InputModeSCMaster.moveToRight(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 self.addSubview(moveRightBtn)
                 
-            }else if self.idx < otherInspSec!.count {
+            }else if self.idx < (otherInspSec?.count ?? 1) - 1 {
                 let moveLeftBtn = CustomButton()
                 let moveLeftIcon = UIImage.init(named: "arrow_icon_left")
                 moveLeftBtn.frame = CGRectMake(645, 0, 80, 80)
@@ -92,7 +92,7 @@ class InputModeSCMaster:UIView {
                 moveRightBtn.addTarget(self, action: #selector(InputModeSCMaster.moveToRight(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 self.addSubview(moveRightBtn)
                 
-            }else{
+            }else {
                 let moveLeftBtn = CustomButton()
                 let moveLeftIcon = UIImage.init(named: "arrow_icon_left")
                 moveLeftBtn.frame = CGRectMake(645, 0, 80, 80)

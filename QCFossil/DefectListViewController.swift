@@ -514,7 +514,6 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.dismissPhotoButton3.hidden = true
             cellMode1.dismissPhotoButton4.hidden = true
             cellMode1.dismissPhotoButton5.hidden = true
-            cellMode1.defectTypeInput.userInteractionEnabled = false
             cellMode1.ddInput.text = defectItem.defectRemarksOptionList
             cellMode1.otherRemarkInput.text = defectItem.othersRemark
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
@@ -605,11 +604,15 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode2.cellIdx = defectItem.cellIdx
             cellMode2.indexInput.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode2.inputMode = _INPUTMODE02
-            //cellMode2.dfDescInput.text = defectItem.defectDesc
             cellMode2.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
             cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
             cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
             cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode2.dfDescInput.text = defectItem.defectRemarksOptionList
+            cellMode2.otherRemarkInput.text = defectItem.othersRemark
+            
+            cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
+            cellMode2.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
             if let parentElement = defectItem.inspElmt as? InputMode02CellView {
                 cellMode2.dppInput.text = parentElement.cellDPPInput.text
@@ -619,7 +622,6 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
                 cellMode2.dppInput.text = defectItem.defectpositionPoints
             }
             
-            //cellMode2.dpInput.text = _ENGLISH ? defectItem.postnObj.positionNameEn : defectItem.postnObj.positionNameCn
             cellMode2.dtInput.text = _ENGLISH ? defectItem.elmtObj.elementNameEn : defectItem.elmtObj.elementNameCn
             
             let defectDataHelper = DefectDataHelper()
@@ -631,7 +633,7 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             
             if let inspectRecordId = defectItem.inspectRecordId {
                 let taskInspDataRecord = defectDataHelper.getTaskInspDataRcordNameById(inspectRecordId)
-                cellMode2.dfDescInput.text = taskInspDataRecord?.inspectDetail
+//                cellMode2.dfDescInput.text = taskInspDataRecord?.inspectDetail
                 
                 if let inspectPositionId = taskInspDataRecord?.inspectPositionId {
                     cellMode2.dpInput.text =  defectDataHelper.getInspPositionNameById(inspectPositionId)

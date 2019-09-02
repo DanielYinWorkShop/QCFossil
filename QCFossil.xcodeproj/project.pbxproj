@@ -123,6 +123,30 @@
 		BD5024CD1C33E40F000CF7D6 /* InputMode04View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5024CC1C33E40F000CF7D6 /* InputMode04View.swift */; };
 		BD5024CF1C33EAA5000CF7D6 /* InputMode03.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5024CE1C33EAA5000CF7D6 /* InputMode03.xib */; };
 		BD5024D11C33EABC000CF7D6 /* InputMode03View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5024D01C33EABC000CF7D6 /* InputMode03View.swift */; };
+		BD5572C5231D3B66008E06A5 /* ELCAssetTablePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572AE231D3B66008E06A5 /* ELCAssetTablePicker.m */; };
+		BD5572C6231D3B66008E06A5 /* ELCAssetTablePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572AE231D3B66008E06A5 /* ELCAssetTablePicker.m */; };
+		BD5572C7231D3B66008E06A5 /* ELCOverlayImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572AF231D3B66008E06A5 /* ELCOverlayImageView.m */; };
+		BD5572C8231D3B66008E06A5 /* ELCOverlayImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572AF231D3B66008E06A5 /* ELCOverlayImageView.m */; };
+		BD5572C9231D3B66008E06A5 /* ELCImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572B0231D3B66008E06A5 /* ELCImagePickerController.m */; };
+		BD5572CA231D3B66008E06A5 /* ELCImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572B0231D3B66008E06A5 /* ELCImagePickerController.m */; };
+		BD5572CB231D3B66008E06A5 /* ELCAlbumPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5572B8231D3B66008E06A5 /* ELCAlbumPickerController.xib */; };
+		BD5572CC231D3B66008E06A5 /* ELCAlbumPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5572B8231D3B66008E06A5 /* ELCAlbumPickerController.xib */; };
+		BD5572CD231D3B66008E06A5 /* ELCAssetPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5572B9231D3B66008E06A5 /* ELCAssetPicker.xib */; };
+		BD5572CE231D3B66008E06A5 /* ELCAssetPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5572B9231D3B66008E06A5 /* ELCAssetPicker.xib */; };
+		BD5572CF231D3B66008E06A5 /* Overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5572BA231D3B66008E06A5 /* Overlay.png */; };
+		BD5572D0231D3B66008E06A5 /* Overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5572BA231D3B66008E06A5 /* Overlay.png */; };
+		BD5572D1231D3B66008E06A5 /* ELCAssetTablePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5572BB231D3B66008E06A5 /* ELCAssetTablePicker.xib */; };
+		BD5572D2231D3B66008E06A5 /* ELCAssetTablePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD5572BB231D3B66008E06A5 /* ELCAssetTablePicker.xib */; };
+		BD5572D3231D3B66008E06A5 /* Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5572BC231D3B66008E06A5 /* Overlay@2x.png */; };
+		BD5572D4231D3B66008E06A5 /* Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5572BC231D3B66008E06A5 /* Overlay@2x.png */; };
+		BD5572D5231D3B66008E06A5 /* ELCAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C0231D3B66008E06A5 /* ELCAssetCell.m */; };
+		BD5572D6231D3B66008E06A5 /* ELCAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C0231D3B66008E06A5 /* ELCAssetCell.m */; };
+		BD5572D7231D3B66008E06A5 /* ELCConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C2231D3B66008E06A5 /* ELCConsole.m */; };
+		BD5572D8231D3B66008E06A5 /* ELCConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C2231D3B66008E06A5 /* ELCConsole.m */; };
+		BD5572D9231D3B66008E06A5 /* ELCAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C3231D3B66008E06A5 /* ELCAsset.m */; };
+		BD5572DA231D3B66008E06A5 /* ELCAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C3231D3B66008E06A5 /* ELCAsset.m */; };
+		BD5572DB231D3B66008E06A5 /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C4231D3B66008E06A5 /* ELCAlbumPickerController.m */; };
+		BD5572DC231D3B66008E06A5 /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5572C4231D3B66008E06A5 /* ELCAlbumPickerController.m */; };
 		BD58710122EE024C00333C3C /* POInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58710022EE024C00333C3C /* POInfoView.swift */; };
 		BD58710222EE026200333C3C /* POInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58710022EE024C00333C3C /* POInfoView.swift */; };
 		BD58710422EE05CC00333C3C /* POInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD58710322EE05CC00333C3C /* POInfoView.xib */; };
@@ -525,6 +549,28 @@
 		BD5024CC1C33E40F000CF7D6 /* InputMode04View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode04View.swift; sourceTree = "<group>"; };
 		BD5024CE1C33EAA5000CF7D6 /* InputMode03.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputMode03.xib; sourceTree = "<group>"; };
 		BD5024D01C33EABC000CF7D6 /* InputMode03View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode03View.swift; sourceTree = "<group>"; };
+		BD5572AE231D3B66008E06A5 /* ELCAssetTablePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAssetTablePicker.m; sourceTree = "<group>"; };
+		BD5572AF231D3B66008E06A5 /* ELCOverlayImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCOverlayImageView.m; sourceTree = "<group>"; };
+		BD5572B0231D3B66008E06A5 /* ELCImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCImagePickerController.m; sourceTree = "<group>"; };
+		BD5572B1231D3B66008E06A5 /* ELCConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCConsole.h; sourceTree = "<group>"; };
+		BD5572B2231D3B66008E06A5 /* ELCAssetPickerFilterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetPickerFilterDelegate.h; sourceTree = "<group>"; };
+		BD5572B3231D3B66008E06A5 /* ELCImagePickerHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCImagePickerHeader.h; sourceTree = "<group>"; };
+		BD5572B4231D3B66008E06A5 /* ELCAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetCell.h; sourceTree = "<group>"; };
+		BD5572B5231D3B66008E06A5 /* ELCAlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAlbumPickerController.h; sourceTree = "<group>"; };
+		BD5572B6231D3B66008E06A5 /* ELCAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAsset.h; sourceTree = "<group>"; };
+		BD5572B8231D3B66008E06A5 /* ELCAlbumPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ELCAlbumPickerController.xib; sourceTree = "<group>"; };
+		BD5572B9231D3B66008E06A5 /* ELCAssetPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ELCAssetPicker.xib; sourceTree = "<group>"; };
+		BD5572BA231D3B66008E06A5 /* Overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Overlay.png; sourceTree = "<group>"; };
+		BD5572BB231D3B66008E06A5 /* ELCAssetTablePicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ELCAssetTablePicker.xib; sourceTree = "<group>"; };
+		BD5572BC231D3B66008E06A5 /* Overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overlay@2x.png"; sourceTree = "<group>"; };
+		BD5572BD231D3B66008E06A5 /* ELCImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCImagePickerController.h; sourceTree = "<group>"; };
+		BD5572BE231D3B66008E06A5 /* ELCOverlayImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCOverlayImageView.h; sourceTree = "<group>"; };
+		BD5572BF231D3B66008E06A5 /* ELCAssetTablePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetTablePicker.h; sourceTree = "<group>"; };
+		BD5572C0231D3B66008E06A5 /* ELCAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAssetCell.m; sourceTree = "<group>"; };
+		BD5572C1231D3B66008E06A5 /* ELCAssetSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetSelectionDelegate.h; sourceTree = "<group>"; };
+		BD5572C2231D3B66008E06A5 /* ELCConsole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCConsole.m; sourceTree = "<group>"; };
+		BD5572C3231D3B66008E06A5 /* ELCAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAsset.m; sourceTree = "<group>"; };
+		BD5572C4231D3B66008E06A5 /* ELCAlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAlbumPickerController.m; sourceTree = "<group>"; };
 		BD58710022EE024C00333C3C /* POInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POInfoView.swift; sourceTree = "<group>"; };
 		BD58710322EE05CC00333C3C /* POInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POInfoView.xib; sourceTree = "<group>"; };
 		BD58C8121C3D2049002149C2 /* DefectListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefectListViewController.swift; sourceTree = "<group>"; };
@@ -569,7 +615,7 @@
 		BDCF870E1C576D0F000B0C38 /* PoDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PoDataHelper.swift; sourceTree = "<group>"; };
 		BDCF87101C57886D000B0C38 /* InspSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspSection.swift; sourceTree = "<group>"; };
 		BDCFCCE01DB4835D00414027 /* InputModeDFMaster2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputModeDFMaster2.swift; sourceTree = "<group>"; };
-		BDD1A3472123472B00AE391E /* QC0822uwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0822uwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDD1A3472123472B00AE391E /* QC0901uwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0901uwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD2E0C11C45048C00CB0C40 /* TaskTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTypeViewController.swift; sourceTree = "<group>"; };
 		BDD51C4E1C3E442000A6E656 /* InputMode04DefectCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputMode04DefectCellView.swift; sourceTree = "<group>"; };
 		BDD51C501C3E443C00A6E656 /* InputMode04DefectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputMode04DefectCell.xib; sourceTree = "<group>"; };
@@ -653,7 +699,7 @@
 				9C0C36CB1C1E6F7800CF48ED /* QC0821pwl.app */,
 				9C0C36DF1C1E6F7800CF48ED /* QCFossilTests.xctest */,
 				9C0C36EA1C1E6F7800CF48ED /* QCFossilUITests.xctest */,
-				BDD1A3472123472B00AE391E /* QC0822uwl.app */,
+				BDD1A3472123472B00AE391E /* QC0901uwl.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -937,6 +983,7 @@
 		9CD2B4D01C2175AD0003DE51 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				BD5572AD231D3B66008E06A5 /* ELCImagePicker */,
 				9CEBF5451DAFF76F007B782B /* DOWNSCALING */,
 				9CD85A3A1D74147F004DD641 /* SSZipArchive */,
 				9C0C36D51C1E6F7800CF48ED /* Assets.xcassets */,
@@ -1041,6 +1088,44 @@
 				BD58710322EE05CC00333C3C /* POInfoView.xib */,
 			);
 			name = QCInfo;
+			sourceTree = "<group>";
+		};
+		BD5572AD231D3B66008E06A5 /* ELCImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				BD5572AE231D3B66008E06A5 /* ELCAssetTablePicker.m */,
+				BD5572AF231D3B66008E06A5 /* ELCOverlayImageView.m */,
+				BD5572B0231D3B66008E06A5 /* ELCImagePickerController.m */,
+				BD5572B1231D3B66008E06A5 /* ELCConsole.h */,
+				BD5572B2231D3B66008E06A5 /* ELCAssetPickerFilterDelegate.h */,
+				BD5572B3231D3B66008E06A5 /* ELCImagePickerHeader.h */,
+				BD5572B4231D3B66008E06A5 /* ELCAssetCell.h */,
+				BD5572B5231D3B66008E06A5 /* ELCAlbumPickerController.h */,
+				BD5572B6231D3B66008E06A5 /* ELCAsset.h */,
+				BD5572B7231D3B66008E06A5 /* Resources */,
+				BD5572BD231D3B66008E06A5 /* ELCImagePickerController.h */,
+				BD5572BE231D3B66008E06A5 /* ELCOverlayImageView.h */,
+				BD5572BF231D3B66008E06A5 /* ELCAssetTablePicker.h */,
+				BD5572C0231D3B66008E06A5 /* ELCAssetCell.m */,
+				BD5572C1231D3B66008E06A5 /* ELCAssetSelectionDelegate.h */,
+				BD5572C2231D3B66008E06A5 /* ELCConsole.m */,
+				BD5572C3231D3B66008E06A5 /* ELCAsset.m */,
+				BD5572C4231D3B66008E06A5 /* ELCAlbumPickerController.m */,
+			);
+			name = ELCImagePicker;
+			path = Library/ELCImagePicker;
+			sourceTree = "<group>";
+		};
+		BD5572B7231D3B66008E06A5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BD5572B8231D3B66008E06A5 /* ELCAlbumPickerController.xib */,
+				BD5572B9231D3B66008E06A5 /* ELCAssetPicker.xib */,
+				BD5572BA231D3B66008E06A5 /* Overlay.png */,
+				BD5572BB231D3B66008E06A5 /* ELCAssetTablePicker.xib */,
+				BD5572BC231D3B66008E06A5 /* Overlay@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		BD908EB41C50A2E900D02A8E /* Cache */ = {
@@ -1181,7 +1266,7 @@
 			);
 			name = "QCFossil UAT";
 			productName = QCFossil;
-			productReference = BDD1A3472123472B00AE391E /* QC0822uwl.app */;
+			productReference = BDD1A3472123472B00AE391E /* QC0901uwl.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1245,6 +1330,7 @@
 			files = (
 				BDCF87031C571B67000B0C38 /* fossil_qc_prd.sqlite in Resources */,
 				BDF9DD561E02984F00D868D1 /* ShapePreviewView.xib in Resources */,
+				BD5572D1231D3B66008E06A5 /* ELCAssetTablePicker.xib in Resources */,
 				9C25B2DF1C4CC50E005DCA11 /* InputMode01Cell.xib in Resources */,
 				9C93B63F1C4F41A500D7123A /* InputMode03Cell.xib in Resources */,
 				9C25B2FD1C4CFC1F005DCA11 /* InputMode02DefectCell.xib in Resources */,
@@ -1263,6 +1349,7 @@
 				9C93B6471C4F567E00D7123A /* InputMode03DefectCell.xib in Resources */,
 				9C93B64D1C4F94A600D7123A /* DropdownListView.xib in Resources */,
 				9CD85A6A1D74147F004DD641 /* Info.plist in Resources */,
+				BD5572D3231D3B66008E06A5 /* Overlay@2x.png in Resources */,
 				9C25B2F51C4CF95B005DCA11 /* InputMode02Cell.xib in Resources */,
 				9C96E4721C479FAB0052C486 /* TaskDetailView.xib in Resources */,
 				9CED09D71CA013AF00ABEEEE /* CustomCellView.xib in Resources */,
@@ -1272,11 +1359,14 @@
 				BD5024CB1C33E048000CF7D6 /* InputMode04.xib in Resources */,
 				9CDF8A631CC5ED03003C7997 /* Settings.bundle in Resources */,
 				9CD405951C7B0AE500A7F517 /* CalenderPickerView.xib in Resources */,
+				BD5572CD231D3B66008E06A5 /* ELCAssetPicker.xib in Resources */,
 				BD5A0DAC1C44A95C0056B077 /* CreateTaskView.xib in Resources */,
 				BD5024CF1C33EAA5000CF7D6 /* InputMode03.xib in Resources */,
 				9C0C36D41C1E6F7800CF48ED /* Main.storyboard in Resources */,
+				BD5572CB231D3B66008E06A5 /* ELCAlbumPickerController.xib in Resources */,
 				9C0848871C61E08500CAAD88 /* POCellView.xib in Resources */,
 				BD4AD87422E1816700CDC833 /* TaskQCInfoView.xib in Resources */,
+				BD5572CF231D3B66008E06A5 /* Overlay.png in Resources */,
 				9CD8617F1C5B9929005B66EC /* InspectionView.xib in Resources */,
 				9C96E46A1C4786030052C486 /* InptCategoryCellView.xib in Resources */,
 			);
@@ -1300,9 +1390,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD5572CC231D3B66008E06A5 /* ELCAlbumPickerController.xib in Resources */,
 				BD58710522EE062000333C3C /* POInfoView.xib in Resources */,
+				BD5572D0231D3B66008E06A5 /* Overlay.png in Resources */,
 				BD4AD87622E1D63C00CDC833 /* TaskQCInfoView.xib in Resources */,
 				BDD1A3232123472B00AE391E /* fossil_qc_prd.sqlite in Resources */,
+				BD5572D4231D3B66008E06A5 /* Overlay@2x.png in Resources */,
 				BDD1A3242123472B00AE391E /* ShapePreviewView.xib in Resources */,
 				BDD1A3252123472B00AE391E /* InputMode01Cell.xib in Resources */,
 				BDD1A3262123472B00AE391E /* InputMode03Cell.xib in Resources */,
@@ -1310,6 +1403,7 @@
 				BDD1A3282123472B00AE391E /* ImagePreviewView.xib in Resources */,
 				BDD1A3292123472B00AE391E /* InputMode04DefectCell.xib in Resources */,
 				BDD1A32A2123472B00AE391E /* PopoverViews.xib in Resources */,
+				BD5572CE231D3B66008E06A5 /* ELCAssetPicker.xib in Resources */,
 				BDD1A32B2123472B00AE391E /* LaunchScreen.storyboard in Resources */,
 				BDD1A32C2123472B00AE391E /* DefectHeader.xib in Resources */,
 				BDD1A32D2123472B00AE391E /* Localizable.strings in Resources */,
@@ -1324,6 +1418,7 @@
 				BDD1A3362123472B00AE391E /* TaskDetailView.xib in Resources */,
 				BDD1A3372123472B00AE391E /* CustomCellView.xib in Resources */,
 				BDD1A3382123472B00AE391E /* Assets.xcassets in Resources */,
+				BD5572D2231D3B66008E06A5 /* ELCAssetTablePicker.xib in Resources */,
 				BDD1A3392123472B00AE391E /* DataControlUIView.xib in Resources */,
 				BDD1A33A2123472B00AE391E /* InputMode04Cell.xib in Resources */,
 				BDD1A33B2123472B00AE391E /* InputMode04.xib in Resources */,
@@ -1353,6 +1448,7 @@
 				BDF2153D1DBE51CA0026DB39 /* DefectListTableViewCellMode3.swift in Sources */,
 				9CD85A641D74147F004DD641 /* entropy.c in Sources */,
 				BD73BEC1229A91EC001DE0CC /* ZoneDataHelper.swift in Sources */,
+				BD5572C7231D3B66008E06A5 /* ELCOverlayImageView.m in Sources */,
 				9CED09D91CA013DE00ABEEEE /* CustomTableViewCell.swift in Sources */,
 				BDDB59EE1C3BD9170023D41C /* InputMode04CellView.swift in Sources */,
 				9CEAEB891CAE7CE000ED8AB8 /* CameraViewController.swift in Sources */,
@@ -1379,6 +1475,7 @@
 				9CD85A6F1D74147F004DD641 /* SSZipArchive+Swift.swift in Sources */,
 				BD5024D11C33EABC000CF7D6 /* InputMode03View.swift in Sources */,
 				9CD85A671D74147F004DD641 /* prng.c in Sources */,
+				BD5572DB231D3B66008E06A5 /* ELCAlbumPickerController.m in Sources */,
 				9CD2B4CA1C214E0A0003DE51 /* TaskSearchViewController.swift in Sources */,
 				9CD85A6B1D74147F004DD641 /* ioapi.c in Sources */,
 				9CD85A631D74147F004DD641 /* aestab.c in Sources */,
@@ -1391,6 +1488,7 @@
 				BD7DF48B1DDDCB5700618D85 /* CreateTaskTableViewCell.swift in Sources */,
 				BDD6669D1C60BA9F00635981 /* InputModeICMaster.swift in Sources */,
 				BD5A0DAF1C44A9880056B077 /* POSearchView.swift in Sources */,
+				BD5572C9231D3B66008E06A5 /* ELCImagePickerController.m in Sources */,
 				9CD2B4D41C2261670003DE51 /* TaskTableViewCell.swift in Sources */,
 				9C96E4551C4636380052C486 /* PopoverViewController.swift in Sources */,
 				BDD6669F1C610D1400635981 /* InputModeSCMaster.swift in Sources */,
@@ -1416,6 +1514,7 @@
 				9C96E4701C4790E70052C486 /* CustomTextView.swift in Sources */,
 				9CA56E201D53184000DC8C87 /* helper.m in Sources */,
 				9CDB08211C7D8AE5004E871D /* SummaryResultValue.swift in Sources */,
+				BD5572D9231D3B66008E06A5 /* ELCAsset.m in Sources */,
 				9C25B2F31C4CF829005DCA11 /* InputMode02View.swift in Sources */,
 				9C93B64F1C4F94EE00D7123A /* DropdownListViewControl.swift in Sources */,
 				9CEBF5471DAFF7EA007B782B /* DownscalingAlassets.m in Sources */,
@@ -1441,6 +1540,7 @@
 				9CEAEB871CAE1F7F00ED8AB8 /* DefectDataHelper.swift in Sources */,
 				BDCC903B1C5620CB009A5AB7 /* FMDatabase.m in Sources */,
 				BD4AD87222E1813A00CDC833 /* TaskQCInfoView.swift in Sources */,
+				BD5572C5231D3B66008E06A5 /* ELCAssetTablePicker.m in Sources */,
 				9CD85A661D74147F004DD641 /* hmac.c in Sources */,
 				BD08F32B1E30A43B00FFBB2D /* InspectionDefectTableViewCellMode2.swift in Sources */,
 				9CDF3D761C7DD1F400386F9F /* VdrLoc.swift in Sources */,
@@ -1453,6 +1553,7 @@
 				BD5A0DB21C44AC050056B077 /* DataSyncViewController.swift in Sources */,
 				BD908EB61C50A36900D02A8E /* CacheData.swift in Sources */,
 				BDCF870D1C576586000B0C38 /* TaskItem.swift in Sources */,
+				BD5572D5231D3B66008E06A5 /* ELCAssetCell.m in Sources */,
 				BD5024C31C3390A2000CF7D6 /* ICViewController.swift in Sources */,
 				9CDB08251C7DB1AC004E871D /* TaskInspDefectDataRecord.swift in Sources */,
 				BD272FB11C589B1900D48E70 /* InspSectionPosition.swift in Sources */,
@@ -1482,6 +1583,7 @@
 				9CDF3D771C7DD1F400386F9F /* Vendor.swift in Sources */,
 				9CD48D621C75E172009D0C54 /* POSearchTableViewCell.swift in Sources */,
 				BD5A0DA81C44A92A0056B077 /* POSearchViewController.swift in Sources */,
+				BD5572D7231D3B66008E06A5 /* ELCConsole.m in Sources */,
 				9CD85A701D74147F004DD641 /* SSZipArchive.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1514,6 +1616,7 @@
 				BD73BEC2229A96A0001DE0CC /* ZoneDataHelper.swift in Sources */,
 				BDD1A29B2123472B00AE391E /* DataCtrlViewController.swift in Sources */,
 				BDD1A29C2123472B00AE391E /* Brand.swift in Sources */,
+				BD5572C8231D3B66008E06A5 /* ELCOverlayImageView.m in Sources */,
 				BDD1A29D2123472B00AE391E /* UserSettingViewController.swift in Sources */,
 				BDD1A29E2123472B00AE391E /* DataHelperMaster.swift in Sources */,
 				BDD1A29F2123472B00AE391E /* InspCatResult.swift in Sources */,
@@ -1540,6 +1643,7 @@
 				BDD1A2B42123472B00AE391E /* PhotoAlbumCellTableViewCell.swift in Sources */,
 				BDD1A2B52123472B00AE391E /* ScrollViewController.swift in Sources */,
 				BDD1A2B62123472B00AE391E /* DefectListTableViewCell.swift in Sources */,
+				BD5572DC231D3B66008E06A5 /* ELCAlbumPickerController.m in Sources */,
 				BDD1A2B72123472B00AE391E /* VendorDataHelper.swift in Sources */,
 				BDD1A2B82123472B00AE391E /* SSZipArchive+Swift.swift in Sources */,
 				BDD1A2B92123472B00AE391E /* InputMode03View.swift in Sources */,
@@ -1552,6 +1656,7 @@
 				BDD1A2C02123472B00AE391E /* DatabaseManager.swift in Sources */,
 				BDD1A2C12123472B00AE391E /* AppUpgradeDataHelper.swift in Sources */,
 				BDD1A2C22123472B00AE391E /* InspectionDefectTableViewCellMode3.swift in Sources */,
+				BD5572CA231D3B66008E06A5 /* ELCImagePickerController.m in Sources */,
 				BDD1A2C32123472B00AE391E /* zip.c in Sources */,
 				BDD1A2C42123472B00AE391E /* CreateTaskTableViewCell.swift in Sources */,
 				BDD1A2C52123472B00AE391E /* InputModeICMaster.swift in Sources */,
@@ -1577,6 +1682,7 @@
 				BDD1A2D92123472B00AE391E /* CustomTextField.swift in Sources */,
 				BDD1A2DA2123472B00AE391E /* CalenderPickerViewInput.swift in Sources */,
 				BDD1A2DB2123472B00AE391E /* mztools.c in Sources */,
+				BD5572DA231D3B66008E06A5 /* ELCAsset.m in Sources */,
 				BDD1A2DC2123472B00AE391E /* CustomTextView.swift in Sources */,
 				BDD1A2DD2123472B00AE391E /* helper.m in Sources */,
 				BDD1A2DE2123472B00AE391E /* SummaryResultValue.swift in Sources */,
@@ -1602,6 +1708,7 @@
 				BDD1A2F22123472B00AE391E /* FMDatabasePool.m in Sources */,
 				BDD1A2F32123472B00AE391E /* ImagePreviewViewInput.swift in Sources */,
 				BDD1A2F42123472B00AE391E /* DefectDataHelper.swift in Sources */,
+				BD5572C6231D3B66008E06A5 /* ELCAssetTablePicker.m in Sources */,
 				BDD1A2F52123472B00AE391E /* FMDatabase.m in Sources */,
 				BDD1A2F62123472B00AE391E /* hmac.c in Sources */,
 				BDD1A2F72123472B00AE391E /* InspectionDefectTableViewCellMode2.swift in Sources */,
@@ -1614,6 +1721,7 @@
 				BDD1A2FE2123472B00AE391E /* AppDelegate.swift in Sources */,
 				BDD1A2FF2123472B00AE391E /* DataSyncViewController.swift in Sources */,
 				BDD1A3002123472B00AE391E /* CacheData.swift in Sources */,
+				BD5572D6231D3B66008E06A5 /* ELCAssetCell.m in Sources */,
 				BDD1A3012123472B00AE391E /* TaskItem.swift in Sources */,
 				BDD1A3022123472B00AE391E /* ICViewController.swift in Sources */,
 				BDD1A3032123472B00AE391E /* TaskInspDefectDataRecord.swift in Sources */,
@@ -1643,6 +1751,7 @@
 				BDD1A31B2123472B00AE391E /* Vendor.swift in Sources */,
 				BDD1A31C2123472B00AE391E /* POSearchTableViewCell.swift in Sources */,
 				BDD1A31D2123472B00AE391E /* POSearchViewController.swift in Sources */,
+				BD5572D8231D3B66008E06A5 /* ELCConsole.m in Sources */,
 				BDD1A31E2123472B00AE391E /* SSZipArchive.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1884,7 +1993,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
-				PRODUCT_NAME = QC0822uwl;
+				PRODUCT_NAME = QC0901uwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1904,7 +2013,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
-				PRODUCT_NAME = QC0822uwl;
+				PRODUCT_NAME = QC0901uwl;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 			};

@@ -20,6 +20,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
             myParentTabVC.setRightBarItem("", actionName: "")
             
             myParentTabVC.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
         }
     }
     
@@ -339,7 +341,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         preview?.center = container.center
         preview?.parentView = container
         preview?.startEditBtn.hidden = true
-//        preview?.previewOnly = true
+        preview?.previewOnly = true
         preview?.imageView.image = UIImage(contentsOfFile: self.ssPhotoPath)
         preview?.imageView.contentMode = .ScaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
@@ -376,7 +378,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         preview?.center = container.center
         preview?.parentView = container
         preview?.startEditBtn.hidden = true
-//        preview?.previewOnly = true
+        preview?.previewOnly = true
         preview?.imageView.image = UIImage(contentsOfFile: self.cbPhotoPath)
         preview?.imageView.contentMode = .ScaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)

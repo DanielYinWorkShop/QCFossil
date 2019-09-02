@@ -184,7 +184,9 @@ class PopoverViewController: UIViewController {
             
             return
         }else if dataType == _POPOVERNOTITLE {
-            self.navigationItem.title = ""
+            if let nav = self.parentViewController as? UINavigationController {
+                nav.setNavigationBarHidden(true, animated: false)
+            }
             
             let descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 325,height: 500))
             descView.text = selectedValue
@@ -193,6 +195,7 @@ class PopoverViewController: UIViewController {
             
             self.view.addSubview(descView)
             
+            return
         }else{
             inputview = PopoverViewsInput.loadFromNibNamed("PopoverViews")!
             inputview.initData(sourceType)

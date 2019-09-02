@@ -38,11 +38,10 @@ class ContainerViewController: UIViewController{
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        
-        //NSNotificationCenter.defaultCenter().removeObserver(self, name: "toggleMenu", object: nil)
-        //NSNotificationCenter.defaultCenter().removeObserver(self, name: "taskSearchMenuClickResponse", object: nil)
-        //NSNotificationCenter.defaultCenter().removeObserver(self, name: "setScrollable", object: nil)
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "toggleMenu", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "taskSearchMenuClickResponse", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "setScrollable", object: nil)
     }
 
     override func didReceiveMemoryWarning() {
