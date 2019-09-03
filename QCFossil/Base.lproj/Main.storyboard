@@ -5177,6 +5177,12 @@
                                                         <action selector="addDefectPhotoFromCamera:" destination="9Z1-em-5JS" eventType="touchUpInside" id="2pd-kH-753"/>
                                                     </connections>
                                                 </button>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="aed-lG-G73">
+                                                    <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="674" y="275" width="20" height="20"/>
+                                                    </variation>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -5209,6 +5215,7 @@
                                                     <exclude reference="1yi-re-8RP"/>
                                                     <exclude reference="2IE-HS-fiD"/>
                                                     <exclude reference="UkA-ki-Bbr"/>
+                                                    <exclude reference="aed-lG-G73"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -5242,10 +5249,12 @@
                                                     <include reference="1yi-re-8RP"/>
                                                     <include reference="2IE-HS-fiD"/>
                                                     <include reference="UkA-ki-Bbr"/>
+                                                    <include reference="aed-lG-G73"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="aed-lG-G73" id="VGU-FL-xIU"/>
                                             <outlet property="criticalInput" destination="xzm-Ix-joA" id="nK8-Dx-MNB"/>
                                             <outlet property="criticalLabel" destination="UAT-zL-rkZ" id="mIs-Ft-x18"/>
                                             <outlet property="defectDesc1Input" destination="mBa-87-zmZ" id="nBd-ta-wIm"/>
@@ -5561,6 +5570,12 @@
                                                         <rect key="frame" x="738" y="134" width="21" height="21"/>
                                                     </variation>
                                                 </button>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gxN-k2-Fgv">
+                                                    <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="675" y="278" width="20" height="20"/>
+                                                    </variation>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -5597,6 +5612,7 @@
                                                     <exclude reference="ehf-E9-KHJ"/>
                                                     <exclude reference="6oU-19-wAG"/>
                                                     <exclude reference="tGY-ej-qSZ"/>
+                                                    <exclude reference="gxN-k2-Fgv"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular">
@@ -5634,10 +5650,12 @@
                                                     <include reference="ehf-E9-KHJ"/>
                                                     <include reference="6oU-19-wAG"/>
                                                     <include reference="tGY-ej-qSZ"/>
+                                                    <include reference="gxN-k2-Fgv"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="gxN-k2-Fgv" id="Cpd-aE-sUx"/>
                                             <outlet property="defectCriticalQtyInput" destination="0aR-JB-ByI" id="rNG-F6-oMz"/>
                                             <outlet property="defectCriticalQtyLabel" destination="NSm-Ht-bYb" id="TS6-hx-Uug"/>
                                             <outlet property="defectDesc1Input" destination="zjL-r6-pXz" id="gPJ-yg-iFn"/>
@@ -7077,7 +7095,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kUK-Zu-YsE" id="Tgy-dG-I1Z">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="224.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="319.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glM-6N-PbT">
@@ -8325,7 +8343,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="PTu-VT-TfV"/>
-        <segue reference="Aer-EM-O4R"/>
         <segue reference="Afp-MC-Qc2"/>
+        <segue reference="HDg-CQ-EiX"/>
     </inferredMetricsTieBreakers>
 </document>

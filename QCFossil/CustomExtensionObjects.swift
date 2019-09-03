@@ -1330,8 +1330,6 @@ extension UIImage {
             var photo = initPhotoObj(nil,taskId: taskId, refPhotoId: 0, orgFileName: "", imageName: "", photoDesc: "",dataRecordId:dataRecordId,createUser:inspectorName,createDate:currentDate,modifyUser:Cache_Inspector?.appUserName,modifyDate:currentDate, dataType: dataType)
             
             photo = photoDataHelper.savePhoto(photo!)
-            //photo!.photo = UIImageView.init(image: thumbImage)
-            
             
             //Update Photo Name
             imageName = String((photo?.photoId)!)+".jpg"
@@ -1360,6 +1358,73 @@ extension UIImage {
                 return ""
             }
         }
+    }
+    
+    func getNamesBySaveImageToLocal(sourceImages:[Photo], savePath:String, taskId:Int, bookingNo:String, inspectorName:String, dataRecordId:Int?=0, dataType:Int, currentDate:String, originFileName:String="", sourceThumbImage:UIImage = UIImage.init()) ->[String] {
+        
+        var images = [String]()
+        for sourceImage in sourceImages {
+        
+        //Resize Image
+        guard let imageOrigin = sourceImage.photo?.image else {return images}
+        var image = imageOrigin
+        if _NEEDRESIZEIMAGE {
+            image = resizeImage(imageOrigin)
+            
+        }else{
+            image = rotateImage(imageOrigin)
+            
+        }
+        
+        let thumbImageBefore = cropToBounds(image, width: _THUMBNAILWIDTH, height: _THUMBNAILHEIGHT)
+        let thumbImage = resizeImage(thumbImageBefore, imageWidth: _THUMBNAILWIDTH, imageHeight: _THUMBNAILHEIGHT)
+        
+        let dataInPNG:NSData = UIImageJPEGRepresentation(image, 1.0)!
+        let dataInPNG_thumb:NSData = UIImageJPEGRepresentation(thumbImage, 0.1)!
+        
+        var imageName = ""
+        var saveObjFullPath = ""
+        var saveObjFullThumbPath = ""
+        
+        //let fileManager:NSFileManager = NSFileManager.defaultManager()
+        let photoDataHelper = PhotoDataHelper()
+        
+       
+            //Update db and Get the photo Id, then using the photo id as name
+            //Update DB
+            var photo = initPhotoObj(nil,taskId: taskId, refPhotoId: 0, orgFileName: "", imageName: "", photoDesc: "",dataRecordId:dataRecordId,createUser:inspectorName,createDate:currentDate,modifyUser:Cache_Inspector?.appUserName,modifyDate:currentDate, dataType: dataType)
+            
+            photo = photoDataHelper.savePhoto(photo!)
+            
+            
+            
+            //Update Photo Name
+            imageName = String((photo?.photoId)!)+".jpg"
+            var prefixs = 14
+            let nameLen = imageName.characters.count
+            
+            while prefixs - nameLen > 0 {
+                imageName = "0"+imageName
+                prefixs -= 1
+            }
+            
+            photo?.orgFileName = originFileName
+            photo?.photoFilename = imageName
+            photo?.photoFile = imageName
+            photo?.thumbFile = imageName
+            if (photoDataHelper.savePhoto(photo!) != nil) {
+                
+                saveObjFullPath = savePath+"/"+imageName
+                saveObjFullThumbPath = savePath+"/"+_THUMBSPHYSICALNAME+"/"+imageName
+                
+                dataInPNG.writeToFile(saveObjFullPath, atomically: true)
+                dataInPNG_thumb.writeToFile(saveObjFullThumbPath, atomically: true)
+                
+                images.append(imageName)
+            }
+        }
+        
+        return images
     }
 
     func removeImageFromLocalByPath(path:String) ->Bool {
