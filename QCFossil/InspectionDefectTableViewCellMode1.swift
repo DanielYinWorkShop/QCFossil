@@ -96,7 +96,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         
         let imagePicker = ELCImagePickerController(imagePicker: ())
         imagePicker.maximumImagesCount = availableCount.count
-        imagePicker.returnsOriginalImage = true
+        imagePicker.returnsOriginalImage = false
         imagePicker.returnsImage = true
         imagePicker.onOrder = true
         

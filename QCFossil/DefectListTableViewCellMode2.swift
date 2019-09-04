@@ -185,15 +185,16 @@ class DefectListTableViewCellMode2: InputModeDFMaster2, UIActionSheetDelegate, U
     }
     
     func updatePhotoAddedStatus(newStatus:String) {
-        if self.inspItem != nil {
-            if newStatus == "yes" {
-                (self.inspItem as! InputMode03CellView).photoAdded = true
-            }else{
-                (self.inspItem as! InputMode03CellView).photoAdded = false
-            }
-            
-            (self.inspItem as! InputMode03CellView).updatePhotoAddediConStatus("",photoTakenIcon: (self.inspItem as! InputMode03CellView).photoTakenIcon)
+        guard let inspeItem = self.inspItem as? InputMode02CellView else {return}
+        
+        if newStatus == "yes" {
+            inspeItem.photoAdded = true
+        }else{
+            inspeItem.photoAdded = false
         }
+            
+        inspeItem.updatePhotoAddediConStatus("",photoTakenIcon: inspeItem.photoAddedIcon)
+        
     }
     
     override func removeDefectCell() {
