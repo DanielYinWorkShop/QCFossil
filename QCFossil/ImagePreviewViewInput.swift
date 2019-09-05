@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
+class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var BackgroundView: UIView!
     weak var parentView:UIView?
@@ -120,12 +120,12 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
             
             imageView.previewOnly = true
             
-            let gesture = UIPinchGestureRecognizer(target: self, action: #selector(ImagePreviewViewInput.viewPinch(_:)))
-            imageView.addGestureRecognizer(gesture)
-        
-            imageView.userInteractionEnabled = true
-            imageView.multipleTouchEnabled = true
-        
+            scrollView?.minimumZoomScale = 1.0
+            scrollView?.maximumZoomScale = 3.0
+            scrollView?.zoomScale = 1.0
+            scrollView?.bouncesZoom = true
+            scrollView?.contentSize = CGSizeMake(600, 800)
+            scrollView?.delegate = self
         }
     }
     
@@ -246,42 +246,16 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate {
 
 extension ImagePreviewViewInput {
     
-    func viewPinch(sender: UIPinchGestureRecognizer) {
-        guard let imageView = self.imageView else {return}
-        
-        let scale = sender.scale;
-        
-        if(scale > 1.0){
-            if self.totalScale > 3.0 {
-                return
-            }
-        }
-        //缩小情况
-        if (scale < 1.0) {
-            if self.totalScale < 1.0 {
-                self.totalScale = 1.0
-                
-                imageView.transform = CGAffineTransformIdentity
-                self.scrollView?.contentSize = CGSize(width: imageView.frame.width, height: imageView.frame.height)
-                self.scrollView?.contentInset = UIEdgeInsets(top: -1 * imageView.frame.origin.y, left: -1*imageView.frame.origin.x, bottom: imageView.frame.origin.y, right: imageView.frame.origin.x)
-                
-                return
-            }
-        }
-
-        if sender.state == .Began || sender.state == .Changed {
-            
-            self.totalScale *= scale
-            if self.totalScale < 1.0 {
-                return
-            }
-            
-            imageView.transform = CGAffineTransformScale(imageView.transform, sender.scale, sender.scale)
-            sender.scale = 1
-            
-            self.scrollView?.contentSize = CGSize(width: imageView.frame.width, height: imageView.frame.height)
-            self.scrollView?.contentInset = UIEdgeInsets(top: -1 * imageView.frame.origin.y, left: -1*imageView.frame.origin.x, bottom: imageView.frame.origin.y, right: imageView.frame.origin.x)
-        }
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return imageView
     }
     
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+        if (self.scrollView?.zoomScale > 1) {
+            imageView.center = CGPointMake(self.scrollView!.contentSize.width / 2, self.scrollView!.contentSize.height / 2)
+        }
+        else {
+            imageView.center = self.scrollView?.center ?? self.center
+        }
+    }
 }

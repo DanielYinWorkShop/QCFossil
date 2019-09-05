@@ -349,6 +349,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         let scrollView = UIScrollView()
         scrollView.frame = preview?.imageView?.frame ?? CGRect(x: 0,y: 0,width: 600,height: 800)
         scrollView.addSubview((preview?.imageView)!)
+        preview?.imageView.center = scrollView.center
         
         preview?.BackgroundView.addSubview(scrollView)
         preview?.scrollView = scrollView
@@ -386,6 +387,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         let scrollView = UIScrollView()
         scrollView.frame = preview?.imageView?.frame ?? CGRect(x: 0,y: 0,width: 600,height: 800)
         scrollView.addSubview((preview?.imageView)!)
+        preview?.imageView.center = scrollView.center
         
         preview?.BackgroundView.addSubview(scrollView)
         preview?.scrollView = scrollView
