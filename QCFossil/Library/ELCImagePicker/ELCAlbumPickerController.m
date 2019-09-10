@@ -9,6 +9,7 @@
 #import "ELCImagePickerController.h"
 #import "ELCAssetTablePicker.h"
 #import <MobileCoreServices/UTCoreTypes.h>
+#import "QCFossil-Swift.h"
 
 @interface ELCAlbumPickerController ()
 
@@ -27,12 +28,13 @@
 {
     [super viewDidLoad];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-	
-	[self.navigationItem setTitle:NSLocalizedString(@"Loading...", nil)];
 
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.parent action:@selector(cancelImagePicker)];
+    MylocalizedString *myLocalizer = [MylocalizedString sharedLocalizeManager];
+	[self.navigationItem setTitle:[myLocalizer getLocalizedString:@"Loading..."]/*NSLocalizedString(@"Loading...", nil)*/];
+
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:[myLocalizer getLocalizedString:@"Cancel"] style: UIBarButtonItemStylePlain target:self.parent action:@selector(cancelImagePicker)];
 	[self.navigationItem setRightBarButtonItem:cancelButton];
-
+    
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
 	self.assetGroups = tempArray;
     
@@ -57,6 +59,7 @@
                 
                 if ([[sGroupPropertyName lowercaseString] isEqualToString:@"camera roll"] && nType == ALAssetsGroupSavedPhotos) {
                     [self.assetGroups insertObject:group atIndex:0];
+                    
                 }
                 else {
                     [self.assetGroups addObject:group];
@@ -68,14 +71,14 @@
             
             // Group Enumerator Failure Block
             void (^assetGroupEnumberatorFailure)(NSError *) = ^(NSError *error) {
-              
+                
                 if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied) {
                     NSString *errorMessage = NSLocalizedString(@"This app does not have access to your photos or videos. You can enable access in Privacy Settings.", nil);
-                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil] show];
+                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil) message:errorMessage delegate:nil cancelButtonTitle:[myLocalizer getLocalizedString:@"Okay"]/*NSLocalizedString(@"Ok", nil)*/ otherButtonTitles:nil] show];
                   
                 } else {
                     NSString *errorMessage = [NSString stringWithFormat:@"Album Error: %@ - %@", [error localizedDescription], [error localizedRecoverySuggestion]];
-                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil] show];
+                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:[myLocalizer getLocalizedString:@"Okay"]/*NSLocalizedString(@"Ok", nil)*/ otherButtonTitles:nil] show];
                 }
 
                 [self.navigationItem setTitle:nil];
@@ -105,8 +108,9 @@
 
 - (void)reloadTableView
 {
+    MylocalizedString *myLocalizer = [MylocalizedString sharedLocalizeManager];
 	[self.tableView reloadData];
-	[self.navigationItem setTitle:NSLocalizedString(@"Select an Album", nil)];
+	[self.navigationItem setTitle:[myLocalizer getLocalizedString:@"Select an Album"]/*NSLocalizedString(@"Select an Album", nil)*/];
 }
 
 - (BOOL)shouldSelectAsset:(ELCAsset *)asset previousCount:(NSUInteger)previousCount

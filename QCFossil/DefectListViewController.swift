@@ -9,7 +9,6 @@
 import UIKit
 
 class DefectListViewController: UIViewController, UITableViewDelegate,  UITableViewDataSource, UIScrollViewDelegate {
-    
     @IBOutlet weak var sectionSegmentControl: UISegmentedControl!
     @IBOutlet weak var defectTableView: UITableView!
     @IBOutlet weak var inptNoLabel: UILabel!

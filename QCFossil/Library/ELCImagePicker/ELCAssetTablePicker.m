@@ -10,6 +10,7 @@
 #import "ELCAsset.h"
 #import "ELCAlbumPickerController.h"
 #import "ELCConsole.h"
+#import "QCFossil-Swift.h"
 
 @interface ELCAssetTablePicker ()
 
@@ -43,9 +44,11 @@
     if (self.immediateReturn) {
         
     } else {
-        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
+        MylocalizedString *myLocalizer = [MylocalizedString sharedLocalizeManager];
+//        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
+        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithTitle:[myLocalizer getLocalizedString:@"Done"] style: UIBarButtonItemStylePlain target:self action:@selector(doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
-        [self.navigationItem setTitle:NSLocalizedString(@"Loading...", nil)];
+        [self.navigationItem setTitle:[myLocalizer getLocalizedString:@"Loading..."]/*NSLocalizedString(@"Loading...", nil)*/];
     }
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
@@ -119,7 +122,8 @@
                                                       animated:NO];
             }
             
-            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"Pick Photo", nil) : NSLocalizedString(@"Pick Photos", nil)];
+            MylocalizedString *myLocalizer = [MylocalizedString sharedLocalizeManager];
+            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString([myLocalizer getLocalizedString:@"Pick Photo"]/*@"Pick Photo"*/, nil) : NSLocalizedString([myLocalizer getLocalizedString:@"Pick Photos"]/*@"Pick Photos"*/, nil)];
         });
     }
 }

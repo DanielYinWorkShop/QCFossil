@@ -8,26 +8,30 @@
 
 import UIKit
 
+@objc public class MyClass: NSObject {
+    public static let myConst = "aConst"
+}
+
 private let sharedLocalizeInstance = MylocalizedString()
 
-class MylocalizedString  {
-    var language = "en"
-    var bundle = NSBundle(path: NSBundle.mainBundle().pathForResource("en", ofType: "lproj")!)
+@objc class MylocalizedString: NSObject  {
+    @objc var language = "en"
+    @objc var bundle = NSBundle(path: NSBundle.mainBundle().pathForResource("en", ofType: "lproj")!)
     
-    func setLanguage(lang:String="en") {
+    @objc func setMyLanguage(lang:String="en") {
         language = lang
         bundle = NSBundle(path: NSBundle.mainBundle().pathForResource(lang, ofType: "lproj")!)
     }
     
-    func getLanguage() ->String {
+    @objc func getLanguage() ->String {
         return language
     }
     
-    func getLocalizedString(key:String)->String {
+    @objc func getLocalizedString(key:String)->String {
         return (bundle?.localizedStringForKey(key, value: nil, table: nil))!
     }
     
-    class var sharedLocalizeManager : MylocalizedString {
+    @objc class var sharedLocalizeManager : MylocalizedString {
         return sharedLocalizeInstance
     }
     

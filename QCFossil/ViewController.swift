@@ -41,7 +41,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //print("\(UIDevice.currentDevice().systemVersion)")
         // Do any additional setup after loading the view, typically from a nib.
         self.language.selectedSegmentIndex = 1
-        MylocalizedString.sharedLocalizeManager.setLanguage("zh-Hans")
+        MylocalizedString.sharedLocalizeManager.setMyLanguage("zh-Hans")
         updateLocalizedString()
         // DatabaseManager.sharedDatabaseManager.initDbObj()
         
@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "09052019"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "09082019"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
@@ -213,13 +213,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         if (selectedSegment > 0) {
             NSLog("Change language to: %@","中文")
             //singleton instance MylocalizedString.sharedLocalizeManager
-            MylocalizedString.sharedLocalizeManager.setLanguage("zh-Hans")
+            MylocalizedString.sharedLocalizeManager.setMyLanguage("zh-Hans")
             _ENGLISH = false
         }
         else{
             NSLog("Change language to: %@","English")
             //singleton instance MylocalizedString.sharedLocalizeManager
-            MylocalizedString.sharedLocalizeManager.setLanguage("en")
+            MylocalizedString.sharedLocalizeManager.setMyLanguage("en")
             _ENGLISH = true
         }
         

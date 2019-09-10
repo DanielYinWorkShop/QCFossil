@@ -913,3 +913,15 @@
 "Salesman Photo" = "销售办图片";
 
 "Case Back" = "底盖外字印";
+
+"Only x photos please!" = "最多%d张相片";
+
+"Okay" = "确定";
+
+"You can only send 5 photos at a time." = "只允许加入最多5张图片";
+
+"Select an Album" = "选择图库";
+
+"Pick Photos" = "选择图片";
+
+"Loading..." = "加载中...";

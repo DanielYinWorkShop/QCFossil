@@ -281,3 +281,10 @@
 "Defect Desc. 2" = "Defect Desc. 2";
 "Please enter defect point info" = "Please enter defect point info";
 "OS QC Qty" = "OS Qty (Final)";
+"Only x photos please!" = "Only %d photos please!";
+"You can only send 5 photos at a time." = "You can only send 5 photos at a time.";
+"Okay" = "OK";
+"Select an Album" = "Select an Album";
+"Pick Photo" = "Pick Photo";
+"Pick Photos" = "Pick Photos";
+"Loading..." = "Loading...";

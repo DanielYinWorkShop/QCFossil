@@ -97,18 +97,6 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
                     self.removeActivityIndicator()
                     
                     self.initInspViewProcess(self.currentPage)
-                    /*
-                    if self.currentPage < 1 {
-                        self.initInspViewProcess(1)
-                    }else if self.currentPage < 2 {
-                        self.initInspViewProcess(0)
-                        self.initInspViewProcess(2)
-                    }else if self.currentPage < 3 {
-                        self.initInspViewProcess(1)
-                        self.initInspViewProcess(3)
-                    }else{
-                        self.initInspViewProcess(2)
-                    }*/
                     
                     if self.currentPage < 1 {
                         self.initInspViewProcess(1)

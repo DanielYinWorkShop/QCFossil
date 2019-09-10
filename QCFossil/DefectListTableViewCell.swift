@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ELCImagePickerControllerDelegate {
     
     @IBOutlet weak var indexLabel: UILabel!
     @IBOutlet weak var iaLabel: UILabel!
@@ -37,6 +37,7 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
     @IBOutlet weak var addDefectPhotoByCamera: CustomControlButton!
     @IBOutlet weak var addDefectPhotoByAlbum: CustomControlButton!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     weak var pVC:DefectListViewController!
     
     override func awakeFromNib() {
@@ -57,6 +58,8 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
         
         self.dfQtyInput.delegate = self
         self.dfDescInput.delegate = self
+        
+        self.activityIndicator.hidden = true
         //imagePicker.delegate = self
         
         updateLocalizedString()
@@ -100,6 +103,69 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
         // Configure the view for the selected state
     }
     
+    func elcImagePickerController(picker: ELCImagePickerController!, didFinishPickingMediaWithInfo info: [AnyObject]!) {
+        
+        let defectItem = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+        var photos = [Photo]()
+        
+        for object in info {
+            
+            if let dictionary = object as? NSDictionary {
+                
+                if let image = dictionary.objectForKey(UIImagePickerControllerOriginalImage) as? UIImage {
+                    
+                    let imageView = UIImageView.init(image: image)
+                    
+                    if let photo = Photo(photo: imageView, photoFilename: "", taskId: (Cache_Task_On?.taskId)!, photoFile: "") {
+                        
+                        photos.append(photo)
+                        
+                    }
+                }
+            }
+        }
+        
+        //Update InspItem PhotoAdded Status
+        self.photoAdded = String(PhotoAddedStatus.init(caseId: "yes"))
+        self.updatePhotoAddedStatus("yes")
+        
+        self.parentVC?.dismissViewControllerAnimated(true, completion: {
+            self.activityIndicator.hidden = false
+            self.activityIndicator.startAnimating()
+            dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+                let photoNames = self.getNamesBySaveDefectPhotos(photos)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                    if defectItem?.count > 0 {
+                        let defectCell = (defectItem![0] as TaskInspDefectDataRecord)
+                        
+                        if defectCell.photoNames == nil {
+                            defectCell.photoNames = [String]()
+                        }
+                        
+                        photoNames.forEach({
+                            defectCell.photoNames?.append(String($0))
+                        })
+                        
+                    }
+                    
+                    photos.forEach({
+                        NSNotificationCenter.defaultCenter().postNotificationName("reloadPhotos", object: nil, userInfo: ["photoSelected":$0])
+                    })
+                    
+                    self.pVC?.updateContentView()
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.hidden = true
+                })
+            }
+        })
+    }
+    
+    func elcImagePickerControllerDidCancel(picker: ELCImagePickerController!) {
+        self.parentVC?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     @IBAction func addDefectPhotoButton(sender: CustomButton) {
         print("add Cell photo")
         NSNotificationCenter.defaultCenter().postNotificationName(UIKeyboardWillHideNotification, object: nil)
@@ -113,17 +179,21 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
         self.dfDescInput.resignFirstResponder()
         self.dfQtyInput.resignFirstResponder()
         
-        let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = .PhotoLibrary
-        imagePicker.delegate = self
-        imagePicker.modalPresentationStyle = .Popover
+        let availableCount = self.photoNameAtIndex.filter({$0 == ""})
         
-        let ppc = imagePicker.popoverPresentationController
-        ppc?.sourceView = sender
-        ppc?.sourceRect = sender.bounds
-        ppc?.permittedArrowDirections = .Any
+        let imagePicker = ELCImagePickerController(imagePicker: ())
+        imagePicker.maximumImagesCount = availableCount.count
+        imagePicker.returnsOriginalImage = true
+        imagePicker.returnsImage = true
+        imagePicker.onOrder = true
+//        imagePicker.title1 = MylocalizedString.sharedLocalizeManager.getLocalizedString("Only x photos please!")
+//        imagePicker.detailTitle = MylocalizedString.sharedLocalizeManager.getLocalizedString("You can only send 5 photos at a time.")
+//        imagePicker.okButtonTittle = MylocalizedString.sharedLocalizeManager.getLocalizedString("Okay")
+//        imagePicker.title2 = MylocalizedString.sharedLocalizeManager.getLocalizedString("Select an Album")
+//        imagePicker.title3 = MylocalizedString.sharedLocalizeManager.getLocalizedString("Pick Photos")
         
-        self.parentVC!.presentViewController(imagePicker, animated: true, completion: nil)
+        imagePicker.imagePickerDelegate = self
+        self.parentVC?.presentViewController(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func addDefectPhotoFromCamera(sender: UIButton) {
@@ -134,25 +204,24 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
             return
         }
         
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        
         if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+
             imagePicker.sourceType = .Camera
-            self.pVC!.presentViewController(imagePicker, animated: true, completion: nil)
+            self.pVC?.presentViewController(imagePicker, animated: true, completion: nil)
             
         }else{
-            imagePicker.modalPresentationStyle = .Popover
-            imagePicker.sourceType = .PhotoLibrary
+            let availableCount = self.photoNameAtIndex.filter({$0 == ""})
             
-            let ppc = imagePicker.popoverPresentationController
-            ppc?.sourceView = sender
-            ppc?.sourceRect = sender.bounds
-            ppc?.permittedArrowDirections = .Any
+            let imagePicker = ELCImagePickerController(imagePicker: ())
+            imagePicker.maximumImagesCount = availableCount.count
+            imagePicker.returnsOriginalImage = true
+            imagePicker.returnsImage = true
+            imagePicker.onOrder = true
             
-            imagePicker.sourceType = .PhotoLibrary
-            
-            self.pVC!.presentViewController(imagePicker, animated: true, completion: nil)
+            imagePicker.imagePickerDelegate = self
+            self.pVC?.presentViewController(imagePicker, animated: true, completion: nil)
         }
         
         
@@ -371,6 +440,26 @@ class DefectListTableViewCell: InputModeDFMaster2, UIImagePickerControllerDelega
         
         //Save Photo to Local
         return UIImage.init().getNameBySaveImageToLocal((photo.photo?.image)!, photoFileName: photo.photoFilename, photoId: photo.photoId, savePath: Cache_Task_Path!, taskId: (Cache_Task_On?.taskId)!, bookingNo: (Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo)!, inspectorName: (Cache_Inspector?.appUserName)!, dataRecordId: self.taskDefectDataRecordId, dataType: PhotoDataType(caseId: "DEFECT").rawValue, currentDate: self.getCurrentDateTime(), originFileName: "test")
+    }
+    
+    func getNamesBySaveDefectPhotos(photos:[Photo], needSave:Bool=true) ->[String] {
+        
+        //Save self to DB for TaskInspDefectRecordId
+        if self.taskDefectDataRecordId<1 {
+            let taskDataHelper = TaskDataHelper()
+            let defectItem = TaskInspDefectDataRecord(recordId: self.taskDefectDataRecordId,taskId: (Cache_Task_On?.taskId)!, inspectRecordId: self.inspItem?.taskInspDataRecordId, refRecordId: 0, inspectElementId: self.inspItem?.elementDbId, defectDesc: "", defectQtyCritical: 0, defectQtyMajor: 0, defectQtyMinor: 0, defectQtyTotal: 0, createUser: Cache_Inspector?.appUserName, createDate: self.getCurrentDateTime(), modifyUser: Cache_Inspector?.appUserName, modifyDate: self.getCurrentDateTime())
+            self.taskDefectDataRecordId = taskDataHelper.updateInspDefectDataRecord(defectItem!)
+            
+            let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+            
+            if defectItemFilter?.count > 0 {
+                let defectItem = defectItemFilter![0]
+                defectItem.recordId = self.taskDefectDataRecordId
+            }
+        }
+        
+        //Save Photo to Local
+        return UIImage.init().getNamesBySaveImageToLocal(photos, savePath: Cache_Task_Path!, taskId: (Cache_Task_On?.taskId)!, bookingNo: (Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo)!, inspectorName: (Cache_Inspector?.appUserName)!, dataRecordId: self.taskDefectDataRecordId, dataType: PhotoDataType(caseId: "DEFECT").rawValue, currentDate: self.getCurrentDateTime(), originFileName: "originFileNameMode1")
     }
     
     override func updateDefectPhotoData(index:Int, photo:Photo, needSave:Bool=true) ->Photo? {

@@ -58,4 +58,3 @@
 - (void)cancelImagePicker;
 
 @end
-

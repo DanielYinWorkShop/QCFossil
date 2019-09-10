@@ -124,7 +124,6 @@ let _MAXIMUNINT:Int = 10
 
 //NSSESSIONURL DownloadTask background mode flag
 var _IS_BACKGROUNDSESSION_MODE = true
-
 let _DROPDOWNLISTHEIGHT:CGFloat = 750
 
 let _TAG1 = 1000001

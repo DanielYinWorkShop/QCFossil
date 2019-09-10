@@ -191,12 +191,8 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         if Cache_Task_On?.prodTypeId < 1 || Cache_Task_On?.inspectionTypeId < 0 || (Cache_Task_On?.tmplId)! < 0 {
             
-            //self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete all invalid tasks?"), parentVC:self.pVC, handlerFun: { (action:UIAlertAction!) in
-                //self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Invalid task!"))
-                Cache_Task_On?.deleteFlag = 1
-                return
-            //})
-            
+            Cache_Task_On?.deleteFlag = 1
+            return
         }
         
         let categoryCount = Cache_Task_On!.inspSections.count
@@ -510,7 +506,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 clearDropdownviewForSubviews(self)
             }else{
                 
-                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG8)
+                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG8, keyValues: self.AdditionalAdministrativeItemKeyValue)
             }
             
             return false
@@ -539,14 +535,22 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             Cache_Task_On?.qcRemarks = self.qcRemarkInput.text
         } else if textField == self.additionalAdministrativeItemInput {
             Cache_Task_On?.additionalAdministrativeItems = self.additionalAdministrativeItemInput.text
+            
+//            var values = self.additionalAdministrativeItemInput.text?.characters.split{$0 == ","}.map(String.init)
+//            values = values?.sort({ $0 < $1 })
+//   
+//            self.additionalAdministrativeItemInput.text = values?.joinWithSeparator(",")
+            
+//            let newValues = self.AdditionalAdministrativeItemKeyValue.keys.filter({ (values?.contains(String($0)) ?? false) })
+//            print("newValues: \(newValues)")
+            
+            
         } else if textField == self.inspResultBottomInput {
             
             var myQCRemarkValues = self.qcRemarkInput.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myQCRemarkValues {
                 for value in values {
-                    let trimValue = value.stringByTrimmingCharactersInSet(
-                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
-                    )
+                    let trimValue = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                     
                     if self.qcRemarksKeyValue[trimValue] == nil {
                         myQCRemarkValues = myQCRemarkValues!.filter { $0 != value }
@@ -557,9 +561,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             var myAARemarkValues = self.additionalAdministrativeItemInput.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myAARemarkValues {
                 for value in values {
-                    let trimValue = value.stringByTrimmingCharactersInSet(
-                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
-                    )
+                    let trimValue = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                     
                     if self.AdditionalAdministrativeItemKeyValue[trimValue] == nil {
                         myAARemarkValues = myAARemarkValues!.filter { $0 != value }

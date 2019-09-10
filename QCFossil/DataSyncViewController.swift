@@ -84,7 +84,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     var _UPDATE_DB_DATA = false
     
     //for PO download only
-    var init_service_session = ""
+    var ainit_service_session = ""
     var totalReqCnt = 0
     var downloadReqCnt = 0
     
@@ -230,7 +230,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         self.totalReqCnt = 0
         self.downloadReqCnt = 0
-        self.init_service_session = ""
+        self.ainit_service_session = ""
         
         _DS_RECORDS = [
             "_DS_MSTRDATA" : [String](),
@@ -987,7 +987,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             if key == "service_token" {
                 param += "\"\(key)\":\"\(_DS_SERVICETOKEN)\","
             }else if key == "init_service_session" {
-                param += "\"\(key)\":\"\(self.init_service_session)\","
+                param += "\"\(key)\":\"\(self.ainit_service_session)\","
             }else{
                 param += "\"\(key)\":\"\(value)\","
             }
@@ -1477,8 +1477,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
                 
-                if self.init_service_session == "" {
-                    self.init_service_session = _DS_SESSION
+                if self.ainit_service_session == "" {
+                    self.ainit_service_session = _DS_SESSION
                 }
                 
                 var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String

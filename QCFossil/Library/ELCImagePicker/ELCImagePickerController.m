@@ -14,6 +14,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "ELCConsole.h"
+#import "QCFossil-Swift.h"
 
 @implementation ELCImagePickerController
 
@@ -22,7 +23,6 @@
 - (id)initImagePicker
 {
     ELCAlbumPickerController *albumPicker = [[ELCAlbumPickerController alloc] initWithStyle:UITableViewStylePlain];
-    
     self = [super initWithRootViewController:albumPicker];
     if (self) {
         self.maximumImagesCount = 4;
@@ -71,13 +71,14 @@
 {
     BOOL shouldSelect = previousCount < self.maximumImagesCount;
     if (!shouldSelect) {
-        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Only %d photos please!", nil), self.maximumImagesCount];
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"You can only send %d photos at a time.", nil), self.maximumImagesCount];
+        MylocalizedString *myLocalizer = [MylocalizedString sharedLocalizeManager];
+        NSString *title = [NSString stringWithFormat:NSLocalizedString([myLocalizer getLocalizedString:@"Only x photos please!"]/*@"Only x photos please!"*/, nil), self.maximumImagesCount];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString([myLocalizer getLocalizedString:@"You can only send 5 photos at a time."], nil), self.maximumImagesCount];
         [[[UIAlertView alloc] initWithTitle:title
                                     message:message
                                    delegate:nil
                           cancelButtonTitle:nil
-                          otherButtonTitles:NSLocalizedString(@"Okay", nil), nil] show];
+                          otherButtonTitles:NSLocalizedString([myLocalizer getLocalizedString:@"Okay"]/*@""*/, nil), nil] show];
     }
     return shouldSelect;
 }
