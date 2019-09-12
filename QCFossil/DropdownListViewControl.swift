@@ -19,6 +19,10 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
     var selectedTableViewCell = [UITableViewCell]()
     var handleFun:((UITextField)->(Void))? = nil
     var allowManuallyInput = false
+    var keyValues = [String:Int]()
+    var selectedValues = [Int]()
+    var listKeys = [String]()
+    var listValues = [Int]()
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -81,6 +85,14 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         }
         
         self.tableView.reloadData()
+        
+        for key in self.keyValues.keys {
+            listKeys.append(key)
+        }
+        
+        for value in self.keyValues.values {
+            listValues.append(value)
+        }
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -140,15 +152,16 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                 selectedTableViewCell.append(tableView.cellForRowAtIndexPath(indexPath)!)
                 selectedCell.contentView.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
                 selectedCell.textLabel?.textColor = UIColor.whiteColor()
-            
-                if myParentTextField != nil {
+                
+                if let aTextField = myParentTextField {
                     let text = String(dropdownDataFilter[indexPath.row])
-                    //myParentTextField!.text! += text+", "
                     
-                    if myParentTextField!.text == "" {
-                        myParentTextField!.text! += text
+                    selectedValues.append(keyValues[text] ?? 0)
+                    
+                    if aTextField.text == "" {
+                        aTextField.text! += text
                     }else{
-                        myParentTextField!.text! += ", "+text
+                        aTextField.text! += ","+text
                     }
                     
                     if (handleFun != nil){
@@ -198,6 +211,10 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             cell.contentView.backgroundColor = _TABLECELL_BG_COLOR2
         }
         
+        let key = dropdownDataFilter[indexPath.row]
+        let value = keyValues[key]
+        self.selectedValues = self.selectedValues.filter({ $0 != value })
+            
         for idx in 0...selectedTableViewCell.count-1 {
             if selectedTableViewCell[idx].textLabel?.text == cell.textLabel?.text {
                 //Remove Text From Parent TextField

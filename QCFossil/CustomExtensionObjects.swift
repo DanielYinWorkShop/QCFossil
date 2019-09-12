@@ -1665,7 +1665,7 @@ extension NSDate {
 }
 
 extension UITextField {
-    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false) /*->DropdownListViewControl*/ {
+    func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false, keyValues:[String:Int] = [String:Int](), selectedValues:[Int]=[Int]()) /*->DropdownListViewControl*/ {
         
         if listData.count > 0 {
             //return Cache_Dropdown_Instance!
@@ -1713,6 +1713,8 @@ extension UITextField {
             Cache_Dropdown_Instance!.tableView.rowHeight = 50
             Cache_Dropdown_Instance!.handleFun = handle
             Cache_Dropdown_Instance?.tag = tag
+            Cache_Dropdown_Instance?.keyValues = keyValues
+            Cache_Dropdown_Instance?.selectedValues = selectedValues
             
             parent.addSubview(Cache_Dropdown_Instance!)
         }else{
@@ -1849,4 +1851,10 @@ extension UIBezierPath {
         return self.init(CGPath: path)
     }
     
+}
+
+extension Dictionary where Value : Equatable {
+    func allKeysForValue(val : Value) -> [Key] {
+        return self.filter { $1 == val }.map { $0.0 }
+    }
 }
