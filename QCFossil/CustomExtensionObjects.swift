@@ -1767,6 +1767,36 @@ extension UITextField {
         
         sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
     }
+    
+    func showMultiDropdownValues(var dataSource: String, var textField: UITextField, keyValues: [String:Int]) ->String {
+        
+        textField.text = ""
+        var keys = [String]()
+        var values = [Int]()
+        
+        if Cache_Dropdown_Instance?.selectedValues != nil {
+            values = (Cache_Dropdown_Instance?.selectedValues)!
+        } else {
+            let defaultValues = dataSource.characters.split{$0 == ","}.map(String.init)
+            defaultValues.forEach({ values.append(Int($0)!) })
+        }
+        
+        dataSource = ""
+
+        for value in values {
+            dataSource += String(format: "%d,", value)
+            let allKeys = keyValues.allKeysForValue(value)
+            keys.append(allKeys.first ?? "")
+            
+        }
+        
+        keys.sortInPlace({ $0 < $1 })
+        keys.forEach({ key in
+            textField.text! += String(format: "%@,", key)
+        })
+        
+        return dataSource
+    }
 }
 
 extension String {

@@ -105,8 +105,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.inspectorInput.text = Cache_Inspector?.inspectorName
         self.vendorLocInput.text = Cache_Task_On?.vendorLocation
         self.qcRemarkInput.text = Cache_Task_On?.qcRemarks
-//        self.additionalAdministrativeItemInput.text = Cache_Task_On?.additionalAdministrativeItems
-        
+
         if Cache_Task_On!.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue && Cache_Task_On!.cancelDate != "" {
             self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(TaskStatus(caseId: (Cache_Task_On?.taskStatus!)!))) + " (C)"
         }else{
@@ -256,7 +255,8 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.AdditionalAdministrativeItemKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
         }
         
-        showMultiDropdownValues(Cache_Task_On?.additionalAdministrativeItems ?? "", textField: self.additionalAdministrativeItemInput, keyValues: self.AdditionalAdministrativeItemKeyValue)
+        self.qcRemarkInput.showMultiDropdownValues(Cache_Task_On?.qcRemarks ?? "", textField: self.qcRemarkInput, keyValues: self.AdditionalAdministrativeItemKeyValue)
+        self.additionalAdministrativeItemInput.showMultiDropdownValues(Cache_Task_On?.additionalAdministrativeItems ?? "", textField: self.additionalAdministrativeItemInput, keyValues: self.AdditionalAdministrativeItemKeyValue)
         
         switch Cache_Inspector?.typeCode ?? "LEATHER" {
         case TypeCode.LEATHER.rawValue:
@@ -494,7 +494,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 clearDropdownviewForSubviews(self)
             }else{
                 
-                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG7)
+                var intArray = [Int]()
+                if let items = Cache_Task_On?.qcRemarks {
+                    let selectedValues = items.characters.split{$0 == ","}.map(String.init)
+                    selectedValues.forEach({ intArray.append(Int($0)!) })
+                }
+                
+                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG7, keyValues: self.qcRemarksKeyValue, selectedValues: intArray ?? [])
             }
             
             return false
@@ -513,9 +519,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                     let selectedValues = additionalAdminItems.characters.split{$0 == ","}.map(String.init)
                     selectedValues.forEach({ intArray.append(Int($0)!) })
                 }
-                
-                print("additionalAdministrativeItemInput intArray: \(intArray)")
-                
+
                 textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG8, keyValues: self.AdditionalAdministrativeItemKeyValue, selectedValues: intArray ?? [])
                 
             }
@@ -541,64 +545,15 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         return true
     }
     
-    func showMultiDropdownValues(var dataSource: String, var textField: UITextField, keyValues: [String:Int]) ->String {
-        
-        textField.text = ""
-        var keys = [String]()
-        var values = [Int]()
-
-        if Cache_Dropdown_Instance?.selectedValues != nil {
-            values = (Cache_Dropdown_Instance?.selectedValues)!
-        } else {
-            let defaultValues = dataSource.characters.split{$0 == ","}.map(String.init)
-            defaultValues.forEach({ values.append(Int($0)!) })
-        }
-        
-        dataSource = ""
-        print("showMultiDropdownValues values: \(values)")
-        
-        for value in values {
-            dataSource += String(format: "%d,", value)
-            let allKeys = keyValues.allKeysForValue(value)
-            keys.append(allKeys.first ?? "")
-            
-        }
-        
-        keys.sortInPlace({ $0 < $1 })
-        keys.forEach({ key in
-            textField.text! += String(format: "%@,", key)
-        })
-        
-        print("showMultiDropdownValues dataSource: \(dataSource)")
-        
-        return dataSource
-    }
-    
     func dropdownHandleFunc(textField: UITextField) {
         if textField == self.qcRemarkInput {
-            Cache_Task_On?.qcRemarks = self.qcRemarkInput.text
+            
+            Cache_Task_On?.qcRemarks = textField.showMultiDropdownValues(Cache_Task_On?.qcRemarks ?? "", textField: textField, keyValues: self.qcRemarksKeyValue)
+            
         } else if textField == self.additionalAdministrativeItemInput {
             
-//            self.additionalAdministrativeItemInput.text = ""
-//            Cache_Task_On?.additionalAdministrativeItems = ""
-            
-            
-            Cache_Task_On?.additionalAdministrativeItems = showMultiDropdownValues(Cache_Task_On?.additionalAdministrativeItems ?? "", textField: textField, keyValues: self.AdditionalAdministrativeItemKeyValue)
+            Cache_Task_On?.additionalAdministrativeItems = textField.showMultiDropdownValues(Cache_Task_On?.additionalAdministrativeItems ?? "", textField: textField, keyValues: self.AdditionalAdministrativeItemKeyValue)
         
-            
-//            var keys = [String]()
-//            for value in (Cache_Dropdown_Instance?.selectedValues)! {
-//                Cache_Task_On?.additionalAdministrativeItems! += String(format: "%d,", value)
-//                let allKeys = self.AdditionalAdministrativeItemKeyValue.allKeysForValue(value)
-//                keys.append(allKeys.first ?? "")
-//
-//            }
-//            
-//            keys.sortInPlace({ $0 < $1 })
-//            keys.forEach({ key in
-//                self.additionalAdministrativeItemInput.text! += String(format: "%@,", key)
-//            })
-            
         } else if textField == self.inspResultBottomInput {
             
             var myQCRemarkValues = self.qcRemarkInput.text?.characters.split{$0 == ","}.map(String.init)
