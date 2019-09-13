@@ -255,7 +255,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.AdditionalAdministrativeItemKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
         }
         
-        self.qcRemarkInput.showMultiDropdownValues(Cache_Task_On?.qcRemarks ?? "", textField: self.qcRemarkInput, keyValues: self.AdditionalAdministrativeItemKeyValue)
+        self.qcRemarkInput.showMultiDropdownValues(Cache_Task_On?.qcRemarks ?? "", textField: self.qcRemarkInput, keyValues: self.qcRemarksKeyValue)
         self.additionalAdministrativeItemInput.showMultiDropdownValues(Cache_Task_On?.additionalAdministrativeItems ?? "", textField: self.additionalAdministrativeItemInput, keyValues: self.AdditionalAdministrativeItemKeyValue)
         
         switch Cache_Inspector?.typeCode ?? "LEATHER" {
