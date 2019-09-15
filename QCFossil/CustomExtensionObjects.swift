@@ -1778,7 +1778,11 @@ extension UITextField {
             values = (Cache_Dropdown_Instance?.selectedValues)!
         } else {
             let defaultValues = dataSource.characters.split{$0 == ","}.map(String.init)
-            defaultValues.forEach({ values.append(Int($0)!) })
+            defaultValues.forEach({
+                if let v = Int($0) {
+                    values.append(v)
+                }
+            })
         }
         
         dataSource = ""

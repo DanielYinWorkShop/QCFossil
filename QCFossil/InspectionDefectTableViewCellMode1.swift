@@ -546,7 +546,14 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             if self.ifExistingSubviewByViewTag(self.pVC.inspectDefectTableview, tag: _TAG1) {
                 clearDropdownviewForSubviews(self.pVC.inspectDefectTableview)
             } else {
-                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+                
+                var intArray = [Int]()
+                if let items = self.defectRemarksOptionList {
+                    let selectedValues = items.characters.split{$0 == ","}.map(String.init)
+                    selectedValues.forEach({ intArray.append(Int($0)!) })
+                }
+                
+                textField.showListData(textField, parent: self.pVC.inspectDefectTableview, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1, keyValues: self.remarkKeyValue, selectedValues: intArray ?? [])
             }
             
             return false
@@ -630,7 +637,10 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             })
             
         } else if textField == self.defectDescInput {
-            defectItem.defectRemarksOptionList = self.defectDescInput.text
+//            defectItem.defectRemarksOptionList = self.defectDescInput.text
+            
+            defectItem.defectRemarksOptionList = textField.showMultiDropdownValues(self.defectRemarksOptionList ?? "", textField: textField, keyValues: self.remarkKeyValue)
+            
             
         }
     }

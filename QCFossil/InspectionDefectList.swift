@@ -364,7 +364,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode2.defectTotalQtyInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
             cellMode2.defectPPIInput.text = self.defectPositionPointsDesc
             cellMode2.inspectElementId = defectItem.inspectElementId
-            cellMode2.defectRemarkOptionList.text = defectItem.defectRemarksOptionList
+//            cellMode2.defectRemarkOptionList.text = defectItem.defectRemarksOptionList
+            cellMode2.defectRemarksOptionList = defectItem.defectRemarksOptionList
             cellMode2.othersRemarkInput.text = defectItem.othersRemark
             
             cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
@@ -375,6 +376,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             remarkValues.forEach({ value in
                 cellMode2.remarkKeyValue[_ENGLISH ? value.valueNameEn ?? "": value.valueNameCn ?? ""] = value.valueId
             })
+            
+            cellMode2.defectRemarkOptionList.showMultiDropdownValues(defectItem.defectRemarksOptionList ?? "", textField: cellMode2.defectRemarkOptionList, keyValues: cellMode2.remarkKeyValue)
             
             var myRemarkValues = cellMode2.defectRemarkOptionList.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myRemarkValues {
@@ -463,7 +466,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
             cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
             cellMode1.inspectElementId = defectItem.inspectElementId
-            cellMode1.defectDescInput.text = defectItem.defectRemarksOptionList
+//            cellMode1.defectDescInput.text = defectItem.defectRemarksOptionList
+            cellMode1.defectRemarksOptionList = defectItem.defectRemarksOptionList
             cellMode1.othersRemarkInput.text = defectItem.othersRemark
             
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
@@ -480,6 +484,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             remarkValues.forEach({ value in
                 cellMode1.remarkKeyValue[_ENGLISH ? value.valueNameEn ?? "": value.valueNameCn ?? ""] = value.valueId
             })
+            
+            cellMode1.defectDescInput.showMultiDropdownValues(defectItem.defectRemarksOptionList ?? "", textField: cellMode1.defectDescInput, keyValues: cellMode1.remarkKeyValue)
             
             var myRemarkValues = cellMode1.defectDescInput.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myRemarkValues {
