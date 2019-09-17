@@ -288,6 +288,8 @@ class TaskDataHelper:DataHelperMaster{
         let poDataHelper = PoDataHelper()
         task.poItems = poDataHelper.getPoByTaskId(task.taskId!)
         
+        self.removeRecordMarkedDeleted(task.taskId ?? 0)
+        
         //Init Task From TaskInspDataRecord
         for inspSec in task.inspSections{
             
@@ -651,16 +653,16 @@ class TaskDataHelper:DataHelperMaster{
     
     func getInspSecElementsByPTIdITId(inspSectionId:Int, inputMode:String = _INPUTMODE04, optionEnableFlag:Int = 1) ->[InspSectionElement]? {
         
-        var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
+        var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 AND iem.deleted_flag = 0 ORDER BY iem.display_order ASC"
         
         if optionEnableFlag < 1 {
-            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND iem.deleted_flag = 0 ORDER BY iem.display_order ASC"
         }
         
         if inputMode == _INPUTMODE01 {
-            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 AND iem.deleted_flag = 0 ORDER BY iem.display_order ASC"
             if optionEnableFlag < 1 {
-                sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
+                sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND iem.deleted_flag = 0 ORDER BY iem.display_order ASC"
             }
         }else if inputMode == _INPUTMODE02 {
             return [InspSectionElement]()
@@ -1384,8 +1386,36 @@ class TaskDataHelper:DataHelperMaster{
         return resultValueName
     }
     
+    func removeRecordMarkedDeleted(taskId: Int) {
+        
+        var sql = "DELETE FROM task_defect_data_record WHERE inspect_record_id IN (SELECT record_id FROM task_inspect_data_record WHERE task_id = ? AND task_id NOT IN (SELECT task_id FROM inspect_task WHERE task_status > 3 ) AND inspect_element_id IN (SELECT element_id FROM inspect_element_mstr WHERE deleted_flag = 1))"
+        
+        if db.open(){
+            db.beginTransaction()
+            
+            // Step1: Delete Task Defect Data Recored
+            if db.executeUpdate(sql, withArgumentsInArray: [taskId]) {
+                
+                // Step2: Delete Task Inspect Data Recored
+                sql = "DELETE FROM task_inspect_data_record WHERE task_id = ? AND task_id NOT IN (SELECT task_id FROM inspect_task WHERE task_status > 3 ) AND inspect_element_id IN (SELECT element_id FROM inspect_element_mstr WHERE deleted_flag = 1)"
+                if !db.executeUpdate(sql, withArgumentsInArray: [taskId]) {
+                    db.rollback()
+                    db.close()
+                    return
+                }
+            } else {
+                db.rollback()
+                db.close()
+                return
+            }
+            
+            db.commit()
+            db.close()
+        }
+    }
+    
     func getTaskInspDataRecords(taskId:Int, inspectSecId:Int) ->[TaskInspDataRecord]? {
-        let sql = "SELECT * FROM task_inspect_data_record WHERE task_id = ? AND inspect_section_id= ?"
+        let sql = "SELECT * FROM task_inspect_data_record tidr INNER JOIN inspect_element_mstr iem ON tidr.inspect_element_id = iem.element_id WHERE tidr.task_id = ? AND tidr.inspect_section_id= ? AND iem.rec_status = 0 AND iem.deleted_flag = 0"
         var taskInspDataRecords = [TaskInspDataRecord]()
         
         if db.open() {
