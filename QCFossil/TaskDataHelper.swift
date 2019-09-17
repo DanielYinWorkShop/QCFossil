@@ -651,16 +651,16 @@ class TaskDataHelper:DataHelperMaster{
     
     func getInspSecElementsByPTIdITId(inspSectionId:Int, inputMode:String = _INPUTMODE04, optionEnableFlag:Int = 1) ->[InspSectionElement]? {
         
-        var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 ORDER BY iem.display_order ASC"
+        var sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
         
         if optionEnableFlag < 1 {
-            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 ORDER BY iem.display_order ASC"
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
         }
         
         if inputMode == _INPUTMODE01 {
-            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 ORDER BY iem.display_order ASC"
+            sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.required_element_flag = 1 AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
             if optionEnableFlag < 1 {
-                sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 ORDER BY iem.display_order ASC"
+                sql = "SELECT * FROM inspect_element_mstr iem INNER JOIN inspect_section_element ise ON iem.element_id = ise.inspect_element_id INNER JOIN inspect_position_element ipe ON iem.element_id = ipe.inspect_element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND deleted_flag = 0 ORDER BY iem.display_order ASC"
             }
         }else if inputMode == _INPUTMODE02 {
             return [InspSectionElement]()
