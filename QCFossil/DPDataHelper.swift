@@ -14,7 +14,7 @@ class DPDataHelper:DataHelperMaster {
     func getDefectPositions(/*prodTypeId:Int=1, inspTypeId:Int=3, currLevel:Int=1, parentPosId:Int=0*/sectionId:Int) ->[PositObj] {
         //let sql = "SELECT * FROM inspect_position_mstr WHERE prod_type_id = ? AND inspect_type_id = ? AND current_level = ? AND parent_position_id = ?"
         //let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN inspect_task_tmpl_position ittp ON ipm.position_id = ittp.inspect_position_id INNER JOIN inspect_task_tmpl_mstr ittm ON ittp.tmpl_id = ittm.tmpl_id WHERE ittm.prod_type_id = ? AND ittm.inspect_type_id = ? AND ipm.current_level = ? AND ipm.parent_position_id = ?"
-        let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_section_element ise ON ipe.inspect_element_id = ise.inspect_element_id INNER JOIN inspect_element_mstr iem ON ise.inspect_element_id = iem.element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1"
+        let sql = "SELECT * FROM inspect_position_mstr ipm INNER JOIN inspect_position_element ipe ON ipm.position_id = ipe.inspect_position_id INNER JOIN inspect_section_element ise ON ipe.inspect_element_id = ise.inspect_element_id INNER JOIN inspect_element_mstr iem ON ise.inspect_element_id = iem.element_id WHERE ise.inspect_section_id = ? AND iem.element_type = 1 AND ipm.deleted_flag <> 1"
         var defectPosits = [PositObj]()
         
         if db.open() {
@@ -37,7 +37,7 @@ class DPDataHelper:DataHelperMaster {
     }
     
     func getAllDefectPositPoints() ->[PositPointObj] {
-        let sql = "SELECT * FROM inspect_position_mstr WHERE current_level = 2"
+        let sql = "SELECT * FROM inspect_position_mstr WHERE current_level = 2 AND deleted_flag <> 1"
         var defectPositPoints = [PositPointObj]()
         
         if db.open() {

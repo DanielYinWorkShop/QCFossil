@@ -288,12 +288,10 @@ class TaskDataHelper:DataHelperMaster{
         let poDataHelper = PoDataHelper()
         task.poItems = poDataHelper.getPoByTaskId(task.taskId!)
         
-        self.removeRecordMarkedDeleted(task.taskId ?? 0)
-        
         //Init Task From TaskInspDataRecord
         for inspSec in task.inspSections{
             
-            let taskInspDateRecords = getTaskInspDataRecords(task.taskId!, inspectSecId: inspSec.sectionId!)
+            let taskInspDateRecords = getTaskInspDataRecords(task.taskId!, inspectSecId: inspSec.sectionId!, inputMode: inspSec.inputModeCode ?? "")
             
             if taskInspDateRecords!.count > 0{
                 
@@ -915,7 +913,8 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func checkAllInspDataRecordDone() ->Bool {
-        let sql = "SELECT 1 FROM task_inspect_data_record WHERE task_id = ? AND result_value_id < 1"
+        let sql = "SELECT 1 FROM task_inspect_data_record tidr INNER JOIN inspect_element_mstr iem ON tidr.inspect_element_id = iem.element_id INNER JOIN inspect_position_mstr ipm ON tidr.inspect_position_id = ipm.position_id WHERE tidr.task_id = ? AND tidr.result_value_id < 1 AND iem.rec_status = 0 AND iem.deleted_flag <>1 AND ipm.rec_status = 0 AND ipm.deleted_flag <>1"
+        //"SELECT 1 FROM task_inspect_data_record WHERE task_id = ? AND result_value_id < 1"
         var result = true
         
         if db.open() {
@@ -1069,7 +1068,7 @@ class TaskDataHelper:DataHelperMaster{
     
     
     func getInspSecPositionById(inspPostId:Int) ->InspSectionPosition? {
-        let sql = "SELECT * FROM inspect_position_mstr WHERE position_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM inspect_position_mstr WHERE position_id = ?"
         var inspSecPost:InspSectionPosition?
         
         if db.open() {
@@ -1111,7 +1110,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getInspSecElementById(inspElmId:Int) ->InspSectionElement? {
-        let sql = "SELECT * FROM inspect_element_mstr WHERE element_id = ? AND (rec_status = 0 AND deleted_flag = 0)"
+        let sql = "SELECT * FROM inspect_element_mstr WHERE element_id = ?"
         var inspSecElm:InspSectionElement?
         
         if db.open() {
@@ -1414,8 +1413,13 @@ class TaskDataHelper:DataHelperMaster{
         }
     }
     
-    func getTaskInspDataRecords(taskId:Int, inspectSecId:Int) ->[TaskInspDataRecord]? {
-        let sql = "SELECT * FROM task_inspect_data_record tidr INNER JOIN inspect_element_mstr iem ON tidr.inspect_element_id = iem.element_id WHERE tidr.task_id = ? AND tidr.inspect_section_id= ? AND iem.rec_status = 0 AND iem.deleted_flag = 0"
+    func getTaskInspDataRecords(taskId:Int, inspectSecId:Int, inputMode:String) ->[TaskInspDataRecord]? {
+        var sql = "SELECT * FROM task_inspect_data_record tidr INNER JOIN inspect_task it ON tidr.task_id = it.task_id INNER JOIN inspect_element_mstr iem ON tidr.inspect_element_id = iem.element_id WHERE tidr.task_id = ? AND tidr.inspect_section_id= ? AND ((it.task_status < 4 AND iem.rec_status = 0 AND iem.deleted_flag = 0) OR it.task_status > 3)"
+        
+        if inputMode == _INPUTMODE02 {
+            sql = "SELECT * FROM task_inspect_data_record tidr INNER JOIN inspect_task it ON tidr.task_id = it.task_id INNER JOIN inspect_element_mstr iem ON tidr.inspect_element_id = iem.element_id INNER JOIN inspect_position_mstr ipm ON tidr.inspect_position_id = ipm.position_id WHERE tidr.task_id = ? AND tidr.inspect_section_id= ? AND ((it.task_status < 4 AND ipm.rec_status = 0 AND ipm.deleted_flag = 0) OR it.task_status > 3)"
+        }
+        
         var taskInspDataRecords = [TaskInspDataRecord]()
         
         if db.open() {
@@ -1680,11 +1684,12 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func updateTaskItem(taskItem:TaskItem) ->Bool {
-        let sql = "INSERT OR REPLACE INTO inspect_task_item('rowid','task_id','po_item_id','target_inspect_qty','avail_inspect_qty','inspect_enable_flag','create_user','create_date','modify_user','modify_date','sampling_qty') VALUES((SELECT rowid FROM inspect_task_item WHERE task_id = ? AND po_item_id = ?),?,?,?,?,?,?,?,?,?,?)"
+        //let sql = "INSERT OR REPLACE INTO inspect_task_item('rowid','task_id','po_item_id','target_inspect_qty','avail_inspect_qty','inspect_enable_flag','create_user','create_date','modify_user','modify_date','sampling_qty') VALUES((SELECT rowid FROM inspect_task_item WHERE task_id = ? AND po_item_id = ?),?,?,?,?,?,?,?,?,?,?)"
+        let sql = "UPDATE inspect_task_item SET po_item_id=?, target_inspect_qty=?, avail_inspect_qty=?, inspect_enable_flag=?, create_user=?, create_date=?, modify_user=?, modify_date=?, sampling_qty=? WHERE task_id=? AND po_item_id=?"
         
         if db.open(){
             
-            let rs = db.executeUpdate(sql, withArgumentsInArray: [taskItem.taskId!,taskItem.poItemId!,taskItem.taskId!,taskItem.poItemId!,taskItem.targetInspectQty!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!])
+            let rs = db.executeUpdate(sql, withArgumentsInArray: [taskItem.taskId!,taskItem.poItemId!,taskItem.targetInspectQty!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!,taskItem.taskId!,taskItem.poItemId!])
             
             db.close()
             return rs
@@ -1797,7 +1802,7 @@ class TaskDataHelper:DataHelperMaster{
     }
     
     func getCatItemCountById(taskId:Int, sectionId:Int) ->Int {
-        let sql = "SELECT COUNT(record_id) AS record_cnt FROM task_inspect_data_record WHERE task_id = ? AND inspect_section_id = ?"
+        let sql = "SELECT COUNT(tidr.record_id) AS record_cnt FROM task_inspect_data_record tidr INNER JOIN inspect_task it ON tidr.task_id = it.task_id INNER JOIN inspect_element_mstr iem ON tidr.inspect_element_id = iem.element_id INNER JOIN inspect_position_mstr ipm ON tidr.inspect_position_id = ipm.position_id WHERE it.task_id = ? AND tidr.inspect_section_id = ? AND ((it.task_status < 4 AND iem.rec_status = 0 AND iem.deleted_flag <> 1 AND ipm.rec_status = 0 AND ipm.deleted_flag <>1) OR it.task_status > 3)"
         var itemCount = 0
         
         if db.open() {

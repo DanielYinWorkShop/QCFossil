@@ -217,7 +217,12 @@ class DataSyncDataHelper:DataHelperMaster {
                 while rs.next() {
                     
                     for (key,_) in taskItemlist {
-                        taskItemlist[key] = rs.stringForColumn(key)
+                        
+                        if let value = rs.stringForColumn(key) {
+                            taskItemlist[key] = value
+                        } else {
+                            taskItemlist[key] = ""
+                        }
                     }
                     
                     taskItems.append(taskItemlist)

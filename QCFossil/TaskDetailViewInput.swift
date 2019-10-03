@@ -616,7 +616,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             let availQty = poCellItem.availInspectQtyInput.text != "" ? Int(poCellItem.availInspectQtyInput.text!)!:0
             
             let taskItem = TaskItem(taskId: (Cache_Task_On?.taskId)!, poItemId: poCellItem.poItemId!, targetInspectQty: targetInspectQty, availInspectQty: Cache_Task_On!.inspectionResultValueId! < 0 ? 0 : availQty, inspectEnableFlag: Cache_Task_On!.inspectionResultValueId! < 0 ? 0 : poCellItem.isEnable, createUser: Cache_Inspector?.appUserName, createDate: self.getCurrentDateTime(), modifyUser: Cache_Inspector?.appUserName, modifyDate: self.getCurrentDateTime(), samplingQty: samplingQty)
-            
+
             //Check if need to Update task status from Pending to Draft
             if taskDataHelper.didChangeInTaskPoItems((Cache_Task_On?.taskId)!, poItemId: poCellItem.poItemId!) {
                 Cache_Task_On?.didKeepPending = false

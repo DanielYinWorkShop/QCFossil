@@ -220,11 +220,11 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                 //Remove Text From Parent TextField
                 
                 if idx < 1 && selectedTableViewCell.count > 1 {
-                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!+", ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!+",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 }else if idx < 1 && selectedTableViewCell.count < 2 {
                     myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 }else{
-                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString(", "+(cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString(","+(cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 }
                 
                 selectedTableViewCell.removeAtIndex(idx)
