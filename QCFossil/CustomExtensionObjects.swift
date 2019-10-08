@@ -1799,6 +1799,12 @@ extension UITextField {
             textField.text! += String(format: "%@,", key)
         })
         
+        if let tempStr = textField.text {
+            if tempStr.characters.count > 0 {
+                textField.text = tempStr.substringToIndex(tempStr.endIndex.predecessor())
+            }
+        }
+        
         return dataSource
     }
 }
