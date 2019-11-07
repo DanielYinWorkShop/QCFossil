@@ -209,7 +209,7 @@ class TaskDataHelper:DataHelperMaster{
             dateFormatter.dateFormat = _DATEFORMATTER
             
             uniquePoNos.sortInPlace({ Int($0) < Int($1) })
-            uniqueShipWins.sortInPlace({ dateFormatter.dateFromString($0)!.isGreaterThanDate(dateFormatter.dateFromString($1)!) })
+            uniqueShipWins.sortInPlace({ $0 != "" && $1 != "" && dateFormatter.dateFromString($0)!.isGreaterThanDate(dateFormatter.dateFromString($1)!) })
             uniqueOpdRsds.sortInPlace({ $0 != "" && $1 != "" && dateFormatter.dateFromString($0)!.isGreaterThanDate(dateFormatter.dateFromString($1)!) })
             
             task.poNo = uniquePoNos.joinWithSeparator(",")
@@ -1689,7 +1689,7 @@ class TaskDataHelper:DataHelperMaster{
         
         if db.open(){
             
-            let rs = db.executeUpdate(sql, withArgumentsInArray: [taskItem.taskId!,taskItem.poItemId!,taskItem.targetInspectQty!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!,taskItem.taskId!,taskItem.poItemId!])
+            let rs = db.executeUpdate(sql, withArgumentsInArray: [taskItem.poItemId!,taskItem.targetInspectQty!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!,taskItem.taskId!,taskItem.poItemId!])
             
             db.close()
             return rs

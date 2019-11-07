@@ -62,13 +62,13 @@ class PoDataHelper:DataHelperMaster {
                 let itemId = Int(rs.intForColumn("item_id"))
                 let dataEnv = rs.stringForColumn("data_env")
                 let refHeadId = Int(rs.intForColumn("ref_head_id"))
-                let poNo = rs.stringForColumn("po_no")
+                let poNo = rs.stringForColumn("po_no") ?? "0"
                 let refVdrId = Int(rs.intForColumn("ref_vdr_id"))
                 let vdrCode = rs.stringForColumn("vdr_code")
                 let vdrName = rs.stringForColumn("vdr_name")
                 let vdrDisplayName = rs.stringForColumn("vdr_display_name")
                 let refLineId = Int(rs.intForColumn("ref_line_id"))
-                let poLineNo = rs.stringForColumn("po_line_no")
+                let poLineNo = rs.stringForColumn("po_line_no") ?? "0"
                 let refPordId = Int(rs.intForColumn("ref_prod_id"))
                 let skuNo = rs.stringForColumn("sku_no")
                 let prodTypeCode = rs.stringForColumn("prod_type_code")
