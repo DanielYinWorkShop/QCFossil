@@ -25,6 +25,7 @@ class PopoverViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.view.translatesAutoresizingMaskIntoConstraints = false
         
         if dataType == _POPOVERDATETPYE {
             calenderview = CalenderPickerViewInput.loadFromNibNamed("CalenderPickerView")!
@@ -36,7 +37,10 @@ class PopoverViewController: UIViewController {
         }else if dataType == _POPOVERPRODDESC {
             self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Prod Desc")
             
-            let descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 325,height: 500))
+            var descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 325,height: 500))
+            if #available(iOS 13.0, *) {
+                descView = UITextView.init(frame: CGRect(x: 0,y: _NAVIBARHEIGHT,width: 325,height: 500))
+            }
             descView.text = selectedValue
             descView.userInteractionEnabled = false
             

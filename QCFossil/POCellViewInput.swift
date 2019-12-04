@@ -202,8 +202,8 @@ class POCellViewInput: UIView, UITextFieldDelegate {
     
     @IBAction func showProdDesc(sender: UIButton){
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.dataType = _POPOVERPRODDESC
         popoverContent.selectedValue = prodDesc
         

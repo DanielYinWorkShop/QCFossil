@@ -22,6 +22,7 @@ class PopoverViewsInput: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     */
     
     override func awakeFromNib() {
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.typeSelection.delegate = self
         self.typeSelection.dataSource = self
     }

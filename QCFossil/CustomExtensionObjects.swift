@@ -1750,15 +1750,16 @@ extension UITextField {
     
     func showDatePicker(sender: UITextField) {
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,350 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 350 + _NAVIBARHEIGHT)// CGSizeMake(320,350 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.parentTextFieldView = sender
         popoverContent.sourceType = _BOOKINGDATEFROMDATETYPE
         popoverContent.dataType = _POPOVERDATETPYE
         
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        nav.navigationBar.barTintColor = UIColor.blackColor()
+        nav.modalPresentationStyle = .Popover
+        nav.view.translatesAutoresizingMaskIntoConstraints = false
+        nav.navigationBar.barTintColor = .blackColor()
         
         let popover = nav.popoverPresentationController
         popover!.delegate = sender.parentVC as! PopoverMaster

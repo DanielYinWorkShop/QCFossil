@@ -88,8 +88,8 @@ class TaskTableViewCell: UITableViewCell {
     
     @IBAction func showAllPOLinesOnClick(sender: UIButton) {
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.dataType = _POPOVERPOITEMTYPE
         popoverContent.selectedValue = poListText.text!//"hello world,new world,"
         
@@ -108,8 +108,8 @@ class TaskTableViewCell: UITableViewCell {
 
     @IBAction func showAllShipWinDatesOnClick(sender: UIButton) {
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.dataType = _POPOVERPOITEMTYPESHIPWIN
         popoverContent.selectedValue = shipWinText.text!
         
@@ -166,8 +166,8 @@ class TaskTableViewCell: UITableViewCell {
     @IBAction func showTaskStatusDescOnClick(sender: UIButton) {
         
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.dataType = _POPOVERTASKSTATUSDESC
         popoverContent.selectedValue = dataRefuseDesc//(Cache_Task_On?.dataRefuseDesc)!
         
@@ -187,8 +187,8 @@ class TaskTableViewCell: UITableViewCell {
     
     @IBAction func showProdDescOnClick(sender: UIButton) {
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.dataType = _POPOVERPRODDESC
         popoverContent.selectedValue = prodDesc
         
@@ -207,8 +207,8 @@ class TaskTableViewCell: UITableViewCell {
     
     @IBAction func showOpdRsdOnClick(sender: UIButton) {
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
         popoverContent.dataType = _POPOVERPOPDRSD
         popoverContent.selectedValue = vendorLocationText.text!
         

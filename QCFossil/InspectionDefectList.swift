@@ -590,9 +590,9 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
     
     @IBAction func showDPP(sender: UIButton){
         let popoverContent = PopoverViewController()
-        popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-        
-        popoverContent.dataType = _DEFECTPPDESC 
+        popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
+        popoverContent.dataType = _DEFECTPPDESC
         popoverContent.selectedValue = defectPositionPointsDesc
         
         let nav = UINavigationController(rootViewController: popoverContent)

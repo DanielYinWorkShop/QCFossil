@@ -40,8 +40,8 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
     func longPressed(sender: UIGestureRecognizer) {
         if let cell = sender.view as? UITableViewCell {
             let popoverContent = PopoverViewController()
-            popoverContent.preferredContentSize = CGSizeMake(320,150 + _NAVIBARHEIGHT)
-            
+            popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
+//            popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
             popoverContent.dataType = _POPOVERNOTITLE
             popoverContent.selectedValue = cell.textLabel?.text ?? ""
             
