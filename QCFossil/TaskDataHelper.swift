@@ -1685,11 +1685,11 @@ class TaskDataHelper:DataHelperMaster{
     
     func updateTaskItem(taskItem:TaskItem) ->Bool {
         //let sql = "INSERT OR REPLACE INTO inspect_task_item('rowid','task_id','po_item_id','target_inspect_qty','avail_inspect_qty','inspect_enable_flag','create_user','create_date','modify_user','modify_date','sampling_qty') VALUES((SELECT rowid FROM inspect_task_item WHERE task_id = ? AND po_item_id = ?),?,?,?,?,?,?,?,?,?,?)"
-        let sql = "UPDATE inspect_task_item SET po_item_id=?, target_inspect_qty=?, avail_inspect_qty=?, inspect_enable_flag=?, create_user=?, create_date=?, modify_user=?, modify_date=?, sampling_qty=? WHERE task_id=? AND po_item_id=?"
+        let sql = "UPDATE inspect_task_item SET po_item_id=?, avail_inspect_qty=?, inspect_enable_flag=?, create_user=?, create_date=?, modify_user=?, modify_date=?, sampling_qty=? WHERE task_id=? AND po_item_id=?"
         
         if db.open(){
             
-            let rs = db.executeUpdate(sql, withArgumentsInArray: [taskItem.poItemId!,taskItem.targetInspectQty!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!,taskItem.taskId!,taskItem.poItemId!])
+            let rs = db.executeUpdate(sql, withArgumentsInArray: [taskItem.poItemId!,taskItem.availInspectQty!,taskItem.inspectEnableFlag!,taskItem.createUser!,taskItem.createDate!,taskItem.modifyUser!,taskItem.modifyDate!,taskItem.samplingQty!,taskItem.taskId!,taskItem.poItemId!])
             
             db.close()
             return rs
