@@ -2439,4 +2439,24 @@ class TaskDataHelper:DataHelperMaster{
         
         return values
     }
+    
+    func getRemarksOptionValueById(Ids:[String]) ->String {
+        
+        var sql = "SELECT option_text_en, option_text_zh FROM task_selection_option_mstr WHERE option_id IN ("
+        var textValue = ""
+        sql += Ids.joinWithSeparator(",") + ")"
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
+                while rs.next() {
+                    textValue += _ENGLISH ? rs.stringForColumn("option_text_en"):rs.stringForColumn("option_text_zh") + ","
+                }
+            }
+            
+            db.close()
+        }
+        
+        return textValue
+    }
 }

@@ -517,7 +517,6 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.otherRemarkInput.text = defectItem.othersRemark
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
             cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
-
             
             let defectDataHelper = DefectDataHelper()
             if Int(defectItem.inspectElementId!) > 0 {
@@ -607,11 +606,16 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
             cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
             cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
-            cellMode2.dfDescInput.text = defectItem.defectRemarksOptionList
+//            cellMode2.dfDescInput.text = defectItem.defectRemarksOptionList
             cellMode2.otherRemarkInput.text = defectItem.othersRemark
-            
             cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
             cellMode2.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
+            
+            if var remarkOptionValues = defectItem.defectRemarksOptionList?.componentsSeparatedByString(",") {
+                remarkOptionValues.removeLast()
+                let taskDataHelper = TaskDataHelper()
+                cellMode2.dfDescInput.text = taskDataHelper.getRemarksOptionValueById(remarkOptionValues)
+            }
             
             if let parentElement = defectItem.inspElmt as? InputMode02CellView {
                 cellMode2.dppInput.text = parentElement.cellDPPInput.text
