@@ -26,3 +26,18 @@ class CustomTextField: UITextField {
         return false
     }
 }
+
+class NoActionTextField: UITextField {
+    
+//    override func caretRectForPosition(position: UITextPosition) -> CGRect {
+//        return CGRect.zero
+//    }
+//    
+//    override func selectionRectsForRange(range: UITextRange) -> [AnyObject] {
+//        return []
+//    }
+    
+    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+        return false
+    }
+}

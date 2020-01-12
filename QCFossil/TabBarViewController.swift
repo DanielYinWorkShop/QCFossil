@@ -323,7 +323,7 @@ class TabBarViewController: UITabBarController {
         
         for defectItem in (Cache_Task_On?.defectItems)! {
             
-            if defectItem.defectDesc == "" && defectItem.defectQtyCritical<1 && defectItem.defectQtyMajor<1 && defectItem.defectQtyMinor<1 && defectItem.defectQtyTotal<1 {
+            if needRemoveCheck(defectItem) {
                 var noPhotos = true
                 
                 for name in defectItem.photoNames! {
@@ -332,7 +332,7 @@ class TabBarViewController: UITabBarController {
                         break
                     }
                 }
-                
+    
                 if noPhotos {
                     let index = Cache_Task_On?.defectItems.indexOf({ $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
                 
@@ -376,6 +376,25 @@ class TabBarViewController: UITabBarController {
         }
         
         handler = nil
+    }
+    
+    func needRemoveCheck(defectItem:TaskInspDefectDataRecord) ->Bool {
+        
+        switch defectItem.inputMode ?? "" {
+        case _INPUTMODE01, _INPUTMODE02:
+            if defectItem.inspectElementDefectValueId < 1 && defectItem.inspectElementCaseValueId < 1 && (defectItem.defectType == nil || defectItem.defectType == "") && defectItem.defectRemarksOptionList == "" && defectItem.defectDesc == "" && defectItem.defectQtyCritical<1 && defectItem.defectQtyMajor<1 && defectItem.defectQtyMinor<1 && defectItem.defectQtyTotal<1 {
+                return true
+            }
+            break
+        case _INPUTMODE03, _INPUTMODE04:
+            if defectItem.defectDesc == "" && defectItem.defectQtyCritical<1 && defectItem.defectQtyMajor<1 && defectItem.defectQtyMinor<1 && defectItem.defectQtyTotal<1 {
+                return true
+            }
+            break
+        default:break
+        }
+        
+        return false
     }
     
     func confirmTask() {

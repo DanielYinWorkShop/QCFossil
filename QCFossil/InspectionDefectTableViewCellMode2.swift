@@ -14,11 +14,11 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     @IBOutlet weak var defectDescLabel: UILabel!
     //@IBOutlet weak var defectDescInput: UITextField!
     @IBOutlet weak var defectCriticalQtyLabel: UILabel!
-    @IBOutlet weak var defectCriticalQtyInput: UITextField!
+    @IBOutlet weak var defectCriticalQtyInput: NoActionTextField!
     @IBOutlet weak var defectMajorQtyLabel: UILabel!
-    @IBOutlet weak var defectMajorQtyInput: UITextField!
+    @IBOutlet weak var defectMajorQtyInput: NoActionTextField!
     @IBOutlet weak var defectMinorQtyLabel: UILabel!
-    @IBOutlet weak var defectMinorQtyInput: UITextField!
+    @IBOutlet weak var defectMinorQtyInput: NoActionTextField!
     @IBOutlet weak var defectTotalQtyLabel: UILabel!
     @IBOutlet weak var defectTotalQtyInput: UITextField!
     @IBOutlet weak var defectTypeLabel: UILabel!
@@ -595,6 +595,36 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             if textField.text == "" {
                 textField.text = "0"
             }
+            
+            if var inputValue = textField.text {
+            let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
+            
+            if textField.keyboardType == UIKeyboardType.NumberPad {
+                if defectItemFilter?.count>0 {
+                    let defectItem = defectItemFilter![0]
+                    
+                    if Int(inputValue) == nil {
+                        inputValue = "0"
+                    }
+                    
+                    if textField == self.defectCriticalQtyInput {
+                        defectItem.defectQtyCritical = Int(inputValue)!
+                        
+                    }else if textField == self.defectMajorQtyInput {
+                        defectItem.defectQtyMajor = Int(inputValue)!
+                        
+                    }else if textField == self.defectMinorQtyInput {
+                        defectItem.defectQtyMinor = Int(inputValue)!
+                        
+                    }
+                    
+                    defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
+                    self.defectTotalQtyInput.text = String(defectItem.defectQtyTotal)
+                }
+            }
+            }
+            
+            
         } else if textField === self.othersRemarkInput {
             
             let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx}).first
@@ -704,46 +734,8 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     
     override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         Cache_Task_On?.didModify = true
-        var inputValue = ""
-        if textField.text!.characters.count < 2 && string == "" {
-            inputValue = ""
-        }else if string == ""{
-            inputValue = String(textField.text!.characters.dropLast())
-        }else {
-            inputValue = textField.text! + string
-        }
         
-        let defectItemFilter = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
-        
-        if textField.keyboardType == UIKeyboardType.NumberPad {
-            if defectItemFilter?.count>0 {
-                let defectItem = defectItemFilter![0]
-                
-                if Int(inputValue) == nil {
-                    inputValue = "0"
-                }
-                //if Int(inputValue) != nil {
-                    
-                if textField == self.defectCriticalQtyInput {
-                    defectItem.defectQtyCritical = Int(inputValue)!
-                        
-                }else if textField == self.defectMajorQtyInput {
-                    defectItem.defectQtyMajor = Int(inputValue)!
-                        
-                }else if textField == self.defectMinorQtyInput {
-                    defectItem.defectQtyMinor = Int(inputValue)!
-                        
-                }
-                //}
-                
-                defectItem.defectQtyTotal = Int(defectItem.defectQtyCritical + defectItem.defectQtyMajor + defectItem.defectQtyMinor)
-                self.defectTotalQtyInput.text = String(defectItem.defectQtyTotal)
-            }
-            
-            return textField.numberOnlyCheck(textField, sourceText: string)
-        }
-        
-        return true
+        return textField.numberOnlyCheck(textField, sourceText: string)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)

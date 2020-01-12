@@ -1665,6 +1665,12 @@ extension NSDate {
 }
 
 extension UITextField {
+    
+//    override public func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+//        // Default
+//        return false
+//    }
+    
     func showListData(sender: UITextField, parent:UIView, handle:((UITextField)->(Void))?=nil, listData:NSArray, width:CGFloat=250, height:CGFloat=250, allowMulpSel:Bool=false, tag:Int = 100000, allowManuallyInput:Bool=false, keyValues:[String:Int] = [String:Int](), selectedValues:[Int]=[Int]()) /*->DropdownListViewControl*/ {
         
         if listData.count > 0 {
