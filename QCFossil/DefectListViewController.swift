@@ -499,10 +499,10 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.indexLabel.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode1.inputMode = _INPUTMODE01
             cellMode1.ddInput.text = defectItem.defectDesc!
-            cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
-            cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
-            cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
-            cellMode1.dfQtyInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode1.majorInput.text = defectItem.defectQtyMajor < 1 ? "0" : String(defectItem.defectQtyMajor)
+            cellMode1.minorInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
+            cellMode1.criticalInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
+            cellMode1.dfQtyInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
             cellMode1.defectPhoto1.image = nil
             cellMode1.defectPhoto2.image = nil
             cellMode1.defectPhoto3.image = nil
@@ -513,10 +513,16 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.dismissPhotoButton3.hidden = true
             cellMode1.dismissPhotoButton4.hidden = true
             cellMode1.dismissPhotoButton5.hidden = true
-            cellMode1.ddInput.text = defectItem.defectRemarksOptionList
+//            cellMode1.ddInput.text = defectItem.defectRemarksOptionList
             cellMode1.otherRemarkInput.text = defectItem.othersRemark
             cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
             cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
+            
+            if var remarkOptionValues = defectItem.defectRemarksOptionList?.componentsSeparatedByString(",") {
+                remarkOptionValues.removeLast()
+                let taskDataHelper = TaskDataHelper()
+                cellMode1.ddInput.text = taskDataHelper.getRemarksOptionValueById(remarkOptionValues)
+            }
             
             let defectDataHelper = DefectDataHelper()
             if Int(defectItem.inspectElementId!) > 0 {
@@ -602,10 +608,10 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode2.cellIdx = defectItem.cellIdx
             cellMode2.indexInput.text = "\(defectItem.inspElmt.cellIdx).\(defectItem.cellIdx)"
             cellMode2.inputMode = _INPUTMODE02
-            cellMode2.majorInput.text = defectItem.defectQtyMajor < 1 ? "" : String(defectItem.defectQtyMajor)
-            cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "" : String(defectItem.defectQtyMinor)
-            cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "" : String(defectItem.defectQtyCritical)
-            cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "" : String(defectItem.defectQtyTotal)
+            cellMode2.majorInput.text = defectItem.defectQtyMajor < 1 ? "0" : String(defectItem.defectQtyMajor)
+            cellMode2.minorInput.text = defectItem.defectQtyMinor < 1 ? "0" : String(defectItem.defectQtyMinor)
+            cellMode2.criticalInput.text = defectItem.defectQtyCritical < 1 ? "0" : String(defectItem.defectQtyCritical)
+            cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
 //            cellMode2.dfDescInput.text = defectItem.defectRemarksOptionList
             cellMode2.otherRemarkInput.text = defectItem.othersRemark
             cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)

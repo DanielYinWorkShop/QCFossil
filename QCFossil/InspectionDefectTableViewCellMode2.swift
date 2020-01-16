@@ -701,6 +701,7 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
 //            defectItem.defectRemarksOptionList = self.defectRemarkOptionList.text
             
             defectItem.defectRemarksOptionList = textField.showMultiDropdownValues(self.defectRemarksOptionList ?? "", textField: textField, keyValues: self.remarkKeyValue)
+            self.defectRemarksOptionList = defectItem.defectRemarksOptionList
         }
     }
     
@@ -735,7 +736,11 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
     override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         Cache_Task_On?.didModify = true
         
-        return textField.numberOnlyCheck(textField, sourceText: string)
+        if textField == self.defectMinorQtyInput || textField == self.defectCriticalQtyInput || textField == self.defectMajorQtyInput {
+            return textField.numberOnlyCheck(textField, sourceText: string)
+        }
+        
+        return true
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)

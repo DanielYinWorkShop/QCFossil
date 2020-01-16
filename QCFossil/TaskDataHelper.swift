@@ -2448,15 +2448,21 @@ class TaskDataHelper:DataHelperMaster{
         
         if db.open() {
             
+            var count = 0
             if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 while rs.next() {
                     textValue += _ENGLISH ? rs.stringForColumn("option_text_en"):rs.stringForColumn("option_text_zh") + ","
+                    count += 1
+                }
+                
+                if textValue != "" {
+                    textValue += ")"
                 }
             }
             
             db.close()
         }
         
-        return textValue
+        return textValue.stringByReplacingOccurrencesOfString(",)", withString: "")
     }
 }

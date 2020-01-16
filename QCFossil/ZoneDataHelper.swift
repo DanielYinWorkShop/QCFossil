@@ -22,7 +22,7 @@ class ZoneDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id,]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
                 while rs.next() {
                     
                     let zoneValueId = Int(rs.intForColumn("value_id"))
@@ -46,7 +46,7 @@ class ZoneDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id,]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
                 if rs.next() {
                     
                     zoneValueName = _ENGLISH ? rs.stringForColumn("value_name_en") : rs.stringForColumn("value_name_cn")
@@ -65,7 +65,7 @@ class ZoneDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id,]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
                 while rs.next() {
                     
                     let zoneValueId = Int(rs.intForColumn("value_id"))
@@ -89,7 +89,7 @@ class ZoneDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id,]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
                 while rs.next() {
                     
                     let zoneValueId = Int(rs.intForColumn("value_id"))
@@ -113,7 +113,7 @@ class ZoneDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id,]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
                 if rs.next() {
                     
                     valueName = _ENGLISH ? rs.stringForColumn("value_name_en") : rs.stringForColumn("value_name_cn")
@@ -132,7 +132,7 @@ class ZoneDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id,]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
                 if rs.next() {
                     
                     valueName = _ENGLISH ? rs.stringForColumn("value_name_en") : rs.stringForColumn("value_name_cn")
