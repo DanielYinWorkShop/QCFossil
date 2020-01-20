@@ -13,7 +13,7 @@ class TabBarViewController: UITabBarController {
     weak var taskDetalViewContorller:TaskDetailsViewController!
     weak var photoAlbumViewController:PhotoAlbumViewController!
     weak var defectListViewController:DefectListViewController!
-    weak var qcInfoViewController:QCInfoViewController!
+    weak var qcInfoViewController:QCInfoViewController? = nil
     var handler:(()->(Bool))?
     
     override func viewDidLoad() {
@@ -31,15 +31,13 @@ class TabBarViewController: UITabBarController {
         photoAlbumViewController?.initPhotoTakerNotification()
         photoAlbumViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo Album")
         
-        
-        qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
-        qcInfoViewController.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
-        
         switch Cache_Inspector?.typeCode ?? "LEATHER" {
         case TypeCode.LEATHER.rawValue:
             self.childViewControllers[3].removeFromParentViewController()
             break
         case TypeCode.WATCH.rawValue, TypeCode.JEWELRY.rawValue:
+            qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
+            qcInfoViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
             break
         default:
             break
@@ -49,6 +47,10 @@ class TabBarViewController: UITabBarController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    deinit{
+        print("TabBarViewController deinit.")
     }
     
     /*

@@ -159,7 +159,9 @@ class InputMode02View: InputModeSCMaster {
         inputCellViewObj?.dpDescInput.text = dpDescText
         inputCellViewObj?.cellDPPInput.text = dppText
         inputCellViewObj?.cellResultInput.text = _ENGLISH ? resultValueObj.resultValueNameEn : resultValueObj.resultValueNameCn
-        inputCellViewObj?.defectZoneInput.text = ZoneDataHelper.sharedInstance.getZoneValueNameById(inspectPositionZoneValueId)
+        
+        let zoneDataHelper = ZoneDataHelper()
+        inputCellViewObj?.defectZoneInput.text = zoneDataHelper.getZoneValueNameById(inspectPositionZoneValueId)
         inputCellViewObj?.inspectZoneValueId = inspectPositionZoneValueId
         
         //for Save DB
@@ -172,7 +174,7 @@ class InputMode02View: InputModeSCMaster {
         inputCellViewObj?.inspAreaText = dpText
         inputCellViewObj?.inspItemText = dppText
         
-        inputCellViewObj?.zoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(inspPostId)
+        inputCellViewObj?.zoneValues = zoneDataHelper.getZoneValuesByPositionId(inspPostId)
         
         let defectDataHelper = DefectDataHelper()
         inputCellViewObj?.myDefectPositPoints = defectDataHelper.getDefectTypeByTaskInspectDataRecordId(taskInspDataRecordId)

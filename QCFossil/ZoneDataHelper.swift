@@ -8,21 +8,15 @@
 
 import Foundation
 
-private let sharedZoneDataHelper = ZoneDataHelper()
-
 class ZoneDataHelper:DataHelperMaster {
 
-    class var sharedInstance : ZoneDataHelper {
-        return sharedZoneDataHelper
-    }
-
     func getZoneValuesByPositionId(Id:Int) ->[DropdownValue] {
-        let sql = "SELECT distinct zvm.value_id, zvm.value_name_en, zvm.value_name_cn from inspect_position_mstr ipm INNER JOIN zone_set_mstr zem ON ipm.position_zone_set_id = zem.set_id INNER JOIN zone_set_value zsv ON zem.set_id = zsv.set_id INNER JOIN zone_value_mstr zvm ON zsv.value_id = zvm.value_id WHERE ipm.position_id = ?"
+        let sql = "SELECT distinct zvm.value_id, zvm.value_name_en, zvm.value_name_cn from inspect_position_mstr ipm INNER JOIN zone_set_mstr zem ON ipm.position_zone_set_id = zem.set_id INNER JOIN zone_set_value zsv ON zem.set_id = zsv.set_id INNER JOIN zone_value_mstr zvm ON zsv.value_id = zvm.value_id WHERE ipm.position_id = \(Id)"
         var zoneValues = [DropdownValue]()
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 while rs.next() {
                     
                     let zoneValueId = Int(rs.intForColumn("value_id"))
@@ -41,12 +35,12 @@ class ZoneDataHelper:DataHelperMaster {
     }
     
     func getZoneValueNameById(Id:Int) ->String {
-        let sql = "SELECT value_name_en, value_name_cn FROM zone_value_mstr WHERE value_id = ?"
+        let sql = "SELECT value_name_en, value_name_cn FROM zone_value_mstr WHERE value_id = \(Id)"
         var zoneValueName = ""
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 if rs.next() {
                     
                     zoneValueName = _ENGLISH ? rs.stringForColumn("value_name_en") : rs.stringForColumn("value_name_cn")
@@ -60,12 +54,12 @@ class ZoneDataHelper:DataHelperMaster {
     }
     
     func getDefectValuesByElementId(Id:Int) ->[DropdownValue] {
-        let sql = "SELECT distinct dvm.value_id, dvm.value_name_en, dvm.value_name_cn  FROM defect_set_mstr dsm INNER JOIN inspect_element_mstr iem ON dsm.set_id = iem.inspect_defect_set_id INNER JOIN defect_set_value dsv ON dsm.set_id = dsv.set_id INNER JOIN defect_value_mstr dvm ON dsv.value_id = dvm.value_id WHERE iem.element_id = ?"
+        let sql = "SELECT distinct dvm.value_id, dvm.value_name_en, dvm.value_name_cn  FROM defect_set_mstr dsm INNER JOIN inspect_element_mstr iem ON dsm.set_id = iem.inspect_defect_set_id INNER JOIN defect_set_value dsv ON dsm.set_id = dsv.set_id INNER JOIN defect_value_mstr dvm ON dsv.value_id = dvm.value_id WHERE iem.element_id = \(Id)"
         var defectValues = [DropdownValue]()
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 while rs.next() {
                     
                     let zoneValueId = Int(rs.intForColumn("value_id"))
@@ -84,12 +78,12 @@ class ZoneDataHelper:DataHelperMaster {
     }
     
     func getCaseValuesByElementId(Id:Int) ->[DropdownValue] {
-        let sql = "SELECT distinct cvm.value_id, cvm.value_name_en, cvm.value_name_cn FROM case_set_mstr csm INNER JOIN inspect_element_mstr iem ON csm.set_id = iem.inspect_case_set_id INNER JOIN case_set_value csv ON csm.set_id = csv.set_id INNER JOIN case_value_mstr cvm ON csv.value_id = cvm.value_id WHERE element_id = ?"
+        let sql = "SELECT distinct cvm.value_id, cvm.value_name_en, cvm.value_name_cn FROM case_set_mstr csm INNER JOIN inspect_element_mstr iem ON csm.set_id = iem.inspect_case_set_id INNER JOIN case_set_value csv ON csm.set_id = csv.set_id INNER JOIN case_value_mstr cvm ON csv.value_id = cvm.value_id WHERE element_id = \(Id)"
         var values = [DropdownValue]()
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 while rs.next() {
                     
                     let zoneValueId = Int(rs.intForColumn("value_id"))
@@ -108,12 +102,12 @@ class ZoneDataHelper:DataHelperMaster {
     }
     
     func getDefectDescValueNameById(Id:Int) ->String {
-        let sql = "SELECT value_name_en, value_name_cn FROM defect_value_mstr WHERE value_id = ? "
+        let sql = "SELECT value_name_en, value_name_cn FROM defect_value_mstr WHERE value_id = \(Id)"
         var valueName = ""
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 if rs.next() {
                     
                     valueName = _ENGLISH ? rs.stringForColumn("value_name_en") : rs.stringForColumn("value_name_cn")
@@ -127,12 +121,12 @@ class ZoneDataHelper:DataHelperMaster {
     }
     
     func getCaseValueNameById(Id:Int) ->String {
-        let sql = "SELECT value_name_en, value_name_cn FROM case_value_mstr WHERE value_id = ?"
+        let sql = "SELECT value_name_en, value_name_cn FROM case_value_mstr WHERE value_id = \(Id)"
         var valueName = ""
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: ["\(Id)"]) {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: []) {
                 if rs.next() {
                     
                     valueName = _ENGLISH ? rs.stringForColumn("value_name_en") : rs.stringForColumn("value_name_cn")

@@ -652,8 +652,9 @@ class InspectionDefectTableViewCellMode2: InputModeDFMaster2, UIImagePickerContr
             defectItem.inspectElementDefectValueId = 0
             defectItem.inspectElementCaseValueId = 0
             
-            self.defectValues = ZoneDataHelper.sharedInstance.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
-            self.caseValues = ZoneDataHelper.sharedInstance.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
+            let zoneDataHelper = ZoneDataHelper()
+            self.defectValues = zoneDataHelper.getDefectValuesByElementId(defectItem.inspectElementId ?? 0)
+            self.caseValues = zoneDataHelper.getCaseValuesByElementId(defectItem.inspectElementId ?? 0)
             
             if defectValues?.count < 1 {
                 self.defectDesc1Input.backgroundColor = _GREY_BACKGROUD

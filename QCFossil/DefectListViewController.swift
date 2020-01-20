@@ -515,8 +515,10 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode1.dismissPhotoButton5.hidden = true
 //            cellMode1.ddInput.text = defectItem.defectRemarksOptionList
             cellMode1.otherRemarkInput.text = defectItem.othersRemark
-            cellMode1.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
-            cellMode1.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
+            
+            let zoneDataHelper = ZoneDataHelper()
+            cellMode1.defectDesc1Input.text = zoneDataHelper.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
+            cellMode1.defectDesc2Input.text = zoneDataHelper.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
             if var remarkOptionValues = defectItem.defectRemarksOptionList?.componentsSeparatedByString(",") {
                 remarkOptionValues.removeLast()
@@ -614,8 +616,10 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             cellMode2.totalInput.text = defectItem.defectQtyTotal < 1 ? "0" : String(defectItem.defectQtyTotal)
 //            cellMode2.dfDescInput.text = defectItem.defectRemarksOptionList
             cellMode2.otherRemarkInput.text = defectItem.othersRemark
-            cellMode2.defectDesc1Input.text = ZoneDataHelper.sharedInstance.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
-            cellMode2.defectDesc2Input.text = ZoneDataHelper.sharedInstance.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
+            
+            let zoneDataHelper = ZoneDataHelper()
+            cellMode2.defectDesc1Input.text = zoneDataHelper.getDefectDescValueNameById(defectItem.inspectElementDefectValueId ?? 0)
+            cellMode2.defectDesc2Input.text = zoneDataHelper.getCaseValueNameById(defectItem.inspectElementCaseValueId ?? 0)
             
             if var remarkOptionValues = defectItem.defectRemarksOptionList?.componentsSeparatedByString(",") {
                 remarkOptionValues.removeLast()

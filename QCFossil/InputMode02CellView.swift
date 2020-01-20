@@ -60,7 +60,8 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             inspectItemKeyValues[_ENGLISH ? dfPosit.positionNameEn : dfPosit.positionNameCn] = dfPosit.positionId
         }
         
-        let zoneItems = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+        let zoneDataHelper = ZoneDataHelper()
+        let zoneItems = zoneDataHelper.getZoneValuesByPositionId(self.inspPostId ?? 0)
         zoneItems.forEach({ zoneItem in
             zoneItemKeyValues[_ENGLISH ? zoneItem.valueNameEn ?? "" : zoneItem.valueNameCn ?? ""] = zoneItem.valueId
         })
@@ -190,13 +191,14 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 self.defectPositionPointIcon.hidden = false
             }
             
-            let defectZoneValues = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+            let zoneDataHelper = ZoneDataHelper()
+            let defectZoneValues = zoneDataHelper.getZoneValuesByPositionId(self.inspPostId ?? 0)
             if defectZoneValues.count > 0 {
                 defectZoneInput.backgroundColor = UIColor.whiteColor()
                 self.defectZoneListIcon.hidden = false
             }
             
-            let zoneItems = ZoneDataHelper.sharedInstance.getZoneValuesByPositionId(self.inspPostId ?? 0)
+            let zoneItems = zoneDataHelper.getZoneValuesByPositionId(self.inspPostId ?? 0)
             zoneItems.forEach({ zoneItem in
                 zoneItemKeyValues[_ENGLISH ? zoneItem.valueNameEn ?? "" : zoneItem.valueNameCn ?? ""] = zoneItem.valueId
             })
