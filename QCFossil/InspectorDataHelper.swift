@@ -212,4 +212,20 @@ class InspectorDataHelper:DataHelperMaster {
         return 0
     }
     
+    func updateProdType(prodType:ProdType) ->Bool {
+        
+        if db.open() {
+            let sql = "INSERT OR REPLACE INTO prod_type_mstr('type_id', 'type_code', 'type_name_en', 'type_name_cn', 'data_env', 'rec_status', 'create_date', 'create_user', 'modify_date', 'modify_user', 'deleted_flag', 'delete_date', 'delete_user') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            
+            if !db.executeUpdate(sql, withArgumentsInArray: [prodType.typeId ?? "", prodType.typeCode ?? "", prodType.typeNameEn ?? "", prodType.typeNameCn ?? "", prodType.dataEnv ?? "", prodType.recStatus ?? "", prodType.createDate ?? "", prodType.createUser ?? "", prodType.modifyDate ?? "", prodType.modifyUser ?? "", prodType.deletedFlag ?? "", prodType.deleteDate ?? "", prodType.deleteUser ?? ""]) {
+                
+                db.close()
+                return false
+            }
+            
+            db.close()
+        }
+        
+        return true
+    }
 }

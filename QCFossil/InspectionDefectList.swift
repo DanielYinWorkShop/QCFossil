@@ -123,6 +123,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
     }
     
     func reloadDefectItems() {
+        self.validateNow = true
         updateContentView()
     }
     
@@ -274,7 +275,6 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         
         self.defectItems.sortInPlace({ $0.sortNum > $1.sortNum })
         
-        self.validateNow = false
         self.inspectDefectTableview?.reloadData()
     }
     
@@ -295,6 +295,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         
         let taskDataHelper = TaskDataHelper()
         newDfItem?.recordId = taskDataHelper.updateInspDefectDataRecord(newDfItem!)
+        
+        self.validateNow = false
         
         if newDfItem?.recordId > 0 {
             Cache_Task_On?.defectItems.append(newDfItem!)
@@ -445,7 +447,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode2.backgroundColor = _TABLECELL_BG_COLOR1
             }
             
-//            if validateNow {
+            if validateNow {
                 guard let defectTotalQty = Int(cellMode2.defectTotalQtyInput.text!), let defectCriticalQty = Int(cellMode2.defectCriticalQtyInput.text!), let defectMajorQty = Int(cellMode2.defectMajorQtyInput.text!), let defectMinorQty = Int(cellMode2.defectMinorQtyInput.text!) else {return cellMode2}
                 
                 if defectTotalQty < 1 && defectCriticalQty < 1 && defectMajorQty < 1 && defectMinorQty < 1 {
@@ -453,7 +455,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 } else {
                     cellMode2.errorMessageLabel.hidden = true
                 }
-//            }
+            }
             
             return cellMode2
          
@@ -562,7 +564,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 cellMode1.backgroundColor = _TABLECELL_BG_COLOR1
             }
             
-//            if validateNow {
+            if validateNow {
                 guard let defectTotalQty = Int(cellMode1.defectQtyInput.text!), let defectCriticalQty = Int(cellMode1.criticalInput.text!), let defectMajorQty = Int(cellMode1.majorInput.text!), let defectMinorQty = Int(cellMode1.minorInput.text!) else {return cellMode1}
                 
                 if defectTotalQty < 1 && defectCriticalQty < 1 && defectMajorQty < 1 && defectMinorQty < 1 {
@@ -570,7 +572,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 } else {
                     cellMode1.errorMessageLabel.hidden = true
                 }
-//            }
+            }
             
             return cellMode1
         

@@ -58,10 +58,12 @@ let _DS_USERLOGIN = [
         "app_password": _DS_USERPASSWORD
     ],
     "ACTIONNAMES" : [
-        "inspector_mstr"
+        "inspector_mstr",
+        "prod_type_mstr"
     ],
     "ACTIONTABLES" : [
-        "inspector_mstr" : "inspector_mstr"
+        "inspector_mstr" : "inspector_mstr",
+        "prod_type_mstr" : "prod_type_mstr"
     ],
     "ACTIONFIELDS" : [
         "inspector_mstr" : [
@@ -84,6 +86,21 @@ let _DS_USERLOGIN = [
             "delete_date",
             "delete_user",
             "chg_pwd_req_date"
+        ],
+        "prod_type_mstr" : [
+            "type_id",
+            "type_code",
+            "type_name_en",
+            "type_name_cn",
+            "data_env",
+            "rec_status",
+            "create_date",
+            "create_user",
+            "modify_date",
+            "modify_user",
+            "deleted_flag",
+            "delete_date",
+            "delete_user"
         ]
     ]
 ]

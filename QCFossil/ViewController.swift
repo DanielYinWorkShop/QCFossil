@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "19012020"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "20200502"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
@@ -256,6 +256,59 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                             inspector.deleteDate = result![0]["delete_date"]
                             inspector.chgPwdReqDate = result![0]["chg_pwd_req_date"]!
                             
+                            var prodType = ProdType()
+                            if let typeId = result![1]["type_id"] {
+                                prodType.typeId = typeId
+                            }
+                            
+                            if let typeCode = result![1]["type_code"] {
+                                prodType.typeCode = typeCode
+                            }
+                            
+                            if let typeNameEn = result![1]["type_name_en"] {
+                                prodType.typeNameEn = typeNameEn
+                            }
+                            
+                            if let typeNameCn = result![1]["type_name_cn"] {
+                                prodType.typeNameCn = typeNameCn
+                            }
+                            
+                            if let dataEnv = result![1]["data_env"] {
+                                prodType.dataEnv = dataEnv
+                            }
+                            
+                            if let recStatus = result![1]["rec_status"] {
+                                prodType.recStatus = recStatus
+                            }
+                            
+                            if let createDate = result![1]["create_date"] {
+                                prodType.createDate = createDate
+                            }
+                            
+                            if let createUser = result![1]["create_user"] {
+                                prodType.createUser = createUser
+                            }
+                            
+                            if let modifyDate = result![1]["modify_date"] {
+                                prodType.modifyDate = modifyDate
+                            }
+                            
+                            if let modifyUser = result![1]["modify_user"] {
+                                prodType.modifyUser = modifyUser
+                            }
+                            
+                            if let deletedFlag = result![1]["deleted_flag"] {
+                                prodType.deletedFlag = deletedFlag
+                            }
+                            
+                            if let deleteDate = result![1]["delete_date"] {
+                                prodType.deleteDate = deleteDate
+                            }
+                            
+                            if let deleteUser = result![1]["delete_user"] {
+                                prodType.deleteUser = deleteUser
+                            }
+                            
                             //Update Service Token
                             _DS_SERVICETOKEN = result![0]["service_token"]!
                                 
@@ -267,10 +320,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                             
                             let inspectorDataHelper = InspectorDataHelper()
                             inspectorDataHelper.updateInspector(inspector)
+                            inspectorDataHelper.updateProdType(prodType)
                             
                             Cache_Inspector = inspectorDataHelper.getInspectorById(inspector.inspectorId ?? 0)
                             if Cache_Inspector == nil {
                                 Cache_Inspector = inspector
+                                Cache_Inspector?.typeCode = prodType.typeCode
                             }
                             Cache_Inspector?.lastLoginDate = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
                                 

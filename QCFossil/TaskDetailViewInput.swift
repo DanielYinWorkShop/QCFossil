@@ -654,7 +654,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         dateFormatter.dateFormat = _DATEFORMATTER
         
         var uniqueShipWins = Array(Set(shipWins))
-        uniqueShipWins.sortInPlace({ dateFormatter.dateFromString($0)!.isGreaterThanDate(dateFormatter.dateFromString($1)!) })
+        uniqueShipWins.sortInPlace({ (dateFormatter.dateFromString($0) ?? dateFormatter.dateFromString("01/01/1970"))!.isGreaterThanDate((dateFormatter.dateFromString($1) ?? dateFormatter.dateFromString("01/01/1970")!)) })
         
         Cache_Task_On!.shipWin = uniqueShipWins.joinWithSeparator(",")
         

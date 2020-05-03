@@ -321,7 +321,7 @@ class TabBarViewController: UITabBarController {
         
         //-------------------- Clear Blank Records --------------------------------------
         let defectDataHelper = DefectDataHelper()
-        var needReloadData = false
+//        var needReloadData = false
         
         for defectItem in (Cache_Task_On?.defectItems)! {
             
@@ -341,18 +341,18 @@ class TabBarViewController: UITabBarController {
                     defectDataHelper.deleteDefectItemById(defectItem.recordId!)
                     Cache_Task_On?.defectItems.removeAtIndex(index!)
                     
-                    needReloadData = true
+//                    needReloadData = true
                 }
             }
         }
         
-        if needReloadData {
+//        if needReloadData {
             NSNotificationCenter.defaultCenter().postNotificationName("reloadDefectItems", object: nil, userInfo: nil)
             
             if self.defectListViewController?.defectTableView != nil {
                 self.defectListViewController?.defectTableView.reloadData()
             }
-        }
+//        }
         //--------------------------------------------------------------------------------
         
         let taskStatusCurr = GetTaskStatusId(caseId: "Draft").rawValue
