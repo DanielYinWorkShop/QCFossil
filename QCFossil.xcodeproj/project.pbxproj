@@ -407,7 +407,7 @@
 		9C0848841C61B06B00CAAD88 /* PoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PoItem.swift; sourceTree = "<group>"; };
 		9C0848861C61E08500CAAD88 /* POCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POCellView.xib; sourceTree = "<group>"; };
 		9C0848881C61E0FA00CAAD88 /* POCellViewInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POCellViewInput.swift; sourceTree = "<group>"; };
-		9C0C36CB1C1E6F7800CF48ED /* QC0906pwl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC0906pwl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C0C36CB1C1E6F7800CF48ED /* QC200429P.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QC200429P.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C0C36CE1C1E6F7800CF48ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C0C36D01C1E6F7800CF48ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9C0C36D31C1E6F7800CF48ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -696,7 +696,7 @@
 		9C0C36CC1C1E6F7800CF48ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9C0C36CB1C1E6F7800CF48ED /* QC0906pwl.app */,
+				9C0C36CB1C1E6F7800CF48ED /* QC200429P.app */,
 				9C0C36DF1C1E6F7800CF48ED /* QCFossilTests.xctest */,
 				9C0C36EA1C1E6F7800CF48ED /* QCFossilUITests.xctest */,
 				BDD1A3472123472B00AE391E /* QCUAT.app */,
@@ -1213,7 +1213,7 @@
 			);
 			name = "QCFossil PRD";
 			productName = QCFossil;
-			productReference = 9C0C36CB1C1E6F7800CF48ED /* QC0906pwl.app */;
+			productReference = 9C0C36CB1C1E6F7800CF48ED /* QC200429P.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9C0C36DE1C1E6F7800CF48ED /* QCFossilTests */ = {
@@ -1281,7 +1281,6 @@
 				TargetAttributes = {
 					9C0C36CA1C1E6F7800CF48ED = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = Y26L3GTLDL;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1295,9 +1294,6 @@
 					9C0C36E91C1E6F7800CF48ED = {
 						CreatedOnToolsVersion = 7.1.1;
 						TestTargetID = 9C0C36CA1C1E6F7800CF48ED;
-					};
-					BDD1A2992123472B00AE391E = {
-						DevelopmentTeam = Y26L3GTLDL;
 					};
 				};
 			};
@@ -1893,7 +1889,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Hon Kit Tam (9FH5QH3L9P)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1903,9 +1899,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqcprd;
-				PRODUCT_NAME = QC0906pwl;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.prdapp;
+				PRODUCT_NAME = QC200429P;
+				PROVISIONING_PROFILE = "91417637-6f10-4a5b-adea-e6cc5ca95958";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1918,15 +1914,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Hon Kit Tam (9FH5QH3L9P)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEVELOPMENT=0";
 				INFOPLIST_FILE = QCFossil/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqcprd;
-				PRODUCT_NAME = QC0906pwl;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.prdapp;
+				PRODUCT_NAME = QC200429P;
+				PROVISIONING_PROFILE = "91417637-6f10-4a5b-adea-e6cc5ca95958";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 			};
@@ -1986,7 +1982,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Hon Kit Tam (9FH5QH3L9P)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1996,9 +1992,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.testapp;
 				PRODUCT_NAME = QCUAT;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b9a5d851-ae89-4deb-bc52-f29579701327";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2011,15 +2007,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Hon Kit Tam (9FH5QH3L9P)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEVELOPMENT=1";
 				INFOPLIST_FILE = "QCFossil-UAT-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pacmobile.fossilqc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.testapp;
 				PRODUCT_NAME = QCUAT;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "b9a5d851-ae89-4deb-bc52-f29579701327";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 			};
