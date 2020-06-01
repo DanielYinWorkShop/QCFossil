@@ -74,7 +74,7 @@ class DataSyncDataHelper:DataHelperMaster {
         return true
     }
     
-    func updateTableRecordsByScript(vc:DataSyncViewController, apiName:String, sqlScript:[String], handler:()-> Void) ->Bool {
+    func updateTableRecordsByScript(vc:DataSyncViewController, apiName:String, sqlScript:[String], handler:(Bool)-> Void) ->Bool {
         
         if db.open() {
             db.beginTransaction()
@@ -96,10 +96,10 @@ class DataSyncDataHelper:DataHelperMaster {
                     db.rollback()
                     db.close()
                         
-                    if apiName == "_DS_DL_TASK_STATUS" {
-                        handler()
-                    }
-                        
+//                    if apiName == "_DS_DL_TASK_STATUS" {
+                    handler(false)
+//                    }
+                    
                     return false
                 }
             }
@@ -108,7 +108,7 @@ class DataSyncDataHelper:DataHelperMaster {
             db.close()
         }
             
-        handler()
+        handler(true)
         return true
     }
     

@@ -435,7 +435,9 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         
                     }else if apiName == "_DS_DL_TASK_STATUS" {
                         
-                        dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
+                        if actionFields[data["tableName"]!]![idx] != "task_id" {
+                            dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
+                        }
                         
                     }else if apiName == "_DS_MSTRDATA" && actionFields[data["tableName"]!]![idx] == "vdr_sign_name" {
                         
@@ -557,8 +559,6 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             //sleep(1)
         }
         
-        var result = false
-        
         if apiName == "_DS_FGPODATA" {
             let totalReqCnt = Int("\(jsonData["total_req_cnt"]!)")
             let downloadReqCnt = Int("\(jsonData["download_req_cnt"]!)")
@@ -587,32 +587,29 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
         }
         
-        dataSyncDataHelper.updateTableRecordsByScript(self, apiName: apiName, sqlScript: _DS_RECORDS[apiName]!, handler: { () -> Void in
-            result = true
-
-            self.updateDLProcessLabel("Sending \(apiName) Acknowledgement...")
+        dataSyncDataHelper.updateTableRecordsByScript(self, apiName: apiName, sqlScript: _DS_RECORDS[apiName]!, handler: { result in
+            if result {
+                self.updateDLProcessLabel("Sending \(apiName) Acknowledgement...")
                 
-            recCountInTable["service_session"] = Int(_DS_SESSION)
-            self.updateProgressBar(0.8)
-            //sleep(1)
+                recCountInTable["service_session"] = Int(_DS_SESSION)
+                self.updateProgressBar(0.8)
+                //sleep(1)
             
-            if apiName == "_DS_FGPODATA" {
-                //sleep(1)
-                print("PO Download 0.8")
-            }else{
-                //sleep(1)
+                if apiName == "_DS_FGPODATA" {
+                    //sleep(1)
+                    print("PO Download 0.8")
+                }else{
+                    //sleep(1)
+                }
+            
+                self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
+            } else {
+                self.updateButtonStatus("Enable",btn: self.downloadBtn)
+                self.updateButtonStatus("Enable",btn: self.uploadBtn)
+                
+                self.updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Fail, DB Rollbacked"))
             }
-            
-            self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
         })
-        
-        if !result {
-            updateButtonStatus("Enable",btn: self.downloadBtn)
-            updateButtonStatus("Enable",btn: self.uploadBtn)
-            
-            self.downloadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Fail, DB Rollbacked")
-        }
-        
     }
     
     func createUploadData() ->String {
@@ -1498,10 +1495,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("FGPO Data Error: \(error)")
+                    updateDLProcessLabel("FGPO Data Error: \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("FGPO Data Error: \(error)")
+                    updateULProcessLabel("FGPO Data Error: \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
