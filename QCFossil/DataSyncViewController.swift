@@ -607,9 +607,29 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
                 self.updateButtonStatus("Enable",btn: self.uploadBtn)
                 
-                self.updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Fail, DB Rollbacked"))
+                
+                
+                self.updateDLProcessLabel("\(self.getCurrentPODataTitle(apiName)) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be imported due to Error Occurred"))")
             }
         })
+    }
+    
+    func getCurrentPODataTitle(apiName:String) ->String {
+        switch apiName {
+            case "_DS_MSTRDATA":
+                return MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")
+            case "_DS_INPTSETUP":
+                return MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")
+            case "_DS_FGPODATA":
+                return MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")
+            case "_DS_TASKDATA":
+                return MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")
+            case "_DS_DL_TASK_STATUS":
+                return MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")
+            case "_DS_DL_STYLE_PHOTO":
+                return MylocalizedString.sharedLocalizeManager.getLocalizedString("Style Photo")
+            default:return ""
+        }
     }
     
     func createUploadData() ->String {
@@ -1265,7 +1285,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         var errorDesc = "";
         switch(code) {
             case 3840:
-                errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("No Data Response.")
+                errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be downloaded due to Server Not Available.")
                 break
             default:
                 errorDesc = ""
@@ -1283,7 +1303,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             buffer.setData(NSMutableData())
             
             if error?.code == NSURLErrorTimedOut {
-                let errorMsg = "The network connection was lost."
+                let errorMsg = "\(self.dsDataObj!["NAME"]) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be downloaded due to Network Issue."))"
                 print("\(errorMsg)")
                 updateButtonStatus("Enable",btn: self.downloadBtn)
                 updateDLProcessLabel(errorMsg)
@@ -1291,7 +1311,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 updateULProcessLabel(errorMsg)
                 
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
-                let errorMsg = "The internet connection appears to be offline."
+                let errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
                 
                 print("\(errorMsg)")
                 updateButtonStatus("Enable",btn: self.downloadBtn)
@@ -1340,10 +1360,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Master Data Error with Code: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Master Data Error with Code: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1377,10 +1397,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Master Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Master Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1419,10 +1439,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Inspection Setup Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Inspection Setup Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1455,10 +1475,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Inspection Setup Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Inspection Setup Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1495,10 +1515,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("FGPO Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("FGPO Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1536,10 +1556,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("FGPO Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("FGPO Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1576,10 +1596,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Booking Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Booking Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1609,10 +1629,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Booking Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Booking Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1648,10 +1668,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Status Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Status Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1725,10 +1745,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download" {
@@ -1757,10 +1777,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Style Photo Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Style Photo")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Style Photo Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Style Photo")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
             
@@ -1836,10 +1856,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Status Data ACK Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
                 }
             }
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
@@ -1960,10 +1980,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Result Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Result Data")) \(errorMsgByCode((error as NSError).code))")
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Result Data Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Result Data")) \(errorMsgByCode((error as NSError).code))")
                 }
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Photo Data Upload" {
@@ -2055,11 +2075,11 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("Task Photo Upload Error: \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Photo Upload")) \(errorMsgByCode((error as NSError).code))")
                     
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("Task Photo Upload Error: \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Photo Upload")) \(errorMsgByCode((error as NSError).code))")
                     
                 }
             }

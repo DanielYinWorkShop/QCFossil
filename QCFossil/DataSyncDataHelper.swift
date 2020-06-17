@@ -80,7 +80,7 @@ class DataSyncDataHelper:DataHelperMaster {
             db.beginTransaction()
             
             if apiName == "_DS_FGPODATA" {
-                self.cleanDBTableByName("fgpo_line_item WHERE item_id NOT IN (SELECT fli.item_id FROM fgpo_line_item fli INNER JOIN inspect_task_item iti WHERE fli.item_id = iti.po_item_id)")
+                self.cleanDBTableByName("fgpo_line_item WHERE item_id NOT IN (SELECT po_item_id FROM inspect_task_item)")
                 vc.updateProgressBar(0.7)
             }
             

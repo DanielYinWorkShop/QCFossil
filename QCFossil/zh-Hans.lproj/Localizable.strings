@@ -452,17 +452,33 @@
 
 "-Master Data" = "-主要数据";
 
+"Master Data" = "主要数据";
+
 "-Inspection Setup Data" = "-检查设置数据";
+
+"Inspection Setup Data" = "检查设置数据";
 
 "-FGPO Data" = "-订单数据";
 
+"FGPO Data" = "订单数据";
+
 "-Task Booking Data" = "-任务预定数据";
+
+"Task Booking Data" = "任务预定数据";
 
 "-Task Status Data" = "-任务状态数据";
 
+"Task Status Data" = "任务状态数据";
+
 "-Task Result Data" = "-任务结果数据";
 
+"Task Result Data" = "任务结果数据";
+
 "-Task Result Photo" = "-任务结果照片";
+
+"Task Result Photo" = "任务结果照片";
+
+"Task Photo Upload" = "任务照片上传";
 
 "Data Download" = "数据下载";
 
@@ -774,6 +790,14 @@
 
 "No Data Response." = "沒有回传数据。";
 
+"cannot be downloaded due to Server Not Available." = "下载失败，因为服务器不可用。";
+
+"cannot be downloaded due to Network Issue." = "下载失败，因为网络异常。";
+
+"App is in Offline Mode and unable to proceed Data Download." = "应用程式处于离线状态，不能进行数据下载。";
+
+"cannot be imported due to Error Occurred" = "导入失败。";
+
 "OPD/RSD From" = "OPD/RSD由";
 
 "Inspection Type or Product Type or Template can't be null!" = "检查设置数据, 产品类型或者模版不能为空";
@@ -907,6 +931,8 @@
 "Barcode" = "UPC挂牌编号";
 
 "-Style Photo" = "-产品图片";
+
+"Style Photo" = "产品图片";
 
 "-Clean Style Photo" = "-清理产品图片";
 
