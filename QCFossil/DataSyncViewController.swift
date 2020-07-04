@@ -414,6 +414,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var poItemId = ""
             var refTaskIdInTaskStatus = ""
             var dbActionForTaskStatus = ""
+            var taskStatusFromServer = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
                 
@@ -437,6 +438,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                         
                         if actionFields[data["tableName"]!]![idx] != "task_id" {
                             dbActionForTaskStatus += "\(actionFields[data["tableName"]!]![idx])=\"\(value)\","
+                        }
+                        
+                        if actionFields[data["tableName"]!]![idx] == "task_status" {
+                            taskStatusFromServer = value
                         }
                         
                     }else if apiName == "_DS_MSTRDATA" && actionFields[data["tableName"]!]![idx] == "vdr_sign_name" {
@@ -519,7 +524,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus)"
+                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND task_status = \(taskStatusFromServer)"
                 
             }else if apiName == "_DS_FGPODATA" {
                 
