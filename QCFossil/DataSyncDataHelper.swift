@@ -453,13 +453,13 @@ class DataSyncDataHelper:DataHelperMaster {
     
     func updateTaskStatus(taskId:Int, status:Int, refuseDesc:String, ref_task_id:Int) ->Bool {
         
-        let sql = "UPDATE inspect_task SET task_status = ?, data_refuse_desc = ? WHERE task_id = ?"
+        let sql = "UPDATE inspect_task SET task_status = ?, data_refuse_desc = ? WHERE task_id = ? AND task_status <> ?"
         let sqlUpdateRefTaskId = "UPDATE inspect_task SET ref_task_id = ? WHERE task_id = ? AND (ref_task_id is NULL OR ref_task_id < 1)"
         var result = false
         
         if db.open() {
             
-            if db.executeUpdate(sql, withArgumentsInArray: [status, refuseDesc, taskId]) {
+            if db.executeUpdate(sql, withArgumentsInArray: [status, refuseDesc, taskId, status]) {
                 if db.executeUpdate(sqlUpdateRefTaskId, withArgumentsInArray: [ref_task_id, taskId]) {
                     result = true
                 }
