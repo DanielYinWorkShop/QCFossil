@@ -2803,13 +2803,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "QCFossil/ViewController.swift"
-            timestampString = "601310230.90536"
+            filePath = "QCFossil/DataSyncViewController.swift"
+            timestampString = "612632651.397595"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "411"
-            endingLineNumber = "411"
-            landmarkName = "userLogin(_:)"
+            startingLineNumber = "2080"
+            endingLineNumber = "2080"
+            landmarkName = "getRefusedTaskIdAndUpdateConfirmUploadDate()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QCFossil/DataSyncViewController.swift"
+            timestampString = "612722970.299386"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1266"
+            endingLineNumber = "1266"
+            landmarkName = "errorMsgByCode(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
