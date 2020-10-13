@@ -11,7 +11,7 @@ import UIKit
 
 class AppUpgradeDataHelper:DataHelperMaster {
 
-    func appUpgradeCode(parentView:UIView, completion:(result: Bool) -> ()) {
+    func appUpgradeCode(appVersionCode:String? = nil, parentView:UIView, completion:(result: Bool) -> ()) {
         
         dispatch_async(dispatch_get_main_queue(), {
             parentView.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("DB Updating"))
@@ -730,7 +730,45 @@ class AppUpgradeDataHelper:DataHelperMaster {
                             result = false
                         }
                     }
-
+                    
+                    // Update task_inspect_photo_file to add AUTOINCREMENT, UNIQUE to Primary Key to photo id
+                    if Float(appVersionCode ?? "0") ?? 0 <= 1.16 {
+                        sql = "CREATE TABLE `task_inspect_photo_file_temp` (`photo_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `task_id` numeric(10,0) NOT NULL, `ref_photo_id` numeric(10,0), `org_filename` nvarchar(1000) NOT NULL, `photo_file` nvarchar(1000) NOT NULL, `thumb_file` nvarchar(1000), `photo_desc` nvarchar(1000), `data_record_id` numeric(10,0) DEFAULT (null), `create_user` varchar(30) NOT NULL, `create_date` datetime NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` datetime NOT NULL,`data_type` NUMERIC(2,0) DEFAULT (0),`upload_date` DATETIME DEFAULT (null)); INSERT INTO task_inspect_photo_file_temp(photo_id, task_id, ref_photo_id, org_filename, photo_file, thumb_file, photo_desc, data_record_id, create_user, create_date, modify_user, modify_date, data_type, upload_date) SELECT photo_id, task_id, ref_photo_id, org_filename, photo_file, thumb_file, photo_desc, data_record_id, create_user, create_date, modify_user, modify_date, data_type, upload_date FROM task_inspect_photo_file; DROP TABLE task_inspect_photo_file;ALTER  TABLE task_inspect_photo_file_temp RENAME TO task_inspect_photo_file;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+            
+                        // Update task_inspect_field_value to add AUTOINCREMENT, UNIQUE to Primary Key to value id
+                        sql = "CREATE TABLE `task_inspect_field_value_temp` (`value_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `task_id` numeric(10,0) NOT NULL, `ref_value_id` numeric(10,0), `inspect_field_id` numeric(10,0) NOT NULL, `field_value` nvarchar(1000), `create_user` varchar(30) NOT NULL, `create_date` datetime NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` datetime NOT NULL); INSERT INTO task_inspect_field_value_temp(value_id, task_id, ref_value_id, inspect_field_id, field_value, create_user, create_date, modify_user, modify_date) SELECT value_id, task_id, ref_value_id, inspect_field_id, field_value, create_user, create_date, modify_user, modify_date FROM task_inspect_field_value; DROP TABLE task_inspect_field_value;ALTER TABLE task_inspect_field_value_temp RENAME TO task_inspect_field_value;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                    
+                        // Update inspect_task_tmpl_position to add AUTOINCREMENT, UNIQUE to Primary Key to tmpl_id inspect_posotion_id
+                        sql = "CREATE TABLE `inspect_task_tmpl_position_temp` (`tmpl_id` INTEGER NOT NULL, `inspect_position_id` INTEGER NOT NULL, `create_user` VARCHAR(30), `create_date` DATETIME, `modify_user` VARCHAR(30), `modify_date` DATETIME, PRIMARY KEY(`tmpl_id`,`inspect_position_id`)); INSERT INTO inspect_task_tmpl_position_temp(tmpl_id, inspect_position_id, create_user, create_date, modify_user, modify_date) SELECT tmpl_id, inspect_position_id, create_user, create_date, modify_user, modify_date FROM inspect_task_tmpl_position; DROP TABLE inspect_task_tmpl_position;ALTER TABLE inspect_task_tmpl_position_temp RENAME TO inspect_task_tmpl_position;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                    
+                        // Update inspect_position_element to add AUTOINCREMENT, UNIQUE to Primary Key to inspect_position_id inspect_element_id
+                        sql = "CREATE TABLE `inspect_position_element_temp` (`inspect_position_id` INTEGER NOT NULL, `inspect_element_id` INTEGER NOT NULL, `create_user` VARCHAR(30), `create_date` DATETIME, `modify_user` VARCHAR(30), `modify_date` DATETIME, PRIMARY KEY(`inspect_position_id`,`inspect_element_id`)); INSERT INTO inspect_position_element_temp(inspect_position_id, inspect_element_id, create_user, create_date, modify_user, modify_date) SELECT inspect_position_id, inspect_element_id, create_user, create_date, modify_user, modify_date FROM inspect_position_element; DROP TABLE inspect_position_element;ALTER TABLE inspect_position_element_temp RENAME TO inspect_position_element;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                    
+                        // Update inspect_task_tmpl_field to add AUTOINCREMENT, UNIQUE to Primary Key to tmpl_id inspect_field_id
+                        sql = "CREATE TABLE `inspect_task_tmpl_field_temp` (`inspect_field_id` INTEGER, `create_user` VARCHAR(30) NOT NULL DEFAULT (null), `create_date` DATETIME, `modify_user` VARCHAR(30) DEFAULT (null), `modify_date` DATETIME, `tmpl_id` INTEGER, PRIMARY KEY(`inspect_field_id`,`tmpl_id`)); INSERT INTO inspect_task_tmpl_field_temp(inspect_field_id, create_user, create_date, modify_user, modify_date, tmpl_id) SELECT inspect_field_id, create_user, create_date, modify_user, modify_date, tmpl_id FROM inspect_task_tmpl_field; DROP TABLE inspect_task_tmpl_field;ALTER TABLE inspect_task_tmpl_field_temp RENAME TO inspect_task_tmpl_field;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                    
+                        // Update case_set_value to add AUTOINCREMENT, UNIQUE to Primary Key to set_id value_id
+                        sql = "CREATE TABLE `case_set_value_temp` (`set_id` VARCHAR(10), `value_id` VARCHAR(10), `create_date` DATETIME NOT NULL, `create_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL, PRIMARY KEY(`set_id`,`value_id`)); INSERT INTO case_set_value_temp(set_id, value_id, create_user, create_date, modify_user, modify_date) SELECT set_id, value_id, create_user, create_date, modify_user, modify_date FROM case_set_value; DROP TABLE case_set_value;ALTER TABLE case_set_value_temp RENAME TO case_set_value;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                    }
+                    
                     //----------------------------------------------------------------------------------
                     
                     if result {

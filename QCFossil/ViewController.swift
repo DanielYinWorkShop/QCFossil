@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "20200601"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "20201013"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
@@ -350,7 +350,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                             }else if _VERSION != currDBVersion {
                             
                                 let appUpgradeDataHelper = AppUpgradeDataHelper()
-                                appUpgradeDataHelper.appUpgradeCode(self.view, completion: { (result) in
+                                appUpgradeDataHelper.appUpgradeCode(_VERSION, parentView: self.view, completion: { (result) in
                                     
                                     if result {
                                         keyValueDataHelper.updateDBVersionNum(_VERSION)
@@ -433,7 +433,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                                 }else if _VERSION != currDBVersion {
                                     
                                     let appUpgradeDataHelper = AppUpgradeDataHelper()
-                                    appUpgradeDataHelper.appUpgradeCode(self.view, completion: { (result) in
+                                    appUpgradeDataHelper.appUpgradeCode(_VERSION, parentView: self.view, completion: { (result) in
                                         
                                         let keyValueDataHelper = KeyValueDataHelper()
                                         if result {
