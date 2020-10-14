@@ -737,6 +737,12 @@ class AppUpgradeDataHelper:DataHelperMaster {
                         if !self.db.executeStatements(sql) {
                             result = false
                         }
+                    
+                        sql = "CREATE TRIGGER t_task_inspect_photo_file_after_update AFTER UPDATE ON task_inspect_photo_file FOR EACH ROW BEGIN UPDATE inspect_task SET task_status = 5 WHERE task_status = 4 AND (confirm_upload_date IS NOT NULL OR confirm_upload_date <> '') AND task_id IN ( SELECT DISTINCT it.task_id FROM inspect_task it WHERE it.task_id = NEW.task_id AND NOT EXISTS ( SELECT 1 FROM task_inspect_photo_file tipf WHERE tipf.task_id = it.task_id AND (tipf.upload_date IS NULL OR tipf.upload_date = '')));END"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                    
             
                         // Update task_inspect_field_value to add AUTOINCREMENT, UNIQUE to Primary Key to value id
                         sql = "CREATE TABLE `task_inspect_field_value_temp` (`value_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `task_id` numeric(10,0) NOT NULL, `ref_value_id` numeric(10,0), `inspect_field_id` numeric(10,0) NOT NULL, `field_value` nvarchar(1000), `create_user` varchar(30) NOT NULL, `create_date` datetime NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` datetime NOT NULL); INSERT INTO task_inspect_field_value_temp(value_id, task_id, ref_value_id, inspect_field_id, field_value, create_user, create_date, modify_user, modify_date) SELECT value_id, task_id, ref_value_id, inspect_field_id, field_value, create_user, create_date, modify_user, modify_date FROM task_inspect_field_value; DROP TABLE task_inspect_field_value;ALTER TABLE task_inspect_field_value_temp RENAME TO task_inspect_field_value;"
@@ -768,7 +774,14 @@ class AppUpgradeDataHelper:DataHelperMaster {
                             result = false
                         }
                         
+                        // Update inspect_task to add AUTOINCREMENT, UNIQUE to Primary Key to task_id
                         sql = "CREATE TABLE `inspect_task_temp` (`task_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `prod_type_id` numeric(10,0) NOT NULL, `inspect_type_id` numeric(10,0) NOT NULL, `booking_no` varchar(30), `booking_date` datetime, `vdr_location_id` numeric(10,0) NOT NULL, `report_inspector_id` numeric(10,0), `report_prefix` varchar(5), `report_running_no` numeric(10,0), `inspection_no` varchar(30), `inspection_date` datetime, `task_remarks` ntext, `vdr_notes` ntext, `inspect_result_value_id` numeric(10,0), `inspector_sign_image_file` text, `vdr_sign_name` varchar(60), `vdr_sign_image_file` text, `task_status` numeric(2,0) NOT NULL, `upload_inspector_id` numeric(10,0), `upload_device_id` varchar(100), `ref_task_id` numeric(10,0), `rec_status` numeric(2,0) NOT NULL, `create_user` varchar(30) NOT NULL, `create_date` datetime NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` datetime NOT NULL, `deleted_flag` numeric(1,0) NOT NULL, `delete_user` varchar(30), `delete_date` datetime, `inspect_setup_id` NUMERIC(10,0) NOT NULL DEFAULT (null), `vdr_sign_date` datetime DEFAULT (null), `tmpl_id` INTEGER, `data_refuse_desc` VARCHAR(1000), `app_ready_purge_date` DATETIME, `review_remarks` ntext DEFAULT null, `review_user` VARCHAR(30) DEFAULT null, `review_date` DATETIME DEFAULT null, `cancel_date` DATETIME DEFAULT null, `confirm_upload_date` DATETIME DEFAULT null, `qc_remarks_option_list` TEXT, `additional_admin_item_option_list` TEXT); INSERT INTO inspect_task_temp(task_id, prod_type_id, inspect_type_id, booking_no, booking_date, vdr_location_id, report_inspector_id, report_prefix, report_running_no, inspection_no, inspection_date, task_remarks, vdr_notes, inspect_result_value_id, inspector_sign_image_file, vdr_sign_name, vdr_sign_image_file, task_status, upload_inspector_id, upload_device_id, ref_task_id, rec_status, create_user, create_date, modify_user, modify_date, deleted_flag, delete_user, delete_date, inspect_setup_id, vdr_sign_date, tmpl_id, data_refuse_desc, app_ready_purge_date, review_remarks, review_user, review_date, cancel_date, confirm_upload_date, qc_remarks_option_list, additional_admin_item_option_list) SELECT task_id, prod_type_id, inspect_type_id, booking_no, booking_date, vdr_location_id, report_inspector_id, report_prefix, report_running_no, inspection_no, inspection_date, task_remarks, vdr_notes, inspect_result_value_id, inspector_sign_image_file, vdr_sign_name, vdr_sign_image_file, task_status, upload_inspector_id, upload_device_id, ref_task_id, rec_status, create_user, create_date, modify_user, modify_date, deleted_flag, delete_user, delete_date, inspect_setup_id, vdr_sign_date, tmpl_id, data_refuse_desc, app_ready_purge_date, review_remarks, review_user, review_date, cancel_date, confirm_upload_date, qc_remarks_option_list, additional_admin_item_option_list FROM inspect_task; DROP TABLE inspect_task;ALTER TABLE inspect_task_temp RENAME TO inspect_task;"
+                        if !self.db.executeStatements(sql) {
+                            result = false
+                        }
+                        
+                        // add unique index
+                        sql = "CREATE UNIQUE INDEX `inspect_task_index` ON `inspect_task` (`task_id`,`report_inspector_id`,`ref_task_id`);"
                         if !self.db.executeStatements(sql) {
                             result = false
                         }
