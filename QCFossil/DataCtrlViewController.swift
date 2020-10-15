@@ -50,6 +50,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     let typeBackup = "B"
     let typeRestore = "R"
     var typeNow = ""
+    let keyValueDataHelper = KeyValueDataHelper()
     
     struct BackupFile {
         var appRealse:String
@@ -184,7 +185,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.lastLoginDateInput.text = Cache_Inspector?.lastLoginDate
         self.removeBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete Login User Data"), forState: UIControlState.Normal)
         
-        let keyValueDataHelper = KeyValueDataHelper()
+//        let keyValueDataHelper = KeyValueDataHelper()
         self.lastUpdateInput.text = keyValueDataHelper.getLastBackupDatetimeByUserId(String(Cache_Inspector?.inspectorId))
         self.lastDownloadInput.text = keyValueDataHelper.getLastRestoreDatetimeByUserId(String(Cache_Inspector?.inspectorId))
         self.loginUserInput.text = Cache_Inspector?.appUserName!
@@ -239,8 +240,8 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 //if lroundf(100*percentageUploaded) == 100 {
                     self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Restore Complete")
                     
-                    let keyValueDataHelper = KeyValueDataHelper()
-                    keyValueDataHelper.updateLastRestoreDatetime(String(Cache_Inspector?.inspectorId), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
+//                    let keyValueDataHelper = KeyValueDataHelper()
+                    self.keyValueDataHelper.updateLastRestoreDatetime(String(Cache_Inspector?.inspectorId), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
                     
                     
                     self.lastDownloadInput.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
@@ -629,20 +630,30 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         
         //begin restore
         do {
-            try SSZipArchive.unzipFileAtPath(location.path!, toDestination: self.filePath, overwrite: true, password: "", delegate: self)
-            
-            //Remove Zip File Here
-            self.removeLocalBackupZipFile()
-            
+            if try SSZipArchive.unzipFileAtPath(location.path!, toDestination: self.filePath, overwrite: true, password: "", delegate: self) {
+                // Check DB version if low, then upgrade
+                let backupFile = self.selectedBackupFile
+                if backupFile.appVersion < _VERSION {
+                    let appUpgradeDataHelper = AppUpgradeDataHelper()
+                    appUpgradeDataHelper.appUpgradeCode(_VERSION, parentView: self.view, completion: { (result) in
+                        if result {
+                            self.keyValueDataHelper.updateDBVersionNum(_VERSION)
+                        }
+                    })
+                }
+                
+                //Remove Zip File Here
+                self.removeLocalBackupZipFile()
+            }
           
         } catch {
             
             do{
                 try SSZipArchive.unzipFileAtPath(self.zipPath5, toDestination: self.filePath, overwrite: true, password: "", delegate: self)
-                    
+                
                 //Remove Zip File Here
                 self.removeLocalBackupZipFile()
-                    
+                
             }catch{
                 print(error)
                 dispatch_async(dispatch_get_main_queue(), {
@@ -887,6 +898,12 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Backup First"))
             return
         }
+        
+        if self.selectedBackupFile.appVersion > _VERSION {
+            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Current app version not support this DB version!"))
+            return
+        }
+
         
         self.view.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Restore Data")+"?",parentVC:self, handlerFun: { (action:UIAlertAction!) in
             

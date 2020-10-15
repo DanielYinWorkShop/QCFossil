@@ -951,3 +951,5 @@
 "Pick Photos" = "选择图片";
 
 "Loading..." = "加载中...";
+
+"Current app version not support this DB version!" = "当前App版本不支持此DB版本！";
