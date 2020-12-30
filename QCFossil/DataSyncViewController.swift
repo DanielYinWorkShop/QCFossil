@@ -415,6 +415,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var refTaskIdInTaskStatus = ""
             var dbActionForTaskStatus = ""
             var taskStatusFromServer = ""
+            var refTaskIdInTaskBookingData = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
                 
@@ -423,6 +424,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     
                     if apiName == "_DS_TASKDATA" && actionFields[data["tableName"]!]![idx] == "ref_task_id" && data["tableName"] != "inspect_task_qc_info_list" {
                         
+                        refTaskIdInTaskBookingData = value
                         dbFields += "task_id"
                         dbValues += "(SELECT task_id FROM inspect_task WHERE ref_task_id = \(value))"
                         
@@ -524,7 +526,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
                 
-                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND task_status = \(taskStatusFromServer)"
+                dbAction = "UPDATE \(actionTables[data["tableName"]!]!) SET \(dbActionForTaskStatus) WHERE ref_task_id = \(refTaskIdInTaskStatus) AND task_status <> \(taskStatusFromServer)"
                 
             }else if apiName == "_DS_FGPODATA" {
                 
@@ -537,7 +539,18 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     
                 }
                 
-            }else{
+            }
+            else if apiName == "_DS_TASKDATA" {
+                
+                dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!) (\(dbFields))"
+                
+                if let tableName = actionTables[data["tableName"]!] where tableName == "inspect_task" {
+                    dbAction += " SELECT \(dbValues) WHERE EXISTS (SELECT * FROM inspect_task WHERE ref_task_id = \(refTaskIdInTaskBookingData) AND task_status = \(GetTaskStatusId(caseId: "Pending").rawValue))"
+                } else {
+                    dbAction += " VALUES (\(dbValues))"
+                }
+            
+            } else{
                 dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!)"
                 dbAction += "(\(dbFields)) VALUES (\(dbValues))"
                 
@@ -546,7 +559,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
             
-             if apiName == "_DS_DL_STYLE_PHOTO" {
+             if apiName == "_DS_TASKDATA" {
                 print("action: \(dbAction)")
              }
             
@@ -1578,8 +1591,14 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                  })*/
                 
                 updateDLProcessLabel("Preparing Task Booking Data...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                
+                let jsonString = "{\"service_session\":\"42530\",\"inspect_task_list\":[{\"ref_task_id\":\"14285\",\"prod_type_id\":\"1\",\"inspect_type_id\":\"1\",\"booking_no\":\"RPT-0000014285\",\"booking_date\":\"10/30/2020 12:00:00 AM\",\"vdr_location_id\":\"42\",\"report_inspector_id\":\"\",\"report_prefix\":\"\",\"report_running_no\":\"\",\"inspection_no\":\"\",\"inspection_date\":\"\",\"inspect_setup_id\":\"1\",\"tmpl_id\":\"2\",\"task_remarks\":\"\",\"vdr_notes\":\"\",\"inspect_result_value_id\":\"\",\"inspector_sign_image_file\":\"\",\"vdr_sign_name\":\"\",\"vdr_sign_image_file\":\"\",\"task_status\":\"2\",\"rec_status\":\"0\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_inspector_list\":[{\"ref_task_id\":\"14285\",\"inspector_id\":\"121\",\"inspect_enable_flag\":\"1\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:26 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_item_list\":[{\"ref_task_id\":\"14285\",\"po_item_id\":\"89247\",\"ref_qc_plan_line_id\":\"\",\"target_inspect_qty\":\"250\",\"avail_inspect_qty\":\"\",\"sampling_qty\":\"\",\"inspect_enable_flag\":\"1\",\"item_barcode\":\"\",\"retail_price\":\"\",\"currency\":\"\",\"style_size\":\"ES4255\",\"substr_style_size\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_qc_info_list\":[]}"
+                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
+                
+//                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
+                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson!, options: .AllowFragments) as! NSDictionary
+                
+                
                 //buffer.setData(NSMutableData())
                 
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
@@ -1650,8 +1669,11 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                  })*/
                 
                 updateDLProcessLabel("Preparing Task Status Data...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                
+                let jsonString = "{\"service_session\":\"42257\",\"inspect_task_list\":[{\"task_id\":\"\",\"inspection_no\":\"\",\"inspection_date\":null,\"app_ready_purge_date\":\"\",\"ref_task_id\":\"14285\",\"inspect_result_value_id\":\"\",\"task_status\":\"0\",\"review_remarks\":\"\",\"review_user\":\"\",\"review_date\":\"\",\"rec_status\":\"0\",\"modify_date\":\"10/29/2020 4:54:04 PM\",\"modify_user\":\"admin1\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\"}]}"
+                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
+//                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
+                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson!, options: .AllowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String

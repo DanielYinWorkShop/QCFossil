@@ -100,7 +100,9 @@ class TaskDataHelper:DataHelperMaster{
                         
                         let dateFormatter:NSDateFormatter = NSDateFormatter()
                         dateFormatter.dateFormat = _DATEFORMATTER
-                        bookingDate = dateFormatter.stringFromDate(dateFormatter.dateFromString(bookingDate)!)
+                        if let stringDate = dateFormatter.dateFromString(bookingDate) {
+                            bookingDate = dateFormatter.stringFromDate(stringDate)
+                        }
                     }
                 }
                 
@@ -113,7 +115,10 @@ class TaskDataHelper:DataHelperMaster{
                         
                         let dateFormatter:NSDateFormatter = NSDateFormatter()
                         dateFormatter.dateFormat = _DATEFORMATTER
-                        inspectionDate = dateFormatter.stringFromDate(dateFormatter.dateFromString(inspectionDate)!)
+                        
+                        if let stringDate = dateFormatter.dateFromString(inspectionDate) {
+                            inspectionDate = dateFormatter.stringFromDate(stringDate)
+                        }
                     }
                 }
                 
