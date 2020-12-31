@@ -1901,7 +1901,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.prdapp;
 				PRODUCT_NAME = QC201015P;
-				PROVISIONING_PROFILE = "efe8afdb-ef53-4e6e-b47c-74491f9ea7e8";
+				PROVISIONING_PROFILE = "8cf02fd2-8d3f-4c4e-aaba-57ff21d83905";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1922,7 +1922,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.prdapp;
 				PRODUCT_NAME = QC201015P;
-				PROVISIONING_PROFILE = "efe8afdb-ef53-4e6e-b47c-74491f9ea7e8";
+				PROVISIONING_PROFILE = "8cf02fd2-8d3f-4c4e-aaba-57ff21d83905";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 			};
@@ -1994,7 +1994,7 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.testapp;
 				PRODUCT_NAME = QC201015U;
-				PROVISIONING_PROFILE = "e90f5280-1628-4813-8aff-86f2d76bf325";
+				PROVISIONING_PROFILE = "bf9fcc7c-2b37-42d3-92ba-c8ec9f34ac41";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2015,7 +2015,7 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwbase.fossilqc.testapp;
 				PRODUCT_NAME = QC201015U;
-				PROVISIONING_PROFILE = "e90f5280-1628-4813-8aff-86f2d76bf325";
+				PROVISIONING_PROFILE = "bf9fcc7c-2b37-42d3-92ba-c8ec9f34ac41";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 			};
