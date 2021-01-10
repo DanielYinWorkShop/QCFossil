@@ -396,7 +396,6 @@ class DataSyncDataHelper:DataHelperMaster {
     
     func getAllPhotos(includeTaskIds:String, excludeTaskIds:String) ->[Photo]? {
         //Task Status is 2, mean Confirmed Task
-        //let sql = "SELECT * FROM inspect_task it INNER JOIN task_inspect_photo_file tipf ON it.task_id = tipf.task_id WHERE it.report_inspector_id = ? AND it.task_id NOT IN \(excludeTaskIds) AND it.task_id IN \(includeTaskIds) AND (tipf.upload_date = '' OR tipf.upload_date IS NULL) ORDER BY it.confirm_upload_date ASC, tipf.photo_id ASC"
         let sql = "SELECT * FROM inspect_task it INNER JOIN task_inspect_photo_file tipf ON it.task_id = tipf.task_id WHERE it.report_inspector_id = ? AND it.task_id NOT IN \(excludeTaskIds) AND it.task_id IN \(includeTaskIds) AND (tipf.upload_date = '' OR tipf.upload_date IS NULL) ORDER BY it.vdr_sign_date ASC, tipf.create_date ASC"
         var photos = [Photo]()
         

@@ -544,8 +544,10 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
                 dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!) (\(dbFields))"
                 
-                if actionTables[data["tableName"]!] == "inspect_task" {
-                    dbAction += " SELECT \(dbValues) WHERE EXISTS (SELECT * FROM inspect_task WHERE ref_task_id = \(refTaskIdInTaskBookingData) AND task_status = \(GetTaskStatusId(caseId: "Pending").rawValue))"
+                // Skip to update inspect_task, inspect_task_inspector and inspect_task_item if task status is not pending anymore
+                if actionTables[data["tableName"]!] == "inspect_task" || actionTables[data["tableName"]!] == "inspect_task_inspector" || actionTables[data["tableName"]!] == "inspect_task_item" {
+                    dbAction += " SELECT \(dbValues) WHERE (NOT EXISTS (SELECT * FROM inspect_task WHERE ref_task_id = \(refTaskIdInTaskBookingData)) OR EXISTS (SELECT * FROM inspect_task WHERE ref_task_id = \(refTaskIdInTaskBookingData) AND task_status = \(GetTaskStatusId(caseId: "Pending").rawValue)))"
+                
                 } else {
                     dbAction += " VALUES (\(dbValues))"
                 }
@@ -559,7 +561,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             recCountInTable[actionTables[data["tableName"]!]!+"_count"] = currCount
             currCount += 1
             
-             if apiName == "_DS_TASKDATA" {
+             if apiName == "_DS_DL_TASK_STATUS" {
                 print("action: \(dbAction)")
              }
             
@@ -2121,15 +2123,12 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         var taskRefused = [Int]()
         
         for taskStatus in taskStatusList {
-            
             if taskStatus["task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
-                
-                if Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Refused").rawValue {
+                if Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Refused").rawValue || Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Confirmed").rawValue {
                     taskRefused.append(Int(taskStatus["task_id"]!)!)
-                }else{
+                } else if Int(taskStatus["task_status"]!)! == GetTaskStatusId(caseId: "Uploaded").rawValue {
                     //Set value to confirm_upload_date for confirmed task (not cancelled)
                     dataSyncDataHelper.updateInspectTaskConfirmUploadDate(Int(taskStatus["task_id"]!)!)
-                    
                 }
             }
         }
