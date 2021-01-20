@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate {
+class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate {
     
     @IBOutlet weak var loginUserLabel: UILabel!
     @IBOutlet weak var lastLoginDateLabel: UILabel!
@@ -59,7 +59,8 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     @IBOutlet weak var stylePhotoCleanLabel: UILabel!
     @IBOutlet weak var stylePhotoCleanProcessBar: UIProgressView!
     @IBOutlet weak var stylePhotoCleanStatus: UILabel!
-    
+    @IBOutlet weak var downloadTaskStatusDetailButton: UIButton!
+    @IBOutlet weak var uploadTaskStatusDetailButton: UIButton!
     
     var subCounter = 1
     var totalDLRecords:Int = 4
@@ -1323,7 +1324,7 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             buffer.setData(NSMutableData())
             
             if error?.code == NSURLErrorTimedOut {
-                let errorMsg = "\(self.dsDataObj!["NAME"]) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be downloaded due to Network Issue."))"
+                let errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("\(self.dsDataObj?["NAME"] ?? "")")) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be downloaded due to Network Issue."))"
                 print("\(errorMsg)")
                 updateButtonStatus("Enable",btn: self.downloadBtn)
                 updateDLProcessLabel(errorMsg)
@@ -2323,4 +2324,43 @@ class DataSyncViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         }
     }
     
+    @IBAction func downloadTaskStatusDetailBtnDidPress(sender: UIButton) {
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
+        
+        popoverContent.dataType = _DOWNLOADTASKSTATUSDESC
+        popoverContent.selectedValue = downloadProcessLabel.text ?? ""
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover?.delegate = sender.parentVC as? PopoverMaster
+        popover?.sourceView = sender
+        popover?.sourceRect = CGRectMake(0,0,sender.frame.size.width,sender.frame.size.height)
+        
+        sender.parentVC?.presentViewController(nav, animated: true, completion: nil)
+    }
+    
+    @IBAction func uploadTaskStatusDetailBtnDidPress(sender: UIButton) {
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
+        
+        popoverContent.dataType = _DOWNLOADTASKSTATUSDESC
+        popoverContent.selectedValue = uploadProcessLabel.text ?? ""
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover?.delegate = sender.parentVC as? PopoverMaster
+        popover?.sourceView = sender
+        popover?.sourceRect = CGRectMake(0,0,sender.frame.size.width,sender.frame.size.height)
+        
+        sender.parentVC?.presentViewController(nav, animated: true, completion: nil)
+    }
 }

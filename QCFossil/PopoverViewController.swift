@@ -199,7 +199,19 @@ class PopoverViewController: UIViewController {
             self.view.addSubview(descView)
             
             return
-        }else{
+        } else if dataType == _DOWNLOADTASKSTATUSDESC {
+            if let nav = self.parentViewController as? UINavigationController {
+                nav.setNavigationBarHidden(true, animated: false)
+            }
+            
+            let descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 640, height: 320))
+            descView.text = selectedValue
+            descView.userInteractionEnabled = false
+            descView.font = UIFont.systemFontOfSize(18.0)
+            
+            self.view.addSubview(descView)
+        
+        } else{
             inputview = PopoverViewsInput.loadFromNibNamed("PopoverViews")!
             inputview.initData(sourceType)
             inputview.typeSelection.frame = CGRectMake(0, _NAVIBARHEIGHT, _POPOVERVIEWSIZE_S.width, _POPOVERVIEWSIZE_S.height)

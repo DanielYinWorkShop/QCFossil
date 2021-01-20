@@ -953,3 +953,33 @@
 "Loading..." = "加载中...";
 
 "Current app version not support this DB version!" = "当前App版本不支持此DB版本！";
+
+"Master Data Download" = "主要数据下载";
+
+"Master Data Download Acknowledgement" = "主要数据下载反馈";
+
+"Inspection Setup Data Download" = "检查设置数据下载";
+
+"Inspection Setup Data Download Acknowledgement" = "检查设置数据下载反馈";
+
+"FGPO Data Download" = "订单数据下载";
+
+"FGPO Data Download Acknowledgement" = "订单数据下载反馈";
+
+"Task Booking Data Download" = "任务预定数据下载";
+
+"Task Booking Data Download Acknowledgement" = "任务预定数据下载反馈";
+
+"Task Status Data Download" = "任务状态数据下载";
+
+"Task Status Data Download Acknowledgement" = "任务状态数据下载反馈";
+
+"Style Photo Download" = "产品图片下载";
+
+"Style Photo Download Acknowledgement" = "产品图片下载反馈";
+
+"App Database Backup Upload" = "应用程式数据库备份上传";
+
+"Task Result Data Upload" = "任务结果数据上传";
+
+"Task Photo Data Upload" = "任务照片上传";
