@@ -419,11 +419,12 @@ class DataSyncDataHelper:DataHelperMaster {
                     let modifyUser = rs.stringForColumn("modify_user")
                     let modifyDate = rs.stringForColumn("modify_date")
                     let dataType = Int(rs.intForColumn("data_type"))
+                    let refTaskId = Int(rs.intForColumn("ref_task_id"))
                     
                     //Task Data
                     let taskBookingNo = rs.stringForColumn("booking_no") != "" ? rs.stringForColumn("booking_no") : rs.stringForColumn("inspection_no")
                     
-                    let photo = Photo(photo: nil, photoFilename: photoFile, taskId: taskId, photoFile: photoFile)
+                    let photo = Photo(photo: nil, photoFilename: photoFile, taskId: taskId, photoFile: photoFile, refTaskId: refTaskId)
                     
                     photo?.photoId = photoId
                     photo?.refPhotoId = refPhotoId

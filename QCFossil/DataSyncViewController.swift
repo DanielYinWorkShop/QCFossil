@@ -942,7 +942,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             "photo_filename" : "\(photo.photoFilename)",
             "photo_file" : "\(photoFile)",
             "thumb_filename" : "\(photo.thumbFile!)",
-            "thumb_file" : "\(thumbFile)"
+            "thumb_file" : "\(thumbFile)",
+            "ref_task_id" : "\(photo.refTaskId)"
         ]
         
         request.HTTPBody = createBodyWithParameters(param, boundary: boundary)

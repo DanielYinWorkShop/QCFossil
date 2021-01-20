@@ -1460,7 +1460,8 @@ let _DS_ULTASKPHOTO = [
         "photo_file" : "photo_file",
         "photo_file_data" : "photo_file",
         "thumb_file": "thumb_file",
-        "thumb_file_data": "thumb_file"
+        "thumb_file_data": "thumb_file",
+        "ref_task_id": "ref_task_id"
     ],
     "ACTIONNAMES" : [
         "novalue"
