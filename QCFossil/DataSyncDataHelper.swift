@@ -509,13 +509,13 @@ class DataSyncDataHelper:DataHelperMaster {
         return result
     }
     
-    func updatePhotoUploadDateByPhotoId(photoId:Int) ->Bool {
-        let sql = "UPDATE task_inspect_photo_file SET upload_date = datetime('now', 'localtime') WHERE photo_id = ?"
+    func updatePhotoUploadDateByPhotoId(photoId:Int, taskId:Int) ->Bool {
+        let sql = "UPDATE task_inspect_photo_file SET upload_date = datetime('now', 'localtime') WHERE photo_id = ? AND task_id = ?"
         var result = false
         
         if db.open() {
             
-            if db.executeUpdate(sql, withArgumentsInArray: [photoId]) {
+            if db.executeUpdate(sql, withArgumentsInArray: [photoId, taskId]) {
                 result = true
             }
             

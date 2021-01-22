@@ -79,6 +79,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     var dsDataObj:AnyObject?
     var dataSet = [Dictionary<String, String>]()
     var taskStatusList = [[String:String]]()
+    var tasksWithPhotosUploadFail = [String]()
     var stylePhotoDeletePaths = [String]()
     var actionType = 0 //0: Download Action 1: Upload Action
     var uploadPhotos = [Photo]()
@@ -943,7 +944,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             "photo_file" : "\(photoFile)",
             "thumb_filename" : "\(photo.thumbFile!)",
             "thumb_file" : "\(thumbFile)",
-            "ref_task_id" : "\(photo.refTaskId)"
+            "ref_task_id" : "\(photo.refTaskId!)"
         ]
         
         request.HTTPBody = createBodyWithParameters(param, boundary: boundary)
@@ -1911,11 +1912,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     for (key,value) in jsonData {
                         //print("key: \(key) value: \(value)")
     
-                        if key as! String == "task_status_list" {
+                        if key as? String == "task_status_list" {
                             //Remove reviewed task here
                             //Get Delete Flag Here
                             //let taskStatusList = try NSJSONSerialization.JSONObjectWithData(value as! NSData, options: .AllowFragments) as! NSDictionary
-                            taskStatusList = value as! [[String : String]]
+                            taskStatusList = value as? [[String : String]] ?? [[:]]
     
                         }else{
                             if value as? String != _DS_TOTALRECORDS_DB[key as! String] && (key as! String) != "service_session" {
@@ -2025,24 +2026,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.currULPhotoIndex += 1
             self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos)
             
-            if self.currULPhotoIndex == self.totalULPhotos {
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.taskPhotoProcessBar.progress = 100
-                })
-                
-                updateTaskStatus()
-                updateULProcessLabel("Complete")
-                updateButtonStatus("Enable",btn: self.uploadBtn)
-                
-                //Send local notification for Task Done.
-                self.presentLocalNotification("Data Upload Complete.")
-                
-                let keyValueDataHelper = KeyValueDataHelper()
-                keyValueDataHelper.updateLastUploadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
-                keyValueDataHelper.updateLastUploadTasksCount(String((Cache_Inspector?.inspectorId)!), tasksCount: _DS_UPLOADEDTASKCOUNT)
-            }
-            
             do {
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
@@ -2067,18 +2050,39 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     
                     //update photo upload date
                     if (Int(dataObj["photo_id"]!) != nil && result.containsString("OK")) {
-                        let photoIdUploaded = Int(dataObj["photo_id"]!)
+                        let photoIdUploaded = Int(dataObj["photo_id"]!) ?? 0
+                        let taskId = Int(dataObj["task_id"] ?? "0") ?? 0
                         let dataSyncDataHelper = DataSyncDataHelper()
-                        dataSyncDataHelper.updatePhotoUploadDateByPhotoId(photoIdUploaded!)
+                        dataSyncDataHelper.updatePhotoUploadDateByPhotoId(photoIdUploaded, taskId: taskId)
                     }else{
                         failULPhotoCount += 1
                         self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
+                        
+                        tasksWithPhotosUploadFail.append(dataObj["task_id"] ?? "")
                     }
                     
                 } else{
                     var result = (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
                     result += (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
                     
+                }
+                
+                if self.currULPhotoIndex == self.totalULPhotos {
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.taskPhotoProcessBar.progress = 100
+                    })
+                    
+                    updateTaskStatus()
+                    updateULProcessLabel("Complete")
+                    updateButtonStatus("Enable",btn: self.uploadBtn)
+                    
+                    //Send local notification for Task Done.
+                    self.presentLocalNotification("Data Upload Complete.")
+                    
+                    let keyValueDataHelper = KeyValueDataHelper()
+                    keyValueDataHelper.updateLastUploadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
+                    keyValueDataHelper.updateLastUploadTasksCount(String((Cache_Inspector?.inspectorId)!), tasksCount: _DS_UPLOADEDTASKCOUNT)
                 }
                 
                 if let photo = uploadPhotos.popLast() {
@@ -2143,7 +2147,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         
         for taskStatus in taskStatusList {
             
-            if taskStatus["task_id"] != nil && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
+            if taskStatus["task_id"] != nil && !tasksWithPhotosUploadFail.contains(taskStatus["task_id"] ?? "") && taskStatus["ref_task_id"] != nil && taskStatus["task_status"] != nil && taskStatus["data_refuse_desc"] != nil {
                 
                 dataSyncDataHelper.updateTaskStatus(Int(taskStatus["task_id"]!)!, status: Int(taskStatus["task_status"]!)!, refuseDesc: taskStatus["data_refuse_desc"]!, ref_task_id: Int(taskStatus["ref_task_id"]!)!)
                 
@@ -2156,6 +2160,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
         }
         
+        tasksWithPhotosUploadFail = [String]()
         self.updateProgressBar(1)
     }
     
