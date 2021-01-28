@@ -381,7 +381,19 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         var recCountInTable = Dictionary<String, Int>()
         var currActTable = ""
         var currCount = 1
-        let clearBeforeUpdateTables = ["inspect_task_tmpl_field","inspect_task_tmpl_section","inspect_task_tmpl_position","inspect_task_field_select_val","inspect_section_element","inspect_position_element","inspect_element_detail_select_val","result_set_value"]
+        let clearBeforeUpdateTables = [
+            "inspect_task_tmpl_field",
+            "inspect_task_tmpl_section",
+            "inspect_task_tmpl_position",
+            "inspect_task_field_select_val",
+            "inspect_section_element",
+            "inspect_position_element",
+            "inspect_element_detail_select_val",
+            "result_set_value",
+            "zone_set_value",
+            "case_set_value",
+            "defect_set_value"
+        ]
         
         dataSet = dataSet.reverse()
         while let data = dataSet.popLast() {
