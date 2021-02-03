@@ -790,9 +790,9 @@
 
 "No Data Response." = "沒有回传数据。";
 
-"cannot be downloaded due to Server Not Available." = "下载失败，因为服务器不可用。";
+"Download Failed - Server Not Available" = "下载失败 - 服务器无法连接";
 
-"cannot be downloaded due to Network Issue." = "下载失败，因为网络异常。";
+"Download Failed - Network Issue" = "下载失败 - 网络异常";
 
 "App is in Offline Mode and unable to proceed Data Download." = "应用程式处于离线状态，不能进行数据下载。";
 

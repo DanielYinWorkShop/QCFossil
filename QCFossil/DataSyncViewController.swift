@@ -91,6 +91,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     var downloadReqCnt = 0
     
     var cleanTaskCnt = 0
+    var errorMsg = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -201,7 +202,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.downloadProcessLabel.hidden = true
         self.uploadProcessLabel.hidden = true
         
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DataSyncViewController.updateDBData), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        self.downloadTaskStatusDetailButton.hidden = true
+        self.uploadTaskStatusDetailButton.hidden = true
     }
     
     func menuButton(sender: UIBarButtonItem) {
@@ -213,6 +215,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     @IBAction func downloadDataOnClick(sender: UIButton) {
         self.downloadProcessBar.hidden = true
         self.downloadProcessLabel.hidden = false
+        self.downloadTaskStatusDetailButton.hidden = true
         
         self.actionType = 0
         self.currentCounter = 1
@@ -302,6 +305,18 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     func updateULProcessLabel(text:String){
         dispatch_async(dispatch_get_main_queue(), {
             self.uploadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(text)
+        })
+    }
+    
+    func updateDownloadTaskStatusDetailButton(isHidden: Bool = false) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.downloadTaskStatusDetailButton.hidden = isHidden
+        })
+    }
+    
+    func updateUploadTaskStatusDetailButton(isHidden: Bool = false) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.uploadTaskStatusDetailButton.hidden = isHidden
         })
     }
     
@@ -908,6 +923,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     @IBAction func uploadDataOnClick(sender: UIButton) {
         
         self.uploadProcessLabel.hidden = false
+        self.uploadTaskStatusDetailButton.hidden = true
         self.uploadProcessBar.progress = 0.0
         self.taskResultDataProcessBar.progress = 0.0
         self.taskPhotoProcessBar.progress = 0.0
@@ -1320,7 +1336,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         var errorDesc = "";
         switch(code) {
             case 3840:
-                errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be downloaded due to Server Not Available.")
+                errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Server Not Available")
                 break
             default:
                 errorDesc = ""
@@ -1336,32 +1352,26 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         if(error != nil) {
             
             buffer.setData(NSMutableData())
+            updateButtonStatus("Enable",btn: self.downloadBtn)
+            updateButtonStatus("Enable",btn: self.uploadBtn)
+            var errorMsg = ""
             
             if error?.code == NSURLErrorTimedOut {
-                let errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("\(self.dsDataObj?["NAME"] ?? "")")) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be downloaded due to Network Issue."))"
-                print("\(errorMsg)")
-                updateButtonStatus("Enable",btn: self.downloadBtn)
-                updateDLProcessLabel(errorMsg)
-                updateButtonStatus("Enable",btn: self.uploadBtn)
-                updateULProcessLabel(errorMsg)
-                
+                errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("\(self.dsDataObj?["NAME"] ?? "")")) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Network Issue"))"
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
-                let errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
-                
-                print("\(errorMsg)")
-                updateButtonStatus("Enable",btn: self.downloadBtn)
-                updateDLProcessLabel(errorMsg)
-                updateButtonStatus("Enable",btn: self.uploadBtn)
-                updateULProcessLabel(errorMsg)
-                
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
             }else{
-                print("error: \(error!.localizedDescription), error code: \(error?.code)")
-                updateButtonStatus("Enable",btn: self.downloadBtn)
-                updateDLProcessLabel(error!.localizedDescription)
-                updateButtonStatus("Enable",btn: self.uploadBtn)
-                updateULProcessLabel(error!.localizedDescription)
-                
+                errorMsg = error?.localizedDescription ?? ""
             }
+            
+            if self.actionType < 1 {
+                updateDLProcessLabel(errorMsg)
+                updateDownloadTaskStatusDetailButton()
+            } else {
+                updateULProcessLabel(errorMsg)
+                updateUploadTaskStatusDetailButton()
+            }
+            self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Master Data Download" {
             
@@ -1392,13 +1402,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1429,13 +1443,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1471,13 +1489,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1507,13 +1529,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                    
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
+                
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Setup Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1547,13 +1573,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1588,13 +1618,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("FGPO Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1634,13 +1668,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                    
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
+                
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1667,13 +1705,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Booking Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1709,13 +1751,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1786,13 +1832,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download" {
@@ -1818,13 +1868,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Style Photo")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Style Photo")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
             
@@ -1897,13 +1951,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Status Data")) ACK \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
@@ -2021,13 +2079,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Result Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Result Data")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                 }
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Photo Data Upload" {
@@ -2119,14 +2181,18 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
+                let errorObject = error as NSError
+                self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
                     updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Photo Upload")) \(errorMsgByCode((error as NSError).code))")
+                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateDownloadTaskStatusDetailButton()
                     
                 }else {
                     updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Photo Upload")) \(errorMsgByCode((error as NSError).code))")
+                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+                    updateUploadTaskStatusDetailButton()
                     
                 }
             }
@@ -2209,6 +2275,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
         } catch{
             print("path error: \(error)")
+            let errorObject = error as NSError
+            self.errorMsg = errorObject.localizedDescription ?? ""
             //self.buffer.setData(NSData.init())
         }
         
@@ -2240,7 +2308,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     func updateProgressBar(percentageDownloaded:Float = 0) {
         print("dsDataObj: \(self.dsDataObj!["NAME"] as! String)")
         if "Master Data Download" == self.dsDataObj!["NAME"] as! String {
-            updateDLProcessLabel("Downloading Data...")
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
             dispatch_async(dispatch_get_main_queue(), {
                 self.mstrDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.masterDataProcessBar.progress =  percentageDownloaded
@@ -2248,7 +2316,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             })
             
         }else if "Inspection Setup Data Download" == self.dsDataObj!["NAME"] as! String {
-            updateDLProcessLabel("Downloading Data...")
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
             dispatch_async(dispatch_get_main_queue(), {
                 self.inspSetupDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.setupDataProcessBar.progress =  percentageDownloaded
@@ -2257,7 +2325,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
         }else if "FGPO Data Download" == self.dsDataObj!["NAME"] as! String {
             //if self.downloadReqCnt < 1 {
-                updateDLProcessLabel("Downloading Data...")
+                updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
                 dispatch_async(dispatch_get_main_queue(), {
                     self.fgpoDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.fgpoDataProcessBar.progress =  percentageDownloaded
@@ -2266,21 +2334,21 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             //}
             
         }else if "Task Booking Data Download" == self.dsDataObj!["NAME"] as! String {
-            updateDLProcessLabel("Downloading Data...")
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
             dispatch_async(dispatch_get_main_queue(), {
                 self.taskDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.taskDataProcessBar.progress =  percentageDownloaded
                 
             })
         }else if "Task Status Data Download" == self.dsDataObj!["NAME"] as! String {
-            updateDLProcessLabel("Downloading Data...")
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
             dispatch_async(dispatch_get_main_queue(), {
                 self.taskStatusDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.taskStatusDataProcessBar.progress =  percentageDownloaded
                 
             })
         }else if "Style Photo Download" == self.dsDataObj!["NAME"] as! String {
-            updateDLProcessLabel("Downloading Data...")
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
             dispatch_async(dispatch_get_main_queue(), {
                 self.stylePhotoStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.stylePhotoPrecessBar.progress =  percentageDownloaded
@@ -2347,7 +2415,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
         
         popoverContent.dataType = _DOWNLOADTASKSTATUSDESC
-        popoverContent.selectedValue = downloadProcessLabel.text ?? ""
+        popoverContent.selectedValue = self.errorMsg
         
         let nav = UINavigationController(rootViewController: popoverContent)
         nav.modalPresentationStyle = UIModalPresentationStyle.Popover
@@ -2367,7 +2435,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
         
         popoverContent.dataType = _DOWNLOADTASKSTATUSDESC
-        popoverContent.selectedValue = uploadProcessLabel.text ?? ""
+        popoverContent.selectedValue = self.errorMsg
         
         let nav = UINavigationController(rootViewController: popoverContent)
         nav.modalPresentationStyle = UIModalPresentationStyle.Popover
