@@ -148,7 +148,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         NSLog("Save New Task")
         
         if self.poItems.count < 1 {
-            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No Po Items!"))
+            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No PO Item Selected!"))
             return
         }
         
@@ -159,7 +159,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         let inspSetupId = taskDataHelper.getInspSetupIdByName(tmplName)
         
         if inspTypeId < 1 || prodTypeId < 1 || tmplId < 1 {
-            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Type or Product Type or Template can't be null!"))
+            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Type / Product Type / Template Not Allow Empty!"))
             return
         }
         
@@ -184,7 +184,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         let taskInspector = TaskInspector(inspectorId: (Cache_Inspector?.inspectorId)!, createUser: (Cache_Inspector?.appUserName)!, createDate: self.view.getCurrentDateTime(), modifyUser: (Cache_Inspector?.appUserName)!, modifyDate: self.view.getCurrentDateTime(), inspectEnableFlag: 1, taskId: taskId)
         
         if !poDataHelper.insertTaskInspector(taskInspector) {
-            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cant Update Task Inspector!"))
+            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cannot Update Task Inspector!"))
         }
         
         //update task items

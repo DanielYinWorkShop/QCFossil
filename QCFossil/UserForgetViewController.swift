@@ -121,11 +121,11 @@ class UserForgetViewController: UIViewController {
                 })
             }else if response == "Fail"{
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection."))
+                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection"))
                 })
             }else{
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Username or Email is not correct!"))
+                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Username / Email Not Correct"))
                 })
             }
         })
@@ -151,11 +151,11 @@ class UserForgetViewController: UIViewController {
                 })
             }else if response == "Fail"{
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection."))
+                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection"))
                 })
             }else{
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Username or Password is not correct!"))
+                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Username / Password Not Correct"))
                 })
             }
         })

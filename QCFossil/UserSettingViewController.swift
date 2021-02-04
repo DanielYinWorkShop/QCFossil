@@ -116,7 +116,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                     
                     dispatch_async(dispatch_get_main_queue()) {
                         self.errorMsg.hidden = false
-                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Cant use login name as new password!")
+                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Login Name Cannot Be Used As New Password")
                     }
                     
                     return
@@ -124,11 +124,9 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                 
                 //Check if New password contains 8 to 15 charators
                 if self.newPwInput.text?.characters.count < 8 || self.newPwInput.text?.characters.count > 15 {
-                    print("new password should be 8-15 charators")
-                    
                     dispatch_async(dispatch_get_main_queue()) {
                         self.errorMsg.hidden = false
-                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New password should be 8-15 charators!")
+                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password should be 8-15 Characters")
                     }
                     
                     return
@@ -144,7 +142,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                     
                     dispatch_async(dispatch_get_main_queue()) {
                         self.errorMsg.hidden = false
-                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New password need to include Numbers!")
+                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Numbers")
                     }
                     
                     return
@@ -159,7 +157,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                 
                     dispatch_async(dispatch_get_main_queue()) {
                         self.errorMsg.hidden = false
-                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New password need to include Letters!")
+                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Letters")
                     }
                     
                     return
@@ -192,7 +190,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                             }
                         }else{
                             dispatch_async(dispatch_get_main_queue()) {
-                                self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection."), handlerFun: { (action:UIAlertAction!) in
+                                self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection"), handlerFun: { (action:UIAlertAction!) in
                                     
                                     
                                 })
@@ -204,7 +202,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                 }else{
                     dispatch_async(dispatch_get_main_queue()) {
                         self.errorMsg.hidden = false
-                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm password is different from the New password!")
+                        self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm Password and New Password Not Matched")
                     }
                     
                 }
@@ -212,7 +210,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
             }else{
                 dispatch_async(dispatch_get_main_queue()) {
                     self.errorMsg.hidden = false
-                    self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Old password is not Correct!")
+                    self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Old Password Not Correct")
                 }
             }
             

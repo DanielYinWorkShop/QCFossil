@@ -373,7 +373,7 @@ class TabBarViewController: UITabBarController {
             if Cache_Task_On?.errorCode > 0 {
                 self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No active PO line!"))
             }else{
-                self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save fail!"))
+                self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Failed!"))
             }
         }
         
@@ -453,7 +453,7 @@ class TabBarViewController: UITabBarController {
             
                 }else{
                     self.view.removeActivityIndicator()
-                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save fail!"))
+                    self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Failed!"))
             
                 }
             })
@@ -492,7 +492,7 @@ class TabBarViewController: UITabBarController {
                             if Cache_Task_On?.errorCode > 0 {
                                 self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("No active PO line!"))
                             }else{
-                                self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save fail!"))
+                                self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Failed!"))
                             }
                         }
                     })

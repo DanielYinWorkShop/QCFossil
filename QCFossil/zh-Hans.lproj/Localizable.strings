@@ -424,7 +424,7 @@
 
 "Save Success!" = "保存成功！";
 
-"Save fail!" = "保存失败！";
+"Save Failed!" = "保存失败！";
 
 "Please Select Inspect Area and Inspect Item" = "请选择检查范畴以及检查项目";
 
@@ -434,7 +434,7 @@
 
 "Please Select Inspect Defect Position and Points" = "请选择检查问题位置以及细项";
 
-"No Po Items!" = "请先选择订单项目！";
+"No PO Item Selected!" = "请先选择订单项目！";
 
 "Photo(s) of this inspection item will be deleted!" = "此檢查項目中的相片將被刪除!";
 
@@ -546,7 +546,7 @@
 
 "SW/Req. Ex-fty Date" = "SW/要求出厂日";
 
-"Cant Update Task Inspector!" = "不能关联任务与检查人员！";
+"Cannot Update Task Inspector!" = "不能关联任务与检查人员！";
 
 "Reviewed" = "已检阅";
 
@@ -640,9 +640,9 @@
 
 "Downloading Data..." = "数据下载中...";
 
-"The network connection was lost." = "网络连接丢失！";
+"Network Connection Lost!" = "网络连接丢失！";
 
-"The internet connection appears to be offline." = "无网络连接！";
+"Network Connection Cannot Established!" = "无网络连接！";
 
 "Clear Signature?" = "清空签名？";
 
@@ -652,7 +652,7 @@
 
 "Inspector Signature" = "检查员签署";
 
-"Login information incorrect!" = "登入資料錯誤!";
+"Login Information Not Correct" = "登入資料錯誤";
 
 "Update Signature" = "更新簽署";
 
@@ -660,19 +660,19 @@
 
 "Delete Shape?" = "删除图形？";
 
-"New password should be 8-15 charators!" = "请输入8到15位新密码！";
+"New Password should be 8-15 Characters" = "请输入8到15位新密码";
 
-"New password need to include Numbers!" = "新密码必须包含数字！";
+"New Password need to include Numbers" = "新密码必须包含数字";
 
-"New password need to include Letters!" = "新密码必须包含字母！";
+"New Password need to include Letters" = "新密码必须包含字母";
 
 "New password reset Successfully!" = "新密码设置成功！";
 
-"Confirm password is different from the New password!" = "两次输入密码必须一致！";
+"Confirm Password and New Password Not Matched" = "两次输入密码必须一致";
 
-"Old password is not Correct!" = "当前密码不正确！";
+"Old Password Not Correct" = "当前密码不正确";
 
-"Cant use login name as new password!" = "不能使用登入名称作为新密码！";
+"Login Name Cannot Be Used As New Password" = "不能使用登入名称作为新密码";
 
 "Please Change Your Password Now" = "请现在更改你的密码";
 
@@ -692,13 +692,13 @@
 
 "Password update failed." = "密码更改失败";
 
-"Update failed. Please check internet connection." = "更改失敗。請檢查網絡連接狀況";
+"Update failed. Please check internet connection" = "更改失敗… 請檢查網絡連接狀況";
 
 "Password has been reset! Please check your Email!" = "密碼已發送至閣下的電郵地址";
 
-"Username or Password is not correct!" = "用户名字或密码不正确";
+"Username / Password Not Correct" = "用户名字或密码不正确";
 
-"Please Select Backup First" = "请先选择一个备份文件";
+"Please Select One Backup Record" = "请先选择一个备份文件";
 
 "Please Input Your Password" = "输入密码";
 
@@ -716,11 +716,11 @@
 
 "Preparing For Restortion..." = "还原工作准备中...";
 
-"New Password Update Fail..." = "密码更新失败...";
+"Update New Password Failed" = "密码更新失败";
 
 "Username has been reset! Please check your Email!" = "用户名称已发送, 请检查电邮。";
 
-"Username or Email is not correct!" = "用户名称或电邮不正确";
+"Username / Email Not Correct" = "用户名称或电邮不正确";
 
 "Backup Description" = "备份备注";
 
@@ -730,11 +730,9 @@
 
 "Restore" = "恢复备份";
 
-"The Internet connection appears to be offline." = "请检查网络连接状况。";
-
 "Could not connect to the server." = "请检查网络连接状况。";
 
-"Backup failed." = "备份失败。";
+"Backup Failed!" = "备份失败！";
 
 "App Version" = "App版本";
 
@@ -796,11 +794,11 @@
 
 "App is in Offline Mode and unable to proceed Data Download." = "应用程式处于离线状态，不能进行数据下载。";
 
-"cannot be imported due to Error Occurred" = "导入失败。";
+"Sync Failed due to Data Error Occurred" = "由于发生数据错误而同步失败";
 
 "OPD/RSD From" = "OPD/RSD由";
 
-"Inspection Type or Product Type or Template can't be null!" = "检查设置数据, 产品类型或者模版不能为空";
+"Inspection Type / Product Type / Template Not Allow Empty!" = "检查设置数据, 产品类型或者模版不能为空";
 
 "Delete all invalid tasks?" = "删除所有无效之任务？";
 
@@ -816,7 +814,7 @@
 
 "Defect Desc. 2" = "不良描述二";
 
-"unknow error." = "未知错误。";
+"Network Request Failed with Unknown Reason!" = "网络请求失败，原因不明！";
 
 "Please enter defect quantity" = "请输入缺陷数目";
 
@@ -983,3 +981,5 @@
 "Task Result Data Upload" = "任务结果数据上传";
 
 "Task Photo Data Upload" = "任务照片上传";
+
+"Sync Failed when iPad in Sleep Mode" = "iPad在睡眠模式下同步失败";

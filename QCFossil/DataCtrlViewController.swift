@@ -718,17 +718,17 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var errorMsg = ""
             
             if error?.code == NSURLErrorTimedOut {
-                errorMsg = "The network connection was lost."
+                errorMsg = "Network Connection Lost!"
                 print("\(errorMsg)")
                 self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg)
                 self.updateButtonsStatus(true)
                 
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
-                errorMsg = "The internet connection appears to be offline."
+                errorMsg = "Network Connection Cannot Established!"
                 print("\(errorMsg)")
                 
             }else{
-                errorMsg = "unknow error."
+                errorMsg = "Network Request Failed with Unknown Reason!"
                 print("error: \(error!.localizedDescription), error code: \(error?.code)")
                 
             }
@@ -823,7 +823,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     print(error)
                     
                     let error = error as NSError
-                    self.passwordLabel.text = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup failed."))\(MylocalizedString.sharedLocalizeManager.getLocalizedString(error.localizedDescription))"
+                    self.passwordLabel.text = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup Failed!"))\(MylocalizedString.sharedLocalizeManager.getLocalizedString(error.localizedDescription))"
                     
                     self.removeLocalBackupZipFile()
                     let responseString = NSString(data: self.buffer, encoding: NSUTF8StringEncoding)
@@ -895,7 +895,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.typeNow = self.typeRestore
         
         if self.selectedBackupFile == nil {
-            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Backup First"))
+            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select One Backup Record"))
             return
         }
         

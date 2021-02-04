@@ -658,7 +658,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 
                 
-                self.updateDLProcessLabel("\(self.getCurrentPODataTitle(apiName)) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("cannot be imported due to Error Occurred"))")
+                self.updateDLProcessLabel("\(self.getCurrentPODataTitle(apiName)) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Data Error Occurred"))")
             }
         })
     }
@@ -1336,7 +1336,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         var errorDesc = "";
         switch(code) {
             case 3840:
-                errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Server Not Available")
+                if sessionDownloadTask == bgSession {
+                    errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+                } else {
+                    errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Server Not Available")
+                }
                 break
             default:
                 errorDesc = ""
@@ -1357,11 +1361,15 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             var errorMsg = ""
             
             if error?.code == NSURLErrorTimedOut {
-                errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("\(self.dsDataObj?["NAME"] ?? "")")) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Network Issue"))"
+                errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Network Issue"))"
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
             }else{
                 errorMsg = error?.localizedDescription ?? ""
+            }
+            
+            if sessionDownloadTask == bgSession {
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
             }
             
             if self.actionType < 1 {
@@ -1372,7 +1380,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 updateUploadTaskStatusDetailButton()
             }
             self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
-            
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Master Data Download" {
             
             do {

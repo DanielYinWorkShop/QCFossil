@@ -270,7 +270,7 @@
 "Current Password" = "Old Password";
 "New Password Again" = "Confirm Password";
 "List Backup History" = "List Backup History";
-"The Internet connection appears to be offline." = "Please check internet connection.";
+"Network Connection Cannot Established!" = "Network Connection Cannot Established!";
 "Could not connect to the server." = "Please check internet connection.";
 "Avail. Qty" = "Lot Size(N)";
 "Sample Qty" = "Sample Qty(n)";

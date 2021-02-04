@@ -104,7 +104,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         //self.password.text = "wE$6T+8a"
         
         let defaults = NSUserDefaults.standardUserDefaults()
-        let releaseDate = "20210201"//self.view.getCurrentDate("MMdd")
+        let releaseDate = "20210203"//self.view.getCurrentDate("MMdd")
         _RELEASE = releaseDate as String
         defaults.setObject(releaseDate, forKey: "release_preference")
         
@@ -489,13 +489,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                             }else{
                             
                                 dispatch_async(dispatch_get_main_queue(), {
-                                    self.stopLoginStatus(MylocalizedString.sharedLocalizeManager.getLocalizedString("Username or Password is not correct!"))
+                                    self.stopLoginStatus(MylocalizedString.sharedLocalizeManager.getLocalizedString("Username / Password Not Correct"))
                                 
                                 })
                             }
                         }else{
                             dispatch_async(dispatch_get_main_queue(), {
-                                self.stopLoginStatus(MylocalizedString.sharedLocalizeManager.getLocalizedString("Login information incorrect!"))
+                                self.stopLoginStatus(MylocalizedString.sharedLocalizeManager.getLocalizedString("Login Information Not Correct"))
                             
                             })
                         }
@@ -545,9 +545,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                         
                     }else{
                         dispatch_async(dispatch_get_main_queue()) {
-                            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection."), handlerFun: { (action:UIAlertAction!) in
+                            self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection"), handlerFun: { (action:UIAlertAction!) in
                                 //self.performSegueWithIdentifier("TaskSearchNavigatorSegue", sender: self)
-                                self.stopLoginStatus(MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password Update Fail..."))
+                                self.stopLoginStatus(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update New Password Failed"))
                             })
                         }
                     }
@@ -610,7 +610,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             dispatch_async(dispatch_get_main_queue()) {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.Center
-                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm password is different from the New password!"), attributes: [
+                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm Password and New Password Not Matched"), attributes: [
                     NSParagraphStyleAttributeName: style,
                     NSFontAttributeName : UIFont.systemFontOfSize(15),
                     NSForegroundColorAttributeName : UIColor.redColor()
@@ -649,7 +649,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             dispatch_async(dispatch_get_main_queue()) {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.Center
-                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Cant use login name as new password!"), attributes: [
+                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Login Name Cannot Be Used As New Password"), attributes: [
                     NSParagraphStyleAttributeName: style,
                     NSFontAttributeName : UIFont.systemFontOfSize(15),
                     NSForegroundColorAttributeName : UIColor.redColor()
@@ -660,12 +660,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             
             return false
         }else if pwInput.characters.count < 8 || pwInput.characters.count > 15 {//Check if New password contains 8 to 15 charators
-            print("new password should be 8-15 charators")
-            
             dispatch_async(dispatch_get_main_queue()) {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.Center
-                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New password should be 8-15 charators!"), attributes: [
+                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password should be 8-15 Characters"), attributes: [
                     NSParagraphStyleAttributeName: style,
                     NSFontAttributeName : UIFont.systemFontOfSize(15),
                     NSForegroundColorAttributeName : UIColor.redColor()
@@ -688,7 +686,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                 dispatch_async(dispatch_get_main_queue()) {
                     let style = NSMutableParagraphStyle()
                     style.alignment = NSTextAlignment.Center
-                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New password need to include Numbers!"), attributes: [
+                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Numbers"), attributes: [
                         NSParagraphStyleAttributeName: style,
                         NSFontAttributeName : UIFont.systemFontOfSize(15),
                         NSForegroundColorAttributeName : UIColor.redColor()
@@ -710,7 +708,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                 dispatch_async(dispatch_get_main_queue()) {
                     let style = NSMutableParagraphStyle()
                     style.alignment = NSTextAlignment.Center
-                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New password need to include Letters!"), attributes: [
+                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Letters"), attributes: [
                         NSParagraphStyleAttributeName: style,
                         NSFontAttributeName : UIFont.systemFontOfSize(15),
                         NSForegroundColorAttributeName : UIColor.redColor()
