@@ -77,6 +77,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     var buffer:NSMutableData = NSMutableData()
     var expectedContentLength = 0
     var dsDataObj:AnyObject?
+    var dsDataObjDownloadRetry: AnyObject?
+    var dsDataObjUploadRetry: AnyObject?
     var dataSet = [Dictionary<String, String>]()
     var taskStatusList = [[String:String]]()
     var tasksWithPhotosUploadFail = [String]()
@@ -94,6 +96,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     var errorMsg = ""
     var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
     let path = "\(NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0])/response.json"
+    var isRetry = false
+    var isDataSyncDone = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,40 +111,15 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         updateLocalizedString()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(triggerBackgroundRun), name: "triggerBackgroundRun", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(runTasksDidBecomeActive), name: "runTasksDidBecomeActive", object: nil)
         
-        
-        if let plist = NSBundle.mainBundle().pathForResource("Info", ofType: "plist"),
-            let dict = NSDictionary(contentsOfFile: plist) as? [String: AnyObject],
-            var _path = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true).first,
-            let bundle = dict["CFBundleIdentifier"] {
-//            _path.appendContentsOf("/Caches/com.apple.nsurlsessiond/Downloads/\(bundle)")
+        if var _path = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true).first {
             _path.appendContentsOf("/Caches")
-            
             try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: _path)
         }
         
-        if let plist = NSBundle.mainBundle().pathForResource("Info", ofType: "plist"),
-            let dict = NSDictionary(contentsOfFile: plist) as? [String: AnyObject],
-            var _path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first,
-            let bundle = dict["CFBundleIdentifier"] {
-            
-//                        let database = "\(_DBNAME_USING)_\((Cache_Inspector?.appUserName?.lowercaseString)!)"
-            //            let databasePath = _path.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)")
-            
-//            let folderName = Cache_Inspector?.appUserName?.lowercaseString ?? ""
+        if let _path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first {
             try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: _path)
-        }
-        
-        if let plist = NSBundle.mainBundle().pathForResource("Info", ofType: "plist"),
-            let dict = NSDictionary(contentsOfFile: plist) as? [String: AnyObject],
-            var _path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first,
-            let bundle = dict["CFBundleIdentifier"] {
-            
-            let database = "\(_DBNAME_USING)_\((Cache_Inspector?.appUserName?.lowercaseString)!)"
-            let databasePath = _path.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)")
-            
-            //            let folderName = Cache_Inspector?.appUserName?.lowercaseString ?? ""
-            try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: databasePath)
         }
     }
     
@@ -262,17 +241,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         
         self.downloadProcessBar.progress = 0.0
         self.uploadProcessBar.progress = 0.0
-        self.masterDataProcessBar.progress = 0.0
-        self.setupDataProcessBar.progress = 0.0
-        self.fgpoDataProcessBar.progress = 0.0
-        self.taskDataProcessBar.progress = 0.0
-        self.taskStatusDataProcessBar.progress = 0.0
-        self.cleanTaskProcessBar.progress = 0.0
-        self.stylePhotoPrecessBar.progress = 0.0
-        self.stylePhotoCleanProcessBar.progress = 0.0
-        
-        self.totalReqCnt = 0
-        self.downloadReqCnt = 0
         self.ainit_service_session = ""
         
         _DS_RECORDS = [
@@ -284,18 +252,141 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             "_DS_DL_STYLE_PHOTO" : [String]()
         ]
         
-        updateButtonStatus("Disable",btn: self.downloadBtn)
+        updateButtonStatus("Disable",btn: self.downloadBtn, isRetry: self.isRetry)
         updateDLProcessLabel("Send Request...")
         
         dataSet = [Dictionary<String, String>]()
         
-        makeDLPostRequest(_DS_MSTRDATA)
+        if let _dsDataObj = self.dsDataObjDownloadRetry {
+            makeDLPostRequest(_dsDataObj)
+        } else {
+            makeDLPostRequest(_DS_MSTRDATA)
+        }
         
+        self.isRetry = false
+        self.isDataSyncDone = false
+        self.resetProcessBar(self.dsDataObj as? [String: NSObject] ?? [:])
         self.lastDownloadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
         let keyValueDataHelper = KeyValueDataHelper()
         keyValueDataHelper.updateLastDownloadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
         
         NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+    }
+    
+    func resetProcessBar(dsDataObject: [String: NSObject]) {
+        switch dsDataObject["NAME"] as? String ?? "" {
+        case "Master Data Download", "Master Data Download Acknowledgement":
+            self.masterDataProcessBar.progress = 0.0
+            self.setupDataProcessBar.progress = 0.0
+            self.fgpoDataProcessBar.progress = 0.0
+            self.taskDataProcessBar.progress = 0.0
+            self.taskStatusDataProcessBar.progress = 0.0
+            self.cleanTaskProcessBar.progress = 0.0
+            self.stylePhotoPrecessBar.progress = 0.0
+            self.stylePhotoCleanProcessBar.progress = 0.0
+            
+            self.mstrDataStatus.text = ""
+            self.inspSetupDataStatus.text = ""
+            self.fgpoDataStatus.text = ""
+            self.taskDataStatus.text = ""
+            self.taskStatusDataStatus.text = ""
+            self.cleanTaskStatus.text = ""
+            self.stylePhotoStatus.text = ""
+            self.stylePhotoCleanStatus.text = ""
+        case "Inspection Setup Data Download", "Inspection Setup Data Download Acknowledgement":
+            self.setupDataProcessBar.progress = 0.0
+            self.fgpoDataProcessBar.progress = 0.0
+            self.taskDataProcessBar.progress = 0.0
+            self.taskStatusDataProcessBar.progress = 0.0
+            self.cleanTaskProcessBar.progress = 0.0
+            self.stylePhotoPrecessBar.progress = 0.0
+            self.stylePhotoCleanProcessBar.progress = 0.0
+            
+            self.inspSetupDataStatus.text = ""
+            self.fgpoDataStatus.text = ""
+            self.taskDataStatus.text = ""
+            self.taskStatusDataStatus.text = ""
+            self.cleanTaskStatus.text = ""
+            self.stylePhotoStatus.text = ""
+            self.stylePhotoCleanStatus.text = ""
+            
+        case "FGPO Data Download", "FGPO Data Download Acknowledgement":
+            self.totalReqCnt = 0
+            self.downloadReqCnt = 0
+            self.fgpoDataProcessBar.progress = 0.0
+            self.taskDataProcessBar.progress = 0.0
+            self.taskStatusDataProcessBar.progress = 0.0
+            self.cleanTaskProcessBar.progress = 0.0
+            self.stylePhotoPrecessBar.progress = 0.0
+            self.stylePhotoCleanProcessBar.progress = 0.0
+            
+            self.fgpoDataStatus.text = ""
+            self.taskDataStatus.text = ""
+            self.taskStatusDataStatus.text = ""
+            self.cleanTaskStatus.text = ""
+            self.stylePhotoStatus.text = ""
+            self.stylePhotoCleanStatus.text = ""
+        case "Task Booking Data Download", "Task Booking Data Download Acknowledgement":
+            self.taskDataProcessBar.progress = 0.0
+            self.taskStatusDataProcessBar.progress = 0.0
+            self.cleanTaskProcessBar.progress = 0.0
+            self.stylePhotoPrecessBar.progress = 0.0
+            self.stylePhotoCleanProcessBar.progress = 0.0
+            
+            self.taskDataStatus.text = ""
+            self.taskStatusDataStatus.text = ""
+            self.cleanTaskStatus.text = ""
+            self.stylePhotoStatus.text = ""
+            self.stylePhotoCleanStatus.text = ""
+        case "Task Status Data Download", "Task Status Data Download Acknowledgement":
+            self.taskStatusDataProcessBar.progress = 0.0
+            self.cleanTaskProcessBar.progress = 0.0
+            self.stylePhotoPrecessBar.progress = 0.0
+            self.stylePhotoCleanProcessBar.progress = 0.0
+            
+            self.taskStatusDataStatus.text = ""
+            self.cleanTaskStatus.text = ""
+            self.stylePhotoStatus.text = ""
+            self.stylePhotoCleanStatus.text = ""
+        case "Style Photo Download", "Style Photo Download Acknowledgement":
+            self.stylePhotoPrecessBar.progress = 0.0
+            self.stylePhotoCleanProcessBar.progress = 0.0
+            self.stylePhotoStatus.text = ""
+            self.stylePhotoCleanStatus.text = ""
+        case "Task Result Data Upload":
+            self.taskResultDataProcessBar.progress = 0.0
+            self.taskUploadDataStatus.text = ""
+        case "Task Photo Data Upload":break
+        default:
+            if actionType < 1 {
+                self.masterDataProcessBar.progress = 0.0
+                self.setupDataProcessBar.progress = 0.0
+                self.fgpoDataProcessBar.progress = 0.0
+                self.taskDataProcessBar.progress = 0.0
+                self.taskStatusDataProcessBar.progress = 0.0
+                self.cleanTaskProcessBar.progress = 0.0
+                self.stylePhotoPrecessBar.progress = 0.0
+                self.stylePhotoCleanProcessBar.progress = 0.0
+            
+                self.mstrDataStatus.text = ""
+                self.inspSetupDataStatus.text = ""
+                self.fgpoDataStatus.text = ""
+                self.taskDataStatus.text = ""
+                self.taskStatusDataStatus.text = ""
+                self.cleanTaskStatus.text = ""
+                self.stylePhotoStatus.text = ""
+                self.stylePhotoCleanStatus.text = ""
+            } else {
+                self.taskResultDataProcessBar.progress = 0.0
+                self.taskUploadDataStatus.text = ""
+                self.taskPhotoUploadStatus.text = ""
+                self.uploadProcessBar.progress = 0.0
+                self.taskResultDataProcessBar.progress = 0.0
+                self.taskPhotoProcessBar.progress = 0.0
+                self.currULPhotoIndex = 0
+                self.failULPhotoCount = 0
+            }
+        }
     }
     
     func triggerBackgroundRun() {
@@ -309,8 +400,33 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func updateButtonStatus(status:String,btn:UIButton) {
+    
+    func runTasksDidBecomeActive() {
+        if self.isRetry {
+            if self.actionType < 1 {
+                self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Retry"), forState: UIControlState.Normal)
+            } else {
+                self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Retry"), forState: UIControlState.Normal)
+            }
+        } else {
+            if self.actionType < 1 {
+                self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), forState: UIControlState.Normal )
+            } else {
+                self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), forState: UIControlState.Normal )
+            }
+        }
         
+        if isDataSyncDone {
+            if self.actionType < 1 {
+                self.downloadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Complete")
+            } else {
+                self.uploadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Complete")
+            }
+        }
+    }
+    
+    func updateButtonStatus(status:String,btn:UIButton, isRetry: Bool = false) {
+        self.isRetry = isRetry
         if status == "Enable" {
             dispatch_async(dispatch_get_main_queue(), {
                 
@@ -319,6 +435,24 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 self.uploadBtn.enabled = true
                 self.uploadBtn.backgroundColor = _FOSSILBLUECOLOR
+                
+                if isRetry {
+                    if self.actionType < 1 {
+                        self.dsDataObjDownloadRetry = self.dsDataObj
+                        self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Retry"), forState: UIControlState.Normal)
+                    } else {
+                        self.dsDataObjUploadRetry = self.dsDataObj
+                        self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Retry"), forState: UIControlState.Normal)
+                    }
+                } else {
+                    if self.actionType < 1 {
+                        self.dsDataObjDownloadRetry = nil
+                        self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), forState: UIControlState.Normal )
+                    } else {
+                        self.dsDataObjUploadRetry = nil
+                        self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), forState: UIControlState.Normal )
+                    }
+                }
                 
                 NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
             })
@@ -332,15 +466,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 self.uploadBtn.enabled = false
                 self.uploadBtn.backgroundColor = UIColor.grayColor()
-                
-                self.mstrDataStatus.text = ""
-                self.inspSetupDataStatus.text = ""
-                self.fgpoDataStatus.text = ""
-                self.taskDataStatus.text = ""
-                self.taskStatusDataStatus.text = ""
-                self.cleanTaskStatus.text = ""
-                self.stylePhotoStatus.text = ""
-                self.stylePhotoCleanStatus.text = ""
             })
         }
     }
@@ -702,12 +827,14 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
                 self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
             } else {
-                self.updateButtonStatus("Enable",btn: self.downloadBtn)
-                self.updateButtonStatus("Enable",btn: self.uploadBtn)
-                
-                
+                if self.actionType < 1 {
+                    self.updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+                } else {
+                    self.updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+                }
                 
                 self.updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Data Error Occurred"))")
+                self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Fail, DB Rollbacked")
             }
         })
     }
@@ -973,20 +1100,20 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         
         self.uploadProcessLabel.hidden = false
         self.uploadTaskStatusDetailButton.hidden = true
-        self.uploadProcessBar.progress = 0.0
-        self.taskResultDataProcessBar.progress = 0.0
-        self.taskPhotoProcessBar.progress = 0.0
-        self.currULPhotoIndex = 0
-        self.failULPhotoCount = 0
         self.actionType = 1 //Current Action is Upload
         
-        self.updateButtonStatus("Disable",btn: self.uploadBtn)
+        self.updateButtonStatus("Disable",btn: self.uploadBtn, isRetry: self.isRetry)
         self.updateULProcessLabel("Sending Request...")
         self.buffer = NSMutableData()
         
         //session = backgroundSession
-        makeULPostRequest(_DS_ULTASKDATA)
+        if let _dsDataObj = self.dsDataObjUploadRetry {
+            makeULPostRequest(_dsDataObj)
+        } else {
+            makeULPostRequest(_DS_ULTASKDATA)
+        }
         
+        self.isDataSyncDone = false
         self.lastUploadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
         let keyValueDataHelper = KeyValueDataHelper()
         keyValueDataHelper.updateLastUploadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
@@ -1276,83 +1403,31 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
             
         }else if (self.dsDataObj!["NAME"] as! String).containsString("Acknowledgement") {
-            //dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-                //let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
-                
-              //  dispatch_async(dispatch_get_main_queue(), {
-                    /*if percentageUploaded > 0.99999 {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
-                            if self.downloadReqCnt == self.totalReqCnt {
-                                self.updateProgressBar(0.95)
-                                //sleep(1)
-                                print("PO Download 0.95")
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.95)
-                            //sleep(1)
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
-                    }*/
-                    
-                    if totalBytesSent == totalBytesExpectedToSend {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
-                            if self.downloadReqCnt == self.totalReqCnt {
-                                self.updateProgressBar(0.95)
-                                sleep(1)
-                                print("PO Download 0.95")
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.95)
-                            //sleep(1)
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
+            if totalBytesSent == totalBytesExpectedToSend {
+                if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
+                    if self.downloadReqCnt == self.totalReqCnt {
+                        self.updateProgressBar(0.95)
+                        sleep(1)
+                        print("PO Download 0.95")
                     }
-               // })
-            //}
-            
+                    
+                }else{
+                    self.updateProgressBar(0.95)
+                }
+                
+                self.updateDLProcessLabel("Waiting Response...")
+            }
         }else{
-           // dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-                //let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
-                
-             //   dispatch_async(dispatch_get_main_queue(), {
-                    /*if percentageUploaded > 0.99999 {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-                            if self.downloadReqCnt < 1 {
-                                self.updateProgressBar(0.15)
-                                //sleep(1)
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.15)
-                            //sleep(1)
-                            
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
-                    }*/
-                    
-                    if totalBytesSent == totalBytesExpectedToSend {
-                        if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
-                            if self.downloadReqCnt < 1 {
-                                self.updateProgressBar(0.15)
-                                //sleep(1)
-                            }
-                            
-                        }else{
-                            self.updateProgressBar(0.15)
-                            //sleep(1)
-                            
-                        }
-                        
-                        self.updateDLProcessLabel("Waiting Response...")
+            if totalBytesSent == totalBytesExpectedToSend {
+                if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
+                    if self.downloadReqCnt < 1 {
+                        self.updateProgressBar(0.15)
                     }
-               // })
-            //}
-            
+                }else{
+                    self.updateProgressBar(0.15)
+                }
+                self.updateDLProcessLabel("Waiting Response...")
+            }
         }
     }
     
@@ -1405,10 +1480,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         if(error != nil) {
             
             buffer.setData(NSMutableData())
-            updateButtonStatus("Enable",btn: self.downloadBtn)
-            updateButtonStatus("Enable",btn: self.uploadBtn)
-            var errorMsg = ""
             
+            var errorMsg = ""
             if error?.code == NSURLErrorTimedOut {
                 errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Network Issue"))"
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
@@ -1424,20 +1497,16 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             if self.actionType < 1 {
                 updateDLProcessLabel(errorMsg)
                 updateDownloadTaskStatusDetailButton()
+                updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
             } else {
                 updateULProcessLabel(errorMsg)
                 updateUploadTaskStatusDetailButton()
+                updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
             }
             self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Master Data Download" {
             
             do {
-                /*
-                 dispatch_async(dispatch_get_main_queue(), {
-                 self.mstrDataStatus.text =  "100%"
-                 self.masterDataProcessBar.progress = 100
-                 })*/
-                
                 updateDLProcessLabel("Preparing Master Data...")
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
@@ -1462,7 +1531,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1494,7 +1563,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_INPTSETUP)
-//                self.makeDLPostRequest(_DS_FGPODATA)
             }
             catch {
                 #if DEBUG
@@ -1504,7 +1572,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1550,7 +1618,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1591,7 +1659,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1635,7 +1703,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1681,7 +1749,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1731,7 +1799,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1768,7 +1836,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1814,7 +1882,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1895,7 +1963,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -1931,7 +1999,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -2005,6 +2073,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 self.updateDLProcessLabel("Complete")
                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
+                self.dsDataObj = nil
+                self.isDataSyncDone = true
                 
                 if let backgroundTaskIdentifier = self.backgroundTaskIdentifier {
                     UIApplication.sharedApplication().endBackgroundTask(backgroundTaskIdentifier)
@@ -2018,7 +2088,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.errorMsg = errorObject.localizedDescription ?? ""
                 
                 if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
                     updateDownloadTaskStatusDetailButton()
                 }else {
@@ -2095,9 +2165,13 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(0.8)
                 //start upload task photo here
                 
-                uploadPhotos = dataSyncHelper.getAllPhotos(includeTaskIds, excludeTaskIds: excludeTaskIds)!
-                self.totalULPhotos = uploadPhotos.count
-                uploadPhotos = uploadPhotos.reverse()
+                if self.uploadPhotos.count > 0 {
+                    self.totalULPhotos = uploadPhotos.count
+                } else {
+                    uploadPhotos = dataSyncHelper.getAllPhotos(includeTaskIds, excludeTaskIds: excludeTaskIds)!
+                    self.totalULPhotos = uploadPhotos.count
+                    uploadPhotos = uploadPhotos.reverse()
+                }
                 
                 if self.totalULPhotos>0 {
                     self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos)
@@ -2131,6 +2205,9 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     updateTaskStatus()
                     updateULProcessLabel("Complete")
                     updateButtonStatus("Enable",btn: self.uploadBtn)
+                    self.dsDataObj = nil
+                    self.isRetry = false
+                    self.isDataSyncDone = true
                     
                     //Send local notification for Task Done.
                     self.presentLocalNotification("Data Upload Complete.")
@@ -2213,6 +2290,10 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     updateTaskStatus()
                     updateULProcessLabel("Complete")
                     updateButtonStatus("Enable",btn: self.uploadBtn)
+                    self.uploadPhotos = [Photo]()
+                    self.dsDataObj = nil
+                    self.isRetry = false
+                    self.isDataSyncDone = true
                     
                     //Send local notification for Task Done.
                     self.presentLocalNotification("Data Upload Complete.")
