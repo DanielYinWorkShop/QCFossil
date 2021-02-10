@@ -35,6 +35,7 @@
 	<string>We need access to your photos to provide you an amazing app experience.</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>com.pacmobile.fossilqc</string>
 		<string>fetch</string>
 	</array>
 	<key>UIFileSharingEnabled</key>

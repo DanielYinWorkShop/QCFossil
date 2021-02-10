@@ -92,6 +92,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     
     var cleanTaskCnt = 0
     var errorMsg = ""
+    var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+    let path = "\(NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0])/response.json"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,15 +105,50 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         
         // Do any additional setup after loading the view.
         updateLocalizedString()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(triggerBackgroundRun), name: "triggerBackgroundRun", object: nil)
+        
+        
+        if let plist = NSBundle.mainBundle().pathForResource("Info", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: plist) as? [String: AnyObject],
+            var _path = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true).first,
+            let bundle = dict["CFBundleIdentifier"] {
+//            _path.appendContentsOf("/Caches/com.apple.nsurlsessiond/Downloads/\(bundle)")
+            _path.appendContentsOf("/Caches")
+            
+            try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: _path)
+        }
+        
+        if let plist = NSBundle.mainBundle().pathForResource("Info", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: plist) as? [String: AnyObject],
+            var _path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first,
+            let bundle = dict["CFBundleIdentifier"] {
+            
+//                        let database = "\(_DBNAME_USING)_\((Cache_Inspector?.appUserName?.lowercaseString)!)"
+            //            let databasePath = _path.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)")
+            
+//            let folderName = Cache_Inspector?.appUserName?.lowercaseString ?? ""
+            try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: _path)
+        }
+        
+        if let plist = NSBundle.mainBundle().pathForResource("Info", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: plist) as? [String: AnyObject],
+            var _path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first,
+            let bundle = dict["CFBundleIdentifier"] {
+            
+            let database = "\(_DBNAME_USING)_\((Cache_Inspector?.appUserName?.lowercaseString)!)"
+            let databasePath = _path.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)")
+            
+            //            let folderName = Cache_Inspector?.appUserName?.lowercaseString ?? ""
+            try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: databasePath)
+        }
     }
     
     func initSessionObj() {
         var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         configuration.timeoutIntervalForRequest = 300
         configuration.timeoutIntervalForResource = 300
-        //configuration.sessionSendsLaunchEvents = true
-        //configuration.discretionary = true
-        
+
         fgSession = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         
         configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("com.pacmobile.fossilqc")
@@ -213,6 +250,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     }
     
     @IBAction func downloadDataOnClick(sender: UIButton) {
+        
         self.downloadProcessBar.hidden = true
         self.downloadProcessLabel.hidden = false
         self.downloadTaskStatusDetailButton.hidden = true
@@ -258,6 +296,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         keyValueDataHelper.updateLastDownloadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
         
         NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+    }
+    
+    func triggerBackgroundRun() {
+        self.backgroundTaskIdentifier = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler {
+            let errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+            self.updateDLProcessLabel(errorMsg)
+            self.errorMsg = errorMsg
+            self.updateDownloadTaskStatusDetailButton()
+            UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskIdentifier!)
+            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid
+        }
     }
     
     func updateButtonStatus(status:String,btn:UIButton) {
@@ -658,7 +707,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 
                 
-                self.updateDLProcessLabel("\(self.getCurrentPODataTitle(apiName)) \(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Data Error Occurred"))")
+                self.updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Data Error Occurred"))")
             }
         })
     }
@@ -1339,7 +1388,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 if sessionDownloadTask == bgSession {
                     errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
                 } else {
-                    errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Server Not Available")
+                    errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Network Issue")
                 }
                 break
             default:
@@ -1361,11 +1410,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             var errorMsg = ""
             
             if error?.code == NSURLErrorTimedOut {
-                errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download Failed - Network Issue"))"
+                errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Network Issue"))"
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
             }else{
-                errorMsg = error?.localizedDescription ?? ""
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Network Request Failed with Unknown Reason!")
             }
             
             if sessionDownloadTask == bgSession {
@@ -1445,6 +1494,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_INPTSETUP)
+//                self.makeDLPostRequest(_DS_FGPODATA)
             }
             catch {
                 #if DEBUG
@@ -1531,6 +1581,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_FGPODATA)
+//                self.makeDLPostRequest(_DS_TASKDATA)
             }
             catch {
                 #if DEBUG
@@ -1620,6 +1671,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_TASKDATA)
+//                self.makeDLPostRequest(_DS_INPTSETUP)
             }
             catch {
                 #if DEBUG
@@ -1953,6 +2005,10 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 self.updateDLProcessLabel("Complete")
                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
+                
+                if let backgroundTaskIdentifier = self.backgroundTaskIdentifier {
+                    UIApplication.sharedApplication().endBackgroundTask(backgroundTaskIdentifier)
+                }
             }
             catch {
                 #if DEBUG
@@ -2255,7 +2311,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     }
     
     func getDataJsonPath() ->String {
-        return "\(NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0])/response.json"
+        return self.path
     }
     
     //didBecomeInvalidWithError

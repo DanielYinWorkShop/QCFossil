@@ -788,9 +788,7 @@
 
 "No Data Response." = "沒有回传数据。";
 
-"Download Failed - Server Not Available" = "下载失败 - 服务器无法连接";
-
-"Download Failed - Network Issue" = "下载失败 - 网络异常";
+"Sync Failed due to Network Issue" = "由于网络问题而同步失败";
 
 "App is in Offline Mode and unable to proceed Data Download." = "应用程式处于离线状态，不能进行数据下载。";
 
