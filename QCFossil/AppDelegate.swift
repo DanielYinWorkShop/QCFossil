@@ -71,6 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [UIUserNotificationType.Alert, UIUserNotificationType.Badge], categories: nil))
         }
         
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        
         return true
     }
 

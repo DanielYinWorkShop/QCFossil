@@ -102,25 +102,13 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //bgSession = backgroundSession
-        //fgSession = defaultSession
         initSessionObj()
-        
         
         // Do any additional setup after loading the view.
         updateLocalizedString()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(triggerBackgroundRun), name: "triggerBackgroundRun", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(runTasksDidBecomeActive), name: "runTasksDidBecomeActive", object: nil)
-        
-        if var _path = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true).first {
-            _path.appendContentsOf("/Caches")
-            try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: _path)
-        }
-        
-        if let _path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first {
-            try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionNone], ofItemAtPath: _path)
-        }
     }
     
     func initSessionObj() {
@@ -256,6 +244,9 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         updateDLProcessLabel("Send Request...")
         
         dataSet = [Dictionary<String, String>]()
+        self.resetProcessBar(self.dsDataObj as? [String: NSObject] ?? [:])
+        self.isRetry = false
+        self.isDataSyncDone = false
         
         if let _dsDataObj = self.dsDataObjDownloadRetry {
             makeDLPostRequest(_dsDataObj)
@@ -263,9 +254,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             makeDLPostRequest(_DS_MSTRDATA)
         }
         
-        self.isRetry = false
-        self.isDataSyncDone = false
-        self.resetProcessBar(self.dsDataObj as? [String: NSObject] ?? [:])
         self.lastDownloadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
         let keyValueDataHelper = KeyValueDataHelper()
         keyValueDataHelper.updateLastDownloadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
@@ -293,6 +281,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.cleanTaskStatus.text = ""
             self.stylePhotoStatus.text = ""
             self.stylePhotoCleanStatus.text = ""
+            
+            self.dsDataObjDownloadRetry = nil
         case "Inspection Setup Data Download", "Inspection Setup Data Download Acknowledgement":
             self.setupDataProcessBar.progress = 0.0
             self.fgpoDataProcessBar.progress = 0.0
@@ -310,6 +300,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.stylePhotoStatus.text = ""
             self.stylePhotoCleanStatus.text = ""
             
+            self.dsDataObjDownloadRetry = _DS_INPTSETUP
         case "FGPO Data Download", "FGPO Data Download Acknowledgement":
             self.totalReqCnt = 0
             self.downloadReqCnt = 0
@@ -326,6 +317,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.cleanTaskStatus.text = ""
             self.stylePhotoStatus.text = ""
             self.stylePhotoCleanStatus.text = ""
+            
+            self.dsDataObjDownloadRetry = _DS_FGPODATA
         case "Task Booking Data Download", "Task Booking Data Download Acknowledgement":
             self.taskDataProcessBar.progress = 0.0
             self.taskStatusDataProcessBar.progress = 0.0
@@ -338,6 +331,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.cleanTaskStatus.text = ""
             self.stylePhotoStatus.text = ""
             self.stylePhotoCleanStatus.text = ""
+            
+            self.dsDataObjDownloadRetry = _DS_TASKDATA
         case "Task Status Data Download", "Task Status Data Download Acknowledgement":
             self.taskStatusDataProcessBar.progress = 0.0
             self.cleanTaskProcessBar.progress = 0.0
@@ -348,15 +343,22 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.cleanTaskStatus.text = ""
             self.stylePhotoStatus.text = ""
             self.stylePhotoCleanStatus.text = ""
+            
+            self.dsDataObjDownloadRetry = _DS_DL_TASK_STATUS
         case "Style Photo Download", "Style Photo Download Acknowledgement":
             self.stylePhotoPrecessBar.progress = 0.0
             self.stylePhotoCleanProcessBar.progress = 0.0
             self.stylePhotoStatus.text = ""
             self.stylePhotoCleanStatus.text = ""
+            
+            self.dsDataObjDownloadRetry = _DS_DL_STYLE_PHOTO
         case "Task Result Data Upload":
             self.taskResultDataProcessBar.progress = 0.0
             self.taskUploadDataStatus.text = ""
-        case "Task Photo Data Upload":break
+            
+            self.dsDataObjUploadRetry = _DS_ULTASKDATA
+        case "Task Photo Data Upload":
+            self.dsDataObjUploadRetry = _DS_ULTASKPHOTO
         default:
             if actionType < 1 {
                 self.masterDataProcessBar.progress = 0.0
@@ -376,6 +378,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.cleanTaskStatus.text = ""
                 self.stylePhotoStatus.text = ""
                 self.stylePhotoCleanStatus.text = ""
+                
+                self.dsDataObjDownloadRetry = nil
             } else {
                 self.taskResultDataProcessBar.progress = 0.0
                 self.taskUploadDataStatus.text = ""
@@ -385,19 +389,14 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.taskPhotoProcessBar.progress = 0.0
                 self.currULPhotoIndex = 0
                 self.failULPhotoCount = 0
+                
+                self.dsDataObjUploadRetry = nil
             }
         }
     }
     
     func triggerBackgroundRun() {
-        self.backgroundTaskIdentifier = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler {
-            let errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
-            self.updateDLProcessLabel(errorMsg)
-            self.errorMsg = errorMsg
-            self.updateDownloadTaskStatusDetailButton()
-            UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskIdentifier!)
-            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid
-        }
+
     }
     
     
@@ -438,18 +437,18 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 if isRetry {
                     if self.actionType < 1 {
-                        self.dsDataObjDownloadRetry = self.dsDataObj
+//                        self.dsDataObjDownloadRetry = self.dsDataObj
                         self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Retry"), forState: UIControlState.Normal)
                     } else {
-                        self.dsDataObjUploadRetry = self.dsDataObj
+//                        self.dsDataObjUploadRetry = self.dsDataObj
                         self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Retry"), forState: UIControlState.Normal)
                     }
                 } else {
                     if self.actionType < 1 {
-                        self.dsDataObjDownloadRetry = nil
+//                        self.dsDataObjDownloadRetry = nil
                         self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), forState: UIControlState.Normal )
                     } else {
-                        self.dsDataObjUploadRetry = nil
+//                        self.dsDataObjUploadRetry = nil
                         self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), forState: UIControlState.Normal )
                     }
                 }
@@ -621,6 +620,14 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             var refTaskIdInTaskBookingData = ""
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
+                
+                let state = UIApplication.sharedApplication().applicationState
+                
+                if state != .Active {
+                    updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
+                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+                    return
+                }
                 
                 if var value = data[actionFields[data["tableName"]!]![idx]] {
                     value = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
@@ -1105,6 +1112,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.updateButtonStatus("Disable",btn: self.uploadBtn, isRetry: self.isRetry)
         self.updateULProcessLabel("Sending Request...")
         self.buffer = NSMutableData()
+        self.resetProcessBar(self.dsDataObj as? [String: NSObject] ?? [:])
         
         //session = backgroundSession
         if let _dsDataObj = self.dsDataObjUploadRetry {
@@ -1138,6 +1146,13 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         
         let photoFile = dbDir.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)/Tasks/"+photo.taskBookingNo!+"/"+photo.photoFile)
         let thumbFile = dbDir.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)/Tasks/"+photo.taskBookingNo!+"/Thumbs/"+photo.photoFile)
+        
+        let filemgr = NSFileManager.defaultManager()
+        if !filemgr.fileExistsAtPath(photoFile) || !filemgr.fileExistsAtPath(thumbFile) {
+            updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed No Original or Thumb Photo Found!"))
+            updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+            return NSMutableURLRequest()
+        }
         
         let param = [
             "service_token"  : "\(_DS_SERVICETOKEN)",
@@ -1205,11 +1220,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     }
     //------------------------------------- end upload photo --------------------------------------------
     func makeDLPostRequest(dsData:AnyObject) {
-        updateDLProcessLabel("Sending Request...")
-        
+
         let state = UIApplication.sharedApplication().applicationState
-        
         if state == .Active {
+            
+            updateDLProcessLabel("Sending Request...")
             
             // foreground
             sessionDownloadTask = fgSession?.downloadTaskWithRequest(createDLRequest(dsData))
@@ -1218,8 +1233,10 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }else{
             
             // background
-            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createDLRequest(dsData))
-            sessionDownloadTask?.resume()
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
+            updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+//            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createDLRequest(dsData))
+//            sessionDownloadTask?.resume()
         }
     }
     
@@ -1277,8 +1294,10 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }else{
             
             // background
-            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createULACKRequest(dsData, coutDic: coutDic))
-            sessionDownloadTask?.resume()
+            updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
+            updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+//            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createULACKRequest(dsData, coutDic: coutDic))
+//            sessionDownloadTask?.resume()
         }
     }
     
@@ -1339,10 +1358,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             sessionDownloadTask?.resume()
             
         }else{
-            
+            updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
+            updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
             // background
-            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createULRequest(dsData))
-            sessionDownloadTask?.resume()
+//            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createULRequest(dsData))
+//            sessionDownloadTask?.resume()
         }
     }
     
@@ -1595,7 +1615,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
                 
                 #if DEBUG
-                print("jsonData: \(jsonData)")
+//                print("jsonData: \(jsonData)")
                 #endif
                 
                 _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
@@ -2074,11 +2094,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateDLProcessLabel("Complete")
                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
                 self.dsDataObj = nil
+                self.dsDataObjDownloadRetry = nil
                 self.isDataSyncDone = true
-                
-                if let backgroundTaskIdentifier = self.backgroundTaskIdentifier {
-                    UIApplication.sharedApplication().endBackgroundTask(backgroundTaskIdentifier)
-                }
             }
             catch {
                 #if DEBUG
@@ -2182,14 +2199,19 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                         if state == .Active {
                             
                             // foreground
-                            sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(createPhotoULRequest(photo))
-                            sessionDownloadTask?.resume()
+                            let request = createPhotoULRequest(photo)
+                            if let _ = request.URL {
+                                sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
+                                sessionDownloadTask?.resume()
+                            }
                             
                         }else{
                             
                             // background
-                            sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(createPhotoULRequest(photo))
-                            sessionDownloadTask?.resume()
+                            updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
+                            updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+//                            sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(createPhotoULRequest(photo))
+//                            sessionDownloadTask?.resume()
                             
                         }
                         
@@ -2263,8 +2285,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     #endif
                     
                     //update photo upload date
-                    if (Int(dataObj["photo_id"]!) != nil && result.containsString("OK")) {
-                        let photoIdUploaded = Int(dataObj["photo_id"]!) ?? 0
+                    if result.containsString("OK") {
+                        let photoIdUploaded = Int(dataObj["photo_id"] ?? "0") ?? 0
                         let taskId = Int(dataObj["task_id"] ?? "0") ?? 0
                         let dataSyncDataHelper = DataSyncDataHelper()
                         dataSyncDataHelper.updatePhotoUploadDateByPhotoId(photoIdUploaded, taskId: taskId)
@@ -2292,6 +2314,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     updateButtonStatus("Enable",btn: self.uploadBtn)
                     self.uploadPhotos = [Photo]()
                     self.dsDataObj = nil
+                    self.dsDataObjUploadRetry = nil
                     self.isRetry = false
                     self.isDataSyncDone = true
                     
@@ -2309,14 +2332,19 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     if state == .Active {
                         
                         // foreground
-                        sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(createPhotoULRequest(photo))
-                        sessionDownloadTask?.resume()
+                        let request = createPhotoULRequest(photo)
+                        if let _ = request.URL {
+                            sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
+                            sessionDownloadTask?.resume()
+                        }
                         
                     }else{
                         
                         // background or inactive
-                        sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(createPhotoULRequest(photo))
-                        sessionDownloadTask?.resume()
+                        updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
+                        updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+//                        sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(createPhotoULRequest(photo))
+//                        sessionDownloadTask?.resume()
                         
                     }
                 }

@@ -983,3 +983,5 @@
 "Sync Failed when iPad in Sleep Mode" = "iPad在睡眠模式下同步失败";
 
 "Retry" = "重试";
+
+"Sync Failed No Original or Thumb Photo Found!" = "找不到原始照片同步失败";

@@ -395,7 +395,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
                 }
                 
             }else{
-                let photo = image.saveImageToLocal(image, savePath: Cache_Task_Path!, taskId: (Cache_Task_On?.taskId)!, bookingNo: (Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo)!, inspectorName: (Cache_Inspector?.appUserName)!, dataRecordId: self.dataRecordId, dataType: self.dataType, currentDate: self.view.getCurrentDateTime(),originFileName: "originFileName")
+                let photo = image.saveImageToLocal(image, savePath: Cache_Task_Path!, taskId: (Cache_Task_On?.taskId)!, bookingNo: (Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo)!, inspectorName: (Cache_Inspector?.appUserName)!, dataRecordId: nil, dataType: self.dataType, currentDate: self.view.getCurrentDateTime(),originFileName: "originFileName")
                 
                 Cache_Task_On!.myPhotos.append(photo)
             }
