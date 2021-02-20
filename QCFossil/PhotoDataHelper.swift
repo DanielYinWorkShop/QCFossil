@@ -70,7 +70,7 @@ class PhotoDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if db.executeUpdate(sql, withArgumentsInArray: [notNilObject(photo.photoId)!,photo.taskId,photo.refPhotoId!,photo.photoFile,photo.photoFile,photo.thumbFile!,photo.photoDesc!,photo.dataRecordId!,photo.createUser!,photo.createDate!,photo.modifyUser!,photo.modifyDate!,photo.dataType!]){
+            if db.executeUpdate(sql, withArgumentsInArray: [photo.photoId ?? 0,photo.taskId,photo.refPhotoId ?? 0,photo.photoFile,photo.photoFile,photo.thumbFile ?? "",photo.photoDesc ?? "",photo.dataRecordId ?? 0,photo.createUser ?? "",photo.createDate ?? "",photo.modifyUser ?? "",photo.modifyDate ?? "",photo.dataType ?? 0]){
                 photo.photoId = Int(db.lastInsertRowId())
                 
                 db.close()
