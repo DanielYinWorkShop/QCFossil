@@ -61,6 +61,7 @@ class Task {
     var sortingNum:Int = 0
     var errorCode:Int = 0
     var prodDesc:String?
+    var confirmUploadDate:String?
     
     //inspection result
     var inspCatResuts = [InspCatResult]()

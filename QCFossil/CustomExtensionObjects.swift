@@ -853,7 +853,7 @@ extension UIView {
     }
     
     func disableFuns(obj:AnyObject = UIButton()) ->Bool {
-        if (Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Confirmed").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Cancelled").rawValue) && !_DEBUG_MODE {
+        if ((Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Confirmed").rawValue && Cache_Task_On?.confirmUploadDate == nil) || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Cancelled").rawValue) && !_DEBUG_MODE {
             if obj.classForCoder == UIButton.classForCoder() {
                 (obj as! UIButton).removeTarget(nil, action:nil, forControlEvents:UIControlEvents.AllEvents)
                 (obj as! UIButton).addTarget(self, action: #selector(UIView.btnFunDisble), forControlEvents: UIControlEvents.TouchUpInside)
@@ -866,7 +866,7 @@ extension UIView {
             }
 
             return true
-        }else if (Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Reviewed").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Refused").rawValue) {
+        }else if (Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Confirmed").rawValue && Cache_Task_On?.confirmUploadDate != nil) || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Reviewed").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Refused").rawValue {
             
             if obj.classForCoder == UIButton.classForCoder() {
                 (obj as! UIButton).removeTarget(nil, action:nil, forControlEvents:UIControlEvents.AllEvents)

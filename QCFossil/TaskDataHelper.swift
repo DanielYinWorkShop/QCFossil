@@ -90,6 +90,7 @@ class TaskDataHelper:DataHelperMaster{
                 let dataRefuseDesc = rs.stringForColumn("data_refuse_desc")
                 let qcRemarks = rs.stringForColumn("qc_remarks_option_list")
                 let additionalAdministrativeItems = rs.stringForColumn("additional_admin_item_option_list")
+                let confirmUploadDate = rs.stringForColumn("confirm_upload_date")
                 
                 if bookingDate != nil && bookingDate != "" {
                     let bookingDateTmp = bookingDate
@@ -148,6 +149,7 @@ class TaskDataHelper:DataHelperMaster{
                 task.cancelDate = cancelDate
                 task.dataRefuseDesc =  dataRefuseDesc == nil ? "" : dataRefuseDesc
                 task.sortingNum = sortingNum
+                task.confirmUploadDate = confirmUploadDate
             }
             }
             
