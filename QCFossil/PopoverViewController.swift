@@ -206,9 +206,8 @@ class PopoverViewController: UIViewController {
             
             let descView = UITextView.init(frame: CGRect(x: 0,y: 0,width: 640, height: 320))
             descView.text = selectedValue
-            descView.userInteractionEnabled = false
+            descView.userInteractionEnabled = true
             descView.font = UIFont.systemFontOfSize(18.0)
-            
             self.view.addSubview(descView)
         
         } else{

@@ -574,4 +574,22 @@ class PhotoDataHelper:DataHelperMaster {
         
         return true
     }
+    
+    func getTaskIdByPhotoId(photoId: Int) -> String {
+        
+        let sql = "SELECT task_id FROM task_inspect_photo_file WHERE photo_id = ?"
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [photoId]) {
+                if rs.next() {
+                    return rs.stringForColumn("task_id")
+                }
+            }
+            
+            db.close()
+        }
+        
+        return ""
+    }
 }

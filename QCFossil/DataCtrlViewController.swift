@@ -34,7 +34,8 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     @IBOutlet weak var backupHistoryLabel: UILabel!
     @IBOutlet weak var upperLine: UILabel!
     @IBOutlet weak var downLine: UILabel!
-
+    @IBOutlet weak var dataControlStatusDetailButton: UIButton!
+    
     typealias CompletionHandler = (obj:AnyObject?, success: Bool?) -> Void
     var filePath = NSHomeDirectory() + "/Documents"
     var zipPath5 = NSHomeDirectory() + "/task.zip"
@@ -51,6 +52,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     let typeRestore = "R"
     var typeNow = ""
     let keyValueDataHelper = KeyValueDataHelper()
+    var errorMessage = ""
     
     struct BackupFile {
         var appRealse:String
@@ -83,6 +85,8 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         configuration.sessionSendsLaunchEvents = true
         configuration.discretionary = true
         
+        self.dataControlStatusDetailButton.hidden = true
+        
         bgSession = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         
         if Cache_Inspector?.appUserName == "" {
@@ -93,42 +97,12 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         initPage()
     
     }
-    /*
-    var defaultSession: NSURLSession {
-        struct MydefaultSession {
-            static var defaultSessionStaticSelf: DataCtrlViewController!
-            static var defaultSessionInstance: NSURLSession = {
-                
-                var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-                configuration.timeoutIntervalForRequest = 300
-                configuration.timeoutIntervalForResource = 300
-                configuration.sessionSendsLaunchEvents = true
-                configuration.discretionary = true
-                
-                return NSURLSession(configuration: configuration, delegate: defaultSessionStaticSelf, delegateQueue: nil)
-            }()
-        }
-        MydefaultSession.defaultSessionStaticSelf = self
-        return MydefaultSession.defaultSessionInstance
-    }
     
-    var backgroundSession: NSURLSession {
-        struct MybackgroundSession {
-            static var backgroundSessionStaticSelf: DataCtrlViewController!
-            static var backgroundSessionInstance: NSURLSession = {
-                
-                var configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("com.pacmobile.fossilqc.dataCtrl")
-                configuration.timeoutIntervalForRequest = 60
-                configuration.timeoutIntervalForResource = 60
-                configuration.sessionSendsLaunchEvents = true
-                configuration.discretionary = true
-                
-                return NSURLSession(configuration: configuration, delegate: backgroundSessionStaticSelf, delegateQueue: nil)
-            }()
-        }
-        MybackgroundSession.backgroundSessionStaticSelf = self
-        return MybackgroundSession.backgroundSessionInstance
-    }*/
+    func updateDataControlStatusDetailButton(isHidden: Bool = false) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.dataControlStatusDetailButton.hidden = isHidden
+        })
+    }
     
     func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
         print("All tasks are finished")
@@ -299,7 +273,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     }
     
     @IBAction func backupDataClick(sender: UIButton) {
-        
+        updateDataControlStatusDetailButton(true)
         self.typeNow = self.typeBackup
         self.view.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup Data")+"?",parentVC:self, handlerFun: { (action:UIAlertAction!) in
             
@@ -335,19 +309,16 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     param["app_release"] = _RELEASE
                     
                     let request = self.createBackupRequest(param, url: NSURL(string: _DS_UPLOADDBBACKUP["APINAME"] as! String)!)
-                    let state = UIApplication.sharedApplication().applicationState
-                    
-                    if state == .Background {
-                        
-                        // background
-                        self.sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(request)
-                        self.sessionDownloadTask?.resume()
-                    }
-                    else if state == .Active {
+                    if UIApplication.sharedApplication().applicationState == .Active {
                         
                         // foreground
                         self.sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
                         self.sessionDownloadTask?.resume()
+                    } else {
+                        self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+                        self.updateButtonsStatus(true)
+                        self.errorMessage = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+                        self.updateDataControlStatusDetailButton()
                     }
                 })
             })
@@ -510,7 +481,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     }
     
     @IBAction func restoreDataOnClick(sender: UIButton) {
-        
+        updateDataControlStatusDetailButton(true)
         self.typeNow = self.typeListBackupFiles
         
         dispatch_async(dispatch_get_main_queue(), {
@@ -538,21 +509,19 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             self.updateButtonsStatus(false)
         
             let request = self.createRequest(param, url: NSURL(string: _DS_LISTDBBACKUP["APINAME"] as! String)!)
-            let state = UIApplication.sharedApplication().applicationState
-        
-            if state == .Background {
-            
-                // background
-                self.sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(request)
-                self.sessionDownloadTask?.resume()
-            }else if state == .Active {
+            if UIApplication.sharedApplication().applicationState == .Active {
             
                 // foreground
                 self.sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
                 self.sessionDownloadTask?.resume()
+            } else {
+                self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+                self.updateButtonsStatus(true)
+                self.errorMessage = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+                self.updateDataControlStatusDetailButton()
             }
     }
-    
+
     //------------------------------------- Delegate Funcs --------------------------------------------------------
     func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
         
@@ -621,6 +590,9 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
         } catch {
             print("Could not clear temp folder: \(error)")
+            let _error = error as NSError
+            self.errorMessage = "\(_error.localizedDescription ?? "" )"
+            self.updateDataControlStatusDetailButton()
         }
             
                     
@@ -647,6 +619,9 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             }
           
         } catch {
+            let _error = error as NSError
+            self.errorMessage = "\(_error.localizedDescription ?? "" )"
+            self.updateDataControlStatusDetailButton()
             
             do{
                 try SSZipArchive.unzipFileAtPath(self.zipPath5, toDestination: self.filePath, overwrite: true, password: "", delegate: self)
@@ -656,6 +631,9 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
             }catch{
                 print(error)
+                let _error = error as NSError
+                self.errorMessage = "\(_error.localizedDescription ?? "" )"
+                self.updateDataControlStatusDetailButton()
                 dispatch_async(dispatch_get_main_queue(), {
                     self.passwordLabel.text = "\(error)"
                 })
@@ -718,22 +696,22 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             var errorMsg = ""
             
             if error?.code == NSURLErrorTimedOut {
-                errorMsg = "Network Connection Lost!"
-                print("\(errorMsg)")
-                self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg)
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Network Issue")
                 self.updateButtonsStatus(true)
-                
             }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
-                errorMsg = "Network Connection Cannot Established!"
-                print("\(errorMsg)")
-                
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
             }else{
-                errorMsg = "Network Request Failed with Unknown Reason!"
-                print("error: \(error!.localizedDescription), error code: \(error?.code)")
-                
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Network Request Failed with Unknown Reason!")
+            }
+            self.errorMessage = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
+            
+            if UIApplication.sharedApplication().applicationState != .Active {
+                errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+                self.errorMessage = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
             }
             
             self.updateButtonsStatus(true)
+            updateDataControlStatusDetailButton()
             dispatch_async(dispatch_get_main_queue(), {
                 self.progressBar.progress = 0
                 self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(errorMsg)
@@ -778,12 +756,11 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     let error = error as NSError
                     self.updateButtonsStatus(true)
                     self.passwordLabel.text = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString(error.localizedDescription))"
-                    
+                    self.errorMessage = "\(error.localizedDescription ?? "" )"
+                    self.updateDataControlStatusDetailButton()
                 })
             }
-            
             buffer.setData(NSMutableData())
-            
         }else if self.typeNow == self.typeBackup {
             
             do {
@@ -828,6 +805,8 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                     self.removeLocalBackupZipFile()
                     let responseString = NSString(data: self.buffer, encoding: NSUTF8StringEncoding)
                     print("responseString = \(responseString)")
+                    self.errorMessage = "\(error.localizedDescription ?? "" )"
+                    self.updateDataControlStatusDetailButton()
                 })
             }
             
@@ -891,7 +870,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
     }
     
     @IBAction func restoreBtnOnClick(sender: UIButton) {
-        
+        updateDataControlStatusDetailButton(true)
         self.typeNow = self.typeRestore
         
         if self.selectedBackupFile == nil {
@@ -926,21 +905,17 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
             
             self.updateButtonsStatus(false)
             let request = self.createRequest(param, url: NSURL(string: _DS_DBBACKUPDOWNLOAD["APINAME"] as! String)!)
-            let state = UIApplication.sharedApplication().applicationState
-            
-            if state == .Background {
-                
-                // background
-                self.sessionDownloadTask = self.bgSession?.downloadTaskWithRequest(request)
-                self.sessionDownloadTask!.resume()
-            }else if state == .Active {
+            if UIApplication.sharedApplication().applicationState == .Active {
                 
                 // foreground
                 self.sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
                 self.sessionDownloadTask!.resume()
+            } else {
+                self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+                self.updateButtonsStatus(true)
+                self.errorMessage = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+                self.updateDataControlStatusDetailButton()
             }
-            
-            
             
             //self.sessionDownloadTask = self.session?.downloadTaskWithRequest(request)
             //self.sessionDownloadTask?.resume()
@@ -953,6 +928,7 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
         self.restoreBtn.hidden = true
         self.upperLine.hidden = true
         self.downLine.hidden = true
+        updateDataControlStatusDetailButton(true)
     
     }
     
@@ -975,11 +951,34 @@ class DataCtrlViewController: UIViewController, NSURLSessionDelegate, NSURLSessi
                 
             } catch {
                 print("Could not clear Zip file: \(error)")
+                let _error = error as NSError
+                self.errorMessage = "\(_error.localizedDescription ?? "" )"
+                self.updateDataControlStatusDetailButton()
             }
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 print("Zip File has been Removed Successfully!")
             })
         })
+    }
+    
+    @IBAction func dataControlStatusDetailButtonDidPress(sender: UIButton) {
+        let popoverContent = PopoverViewController()
+        popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
+        
+        popoverContent.dataType = _DOWNLOADTASKSTATUSDESC
+        popoverContent.selectedValue = self.errorMessage
+        
+        let nav = UINavigationController(rootViewController: popoverContent)
+        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
+        nav.navigationBar.barTintColor = UIColor.whiteColor()
+        nav.navigationBar.tintColor = UIColor.blackColor()
+        
+        let popover = nav.popoverPresentationController
+        popover?.delegate = sender.parentVC as? PopoverMaster
+        popover?.sourceView = sender
+        popover?.sourceRect = CGRectMake(0,0,sender.frame.size.width,sender.frame.size.height)
+        
+        sender.parentVC?.presentViewController(nav, animated: true, completion: nil)
     }
 }

@@ -91,7 +91,13 @@ class DataSyncDataHelper:DataHelperMaster {
                 }
                     
                 //2. update table records
+//                @see lastError
+//                @see lastErrorCode
+//                @see lastErrorMessage
                 if !db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    vc.errorMsg += "Error in \(apiName)\n"
+                    vc.errorMsg += "Error Sql Script: \(sql)\n"
+                    vc.errorMsg += "Sqlite Error: \(db.lastError())\n ErrorCode: \(db.lastErrorCode())\n ErrorMessage: \(db.lastErrorMessage())"
                     print("Error, DB Rollback!")
                     db.rollback()
                     db.close()

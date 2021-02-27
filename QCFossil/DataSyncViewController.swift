@@ -435,6 +435,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 if state != .Active {
                     updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
                     updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+                    updateDownloadTaskStatusDetailButton()
                     return
                 }
                 
@@ -650,7 +651,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 }
                 
                 self.updateDLProcessLabel("\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Data Error Occurred"))")
-                self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Fail, DB Rollbacked")
+                self.updateDownloadTaskStatusDetailButton()
             }
         })
     }
@@ -959,7 +960,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         
         let filemgr = NSFileManager.defaultManager()
         if !filemgr.fileExistsAtPath(photoFile) || !filemgr.fileExistsAtPath(thumbFile) {
-            updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed No Original or Thumb Photo Found!"))
+//            updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed No Original or Thumb Photo Found!"))
+            self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed No Original or Thumb Photo Found!")
             updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
             return NSMutableURLRequest()
         }
@@ -1045,6 +1047,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             // background
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
             updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+            errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+            updateDownloadTaskStatusDetailButton()
         }
     }
     
@@ -1104,8 +1108,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             // background
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
             updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-//            sessionDownloadTask = bgSession?.downloadTaskWithRequest(createULACKRequest(dsData, coutDic: coutDic))
-//            sessionDownloadTask?.resume()
+            errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+            updateDownloadTaskStatusDetailButton()
         }
     }
     
@@ -1168,6 +1172,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }else{
             updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
             updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+            errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+            updateDownloadTaskStatusDetailButton()
         }
     }
     
@@ -1298,6 +1304,28 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         return errorDesc
     }
     
+    func displayDetailErrorInfo(error: NSError, pathToFile: String?) {
+        let errorObject = error
+        self.errorMsg = errorObject.localizedDescription ?? ""
+        
+        if let _pathToFile = pathToFile {
+            do {
+                let dataFromServer = try NSString(contentsOfFile: _pathToFile, encoding: NSUTF8StringEncoding)
+                self.errorMsg += "\n\nReference Json Data: \(dataFromServer)"
+            } catch {}
+        }
+        
+        if self.actionType < 1 {
+            updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+            updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
+            updateDownloadTaskStatusDetailButton()
+        }else {
+            updateButtonStatus("Enable",btn: self.uploadBtn)
+            updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
+            updateUploadTaskStatusDetailButton()
+        }
+    }
+    
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         //use buffer here.Download is done
         //progress.progress = 1.0   // download 100% complete
@@ -1314,9 +1342,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }else{
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Network Request Failed with Unknown Reason!")
             }
+            self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
             
             if UIApplication.sharedApplication().applicationState != .Active {
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
+                self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+                updateDownloadTaskStatusDetailButton()
             }
 
             if self.actionType < 1 {
@@ -1328,7 +1359,6 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 updateUploadTaskStatusDetailButton()
                 updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
             }
-            self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Master Data Download" {
             
             do {
@@ -1352,18 +1382,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Master Data Download Acknowledgement" {
@@ -1393,18 +1412,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Inspection Setup Data Download" {
@@ -1439,18 +1447,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Inspection Setup Data Download Acknowledgement" {
@@ -1474,24 +1471,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_FGPODATA)
-//                self.makeDLPostRequest(_DS_TASKDATA)
             }
             catch {
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
             
@@ -1518,24 +1503,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #endif
                 
                 self.processingDownloadData("_DS_FGPODATA", jsonData: jsonData)
-                //self.processingDownloadData("FGPO Data Download", jsonData: jsonData)
             }
             catch {
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
@@ -1564,29 +1537,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(1)
                 
                 self.makeDLPostRequest(_DS_TASKDATA)
-//                self.makeDLPostRequest(_DS_INPTSETUP)
             }
             catch {
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Booking Data Download" {
-            
+            var jsonData:NSDictionary = [:]
             do {/*
                  dispatch_async(dispatch_get_main_queue(), {
                  self.taskDataStatus.text =  "100%"
@@ -1595,11 +1556,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 updateDLProcessLabel("Preparing Task Booking Data...")
                 
-//                let jsonString = "{\"service_session\":\"42530\",\"inspect_task_list\":[{\"ref_task_id\":\"14285\",\"prod_type_id\":\"1\",\"inspect_type_id\":\"1\",\"booking_no\":\"RPT-0000014285\",\"booking_date\":\"10/30/2020 12:00:00 AM\",\"vdr_location_id\":\"42\",\"report_inspector_id\":\"\",\"report_prefix\":\"\",\"report_running_no\":\"\",\"inspection_no\":\"\",\"inspection_date\":\"\",\"inspect_setup_id\":\"1\",\"tmpl_id\":\"2\",\"task_remarks\":\"\",\"vdr_notes\":\"\",\"inspect_result_value_id\":\"\",\"inspector_sign_image_file\":\"\",\"vdr_sign_name\":\"\",\"vdr_sign_image_file\":\"\",\"task_status\":\"2\",\"rec_status\":\"0\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_inspector_list\":[{\"ref_task_id\":\"14285\",\"inspector_id\":\"121\",\"inspect_enable_flag\":\"1\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:26 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_item_list\":[{\"ref_task_id\":\"14285\",\"po_item_id\":\"89247\",\"ref_qc_plan_line_id\":\"\",\"target_inspect_qty\":\"250\",\"avail_inspect_qty\":\"\",\"sampling_qty\":\"\",\"inspect_enable_flag\":\"1\",\"item_barcode\":\"\",\"retail_price\":\"\",\"currency\":\"\",\"style_size\":\"ES4255\",\"substr_style_size\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_qc_info_list\":[]}"
+//                let jsonString = "{\"\"service_session\":\"42530\",\"inspect_task_list\":[{\"ref_task_id\":\"14285\",\"prod_type_id\":\"1\",\"inspect_type_id\":\"1\",\"booking_no\":\"RPT-0000014285\",\"booking_date\":\"10/30/2020 12:00:00 AM\",\"vdr_location_id\":\"42\",\"report_inspector_id\":\"\",\"report_prefix\":\"\",\"report_running_no\":\"\",\"inspection_no\":\"\",\"inspection_date\":\"\",\"inspect_setup_id\":\"1\",\"tmpl_id\":\"2\",\"task_remarks\":\"\",\"vdr_notes\":\"\",\"inspect_result_value_id\":\"\",\"inspector_sign_image_file\":\"\",\"vdr_sign_name\":\"\",\"vdr_sign_image_file\":\"\",\"task_status\":\"2\",\"rec_status\":\"0\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_inspector_list\":[{\"ref_task_id\":\"14285\",\"inspector_id\":\"121\",\"inspect_enable_flag\":\"1\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:26 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_item_list\":[{\"ref_task_id\":\"14285\",\"po_item_id\":\"89247\",\"ref_qc_plan_line_id\":\"\",\"target_inspect_qty\":\"250\",\"avail_inspect_qty\":\"\",\"sampling_qty\":\"\",\"inspect_enable_flag\":\"1\",\"item_barcode\":\"\",\"retail_price\":\"\",\"currency\":\"\",\"style_size\":\"ES4255\",\"substr_style_size\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_qc_info_list\":[]}"
 //                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
-//                
+
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
                 
                 
                 //buffer.setData(NSMutableData())
@@ -1614,24 +1575,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #endif
                     
                 self.processingDownloadData("_DS_TASKDATA", jsonData: jsonData)
-                //self.processingDownloadData("Task Booking Data Download", jsonData: jsonData)
             }
             catch {
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Booking Data Download Acknowledgement" {
@@ -1657,18 +1606,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Status Data Download" {
@@ -1697,24 +1635,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #endif
                 
                 self.processingDownloadData("_DS_DL_TASK_STATUS", jsonData: jsonData)
-                //self.processingDownloadData("Task Status Data Download", jsonData: jsonData)
             }
             catch {
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Status Data Download Acknowledgement" {
@@ -1784,18 +1710,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download" {
             
@@ -1820,18 +1735,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
             
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Style Photo Download Acknowledgement" {
@@ -1903,18 +1807,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                     print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
             //Handle data in NSData type
@@ -1994,17 +1887,35 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 if self.totalULPhotos>0 {
                     self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos)
-                    
+                    let photoDataHelper = PhotoDataHelper()
                     if let photo = uploadPhotos.popLast() {
-                        let state = UIApplication.sharedApplication().applicationState
+                        var request: NSURLRequest = createPhotoULRequest(photo)
+                        while request.URL == nil {
+                            currULPhotoIndex += 1
+                            failULPhotoCount += 1
+                            self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
+                            tasksWithPhotosUploadFail.append(photoDataHelper.getTaskIdByPhotoId(photo.photoId ?? 0) ?? "")
+                            
+                            if let photo = uploadPhotos.popLast() {
+                                request = createPhotoULRequest(photo)
+                            } else {
+                                break
+                            }
+                        }
                         
-                        if state == .Active {
+                        if UIApplication.sharedApplication().applicationState == .Active {
                             
                             // foreground
-                            let request = createPhotoULRequest(photo)
                             if let _ = request.URL {
                                 sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
                                 sessionDownloadTask?.resume()
+                            } else {
+                                self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
+                                tasksWithPhotosUploadFail.append(photoDataHelper.getTaskIdByPhotoId(photo.photoId ?? 0) ?? "")
+                                updateUploadTaskStatusDetailButton()
+                                if uploadPhotos.count < 1 {
+                                    updateULProcessLabel("Complete")
+                                }
                             }
                             
                         }else{
@@ -2012,6 +1923,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                             // background
                             updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
                             updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+                            self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+                            updateUploadTaskStatusDetailButton()
                         }
                         
                     }
@@ -2037,18 +1950,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
         }else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Photo Data Upload" {
             //Handle data in NSData type
@@ -2056,7 +1958,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             var dataSet = [Dictionary<String, String>]()
             self.currULPhotoIndex += 1
-            self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos)
+            if failULPhotoCount > 0 {
+                self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
+            } else {
+                self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos)
+            }
             
             do {
                 let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
@@ -2119,22 +2025,44 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 }
                 
                 if let photo = uploadPhotos.popLast() {
-                    let state = UIApplication.sharedApplication().applicationState
+                    let photoDataHelper = PhotoDataHelper()
+                    var request: NSURLRequest = createPhotoULRequest(photo)
+                    while request.URL == nil {
+                        currULPhotoIndex += 1
+                        failULPhotoCount += 1
+                        self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
+                        tasksWithPhotosUploadFail.append(photoDataHelper.getTaskIdByPhotoId(photo.photoId ?? 0) ?? "")
+                        
+                        if let photo = uploadPhotos.popLast() {
+                            request = createPhotoULRequest(photo)
+                        } else {
+                            break
+                        }
+                    }
                     
-                    if state == .Active {
+                    if UIApplication.sharedApplication().applicationState == .Active {
                         
                         // foreground
-                        let request = createPhotoULRequest(photo)
                         if let _ = request.URL {
                             sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
                             sessionDownloadTask?.resume()
+                        } else {
+                            self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
+                            tasksWithPhotosUploadFail.append(photoDataHelper.getTaskIdByPhotoId(photo.photoId ?? 0) ?? "")
+                            
+                            updateUploadTaskStatusDetailButton()
+                            if uploadPhotos.count < 1 {
+                                updateULProcessLabel("Complete")
+                            }
                         }
                         
                     }else{
                         
-                        // background or inactive
+                        // background
                         updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
                         updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
+                        self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
+                        updateUploadTaskStatusDetailButton()
                     }
                 }
                 
@@ -2142,20 +2070,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 #if DEBUG
                 print("error serializing JSON: \(error)")
                 #endif
-                let errorObject = error as NSError
-                self.errorMsg = errorObject.localizedDescription ?? ""
-                
-                if self.actionType < 1 {
-                    updateButtonStatus("Enable",btn: self.downloadBtn)
-                    updateDLProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateDownloadTaskStatusDetailButton()
-                    
-                }else {
-                    updateButtonStatus("Enable",btn: self.uploadBtn)
-                    updateULProcessLabel("\(errorMsgByCode((error as NSError).code))")
-                    updateUploadTaskStatusDetailButton()
-                    
-                }
+                displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
         }
         
