@@ -31,17 +31,26 @@ class TabBarViewController: UITabBarController {
         photoAlbumViewController?.initPhotoTakerNotification()
         photoAlbumViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo Album")
         
-        switch Cache_Inspector?.typeCode ?? "LEATHER" {
-        case TypeCode.LEATHER.rawValue:
-            self.childViewControllers[3].removeFromParentViewController()
-            break
-        case TypeCode.WATCH.rawValue, TypeCode.JEWELRY.rawValue:
+        let taskDataHelper = TaskDataHelper()
+        let isShowQCInfoPage = taskDataHelper.isNeedShowQCInfoPage(Cache_Task_On?.refTaskId ?? 0)
+        if isShowQCInfoPage {
             qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
             qcInfoViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
-            break
-        default:
-            break
+        } else {
+            self.childViewControllers[3].removeFromParentViewController()
         }
+        
+//        switch Cache_Inspector?.typeCode ?? "LEATHER" {
+//        case TypeCode.LEATHER.rawValue, TypeCode.PACKAGING.rawValue:
+//            self.childViewControllers[3].removeFromParentViewController()
+//            break
+//        case TypeCode.WATCH.rawValue, TypeCode.JEWELRY.rawValue:
+//            qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
+//            qcInfoViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
+//            break
+//        default:
+//            break
+//        }
     }
 
     override func didReceiveMemoryWarning() {

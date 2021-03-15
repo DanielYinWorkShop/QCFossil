@@ -435,6 +435,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 if state != .Active {
                     updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
                     updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
+                    errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
                     updateDownloadTaskStatusDetailButton()
                     return
                 }

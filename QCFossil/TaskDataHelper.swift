@@ -2472,4 +2472,18 @@ class TaskDataHelper:DataHelperMaster{
         
         return textValue.stringByReplacingOccurrencesOfString(",)", withString: "")
     }
+    
+    func isNeedShowQCInfoPage(taskId:Int) ->Bool {
+        let sql = "SELECT * FROM inspect_task_qc_info WHERE ref_task_id = ?"
+        var result = false
+        if db.open() {
+            if let rs = db.executeQuery(sql, withArgumentsInArray: [taskId]) {
+                if rs.next() {
+                    result = true
+                }
+            }
+            db.close()
+        }
+        return result
+    }
 }

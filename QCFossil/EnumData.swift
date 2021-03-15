@@ -159,6 +159,7 @@ enum TypeCode:String {
     case WATCH = "WATCH"
     case JEWELRY = "JEWELRY"
     case LEATHER = "LEATHER"
+    case PACKAGING = "PACKAGING"
 }
 
 struct ElmtObj{
