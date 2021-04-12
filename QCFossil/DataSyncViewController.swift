@@ -244,6 +244,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.cleanTaskStatus.text = ""
         self.stylePhotoStatus.text = ""
         self.stylePhotoCleanStatus.text = ""
+        self.errorMsg = ""
 
         dataSet = [Dictionary<String, String>]()
         makeDLPostRequest(_DS_MSTRDATA)
@@ -520,7 +521,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                             }
                         }
                         
-                    }else{
+                    } else if apiName == "_DS_FGPODATA" && actionFields[data["tableName"]!]![idx] == "prod_desc" {
+                        
+                        dbFields += actionFields[data["tableName"]!]![idx]
+                        dbValues += "\"\(value.stringByReplacingOccurrencesOfString("\\\"", withString: "\"\""))\""
+                        
+                    } else {
                         dbFields += actionFields[data["tableName"]!]![idx]
                         dbValues += "\"\(value)\""
                     }
@@ -560,8 +566,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     
                 }
                 
-            }
-            else if apiName == "_DS_TASKDATA" {
+            } else if apiName == "_DS_TASKDATA" {
                 
                 dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!) (\(dbFields))"
                 
@@ -573,7 +578,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     dbAction += " VALUES (\(dbValues))"
                 }
             
-            } else{
+            } else {
                 dbAction = "INSERT OR REPLACE INTO \(actionTables[data["tableName"]!]!)"
                 dbAction += "(\(dbFields)) VALUES (\(dbValues))"
                 
@@ -928,7 +933,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.taskPhotoProcessBar.progress = 0.0
         self.currULPhotoIndex = 0
         self.failULPhotoCount = 0
-
+        self.errorMsg = ""
+        
         self.updateButtonStatus("Disable",btn: self.uploadBtn)
         self.updateULProcessLabel("Sending Request...")
         self.buffer = NSMutableData()
