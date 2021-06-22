@@ -473,7 +473,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             
         }*/else if textField == self.brandInput {
             let taskDataHelper = TaskDataHelper()
-            let brandList = taskDataHelper.getAllTaskBrandCodes()
+            let brandList = taskDataHelper.getAllTaskBrandNames()
             
             textField.showListData(textField, parent: self.view, handle: handleFun, listData: brandList, width: 250)
             
@@ -560,7 +560,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             
         }else if textField == self.brandInput {
             let taskDataHelper = TaskDataHelper()
-            let brandList = taskDataHelper.getAllTaskBrandCodes(inputValue)
+            let brandList = taskDataHelper.getAllTaskBrandNames(inputValue)
 
             let handleFun:(UITextField)->(Void) = dropdownHandleFunc
             textField.showListData(textField, parent: self.view, handle: handleFun, listData: brandList, width: 250)
@@ -678,7 +678,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 
                 //Filter By Brand
                 if self.brandInput.text != "" {
-                    poItemsByFilter = poItemsByFilter.filter({ ($0.brandCode?.lowercaseString.containsString((self.brandInput.text?.lowercaseString)!))! })
+                    poItemsByFilter = poItemsByFilter.filter({ ($0.brandName?.lowercaseString.containsString((self.brandInput.text?.lowercaseString)!))! })
                 }
                 
                 //Filter By Style

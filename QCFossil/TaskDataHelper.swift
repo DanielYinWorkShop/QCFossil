@@ -2044,6 +2044,29 @@ class TaskDataHelper:DataHelperMaster{
         return brands
     }
     
+    func getAllTaskBrandNames() ->[String] {
+        let sql = "SELECT DISTINCT(brand_name) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE (bm.rec_status = 0 AND bm.deleted_flag = 0)"
+        
+        var brands = [String]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray:nil) {
+                
+                while rs.next() {
+                    
+                    let brandCode = rs.stringForColumn("brand_name")
+                    
+                    brands.append(brandCode)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return brands
+    }
+    
     func getAllTaskBrandCodes(inputCode:String) ->[String] {
         let sql = "SELECT DISTINCT(brand_code) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE brand_Code LIKE ? AND (bm.rec_status = 0 AND bm.deleted_flag = 0)"
         
@@ -2056,6 +2079,29 @@ class TaskDataHelper:DataHelperMaster{
                 while rs.next() {
                     
                     let brandCode = rs.stringForColumn("brand_code")
+                    
+                    brands.append(brandCode)
+                }
+            }
+            
+            db.close()
+        }
+        
+        return brands
+    }
+    
+    func getAllTaskBrandNames(inputCode:String) ->[String] {
+        let sql = "SELECT DISTINCT(brand_name) FROM brand_mstr bm INNER JOIN vdr_brand_map vbm ON bm.brand_id = vbm.brand_id INNER JOIN vdr_location_mstr vlm ON vbm.vdr_id = vlm.vdr_id INNER JOIN inspect_task it ON vlm.location_id = it.vdr_location_id WHERE brand_Code LIKE ? AND (bm.rec_status = 0 AND bm.deleted_flag = 0)"
+        
+        var brands = [String]()
+        
+        if db.open() {
+            
+            if let rs = db.executeQuery(sql, withArgumentsInArray:["%"+inputCode+"%"]) {
+                
+                while rs.next() {
+                    
+                    let brandCode = rs.stringForColumn("brand_name")
                     
                     brands.append(brandCode)
                 }

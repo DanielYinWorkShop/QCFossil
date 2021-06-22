@@ -771,7 +771,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
             Cache_Dropdown_Instance = textField.showListData(textField, parent: self.view, listData: styleList, width: 200, height: 650)
         }*/else if textField == self.brandInput {
             let taskDataHelper = TaskDataHelper()
-            let brandList = taskDataHelper.getAllTaskBrandCodes()
+            let brandList = taskDataHelper.getAllTaskBrandNames()
             
             textField.showListData(textField, parent: self.view, listData: brandList)
             
@@ -855,7 +855,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
             
         }else if textField == self.brandInput {
             let taskDataHelper = TaskDataHelper()
-            let brandList = taskDataHelper.getAllTaskBrandCodes(inputValue)
+            let brandList = taskDataHelper.getAllTaskBrandNames(inputValue)
             
             textField.showListData(textField, parent: self.view, listData: brandList, width: 200)
             
