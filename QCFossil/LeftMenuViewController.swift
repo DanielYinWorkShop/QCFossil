@@ -32,12 +32,12 @@ class LeftMenuViewController: UIViewController {
         
         self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Version") + " \(_VERSION)"
         
-        self.taskSearchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Search"), for: UIControlState())
-        self.poSearchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("PO Search"), for: UIControlState())
-        self.dataSyncBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Sync"), for: UIControlState())
-        self.userLogoutBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("User Logout"), for: UIControlState())
-        self.dataControlBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Control"), for: UIControlState())
-        self.userSettingBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("User Setting"), for: UIControlState())
+        self.taskSearchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Search"), for: UIControl.State())
+        self.poSearchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("PO Search"), for: UIControl.State())
+        self.dataSyncBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Sync"), for: UIControl.State())
+        self.userLogoutBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("User Logout"), for: UIControl.State())
+        self.dataControlBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Data Control"), for: UIControl.State())
+        self.userSettingBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("User Setting"), for: UIControl.State())
     }
 
     /*

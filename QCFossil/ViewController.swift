@@ -143,7 +143,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
     }
     
-    func defaultsChanged(){
+    @objc func defaultsChanged(){
         updateDisplayFromDefaults()
     }
     
@@ -528,7 +528,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
     }
     
     func handlePwChangeBeforeRedirect() {
-        let alert = UIAlertController(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Change Your Password Now"), message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Change Your Password Now"), message: "", preferredStyle: UIAlertController.Style.alert)
         let saveAction = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), style: .default, handler: { action in
             switch action.style{
             case .default:
@@ -549,11 +549,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                         DispatchQueue.main.async {
                             let style = NSMutableParagraphStyle()
                             style.alignment = NSTextAlignment.center
-                            let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New password reset Successfully!"), attributes: [
-                                NSParagraphStyleAttributeName: style,
-                                NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                                NSForegroundColorAttributeName : _DEFAULTBUTTONTEXTCOLOR
-                                ])
+                            let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New password reset Successfully!"), attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                                convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                                convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                                convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : _DEFAULTBUTTONTEXTCOLOR
+                                ]))
                             alert.setValue(attributedString, forKey: "attributedMessage")
                             
                             let inspectorDataHelper = InspectorDataHelper()
@@ -592,13 +592,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         alert.addAction(saveAction)
         
         // Adding the notification observer here
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidEndEditing, object:alert.textFields?[0], queue: OperationQueue.main) { (notification) -> Void in
+        NotificationCenter.default.addObserver(forName: UITextField.textDidEndEditingNotification, object:alert.textFields?[0], queue: OperationQueue.main) { (notification) -> Void in
             
             let newPwInput = alert.textFields![0]
             self.isValidPw(newPwInput.text!, alert: alert)
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object:alert.textFields?[0], queue: OperationQueue.main) { (notification) -> Void in
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object:alert.textFields?[0], queue: OperationQueue.main) { (notification) -> Void in
             
             let newPwInput = alert.textFields![0]
             let confirmPwInput = alert.textFields![1]
@@ -606,7 +606,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             saveAction.isEnabled = self.isValidPw(newPwInput.text!, alert: alert) && self.isValidConfirmPw(newPwInput.text!, confirmPwInput: confirmPwInput.text!, alert: alert)
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object:alert.textFields?[1], queue: OperationQueue.main) { (notification) -> Void in
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object:alert.textFields?[1], queue: OperationQueue.main) { (notification) -> Void in
                                                                     
             let newPwInput = alert.textFields![0]
             let confirmPwInput = alert.textFields![1]
@@ -614,7 +614,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             saveAction.isEnabled = self.isValidConfirmPw(newPwInput.text!, confirmPwInput: confirmPwInput.text!, alert: alert)
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidBeginEditing, object:alert.textFields?[1], queue: OperationQueue.main) { (notification) -> Void in
+        NotificationCenter.default.addObserver(forName: UITextField.textDidBeginEditingNotification, object:alert.textFields?[1], queue: OperationQueue.main) { (notification) -> Void in
             
             let newPwInput = alert.textFields![0]
             let confirmPwInput = alert.textFields![1]
@@ -632,11 +632,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             DispatchQueue.main.async {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.center
-                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm Password and New Password Not Matched"), attributes: [
-                    NSParagraphStyleAttributeName: style,
-                    NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                    NSForegroundColorAttributeName : UIColor.red
-                    ])
+                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm Password and New Password Not Matched"), attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                    ]))
                 alert.setValue(attributedString, forKey: "attributedMessage")
                 
             }
@@ -649,11 +649,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             DispatchQueue.main.async {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.center
-                let attributedString = NSAttributedString(string: "", attributes: [
-                    NSParagraphStyleAttributeName: style,
-                    NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                    NSForegroundColorAttributeName : UIColor.red
-                    ])
+                let attributedString = NSAttributedString(string: "", attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                    ]))
                 alert.setValue(attributedString, forKey: "attributedMessage")
                 
             }
@@ -671,11 +671,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             DispatchQueue.main.async {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.center
-                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Login Name Cannot Be Used As New Password"), attributes: [
-                    NSParagraphStyleAttributeName: style,
-                    NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                    NSForegroundColorAttributeName : UIColor.red
-                    ])
+                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("Login Name Cannot Be Used As New Password"), attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                    ]))
                 alert.setValue(attributedString, forKey: "attributedMessage")
                 
             }
@@ -685,11 +685,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
             DispatchQueue.main.async {
                 let style = NSMutableParagraphStyle()
                 style.alignment = NSTextAlignment.center
-                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password should be 8-15 Characters"), attributes: [
-                    NSParagraphStyleAttributeName: style,
-                    NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                    NSForegroundColorAttributeName : UIColor.red
-                    ])
+                let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password should be 8-15 Characters"), attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                    convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                    ]))
                 alert.setValue(attributedString, forKey: "attributedMessage")
                 
             }
@@ -708,11 +708,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                 DispatchQueue.main.async {
                     let style = NSMutableParagraphStyle()
                     style.alignment = NSTextAlignment.center
-                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Numbers"), attributes: [
-                        NSParagraphStyleAttributeName: style,
-                        NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                        NSForegroundColorAttributeName : UIColor.red
-                        ])
+                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Numbers"), attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                        convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                        convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                        convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                        ]))
                     alert.setValue(attributedString, forKey: "attributedMessage")
                     
                 }
@@ -730,11 +730,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
                 DispatchQueue.main.async {
                     let style = NSMutableParagraphStyle()
                     style.alignment = NSTextAlignment.center
-                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Letters"), attributes: [
-                        NSParagraphStyleAttributeName: style,
-                        NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                        NSForegroundColorAttributeName : UIColor.red
-                        ])
+                    let attributedString = NSAttributedString(string: MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Letters"), attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                        convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                        convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                        convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                        ]))
                     alert.setValue(attributedString, forKey: "attributedMessage")
                     
                 }
@@ -749,11 +749,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         DispatchQueue.main.async {
             let style = NSMutableParagraphStyle()
             style.alignment = NSTextAlignment.center
-            let attributedString = NSAttributedString(string: "", attributes: [
-                NSParagraphStyleAttributeName: style,
-                NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-                NSForegroundColorAttributeName : UIColor.red
-                ])
+            let attributedString = NSAttributedString(string: "", attributes: convertToOptionalNSAttributedStringKeyDictionary([
+                convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle): style,
+                convertFromNSAttributedStringKey(NSAttributedString.Key.font) : UIFont.systemFont(ofSize: 15),
+                convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : UIColor.red
+                ]))
             alert.setValue(attributedString, forKey: "attributedMessage")
                 
         }
@@ -821,10 +821,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
         self.usernameLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Username")
         self.passwordLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Password")
         self.languageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Language")
-        self.loginButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Login"), for: UIControlState())
-        self.clearButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
-        self.forgetUserNameButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Forget Username?"), for: UIControlState())
-        self.forgetPasswordButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Forget Password?"), for: UIControlState())
+        self.loginButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Login"), for: UIControl.State())
+        self.clearButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
+        self.forgetUserNameButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Forget Username?"), for: UIControl.State())
+        self.forgetPasswordButton.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Forget Password?"), for: UIControl.State())
         self.versionCode.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Version")+" \(_VERSION)"
     }
     
@@ -914,3 +914,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITextField
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}

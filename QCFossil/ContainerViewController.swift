@@ -69,13 +69,13 @@ class ContainerViewController: UIViewController{
         containerScroll.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
     }
     
-    func toggleMenu(){
+    @objc func toggleMenu(){
         if self.containerScroll.isScrollEnabled {
             containerScroll.contentOffset.x == 0  ? closeMenu() : displayMenu()
         }
     }
     
-    func taskSearchMenuClickResponse(_ notification:Notification){
+    @objc func taskSearchMenuClickResponse(_ notification:Notification){
         //closeMenu()
         let userInfo:Dictionary<String,String?> = notification.userInfo as! Dictionary<String,String?>
         if let segueIdentifier = userInfo[_SEGUEIDENTIFIER] {
@@ -83,7 +83,7 @@ class ContainerViewController: UIViewController{
         }
     }
     
-    func setScrollable(_ notification:Notification) {
+    @objc func setScrollable(_ notification:Notification) {
         let userInfo:Dictionary<String,Bool?> = notification.userInfo as! Dictionary<String,Bool?>
         if let canScroll = userInfo["canScroll"] as? Bool, canScroll == false {
             closeMenu()

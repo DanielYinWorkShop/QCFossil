@@ -153,11 +153,11 @@ class DataCtrlViewController: UIViewController, URLSessionDelegate, URLSessionTa
         self.lastDownload.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Restore")
         self.lastUpdate.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Backup")
         self.passwordLabel.text = ""
-        self.backupBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup Data"), for: UIControlState())
-        self.restoreDataBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup History List"), for: UIControlState())
-        self.restoreBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Restore"), for: UIControlState())
+        self.backupBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup Data"), for: UIControl.State())
+        self.restoreDataBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup History List"), for: UIControl.State())
+        self.restoreBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Restore"), for: UIControl.State())
         self.lastLoginDateInput.text = Cache_Inspector?.lastLoginDate
-        self.removeBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete Login User Data"), for: UIControlState())
+        self.removeBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete Login User Data"), for: UIControl.State())
         
 //        let keyValueDataHelper = KeyValueDataHelper()
         self.lastUpdateInput.text = keyValueDataHelper.getLastBackupDatetimeByUserId(String(describing: Cache_Inspector?.inspectorId))
@@ -401,7 +401,7 @@ class DataCtrlViewController: UIViewController, URLSessionDelegate, URLSessionTa
     }
     
     func handlePwChangeBeforeRedirect() {
-        let alert = UIAlertController(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Input Your Password"), message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Input Your Password"), message: "", preferredStyle: UIAlertController.Style.alert)
         let saveAction = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), style: .default, handler: { action in
             switch action.style{
             case .default:

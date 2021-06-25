@@ -171,8 +171,8 @@ class DataSyncViewController: PopoverMaster, URLSessionDelegate, URLSessionTaskD
         self.taskStatusDataLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("-Task Status Data")
         self.lastLoginDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Login Date")
         self.lastDDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Download")
-        self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), for: UIControlState() )
-        self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), for: UIControlState() )
+        self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), for: UIControl.State() )
+        self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), for: UIControl.State() )
         
         self.dataUploadLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("Data Upload")
         self.taskResultDataLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Task Result Data")

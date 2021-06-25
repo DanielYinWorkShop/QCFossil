@@ -222,7 +222,7 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                         (inspectionView as! InspectionViewInput).updateSectionHeader(currentPage)
                         (inspectionView as! InspectionViewInput).scrollToPosition(currentPage, animation: false)
                 
-                        self.ScrollView.bringSubview(toFront: self.ScrollView.viewWithTag(_TASKINSPCATVIEWTAG)!)
+                        self.ScrollView.bringSubviewToFront(self.ScrollView.viewWithTag(_TASKINSPCATVIEWTAG)!)
                 
                         self.updateNaviBarMenu(self.backBtnText, leftBarActionName: "backToTaskDetail", rightBarTitle: MylocalizedString.sharedLocalizeManager.getLocalizedString("Save"), rightBarActionName: "updateTask:")
                 
@@ -309,7 +309,7 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                             
                             inspectionCategoryCell?.updateSummaryResultValues(resultSetValues)
                             let title = _ENGLISH ? icSec.inspSection!.sectionNameEn:icSec.inspSection!.sectionNameCn
-                            inspectionCategoryCell?.inptCatButton.setTitle(title!+"(\(itemsCount))", for: UIControlState())
+                            inspectionCategoryCell?.inptCatButton.setTitle(title!+"(\(itemsCount))", for: UIControl.State())
                         }
                     }
                 }
@@ -332,11 +332,11 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                             if photoDataHelper.existPhotoByInspItem(inputCell.taskInspDataRecordId!, dataType: PhotoDataType(caseId: "INSPECT").rawValue) || inputCell.inspPhotos.count>0 {
                                 
                                 if let image = UIImage(named: "taken_photo_icon") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }else{
                                 if let image = UIImage(named: "take_photo") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }
                         }
@@ -349,11 +349,11 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                             if photoDataHelper.existPhotoByInspItem(inputCell.taskInspDataRecordId!, dataType: PhotoDataType(caseId: "INSPECT").rawValue) || inputCell.inspPhotos.count>0 {
                                 
                                 if let image = UIImage(named: "taken_photo_icon") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }else{
                                 if let image = UIImage(named: "take_photo") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }
                         }
@@ -366,11 +366,11 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                             if photoDataHelper.existPhotoByInspItem(inputCell.taskInspDataRecordId!, dataType: PhotoDataType(caseId: "INSPECT").rawValue) || inputCell.inspPhotos.count>0 {
                                 
                                 if let image = UIImage(named: "taken_photo_icon") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }else{
                                 if let image = UIImage(named: "take_photo") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }
                         }
@@ -383,11 +383,11 @@ class TaskDetailsViewController: PopoverMaster, UIScrollViewDelegate {
                             if photoDataHelper.existPhotoByInspItem(inputCell.taskInspDataRecordId!, dataType: PhotoDataType(caseId: "INSPECT").rawValue) || inputCell.inspPhotos.count>0 {
                                     
                                 if let image = UIImage(named: "taken_photo_icon") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }else{
                                 if let image = UIImage(named: "take_photo") {
-                                    inputCell.takePhotoIcon.setImage(image, for: UIControlState())
+                                    inputCell.takePhotoIcon.setImage(image, for: UIControl.State())
                                 }
                             }
                         }

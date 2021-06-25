@@ -124,7 +124,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         })
     }
     
-    func reloadPoSearchTableView() {
+    @objc func reloadPoSearchTableView() {
         poItemSet = [PoItem]()
         vendors = [Vendor]()
         vendorLocs = [VdrLoc]()
@@ -244,15 +244,15 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }
         
         if(self.searchBtn != nil){
-            self.searchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Search"), for: UIControlState() )
+            self.searchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Search"), for: UIControl.State() )
         }
         
         if(self.clearBtn != nil){
-            self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+            self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
         }
         
         if(self.selectPOLineBtn != nil){
-            self.selectPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Select PO Line"), for: UIControlState())
+            self.selectPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Select PO Line"), for: UIControl.State())
         }
         
         if(self.brandInput != nil){
@@ -268,7 +268,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }
         
         if(self.cancelBtnPopup != nil){
-            self.cancelBtnPopup.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControlState())
+            self.cancelBtnPopup.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControl.State())
         }
         
         if(self.poSearchTitlePopup != nil) {
@@ -394,7 +394,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         
         for poItem in poSelectedItems {
             if cell.poNoInput.text == poItem.poNo && cell.poLineNoInput.text == poItem.poLineNo {
-                self.poTableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none/*UITableViewScrollPosition.Top*/)
+                self.poTableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none/*UITableViewScrollPosition.Top*/)
             }
         }
         

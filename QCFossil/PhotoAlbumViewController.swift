@@ -84,8 +84,8 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
     }
     
     func updateLocalizeString() {
-        self.addPhotoBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add Photo"), for: UIControlState())
-        self.addPhotoFromCamera.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("From Camera"), for: UIControlState())
+        self.addPhotoBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add Photo"), for: UIControl.State())
+        self.addPhotoFromCamera.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("From Camera"), for: UIControl.State())
         
         let segmentTitles = [MylocalizedString.sharedLocalizeManager.getLocalizedString("Filename"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspect Category"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspect Area"),MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspect Item")]
         
@@ -128,8 +128,8 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
             self.parent?.parent!.view.removeActivityIndicator()
         })
         
-        NotificationCenter.default.addObserver(self, selector: #selector(PhotoAlbumViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(PhotoAlbumViewController.keyboardWillChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PhotoAlbumViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PhotoAlbumViewController.keyboardWillChange(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -150,16 +150,16 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
             })
         }
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: self.view.window)
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         self.photoTableView.frame.origin.y =  66
     }
     
-    func keyboardWillChange(_ notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+    @objc func keyboardWillChange(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
             
             //adjustTableViewPosition(66 - (keyboardSize.height - 45))
@@ -191,7 +191,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
             let leftButton = UIBarButtonItem()
             leftButton.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel")
             leftButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-            leftButton.style = UIBarButtonItemStyle.plain
+            leftButton.style = UIBarButtonItem.Style.plain
             leftButton.target = self
             leftButton.action = #selector(PhotoAlbumViewController.cancelSelectedPhotos)
             myParentTabVC.navigationItem.leftBarButtonItem = leftButton
@@ -199,7 +199,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
             let rightButton = UIBarButtonItem()
             rightButton.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Done")
             rightButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-            rightButton.style = UIBarButtonItemStyle.plain
+            rightButton.style = UIBarButtonItem.Style.plain
             rightButton.target = self
             rightButton.action = #selector(PhotoAlbumViewController.didSelectedPhotos)
             myParentTabVC.navigationItem.rightBarButtonItem = rightButton
@@ -213,7 +213,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
     }
     
-    func cancelSelectedPhotos() {
+    @objc func cancelSelectedPhotos() {
         print("Cancel Select Photos")
         weak var maskView = self.parent!.view.viewWithTag(_MASKVIEWTAG)
         maskView?.removeFromSuperview()
@@ -221,7 +221,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         self.navigationController?.popViewController(animated: true)
     }
     
-    func didSelectedPhotos() {
+    @objc func didSelectedPhotos() {
         print("Did Selected Photos")
         
         if self.photosSelected.count < 1{
@@ -349,25 +349,25 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "updatePhotoInfo"), object: nil)
     }
     
-    func reloadPhotos(_ notification:Notification) {
+    @objc func reloadPhotos(_ notification:Notification) {
         let photoObj:Dictionary<String,Photo> = notification.userInfo as! Dictionary<String,Photo>
         Cache_Task_On!.myPhotos = Cache_Task_On!.myPhotos.filter({$0.photoId != photoObj["photoSelected"]?.photoId})
         
         self.photoTableView?.reloadData()
     }
     
-    func reloadAddPhotos(_ notification:Notification) {
+    @objc func reloadAddPhotos(_ notification:Notification) {
         let photoObj:Dictionary<String,Photo> = notification.userInfo as! Dictionary<String,Photo>
         Cache_Task_On!.myPhotos.append(photoObj["photoSelected"]!)
         
         self.photoTableView?.reloadData()
     }
     
-    func reloadAllPhotosFromDB(_ notification:Notification) {
+    @objc func reloadAllPhotosFromDB(_ notification:Notification) {
         loadPhotos()
     }
     
-    func takePhotoFromICCell(_ notification:Notification) {
+    @objc func takePhotoFromICCell(_ notification:Notification) {
         let inspElmt:Dictionary<String,InputModeICMaster> = notification.userInfo as! Dictionary<String,InputModeICMaster>
         self.inspElmt = inspElmt["inspElmt"]
         
@@ -384,7 +384,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         }
     }
     
-    func updatePhotoInfo(_ notification:Notification) {
+    @objc func updatePhotoInfo(_ notification:Notification) {
         let inspElmt:Dictionary<String,InputModeICMaster> = notification.userInfo as! Dictionary<String,InputModeICMaster>
         
         for photo in (Cache_Task_On?.myPhotos)! /*self.photos*/ {
@@ -567,7 +567,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         return MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete");
     }
     
-    func tableView(_ photoTableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ photoTableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         /*if self.view.disableFuns(self.view) {
             

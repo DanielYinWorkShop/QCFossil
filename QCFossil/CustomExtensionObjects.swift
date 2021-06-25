@@ -745,7 +745,7 @@ extension UIView {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 40.0)
-        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.whiteLarge
         actInd.center = CGPoint(x: loadingView.frame.size.width / 2, y: loadingView.frame.size.height / 2)
         
         loadingView.addSubview(actInd)
@@ -761,18 +761,18 @@ extension UIView {
     
     func alertView(_ title:String, handlerFun:((UIAlertAction)->Void)?=nil) {
         let alertController = UIAlertController(title: title, message:
-            "", preferredStyle: UIAlertControllerStyle.alert)
+            "", preferredStyle: UIAlertController.Style.alert)
         
-        alertController.addAction(UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), style: UIAlertActionStyle.default,handler: handlerFun))
+        alertController.addAction(UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), style: UIAlertAction.Style.default,handler: handlerFun))
         
         self.parentVC?.present(alertController, animated: true, completion: nil)
     }
     
     func alertConfirmView(_ title:String, message:String="",parentVC:UIViewController, handlerFun:((UIAlertAction)->Void)?=nil, handlerFunCancel:((UIAlertAction)->Void)?=nil) {
         let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.alert)
+            message, preferredStyle: UIAlertController.Style.alert)
         
-        let okButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), style: UIAlertActionStyle.default, handler: handlerFun)
+        let okButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), style: UIAlertAction.Style.default, handler: handlerFun)
         let cancelButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), style: .cancel, handler: handlerFunCancel)
         alertController.addAction(cancelButton)
         alertController.addAction(okButton)
@@ -782,11 +782,11 @@ extension UIView {
     
     func alertConfirmViewStyle3(_ title:String, message:String="",parentVC:UIViewController, handlerFunYes:((UIAlertAction)->Void)?=nil, handlerFunNo:((UIAlertAction)->Void)?=nil, handlerFunCancel:((UIAlertAction)->Void)?=nil) {
         let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.alert)
+            message, preferredStyle: UIAlertController.Style.alert)
         
-        let yesButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Yes"), style: UIAlertActionStyle.default, handler: handlerFunYes)
-        let noButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("No"), style: UIAlertActionStyle.default, handler: handlerFunNo)
-        let cancelButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), style: UIAlertActionStyle.default/*.Cancel*/, handler: handlerFunCancel)
+        let yesButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Yes"), style: UIAlertAction.Style.default, handler: handlerFunYes)
+        let noButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("No"), style: UIAlertAction.Style.default, handler: handlerFunNo)
+        let cancelButton = UIAlertAction(title: MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), style: UIAlertAction.Style.default/*.Cancel*/, handler: handlerFunCancel)
         
         alertController.addAction(yesButton)
         alertController.addAction(noButton)
@@ -868,8 +868,8 @@ extension UIView {
     func disableFuns(_ obj:AnyObject = UIButton()) ->Bool {
         if ((Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Confirmed").rawValue && Cache_Task_On?.confirmUploadDate == nil) || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Cancelled").rawValue) && !_DEBUG_MODE {
             if obj.classForCoder == UIButton.classForCoder() {
-                (obj as! UIButton).removeTarget(nil, action:nil, for:UIControlEvents.allEvents)
-                (obj as! UIButton).addTarget(self, action: #selector(UIView.btnFunDisble), for: UIControlEvents.touchUpInside)
+                (obj as! UIButton).removeTarget(nil, action:nil, for:UIControl.Event.allEvents)
+                (obj as! UIButton).addTarget(self, action: #selector(UIView.btnFunDisble), for: UIControl.Event.touchUpInside)
             }else if obj.classForCoder == UITextField.classForCoder() {
                 (obj as! UITextField).isUserInteractionEnabled = false
             }else if obj.classForCoder == SignoffView.classForCoder() {
@@ -882,12 +882,12 @@ extension UIView {
         }else if (Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Confirmed").rawValue && Cache_Task_On?.confirmUploadDate != nil) || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Reviewed").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Refused").rawValue {
             
             if obj.classForCoder == UIButton.classForCoder() {
-                (obj as! UIButton).removeTarget(nil, action:nil, for:UIControlEvents.allEvents)
-                (obj as! UIButton).addTarget(self, action: #selector(UIView.btnFunDisbleForUploaded), for: UIControlEvents.touchUpInside)
+                (obj as! UIButton).removeTarget(nil, action:nil, for:UIControl.Event.allEvents)
+                (obj as! UIButton).addTarget(self, action: #selector(UIView.btnFunDisbleForUploaded), for: UIControl.Event.touchUpInside)
                 
             }else if obj.classForCoder == CustomControlButton.classForCoder() {
-                (obj as! CustomControlButton).removeTarget(nil, action:nil, for:UIControlEvents.allEvents)
-                (obj as! CustomControlButton).addTarget(self, action: #selector(UIView.btnFunDisbleForUploaded), for: UIControlEvents.touchUpInside)
+                (obj as! CustomControlButton).removeTarget(nil, action:nil, for:UIControl.Event.allEvents)
+                (obj as! CustomControlButton).addTarget(self, action: #selector(UIView.btnFunDisbleForUploaded), for: UIControl.Event.touchUpInside)
             
             }else if obj.classForCoder == UITextField.classForCoder() {
                 (obj as! UITextField).isUserInteractionEnabled = false
@@ -907,11 +907,11 @@ extension UIView {
         button.layer.cornerRadius = 6
     }
     
-    func btnFunDisble() {
+    @objc func btnFunDisble() {
         self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cannot update Confirmed or Cancelled Task!"))
     }
     
-    func btnFunDisbleForUploaded() {
+    @objc func btnFunDisbleForUploaded() {
         self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cannot update Uploaded, Reviewed or Refused Task!"))
     }
     
@@ -1143,7 +1143,7 @@ extension UIImage {
         
         filter?.setValue(NSValue(cgAffineTransform: affineTransform), forKey: "inputTransform")
         
-        let contex = CIContext(options: [kCIContextUseSoftwareRenderer:true])
+        let contex = CIContext(options: convertToOptionalCIContextOptionDictionary([convertFromCIContextOption(CIContextOption.useSoftwareRenderer):true]))
         
         let outputImage = filter?.outputImage
         let cgImage = contex.createCGImage(outputImage!, from: (outputImage?.extent)!)
@@ -1235,8 +1235,8 @@ extension UIImage {
         let thumbImageBefore = cropToBounds(image, width: _THUMBNAILWIDTH, height: _THUMBNAILHEIGHT)
         let thumbImage = resizeImage(thumbImageBefore, imageWidth: _THUMBNAILWIDTH, imageHeight: _THUMBNAILHEIGHT)
         
-        let dataInPNG:Data = UIImageJPEGRepresentation(image, 1.0)!
-        let dataInPNG_thumb:Data = UIImageJPEGRepresentation(thumbImage, 0.1)!
+        let dataInPNG:Data = image.jpegData(compressionQuality: 1.0)!
+        let dataInPNG_thumb:Data = thumbImage.jpegData(compressionQuality: 0.1)!
         
         var imageName = ""
         var saveObjFullPath = ""
@@ -1305,8 +1305,8 @@ extension UIImage {
         let thumbImageBefore = cropToBounds(image, width: _THUMBNAILWIDTH, height: _THUMBNAILHEIGHT)
         let thumbImage = resizeImage(thumbImageBefore, imageWidth: _THUMBNAILWIDTH, imageHeight: _THUMBNAILHEIGHT)
         
-        let dataInPNG:Data = UIImageJPEGRepresentation(image, 1.0)!
-        let dataInPNG_thumb:Data = UIImageJPEGRepresentation(thumbImage, 0.1)!
+        let dataInPNG:Data = image.jpegData(compressionQuality: 1.0)!
+        let dataInPNG_thumb:Data = thumbImage.jpegData(compressionQuality: 0.1)!
         
         var imageName = ""
         var saveObjFullPath = ""
@@ -1385,8 +1385,8 @@ extension UIImage {
         let thumbImageBefore = cropToBounds(image, width: _THUMBNAILWIDTH, height: _THUMBNAILHEIGHT)
         let thumbImage = resizeImage(thumbImageBefore, imageWidth: _THUMBNAILWIDTH, imageHeight: _THUMBNAILHEIGHT)
         
-        let dataInPNG:Data = UIImageJPEGRepresentation(image, 1.0)!
-        let dataInPNG_thumb:Data = UIImageJPEGRepresentation(thumbImage, 0.1)!
+        let dataInPNG:Data = image.jpegData(compressionQuality: 1.0)!
+        let dataInPNG_thumb:Data = thumbImage.jpegData(compressionQuality: 0.1)!
         
         var imageName = ""
         var saveObjFullPath = ""
@@ -1481,7 +1481,7 @@ extension UIImage {
     
     func toBase64()->String{
         
-        if let imageData = UIImagePNGRepresentation(self) {
+        if let imageData = self.pngData() {
             let base64String = imageData.base64EncodedString(options: .lineLength64Characters)
             return base64String
         }
@@ -1501,7 +1501,7 @@ extension UIImage {
     }
     
     func saveImageToLocal(_ savePath:String, image:UIImage, imageName:String) {
-        let dataInPNG:Data = UIImageJPEGRepresentation(image, 1.0)!
+        let dataInPNG:Data = image.jpegData(compressionQuality: 1.0)!
         let path = savePath+imageName
         let filemgr = FileManager.default
         
@@ -1529,7 +1529,7 @@ extension UIImage {
     func fixOrientation() -> UIImage {
         
         // No-op if the orientation is already correct
-        if ( self.imageOrientation == UIImageOrientation.up ) {
+        if ( self.imageOrientation == UIImage.Orientation.up ) {
             return UIImage(cgImage: cgImage!, scale: scale, orientation: imageOrientation)
         }
         
@@ -1537,27 +1537,27 @@ extension UIImage {
         // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
         var transform: CGAffineTransform = CGAffineTransform.identity
         
-        if ( self.imageOrientation == UIImageOrientation.down || self.imageOrientation == UIImageOrientation.downMirrored ) {
+        if ( self.imageOrientation == UIImage.Orientation.down || self.imageOrientation == UIImage.Orientation.downMirrored ) {
             transform = transform.translatedBy(x: self.size.width, y: self.size.height)
             transform = transform.rotated(by: CGFloat(M_PI))
         }
         
-        if ( self.imageOrientation == UIImageOrientation.left || self.imageOrientation == UIImageOrientation.leftMirrored ) {
+        if ( self.imageOrientation == UIImage.Orientation.left || self.imageOrientation == UIImage.Orientation.leftMirrored ) {
             transform = transform.translatedBy(x: self.size.width, y: 0)
             transform = transform.rotated(by: CGFloat(M_PI_2))
         }
         
-        if ( self.imageOrientation == UIImageOrientation.right || self.imageOrientation == UIImageOrientation.rightMirrored ) {
+        if ( self.imageOrientation == UIImage.Orientation.right || self.imageOrientation == UIImage.Orientation.rightMirrored ) {
             transform = transform.translatedBy(x: 0, y: self.size.height);
             transform = transform.rotated(by: CGFloat(-M_PI_2));
         }
         
-        if ( self.imageOrientation == UIImageOrientation.upMirrored || self.imageOrientation == UIImageOrientation.downMirrored ) {
+        if ( self.imageOrientation == UIImage.Orientation.upMirrored || self.imageOrientation == UIImage.Orientation.downMirrored ) {
             transform = transform.translatedBy(x: self.size.width, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
         }
         
-        if ( self.imageOrientation == UIImageOrientation.leftMirrored || self.imageOrientation == UIImageOrientation.rightMirrored ) {
+        if ( self.imageOrientation == UIImage.Orientation.leftMirrored || self.imageOrientation == UIImage.Orientation.rightMirrored ) {
             transform = transform.translatedBy(x: self.size.height, y: 0);
             transform = transform.scaledBy(x: -1, y: 1);
         }
@@ -1568,10 +1568,10 @@ extension UIImage {
         
         ctx.concatenate(transform)
         
-        if ( self.imageOrientation == UIImageOrientation.left ||
-            self.imageOrientation == UIImageOrientation.leftMirrored ||
-            self.imageOrientation == UIImageOrientation.right ||
-            self.imageOrientation == UIImageOrientation.rightMirrored ) {
+        if ( self.imageOrientation == UIImage.Orientation.left ||
+            self.imageOrientation == UIImage.Orientation.leftMirrored ||
+            self.imageOrientation == UIImage.Orientation.right ||
+            self.imageOrientation == UIImage.Orientation.rightMirrored ) {
             ctx.draw(self.cgImage!, in: CGRect(x: 0,y: 0,width: self.size.height,height: self.size.width))
         } else {
             ctx.draw(self.cgImage!, in: CGRect(x: 0,y: 0,width: self.size.width,height: self.size.height))
@@ -1910,4 +1910,15 @@ extension Dictionary where Value : Equatable {
     func allKeysForValue(_ val : Value) -> [Key] {
         return self.filter { $1 == val }.map { $0.0 }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalCIContextOptionDictionary(_ input: [String: Any]?) -> [CIContextOption: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (CIContextOption(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCIContextOption(_ input: CIContextOption) -> String {
+	return input.rawValue
 }

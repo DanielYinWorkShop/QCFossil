@@ -345,7 +345,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         }
     }
     
-    func ssPhotoPreviewTapOnClick(_ sender: UITapGestureRecognizer) {
+    @objc func ssPhotoPreviewTapOnClick(_ sender: UITapGestureRecognizer) {
         let container = UIScrollView()
         container.tag = _MASKVIEWTAG
         container.isHidden = false
@@ -383,7 +383,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         self.view.addSubview(container)
     }
     
-    func cbPhotoPreviewTapOnClick(_ sender: UITapGestureRecognizer) {
+    @objc func cbPhotoPreviewTapOnClick(_ sender: UITapGestureRecognizer) {
         let container = UIScrollView()
         container.tag = _MASKVIEWTAG
         container.isHidden = false

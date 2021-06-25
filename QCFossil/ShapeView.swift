@@ -243,15 +243,15 @@ class ShapeView: UIView {
 
     }
 
-    func didRemove(_ rmvGR: UILongPressGestureRecognizer) {
+    @objc func didRemove(_ rmvGR: UILongPressGestureRecognizer) {
         self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete Shape?"),parentVC:self.parentVC!, handlerFun: { (action:UIAlertAction!) in
             self.removeFromSuperview()
         })
     }
     
-    func didPan(_ panGR: UIPanGestureRecognizer) {
+    @objc func didPan(_ panGR: UIPanGestureRecognizer) {
         
-        self.superview!.bringSubview(toFront: self)
+        self.superview!.bringSubviewToFront(self)
         
         var translation = panGR.translation(in: self)
         
@@ -263,9 +263,9 @@ class ShapeView: UIView {
         panGR.setTranslation(CGPoint.zero, in: self)
     }
     
-    func didPinch(_ pinchGR: UIPinchGestureRecognizer) {
+    @objc func didPinch(_ pinchGR: UIPinchGestureRecognizer) {
         
-        self.superview!.bringSubview(toFront: self)
+        self.superview!.bringSubviewToFront(self)
         
         let scale = pinchGR.scale
         
@@ -274,9 +274,9 @@ class ShapeView: UIView {
         pinchGR.scale = 1.0
     }
     
-    func didRotate(_ rotationGR: UIRotationGestureRecognizer) {
+    @objc func didRotate(_ rotationGR: UIRotationGestureRecognizer) {
         
-        self.superview!.bringSubview(toFront: self)
+        self.superview!.bringSubviewToFront(self)
         
         let rotation = rotationGR.rotation
         

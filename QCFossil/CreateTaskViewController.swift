@@ -84,7 +84,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Form")
         
         self.inspectionInformation.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Information")
-        self.addPoLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), for: UIControlState())
+        self.addPoLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), for: UIControl.State())
         self.basicInformation.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Basic Information")
         self.vendorInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor")
         self.vdrLocationInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Location")
@@ -133,7 +133,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         NotificationCenter.default.addObserver(self, selector: #selector(CreateTaskViewController.dismissFromSubView), name: NSNotification.Name(rawValue: "CreateTaskCancel"), object: nil)
     }
     
-    func dismissFromSubView() {
+    @objc func dismissFromSubView() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "CreateTaskCancel"), object: nil)
         //self.dismissViewControllerAnimated(true, completion: nil)
         self.navigationController?.popViewController(animated: true)

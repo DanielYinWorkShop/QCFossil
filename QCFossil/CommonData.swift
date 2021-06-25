@@ -26,8 +26,8 @@ let _DEVICE_WIDTH = 768
 let _DEVICE_HEIGHT = 1024
 
 //Set background color, for displaying tableCell clearly
-let _TABLECELL_BG_COLOR1 = UIColor.init(colorLiteralRed: 240.0/255.0, green: 240.0/255.0, blue: 240.0/255.0, alpha: 1.0)
-let _TABLECELL_BG_COLOR2 = UIColor.init(colorLiteralRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+let _TABLECELL_BG_COLOR1 = UIColor.init(red: 240.0/255.0, green: 240.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+let _TABLECELL_BG_COLOR2 = UIColor.init(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
 
 let _TEXTVIEWBORDORCOLOR = UIColor.init(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1.0).cgColor
 let _DEFAULTBUTTONTEXTCOLOR = UIColor.init(red: 0.0/255.0, green: 122.0/255.0, blue: 255.0/255.0, alpha: 1.0)

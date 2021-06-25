@@ -86,9 +86,9 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate, UI
     }
     
     func updateLocalizeString() {
-        self.startEditBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Edit"), for: UIControlState())
-        self.closeBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Close")+" X", for: UIControlState())
-        self.saveImageBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save"), for: UIControlState())
+        self.startEditBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Edit"), for: UIControl.State())
+        self.closeBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Close")+" X", for: UIControl.State())
+        self.saveImageBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save"), for: UIControl.State())
         
         updateBrushColor()
         updateBrushSize()
@@ -171,7 +171,7 @@ class ImagePreviewViewInput: UIView, UIPopoverPresentationControllerDelegate, UI
         }*/
         
         if sender.tag < 1 {
-            sender.setTitle("+", for: UIControlState())
+            sender.setTitle("+", for: UIControl.State())
             sender.tag = 1
             sender.titleLabel?.font = UIFont.systemFont(ofSize: 30)
             setEnableEditing(false)

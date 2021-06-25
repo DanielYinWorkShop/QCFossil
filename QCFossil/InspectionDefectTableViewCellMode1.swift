@@ -102,7 +102,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     @IBAction func addDefectPhoto(_ sender: UIButton) {
         print("add Cell photo")
         
-        NotificationCenter.default.post(name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.post(name: UIResponder.keyboardWillHideNotification, object: nil)
         
         if !self.photoNameAtIndex.contains("") {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Maximun 5 Defect Photos!"))
@@ -129,7 +129,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     }
     
     @IBAction func addDefectPhotoFromCamera(_ sender: UIButton) {
-        NotificationCenter.default.post(name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.post(name: UIResponder.keyboardWillHideNotification, object: nil)
         
         if !self.photoNameAtIndex.contains("") {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Maximun 5 Defect Photos!"))
@@ -172,7 +172,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
             
             if let dictionary = object as? NSDictionary {
                 
-                if let image = dictionary.object(forKey: UIImagePickerControllerOriginalImage) as? UIImage {
+                if let image = dictionary.object(forKey: convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)) as? UIImage {
                 
                     let imageView = UIImageView.init(image: image)
                     
@@ -227,7 +227,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     }
     
     @IBAction func addDefectPhotoFromAlbum(_ sender: UIButton) {
-        NotificationCenter.default.post(name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.post(name: UIResponder.keyboardWillHideNotification, object: nil)
         
         if !self.photoNameAtIndex.contains("") {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Maximun 5 Defect Photos!"))
@@ -265,9 +265,9 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 
                 let cBtn = CustomControlButton()
                 cBtn.frame = CGRect.init(x: xPosBtn[idx], y: 255, width: 20, height: 20)
-                cBtn.addTarget(self, action: #selector(InspectionDefectTableViewCellMode1.removeDefectPhotoOnIndex(_:)), for: UIControlEvents.touchUpInside)
+                cBtn.addTarget(self, action: #selector(InspectionDefectTableViewCellMode1.removeDefectPhotoOnIndex(_:)), for: UIControl.Event.touchUpInside)
                 cBtn.tag = idx + 1
-                cBtn.setTitle("-", for: UIControlState())
+                cBtn.setTitle("-", for: UIControl.State())
                 cBtn.backgroundColor = UIColor.red
                 cBtn.layer.cornerRadius = _CORNERRADIUS
                 
@@ -300,9 +300,9 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
                 
                 let cBtn = CustomButton()
                 cBtn.frame = CGRect.init(x: xPosBtn[idx], y: 27, width: 15, height: 15)
-                cBtn.addTarget(self, action: #selector(InspectionDefectTableViewCellMode1.removeDefectPhotoOnIndex(_:)), for: UIControlEvents.touchUpInside)
+                cBtn.addTarget(self, action: #selector(InspectionDefectTableViewCellMode1.removeDefectPhotoOnIndex(_:)), for: UIControl.Event.touchUpInside)
                 cBtn.tag = idx + 1
-                cBtn.setTitle("-", for: UIControlState())
+                cBtn.setTitle("-", for: UIControl.State())
                 cBtn.backgroundColor = UIColor.red
                 cBtn.layer.cornerRadius = _CORNERRADIUS
                 
@@ -313,7 +313,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         }
     }
     
-    func removeDefectPhotoOnIndex(_ sender: CustomButton) {
+    @objc func removeDefectPhotoOnIndex(_ sender: CustomButton) {
         self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete Photo?"),parentVC:self.pVC!, handlerFun: { (action:UIAlertAction!) in
             
             let defectsByItemId = Cache_Task_On?.defectItems.filter({$0.inspElmt.cellCatIdx == self.sectionId && $0.inspElmt.cellIdx == self.itemId && $0.cellIdx == self.cellIdx})
@@ -455,7 +455,7 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
         (self.inspItem as! InputMode01CellView).updatePhotoAddediConStatus("",photoTakenIcon: (self.inspItem as! InputMode01CellView).photoAddedIcon)
     }
     
-    func previewTapOnClick(_ sender: UITapGestureRecognizer) {
+    @objc func previewTapOnClick(_ sender: UITapGestureRecognizer) {
         if (sender.view as! UIImageView).image != nil {
             let imageView = sender.view as! UIImageView
             
@@ -748,4 +748,9 @@ class InspectionDefectTableViewCellMode1: InputModeDFMaster2, UIImagePickerContr
     {
         self.pVC.view.clearDropdownviewForSubviews((self.pVC?.view)!)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

@@ -75,11 +75,11 @@ class EmbedContainerController: UIViewController {
         //self.view.subviews.forEach({ $0.removeFromSuperview() })
         
         let destVC = segue.destination as! UINavigationController
-        let destVCChildVC = destVC.childViewControllers[0]
+        let destVCChildVC = destVC.children[0]
         
         var added = false
-        for childVC in self.childViewControllers {
-            let childChildVC = childVC.childViewControllers[0]
+        for childVC in self.children {
+            let childChildVC = childVC.children[0]
                 
             if childChildVC.classForCoder == destVCChildVC.classForCoder {
                 added = true
@@ -87,17 +87,17 @@ class EmbedContainerController: UIViewController {
         }
         
         if !added {
-            self.addChildViewController(segue.destination)
+            self.addChild(segue.destination)
                 
             let destView = segue.destination.view
-            destView?.autoresizingMask = UIViewAutoresizing.flexibleWidth
+            destView?.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
             destView?.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
             self.view.addSubview(destView!)
-            segue.destination.didMove(toParentViewController: self)
+            segue.destination.didMove(toParent: self)
                 
         }else{
-            for childVC in self.childViewControllers {
-                let childChildVC = childVC.childViewControllers[0]
+            for childVC in self.children {
+                let childChildVC = childVC.children[0]
                 
                 if childChildVC.classForCoder == destVCChildVC.classForCoder {
                     self.view.addSubview(childVC.view)
@@ -147,7 +147,7 @@ class EmbedContainerController: UIViewController {
         })
     }
     
-    func switchToTaskSearch() {
+    @objc func switchToTaskSearch() {
         self.currentSegueIdentifier = _SEGUEIDENTIFIERTASKSEARCH
         self.performSegue(withIdentifier: self.currentSegueIdentifier, sender: nil)
     }

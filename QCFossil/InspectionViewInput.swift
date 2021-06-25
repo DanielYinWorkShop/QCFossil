@@ -86,8 +86,8 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
             indexPoint.frame = CGRect.init(x: 743+(idx-categoryCount+1)*35, y: 76, width: 25, height: 25)
             //indexPoint.addTarget(self, action: #selector(InspectionViewInput.indexPointOnClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             indexPoint.tag = idx
-            indexPoint.setTitle(String(idx+1), for: UIControlState())
-            indexPoint.setTitleColor(_BTNTITLECOLOR, for: UIControlState())
+            indexPoint.setTitle(String(idx+1), for: UIControl.State())
+            indexPoint.setTitleColor(_BTNTITLECOLOR, for: UIControl.State())
             indexPoint.backgroundColor = _FOSSILYELLOWCOLOR
             indexPoint.layer.cornerRadius = _CORNERRADIUS
             indexPoint.alpha = inactiveAlpha

@@ -65,8 +65,8 @@ class DataControlView: UIView, URLSessionDelegate, URLSessionDownloadDelegate, S
         self.lastDownload.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Rstore Date")
         self.lastUpdate.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Backup Date")
         self.passwordLabel.text = ""
-        self.backupBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup Data"), for: UIControlState())
-        self.restoreDataBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Restore Data"), for: UIControlState())
+        self.backupBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Backup Data"), for: UIControl.State())
+        self.restoreDataBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Restore Data"), for: UIControl.State())
         self.lastLoginDateInput.text = Cache_Inspector?.lastLoginDate
         
         let keyValueDataHelper = KeyValueDataHelper()

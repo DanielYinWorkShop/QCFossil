@@ -77,7 +77,7 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
         
         sectionSegmentControl.selectedSegmentIndex = 0
         sectionSegmentControl.layer.cornerRadius = 5.0
-        sectionSegmentControl.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 16)], for: UIControlState())
+        sectionSegmentControl.setTitleTextAttributes([NSAttributedString.Key(rawValue: convertFromNSAttributedStringKey(NSAttributedString.Key.font)): UIFont.systemFont(ofSize: 16)], for: UIControl.State())
         sectionSegmentControl.backgroundColor = _FOSSILYELLOWCOLOR
         sectionSegmentControl.tintColor = _FOSSILBLUECOLOR
         sectionSegmentControl.addTarget(self, action: #selector(DefectListViewController.sectionSegmentOnchange), for:.valueChanged)
@@ -200,7 +200,7 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
         
     }
     
-    func sectionSegmentOnchange(/*sender: UISegmentedControl*/) {
+    @objc func sectionSegmentOnchange(/*sender: UISegmentedControl*/) {
         
         let sectionName = sectionSegmentControl?.titleForSegment(at: (sectionSegmentControl?.selectedSegmentIndex)!)!
         
@@ -827,4 +827,9 @@ class DefectListViewController: UIViewController, UITableViewDelegate,  UITableV
             return cellMode3
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
 }

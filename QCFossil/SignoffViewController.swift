@@ -81,10 +81,10 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         
         updateLocalizedString()
         
-        self.vendorSignBoxInput.addTarget(self, action: #selector(SignoffViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+        self.vendorSignBoxInput.addTarget(self, action: #selector(SignoffViewController.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
     }
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         
         Cache_Task_On?.vdrSignName = textField.text
     }
@@ -100,10 +100,10 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.vendorSignLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Confirmer")
         self.inspectorSignBoxLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Signature")
         self.vendorSignBoxLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Signature")
-        self.inspectorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControlState())
-        self.vendorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControlState())
-        self.inspectorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
-        self.vendorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        self.inspectorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControl.State())
+        self.vendorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControl.State())
+        self.inspectorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
+        self.vendorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
     }
     
     override func didReceiveMemoryWarning() {
@@ -180,14 +180,14 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
-        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmInspctorSign), for: UIControlEvents.touchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControl.State())
+        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
-        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
+        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         /*
         let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
@@ -217,11 +217,11 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
     }
     
-    func clearInspctorSign(){
+    @objc func clearInspctorSign(){
         signInputView?.image = nil
     }
     
-    func confirmInspctorSign() {
+    @objc func confirmInspctorSign() {
         if signInputView?.image == nil {
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Signature"))
             return
@@ -233,7 +233,7 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
     }
     
-    func confirmVendorSign() {
+    @objc func confirmVendorSign() {
         if signInputView?.image == nil {
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Signature"))
             return
@@ -274,14 +274,14 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
-        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmVendorSign), for: UIControlEvents.touchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControl.State())
+        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmVendorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
-        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
+        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         /*
         let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))

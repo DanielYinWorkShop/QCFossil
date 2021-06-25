@@ -75,7 +75,7 @@ class PopoverViewController: UIViewController {
             let rightButton=UIBarButtonItem()
             rightButton.title=MylocalizedString.sharedLocalizeManager.getLocalizedString("Close")
             rightButton.tintColor = UIColor.black
-            rightButton.style=UIBarButtonItemStyle.plain
+            rightButton.style=UIBarButtonItem.Style.plain
             rightButton.target=self
             rightButton.action=#selector(PopoverViewController.cancelPick)
             self.navigationItem.rightBarButtonItem=rightButton
@@ -124,7 +124,7 @@ class PopoverViewController: UIViewController {
             let rightButton=UIBarButtonItem()
             rightButton.title=MylocalizedString.sharedLocalizeManager.getLocalizedString("Close")
             rightButton.tintColor = UIColor.black
-            rightButton.style=UIBarButtonItemStyle.plain
+            rightButton.style=UIBarButtonItem.Style.plain
             rightButton.target=self
             rightButton.action=#selector(PopoverViewController.cancelPick)
             self.navigationItem.rightBarButtonItem=rightButton
@@ -141,7 +141,7 @@ class PopoverViewController: UIViewController {
             let rightButton=UIBarButtonItem()
             rightButton.title=MylocalizedString.sharedLocalizeManager.getLocalizedString("Close")
             rightButton.tintColor = UIColor.black
-            rightButton.style=UIBarButtonItemStyle.plain
+            rightButton.style=UIBarButtonItem.Style.plain
             rightButton.target=self
             rightButton.action=#selector(PopoverViewController.cancelPick)
             self.navigationItem.rightBarButtonItem=rightButton
@@ -222,7 +222,7 @@ class PopoverViewController: UIViewController {
         let leftButton=UIBarButtonItem()
         leftButton.title=MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel")
         leftButton.tintColor = UIColor.white
-        leftButton.style=UIBarButtonItemStyle.plain
+        leftButton.style=UIBarButtonItem.Style.plain
         leftButton.target=self
         leftButton.action=#selector(PopoverViewController.cancelPick)
         self.navigationItem.leftBarButtonItem=leftButton
@@ -230,7 +230,7 @@ class PopoverViewController: UIViewController {
         let rightButton=UIBarButtonItem()
         rightButton.title=MylocalizedString.sharedLocalizeManager.getLocalizedString("Done")
         rightButton.tintColor = UIColor.white
-        rightButton.style=UIBarButtonItemStyle.plain
+        rightButton.style=UIBarButtonItem.Style.plain
         rightButton.target=self
         rightButton.action=#selector(PopoverViewController.didPick)
         self.navigationItem.rightBarButtonItem=rightButton
@@ -251,12 +251,12 @@ class PopoverViewController: UIViewController {
     }
     */
     
-    func cancelPick() {
+    @objc func cancelPick() {
         print("cancel pick")
         self.dismiss(animated: true, completion: nil)
     }
     
-    func didPick() {
+    @objc func didPick() {
         print("did pick: \(self.selectedValue)")
         //pVC.productType.text = self.inputview.selectedValue
         

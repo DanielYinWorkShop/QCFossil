@@ -131,9 +131,9 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         })
         
         NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.reloadDefectItems), name: NSNotification.Name(rawValue: "reloadDefectItems"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardDidChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardDidChange(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
      
     }
     
@@ -141,31 +141,31 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         self.inspectDefectTableview.frame.size.height = 823
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "reloadDefectItems"), object: self.view.window)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: self.view.window)
     }
     
-    func reloadDefectItems() {
+    @objc func reloadDefectItems() {
         self.validateNow = true
         updateContentView()
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.inspectDefectTableview.frame.size.height >= 823{
                 self.inspectDefectTableview.frame.size.height -= keyboardSize.height - 45
             }
         }
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         self.inspectDefectTableview.frame.size.height = 823
     }
     
-    func keyboardDidChange(_ notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+    @objc func keyboardDidChange(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             self.inspectDefectTableview.frame.size.height = 823 - (keyboardSize.height - 45)
         }
     }
@@ -180,7 +180,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         let leftButton=UIBarButtonItem()
         leftButton.title="< "+MylocalizedString.sharedLocalizeManager.getLocalizedString("Back")
         leftButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        leftButton.style=UIBarButtonItemStyle.plain
+        leftButton.style=UIBarButtonItem.Style.plain
         leftButton.target=self
         leftButton.action=#selector(InspectionDefectList.clearDefectItemsBeforeGOBack)
         myParentTabVC.navigationItem.leftBarButtonItem=leftButton
@@ -225,7 +225,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         return self.passValidation
     }
     
-    func clearDefectItemsBeforeGOBack() {
+    @objc func clearDefectItemsBeforeGOBack() {
         
         if !validation() {
             return

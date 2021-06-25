@@ -1314,7 +1314,7 @@
 					};
 					BDD1A2992123472B00AE391E = {
 						DevelopmentTeam = 3XCK33884W;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 1010;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -2041,7 +2041,8 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -2062,7 +2063,8 @@
 				PROVISIONING_PROFILE = "945aaf40-fb03-4628-87a5-aa9e6479d819";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

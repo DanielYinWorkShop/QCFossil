@@ -37,7 +37,7 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         tableView.dataSource = self
     }
     
-    func longPressed(_ sender: UIGestureRecognizer) {
+    @objc func longPressed(_ sender: UIGestureRecognizer) {
         if let cell = sender.view as? UITableViewCell {
             let popoverContent = PopoverViewController()
             popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
@@ -156,12 +156,12 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                 if let aTextField = myParentTextField {
                     let text = String(dropdownDataFilter[indexPath.row])
                     
-                    selectedValues.append(keyValues[text!] ?? 0)
+                    selectedValues.append(keyValues[text] ?? 0)
                     
                     if aTextField.text == "" {
-                        aTextField.text! += text!
+                        aTextField.text! += text
                     }else{
-                        aTextField.text! += ","+text!
+                        aTextField.text! += ","+text
                     }
                     
                     if (handleFun != nil){

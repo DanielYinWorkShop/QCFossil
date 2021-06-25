@@ -50,8 +50,8 @@ class TaskTypeViewController: UIViewController, UITextFieldDelegate, UIPopoverPr
         self.productTypeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Product Type")
         self.inptTypeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Type")
         self.templateTypeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Template Type")
-        self.okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), for: UIControlState())
-        self.cancelBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControlState())
+        self.okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), for: UIControl.State())
+        self.cancelBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControl.State())
         self.messageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please select Product Type and Inspection Type")
         
         self.view.setButtonCornerRadius(self.okBtn)
@@ -136,7 +136,7 @@ class TaskTypeViewController: UIViewController, UITextFieldDelegate, UIPopoverPr
 
         popoverContent.parentTextFieldView = sender
         popoverContent.sourceType = _INPTTYPE
-        popoverContent.didPickCompletion = { _ in
+        popoverContent.didPickCompletion = {
         
             Cache_Inspector?.selectedInspType = self.inptType.text!
             let taskDataHelper = TaskDataHelper()

@@ -62,7 +62,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.currentPwTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Current Password")
         self.newPwTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password")
         self.newPwAgainTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password Again")
-        self.changePwBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Change Password"), for: UIControlState())
+        self.changePwBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Change Password"), for: UIControl.State())
         self.imageSizeTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Resolution of Photo from Library or Camera")
         self.inspectorSignatureLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspector Signature")
         self.useBackgroundModeTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Use Background Mode for Download/Upload Task")
@@ -76,8 +76,8 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.view.setButtonCornerRadius(self.changePwBtn)
         self.view.setButtonCornerRadius(self.clearBtn)
         
-        self.inspectorSignatureBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControlState())
-        self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Signature"), for: UIControlState())
+        self.inspectorSignatureBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControl.State())
+        self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Signature"), for: UIControl.State())
         
         let keyValueDataHelper = KeyValueDataHelper()
         let signImageInCode = keyValueDataHelper.getInspectorSignImage(String(describing: Cache_Inspector?.inspectorId))
@@ -293,14 +293,14 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
-        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), for: UIControlEvents.touchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControl.State())
+        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
-        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
+        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         /*
         let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
@@ -318,7 +318,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(container)
     }
     
-    func cancelInspctorSign() {
+    @objc func cancelInspctorSign() {
         if self.inspectorSignatureInput.image == nil {
             self.inspectorSignatureBtn.isHidden = false
         }
@@ -327,11 +327,11 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
     }
     
-    func clearInspctorSign(){
+    @objc func clearInspctorSign(){
         signInputView?.image = nil
     }
     
-    func confirmInspctorSign() {
+    @objc func confirmInspctorSign() {
         
         if signInputView?.image == nil {
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Signature"))
@@ -374,21 +374,21 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
-        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), for: UIControlEvents.touchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControl.State())
+        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
-        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
+        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), for: UIControl.Event.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         
         if self.inspectorSignatureInput.image != nil {
             let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
             cancelBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-            cancelBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControlState())
-            cancelBtn.addTarget(self, action: #selector(UserSettingViewController.cancelInspctorSign), for: UIControlEvents.touchUpInside)
+            cancelBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControl.State())
+            cancelBtn.addTarget(self, action: #selector(UserSettingViewController.cancelInspctorSign), for: UIControl.Event.touchUpInside)
             self.view.setButtonCornerRadius(cancelBtn)
             container.addSubview(cancelBtn)
         }

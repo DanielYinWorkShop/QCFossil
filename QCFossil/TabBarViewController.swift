@@ -58,21 +58,21 @@ class TabBarViewController: UITabBarController {
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TabBarViewController.switchTabViewToDL), name: "switchTabViewToDL", object: nil)
         
         //selected index 2: DefectListViewController
-        defectListViewController = self.childViewControllers[2].childViewControllers[0] as? DefectListViewController
+        defectListViewController = self.children[2].children[0] as? DefectListViewController
         defectListViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Findings")
         
         //selected index 1: photoAlbumViewController
-        photoAlbumViewController = self.childViewControllers[1].childViewControllers[0] as? PhotoAlbumViewController
+        photoAlbumViewController = self.children[1].children[0] as? PhotoAlbumViewController
         photoAlbumViewController?.initPhotoTakerNotification()
         photoAlbumViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo Album")
         
         let taskDataHelper = TaskDataHelper()
         let isShowQCInfoPage = taskDataHelper.isNeedShowQCInfoPage(Cache_Task_On?.refTaskId ?? 0)
         if isShowQCInfoPage {
-            qcInfoViewController = self.childViewControllers[3].childViewControllers[0] as? QCInfoViewController
+            qcInfoViewController = self.children[3].children[0] as? QCInfoViewController
             qcInfoViewController?.tabBarItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
         } else {
-            self.childViewControllers[3].removeFromParentViewController()
+            self.children[3].removeFromParent()
         }
         
 //        switch Cache_Inspector?.typeCode ?? "LEATHER" {
@@ -108,7 +108,7 @@ class TabBarViewController: UITabBarController {
         let leftButton=UIBarButtonItem()
         leftButton.title=title
         leftButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        leftButton.style=UIBarButtonItemStyle.plain
+        leftButton.style=UIBarButtonItem.Style.plain
         leftButton.target=self
         leftButton.action=Selector(actionName)
         self.navigationItem.leftBarButtonItem=leftButton
@@ -118,7 +118,7 @@ class TabBarViewController: UITabBarController {
         let rightButton=UIBarButtonItem()
         rightButton.title=title
         rightButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        rightButton.style=UIBarButtonItemStyle.plain
+        rightButton.style=UIBarButtonItem.Style.plain
         rightButton.target=self
         rightButton.action=Selector(actionName)
         self.navigationItem.rightBarButtonItem=rightButton
@@ -128,7 +128,7 @@ class TabBarViewController: UITabBarController {
         let rightButton=UIBarButtonItem()
         rightButton.title=title
         rightButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        rightButton.style=UIBarButtonItemStyle.plain
+        rightButton.style=UIBarButtonItem.Style.plain
         rightButton.target=self
         rightButton.action=Selector(actionName)
         self.navigationItem.rightBarButtonItem=rightButton
@@ -289,7 +289,7 @@ class TabBarViewController: UITabBarController {
         self.taskDetalViewContorller!.scrollToPosition(self.taskDetalViewContorller!.scrollViewOffset)
         
         self.taskDetalViewContorller!.ScrollView.isScrollEnabled = true
-        self.taskDetalViewContorller!.ScrollView.bringSubview(toFront: self.taskDetalViewContorller!.view.viewWithTag(_TASKDETAILVIEWTAG)!)
+        self.taskDetalViewContorller!.ScrollView.bringSubviewToFront(self.taskDetalViewContorller!.view.viewWithTag(_TASKDETAILVIEWTAG)!)
         self.setLeftBarItem("< \(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Search"))",actionName: "backTaskSearch:")
         //self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem
         //self.setRightBarItem("Start", actionName: "startInspectionCategory")

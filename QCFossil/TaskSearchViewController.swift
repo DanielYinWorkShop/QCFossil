@@ -148,7 +148,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         updateLocalizedString()
     }
     
-    func reloadTaskSearchTableView() {
+    @objc func reloadTaskSearchTableView() {
         taskSet = [Task]()
         tasks = [Task]()
         brands = [Brand]()
@@ -227,8 +227,8 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         self.refuseLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Refused")
         self.canceledLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancelled")
         self.reviewedLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Reviewed")
-        self.searchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Search"), for: UIControlState())
-        self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        self.searchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Search"), for: UIControl.State())
+        self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControl.State())
         self.vendorInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor PlaceHolder")
         self.vendorLocationInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Location PlaceHolder")
         self.opdRsdFromLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("OPD/RSD From")
@@ -464,7 +464,7 @@ class TaskSearchViewController: PopoverMaster, UITableViewDelegate, UITableViewD
         }
         
         if cell.taskId == Cache_Task_On?.taskId {
-            self.taskItemTableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
+            self.taskItemTableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
         }
         
         return cell

@@ -48,11 +48,11 @@ class UserForgetViewController: UIViewController {
     
     func updateLocalizeString() {
         if (self.forgetPwBackBtn != nil) {
-            self.forgetPwBackBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Back"), for: UIControlState())
+            self.forgetPwBackBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Back"), for: UIControl.State())
         }
         
         if (self.forgetPwOKBtn != nil) {
-            self.forgetPwOKBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), for: UIControlState())
+            self.forgetPwOKBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), for: UIControl.State())
         }
         
         if (self.forgetPwEmailLabel != nil) {
@@ -60,11 +60,11 @@ class UserForgetViewController: UIViewController {
         }
         
         if (self.forgetUsernameBackBtn != nil) {
-            self.forgetUsernameBackBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Back"), for: UIControlState())
+            self.forgetUsernameBackBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Back"), for: UIControl.State())
         }
         
         if (self.forgetUsernameOKBtn != nil) {
-            self.forgetUsernameOKBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), for: UIControlState())
+            self.forgetUsernameOKBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("OK"), for: UIControl.State())
         }
         
         if (self.forgetUsernameEmailLabel != nil) {

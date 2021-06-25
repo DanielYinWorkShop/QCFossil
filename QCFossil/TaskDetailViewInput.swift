@@ -171,20 +171,20 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.qcRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Remark")
         self.additionalAdministrativeItemLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Additional Administrative Item")
         
-        self.addPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), for: UIControlState())
-        self.signoffConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sign-off & Confirm"), for: UIControlState())
-        self.cancelConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel Task"), for: UIControlState())
+        self.addPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), for: UIControl.State())
+        self.signoffConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sign-off & Confirm"), for: UIControl.State())
+        self.cancelConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel Task"), for: UIControl.State())
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         self.parentVC!.view.frame.origin.y =  0
         
     }
     
-    func keyboardWillChange(_ notification: Notification) {
+    @objc func keyboardWillChange(_ notification: Notification) {
         
         if self.currentFirstResponder() != nil && (self.currentFirstResponder()?.classForCoder)! == CustomTextView.classForCoder() {
-            if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
                 self.parentVC!.view.frame.origin.y =  0
                 self.parentVC!.view.frame.origin.y -= keyboardSize.height
             
@@ -196,14 +196,14 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         if (self.parentVC == nil) {
             // a removeFromSuperview situation
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.window)
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: self.window)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self.window)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: self.window)
             
             return
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillChange(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         self.disableAllFunsForView(self)
         self.setButtonCornerRadius(self.addPOLineBtn)
@@ -246,7 +246,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             let itemCount = taskDataHelper.getCatItemCountById((Cache_Task_On?.taskId)!,sectionId: (section?.sectionId)!)
             
             let catBtnTitle = (_ENGLISH ? section?.sectionNameEn:section?.sectionNameCn)!+"(\(itemCount))"
-            inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, for: UIControlState())
+            inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, for: UIControl.State())
             inputInptCatViewObj?.parentView = self
             inputInptCatViewObj?.sectionId = section?.sectionId
             

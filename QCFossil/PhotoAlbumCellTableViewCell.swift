@@ -70,14 +70,14 @@ class PhotoAlbumCellTableViewCell: UITableViewCell, UITextViewDelegate {
             
             container.addSubview(imageView)
             
-            let button = UIButton(type: UIButtonType.system) as UIButton
+            let button = UIButton(type: UIButton.ButtonType.system) as UIButton
             button.frame = (self.parentVC?.parent!.view.frame)!
             button.backgroundColor = UIColor.clear
             button.titleLabel!.font = UIFont(name: "", size: 20)
-            button.setTitleColor(UIColor.white, for: UIControlState())
-            button.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap Anywhere To Close"), for: UIControlState())
-            button.contentEdgeInsets = UIEdgeInsetsMake(400 + (self.parentVC?.parent!.view.center.y)!-30, 0, 0, 0);
-            button.addTarget(self, action: #selector(PhotoAlbumCellTableViewCell.closePreviewLayer), for: UIControlEvents.touchUpInside)
+            button.setTitleColor(UIColor.white, for: UIControl.State())
+            button.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap Anywhere To Close"), for: UIControl.State())
+            button.contentEdgeInsets = UIEdgeInsets.init(top: 400 + (self.parentVC?.parent!.view.center.y)!-30, left: 0, bottom: 0, right: 0);
+            button.addTarget(self, action: #selector(PhotoAlbumCellTableViewCell.closePreviewLayer), for: UIControl.Event.touchUpInside)
             
             container.addSubview(button)
             
@@ -85,7 +85,7 @@ class PhotoAlbumCellTableViewCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
-    func closePreviewLayer() {
+    @objc func closePreviewLayer() {
         let maskView = self.parentVC?.parent!.view.viewWithTag(_MASKVIEWTAG)
         maskView?.removeFromSuperview()
     }
