@@ -222,7 +222,7 @@
             <point key="canvasLocation" x="360" y="115"/>
         </view>
         <view contentMode="scaleToFill" id="UTa-gm-Yln">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="300"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="555"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspector Comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STM-wk-zuT">
@@ -254,14 +254,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QC Remark" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9p-V5-Hoi">
-                    <rect key="frame" x="20" y="93" width="170" height="21"/>
+                    <rect key="frame" x="20" y="203" width="170" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspection Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-wz-DEV">
-                    <rect key="frame" x="20" y="180" width="170" height="21"/>
+                    <rect key="frame" x="20" y="331" width="170" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -315,10 +315,6 @@
                         <action selector="cancelBtnOnClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="ELt-m4-JOD"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="4dZ-Jj-TGG">
-                    <rect key="frame" x="206" y="37" width="21" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KpI-kW-nNV">
                     <rect key="frame" x="203" y="331" width="228" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -326,18 +322,22 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="BhL-Ib-bwu">
-                    <rect key="frame" x="206" y="37" width="21" height="21"/>
+                    <rect key="frame" x="727" y="208" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Additional Administrative Item" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZB-rX-HUL">
-                    <rect key="frame" x="20" y="93" width="170" height="21"/>
+                    <rect key="frame" x="20" y="267" width="170" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="MRO-c7-wBC">
-                    <rect key="frame" x="206" y="37" width="21" height="21"/>
+                    <rect key="frame" x="410" y="336" width="21" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="4dZ-Jj-TGG">
+                    <rect key="frame" x="727" y="274" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>
@@ -354,11 +354,11 @@
                     <exclude reference="oZf-6T-Yik"/>
                     <exclude reference="rc3-Rd-wUm"/>
                     <exclude reference="AGM-SD-qz0"/>
-                    <exclude reference="4dZ-Jj-TGG"/>
                     <exclude reference="KpI-kW-nNV"/>
                     <exclude reference="BhL-Ib-bwu"/>
                     <exclude reference="kZB-rX-HUL"/>
                     <exclude reference="MRO-c7-wBC"/>
+                    <exclude reference="4dZ-Jj-TGG"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
@@ -373,35 +373,35 @@
                     <include reference="oZf-6T-Yik"/>
                     <include reference="rc3-Rd-wUm"/>
                     <include reference="AGM-SD-qz0"/>
-                    <include reference="4dZ-Jj-TGG"/>
                     <include reference="KpI-kW-nNV"/>
                     <include reference="BhL-Ib-bwu"/>
                     <include reference="kZB-rX-HUL"/>
                     <include reference="MRO-c7-wBC"/>
+                    <include reference="4dZ-Jj-TGG"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="360" y="998.5"/>
+            <point key="canvasLocation" x="359.375" y="1087.79296875"/>
         </view>
         <view contentMode="scaleToFill" id="7Xb-df-xVh">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="148"/>
+            <rect key="frame" x="0.0" y="0.0" width="1193" height="601"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspection Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdk-w6-PjW">
-                    <rect key="frame" x="20" y="469" width="196" height="22"/>
+                    <rect key="frame" x="20" y="20" width="196" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Result Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPc-Vg-wIy">
-                    <rect key="frame" x="198" y="499" width="125" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspection Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzl-ei-a0m">
+                    <rect key="frame" x="20" y="50" width="155" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Inspection Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzl-ei-a0m">
-                    <rect key="frame" x="20" y="499" width="155" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Result Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPc-Vg-wIy">
+                    <rect key="frame" x="213" y="50" width="125" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -412,25 +412,25 @@
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="Kdk-w6-PjW"/>
-                    <exclude reference="hPc-Vg-wIy"/>
                     <exclude reference="dzl-ei-a0m"/>
+                    <exclude reference="hPc-Vg-wIy"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
                 <mask key="subviews">
                     <include reference="Kdk-w6-PjW"/>
-                    <include reference="hPc-Vg-wIy"/>
                     <include reference="dzl-ei-a0m"/>
+                    <include reference="hPc-Vg-wIy"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="360" y="1295"/>
+            <point key="canvasLocation" x="193.359375" y="1463.37890625"/>
         </view>
         <view contentMode="scaleToFill" id="DaF-YO-jUU">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+            <rect key="frame" x="0.0" y="0.0" width="879" height="405"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="96" y="1554"/>
+            <point key="canvasLocation" x="93" y="1792"/>
         </view>
     </objects>
     <resources>

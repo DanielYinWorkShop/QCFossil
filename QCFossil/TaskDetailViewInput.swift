@@ -264,7 +264,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         self.addSubview(self.commentWarpperView)
         
-        self.frame.size = CGSize(width: 768, height: self.frame.size.height + 200)
+        self.frame.size = CGSize(width: 768, height: self.frame.size.height + 600)
         updateContentView(CGFloat((categoryCount-3)*cellHeight+(poItems.count-1)*poCellHeight))
         
         let qcRemarkValues = taskDataHelper.getQCRemarksOptionList(String(describing: Cache_Task_On?.inspectionResultValueId) ?? "0")

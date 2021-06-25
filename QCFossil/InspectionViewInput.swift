@@ -74,7 +74,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         }
         
         self.inspNo.text = Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo
-        
+        self.frame = CGRect(x: 0, y: 0, width: 768, height: 1024)
         self.scrollView.contentSize = CGSize.init(width: CGFloat(categoryCount*768), height: self.scrollView.frame.size.height)
         self.scrollView.isPagingEnabled = true
         self.scrollView.isDirectionalLockEnabled = true
@@ -142,7 +142,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
                 inputview.categoryName = _ENGLISH ? section.sectionNameEn! : section.sectionNameCn!
                 inputview.InputMode = inputMode!
                 
-                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height)))
+                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height) + 500))
                 self.scrollView.addSubview(inputview)
                 self.pVC?.categoriesDetail.append(inputview)
             case _INPUTMODE02:
@@ -153,7 +153,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
                 inputview.categoryName = _ENGLISH ? section.sectionNameEn! : section.sectionNameCn!
                 inputview.InputMode = inputMode!
                 
-                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height)))
+                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height) + 500))
                 self.scrollView.addSubview(inputview)
                 self.pVC?.categoriesDetail.append(inputview)
             case _INPUTMODE03:
@@ -164,7 +164,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
                 inputview.categoryName = _ENGLISH ? section.sectionNameEn! : section.sectionNameCn!
                 inputview.InputMode = inputMode!
                 
-                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height)))
+                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height) + 500))
                 self.scrollView.addSubview(inputview)
                 self.pVC?.categoriesDetail.append(inputview)
             case _INPUTMODE04:
@@ -175,7 +175,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
                 inputview.inspSection = section
                 inputview.InputMode = inputMode!
                 
-                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height)))
+                inputview.frame = CGRect.init(x: idx*768, y: 0, width: 768, height: Int((inputview.frame.size.height) + 500))
                 self.scrollView.addSubview(inputview)
                 self.pVC?.categoriesDetail.append(inputview)
             default:break
