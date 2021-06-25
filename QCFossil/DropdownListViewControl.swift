@@ -37,7 +37,7 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         tableView.dataSource = self
     }
     
-    func longPressed(sender: UIGestureRecognizer) {
+    func longPressed(_ sender: UIGestureRecognizer) {
         if let cell = sender.view as? UITableViewCell {
             let popoverContent = PopoverViewController()
             popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
@@ -46,16 +46,16 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             popoverContent.selectedValue = cell.textLabel?.text ?? ""
             
             let nav = UINavigationController(rootViewController: popoverContent)
-            nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-            nav.navigationBar.barTintColor = UIColor.whiteColor()
-            nav.navigationBar.tintColor = UIColor.blackColor()
+            nav.modalPresentationStyle = UIModalPresentationStyle.popover
+            nav.navigationBar.barTintColor = UIColor.white
+            nav.navigationBar.tintColor = UIColor.black
  
             let popover = nav.popoverPresentationController
             popover?.delegate = nil
             popover?.sourceView = sender.view
-            popover?.sourceRect = CGRectMake(0,(sender.view?.parentVC?.view.frame.origin.y)!,sender.view!.frame.size.width,sender.view!.frame.size.height)
+            popover?.sourceRect = CGRect(x: 0,y: (sender.view?.parentVC?.view.frame.origin.y)!,width: sender.view!.frame.size.width,height: sender.view!.frame.size.height)
             
-            sender.view?.parentVC!.presentViewController(nav, animated: true, completion: nil)
+            sender.view?.parentVC!.present(nav, animated: true, completion: nil)
         }
     }
     
@@ -65,7 +65,7 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             return
         }
         
-        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 10)
         self.layer.shadowOpacity = 0.4
         self.layer.shadowRadius = 5
@@ -75,7 +75,7 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         
         dropdownDataFilter = dropdownData
         
-        let selectedValues = myParentTextField?.text!.stringByReplacingOccurrencesOfString(", ", withString: ",")
+        let selectedValues = myParentTextField?.text!.replacingOccurrences(of: ", ", with: ",")
         
         let cells = selectedValues!.characters.split{$0 == ","}.map(String.init)
         for cell in cells {
@@ -95,23 +95,23 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         }
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dropdownDataFilter.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell.init()
         cell.textLabel?.text = dropdownDataFilter[indexPath.row] as String
         
         self.selectedTableViewCell.forEach({
             if $0.textLabel?.text == cell.textLabel?.text {
-                cell.textLabel?.textColor = UIColor.whiteColor()
+                cell.textLabel?.textColor = UIColor.white
                 cell.contentView.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-                tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
             }
         })
         
@@ -131,15 +131,15 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
-    func updateBgColor(cell:UITableViewCell) {
+    func updateBgColor(_ cell:UITableViewCell) {
         let bgColorView = UIView()
         bgColorView.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
         cell.selectedBackgroundView = bgColorView
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.allowsMultipleSelection == true {
-            let selectedCell = tableView.cellForRowAtIndexPath(indexPath)!
+            let selectedCell = tableView.cellForRow(at: indexPath)!
             var selected = false
             for cell in selectedTableViewCell {
                
@@ -149,19 +149,19 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
             }
             
             if !selected {
-                selectedTableViewCell.append(tableView.cellForRowAtIndexPath(indexPath)!)
+                selectedTableViewCell.append(tableView.cellForRow(at: indexPath)!)
                 selectedCell.contentView.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-                selectedCell.textLabel?.textColor = UIColor.whiteColor()
+                selectedCell.textLabel?.textColor = UIColor.white
                 
                 if let aTextField = myParentTextField {
                     let text = String(dropdownDataFilter[indexPath.row])
                     
-                    selectedValues.append(keyValues[text] ?? 0)
+                    selectedValues.append(keyValues[text!] ?? 0)
                     
                     if aTextField.text == "" {
-                        aTextField.text! += text
+                        aTextField.text! += text!
                     }else{
-                        aTextField.text! += ","+text
+                        aTextField.text! += ","+text!
                     }
                     
                     if (handleFun != nil){
@@ -201,10 +201,10 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
         }
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.allowsMultipleSelection == true {
-        let cell = (tableView.cellForRowAtIndexPath(indexPath)!)
-        cell.textLabel?.textColor = UIColor.blackColor()
+        let cell = (tableView.cellForRow(at: indexPath)!)
+        cell.textLabel?.textColor = UIColor.black
         if indexPath.row % 2 == 0{
             cell.contentView.backgroundColor = _TABLECELL_BG_COLOR1
         }else{
@@ -220,14 +220,14 @@ class DropdownListViewControl: UIView, UITableViewDataSource, UITableViewDelegat
                 //Remove Text From Parent TextField
                 
                 if idx < 1 && selectedTableViewCell.count > 1 {
-                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!+",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    myParentTextField?.text = myParentTextField?.text!.replacingOccurrences(of: (cell.textLabel?.text)!+",", with: "", options: NSString.CompareOptions.literal, range: nil)
                 }else if idx < 1 && selectedTableViewCell.count < 2 {
-                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString((cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    myParentTextField?.text = myParentTextField?.text!.replacingOccurrences(of: (cell.textLabel?.text)!, with: "", options: NSString.CompareOptions.literal, range: nil)
                 }else{
-                    myParentTextField?.text = myParentTextField?.text!.stringByReplacingOccurrencesOfString(","+(cell.textLabel?.text)!, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    myParentTextField?.text = myParentTextField?.text!.replacingOccurrences(of: ","+(cell.textLabel?.text)!, with: "", options: NSString.CompareOptions.literal, range: nil)
                 }
                 
-                selectedTableViewCell.removeAtIndex(idx)
+                selectedTableViewCell.remove(at: idx)
                 break
             }
         }

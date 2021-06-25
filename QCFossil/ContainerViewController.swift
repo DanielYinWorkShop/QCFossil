@@ -23,15 +23,15 @@ class ContainerViewController: UIViewController{
         // Set up a notification for toggleMenu from other page.
         
         //Init Toggle Menu Notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerViewController.toggleMenu), name: "toggleMenu", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerViewController.toggleMenu), name: NSNotification.Name(rawValue: "toggleMenu"), object: nil)
         //Init Task Search Menu Click Response Notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerViewController.taskSearchMenuClickResponse(_:)), name: "taskSearchMenuClickResponse", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerViewController.taskSearchMenuClickResponse(_:)), name: NSNotification.Name(rawValue: "taskSearchMenuClickResponse"), object: nil)
         //Init Toggle Scrollable Notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerViewController.setScrollable(_:)), name: "setScrollable", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContainerViewController.setScrollable(_:)), name: NSNotification.Name(rawValue: "setScrollable"), object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        dispatch_async(dispatch_get_main_queue()) {
+    override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
             NSLog("Close Menu.")
             
             self.closeMenu(false)
@@ -39,9 +39,9 @@ class ContainerViewController: UIViewController{
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "toggleMenu", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "taskSearchMenuClickResponse", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "setScrollable", object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "toggleMenu"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "taskSearchMenuClickResponse"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "setScrollable"), object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,46 +52,43 @@ class ContainerViewController: UIViewController{
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "embedContainer" {
-            self.embedContainerController = segue.destinationViewController as? EmbedContainerController
+            self.embedContainerController = segue.destination as? EmbedContainerController
         }
     }
     
-    func closeMenu(animated:Bool = true) {
+    func closeMenu(_ animated:Bool = true) {
         containerScroll.setContentOffset(CGPoint(x: leftMenuWidth, y: 0), animated: animated)
     }
     
-    func displayMenu(animated:Bool = true) {
+    func displayMenu(_ animated:Bool = true) {
         containerScroll.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
     }
     
     func toggleMenu(){
-        if self.containerScroll.scrollEnabled {
+        if self.containerScroll.isScrollEnabled {
             containerScroll.contentOffset.x == 0  ? closeMenu() : displayMenu()
         }
     }
     
-    func taskSearchMenuClickResponse(notification:NSNotification){
+    func taskSearchMenuClickResponse(_ notification:Notification){
         //closeMenu()
-        let userInfo:Dictionary<String,String!> = notification.userInfo as! Dictionary<String,String!>
-        let segueIdentifier = userInfo[_SEGUEIDENTIFIER]
-
-        self.embedContainerController!.switchSegue(segueIdentifier!)
+        let userInfo:Dictionary<String,String?> = notification.userInfo as! Dictionary<String,String?>
+        if let segueIdentifier = userInfo[_SEGUEIDENTIFIER] {
+            self.embedContainerController?.switchSegue(segueIdentifier!)
+        }
     }
     
-    func setScrollable(notification:NSNotification) {
-        let userInfo:Dictionary<String,Bool!> = notification.userInfo as! Dictionary<String,Bool!>
-        let canScroll = userInfo["canScroll"]
-        
-        if canScroll == false {
+    func setScrollable(_ notification:Notification) {
+        let userInfo:Dictionary<String,Bool?> = notification.userInfo as! Dictionary<String,Bool?>
+        if let canScroll = userInfo["canScroll"] as? Bool, canScroll == false {
             closeMenu()
+            self.containerScroll.isScrollEnabled = canScroll
         }
-        
-        self.containerScroll.scrollEnabled = canScroll!
     }
 }
 
@@ -100,17 +97,17 @@ class ContainerViewController: UIViewController{
 */
 extension ContainerViewController: UIScrollViewDelegate {
     
-    func scrollViewDidScroll(containerScroll: UIScrollView) {
+    func scrollViewDidScroll(_ containerScroll: UIScrollView) {
         //print("scrollView.contentOffset.x:: \(containerScroll.contentOffset.x)")
     }
     
-    func scrollViewWillBeginDragging(containerScroll: UIScrollView) {
+    func scrollViewWillBeginDragging(_ containerScroll: UIScrollView) {
         //NSLog("pagingEnabled: true")
-        containerScroll.pagingEnabled = true
+        containerScroll.isPagingEnabled = true
     }
     
-    func scrollViewDidEndDecelerating(containerScroll: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ containerScroll: UIScrollView) {
         //NSLog("pagingEnabled: false")
-        containerScroll.pagingEnabled = false
+        containerScroll.isPagingEnabled = false
     }
 }

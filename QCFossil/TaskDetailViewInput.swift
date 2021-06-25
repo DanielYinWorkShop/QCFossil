@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
     
@@ -93,9 +117,9 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         //Hidden addPOLineBtn for Booking Task
         if Cache_Task_On!.bookingNo!.isEmpty {
-            self.addPOLineBtn.hidden = false
+            self.addPOLineBtn.isHidden = false
         }else{
-            self.addPOLineBtn.hidden = true
+            self.addPOLineBtn.isHidden = true
         }
         
         self.bookingNoInput.text = Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo
@@ -107,9 +131,9 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.qcRemarkInput.text = Cache_Task_On?.qcRemarks
 
         if Cache_Task_On!.taskStatus == GetTaskStatusId(caseId: "Uploaded").rawValue && Cache_Task_On!.cancelDate != "" {
-            self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(TaskStatus(caseId: (Cache_Task_On?.taskStatus!)!))) + " (C)"
+            self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(describing: TaskStatus(caseId: (Cache_Task_On?.taskStatus!)!))) + " (C)"
         }else{
-            self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(TaskStatus(caseId: (Cache_Task_On?.taskStatus!)!)))
+            self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(describing: TaskStatus(caseId: (Cache_Task_On?.taskStatus!)!)))
         }
         
         self.inspResultInput.text = inspResultValueName
@@ -119,9 +143,9 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.inspResultBottomInput.text = inspResultValueName
         
         if Cache_Task_On?.dataRefuseDesc != "" {
-            self.dataRefuseDesc.hidden = false
+            self.dataRefuseDesc.isHidden = false
             self.dataRefuseDesc.text = Cache_Task_On?.dataRefuseDesc
-            self.taskStatusDescLabel.hidden = false
+            self.taskStatusDescLabel.isHidden = false
         }
         
         updateLocalizedString()
@@ -147,20 +171,20 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.qcRemarkLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Remark")
         self.additionalAdministrativeItemLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Additional Administrative Item")
         
-        self.addPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), forState: UIControlState.Normal)
-        self.signoffConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sign-off & Confirm"), forState: UIControlState.Normal)
-        self.cancelConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel Task"), forState: UIControlState.Normal)
+        self.addPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), for: UIControlState())
+        self.signoffConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sign-off & Confirm"), for: UIControlState())
+        self.cancelConfirmBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel Task"), for: UIControlState())
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.parentVC!.view.frame.origin.y =  0
         
     }
     
-    func keyboardWillChange(notification: NSNotification) {
+    func keyboardWillChange(_ notification: Notification) {
         
         if self.currentFirstResponder() != nil && (self.currentFirstResponder()?.classForCoder)! == CustomTextView.classForCoder() {
-            if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+            if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
                 self.parentVC!.view.frame.origin.y =  0
                 self.parentVC!.view.frame.origin.y -= keyboardSize.height
             
@@ -172,14 +196,14 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         if (self.parentVC == nil) {
             // a removeFromSuperview situation
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: self.window)
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: self.window)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.window)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: self.window)
             
             return
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillChange(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TaskDetailViewInput.keyboardWillChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         
         self.disableAllFunsForView(self)
         self.setButtonCornerRadius(self.addPOLineBtn)
@@ -204,7 +228,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         loadPoList()
         
         //init section cat buttons
-        self.inptCatWrapperView.frame = CGRectMake(self.inptCatWrapperView.frame.origin.x,CGFloat(420+(poItems.count-1)*poCellHeight),self.inptCatWrapperView.frame.size.width,CGFloat((categoryCount+2)*cellHeight))
+        self.inptCatWrapperView.frame = CGRect(x: self.inptCatWrapperView.frame.origin.x,y: CGFloat(420+(poItems.count-1)*poCellHeight),width: self.inptCatWrapperView.frame.size.width,height: CGFloat((categoryCount+2)*cellHeight))
         
         self.addSubview(self.inptCatWrapperView)
         
@@ -222,7 +246,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             let itemCount = taskDataHelper.getCatItemCountById((Cache_Task_On?.taskId)!,sectionId: (section?.sectionId)!)
             
             let catBtnTitle = (_ENGLISH ? section?.sectionNameEn:section?.sectionNameCn)!+"(\(itemCount))"
-            inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, forState: UIControlState.Normal)
+            inputInptCatViewObj?.inptCatButton.setTitle(catBtnTitle, for: UIControlState())
             inputInptCatViewObj?.parentView = self
             inputInptCatViewObj?.sectionId = section?.sectionId
             
@@ -236,22 +260,22 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             self.pVC!.categories.append(inputInptCatViewObj!)
         }
         
-        self.commentWarpperView.frame = CGRectMake(0, self.inptCatWrapperView.frame.origin.y+self.inptCatWrapperView.frame.size.height+CGFloat(cellHeight), self.commentWarpperView.frame.size.width, 450)
+        self.commentWarpperView.frame = CGRect(x: 0, y: self.inptCatWrapperView.frame.origin.y+self.inptCatWrapperView.frame.size.height+CGFloat(cellHeight), width: self.commentWarpperView.frame.size.width, height: 450)
         
         self.addSubview(self.commentWarpperView)
         
         self.frame.size = CGSize(width: 768, height: self.frame.size.height + 200)
         updateContentView(CGFloat((categoryCount-3)*cellHeight+(poItems.count-1)*poCellHeight))
         
-        let qcRemarkValues = taskDataHelper.getQCRemarksOptionList(String(Cache_Task_On?.inspectionResultValueId) ?? "0")
+        let qcRemarkValues = taskDataHelper.getQCRemarksOptionList(String(describing: Cache_Task_On?.inspectionResultValueId) ?? "0")
         for value in qcRemarkValues {
-            guard let nameEn = value.valueNameEn, nameCn = value.valueNameCn else {continue}
+            guard let nameEn = value.valueNameEn, let nameCn = value.valueNameCn else {continue}
             self.qcRemarksKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
         }
         
-        let AdditionalAdministrativeItemKeyValue = taskDataHelper.getAdditionalAdministrativeItemOptionList(String(Cache_Task_On?.inspectionResultValueId) ?? "0")
+        let AdditionalAdministrativeItemKeyValue = taskDataHelper.getAdditionalAdministrativeItemOptionList(String(describing: Cache_Task_On?.inspectionResultValueId) ?? "0")
         for value in AdditionalAdministrativeItemKeyValue {
-            guard let nameEn = value.valueNameEn, nameCn = value.valueNameCn else {continue}
+            guard let nameEn = value.valueNameEn, let nameCn = value.valueNameCn else {continue}
             self.AdditionalAdministrativeItemKeyValue[_ENGLISH ? nameEn : nameCn] = value.valueId
         }
         
@@ -261,19 +285,19 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         switch Cache_Inspector?.typeCode ?? "LEATHER" {
         case TypeCode.LEATHER.rawValue:
             
-            qcRemarkInput.hidden = true
-            qcRemarkLabel.hidden = true
-            additionalAdministrativeItemLabel.hidden = true
-            additionalAdministrativeItemInput.hidden = true
-            qcRemarkDropdownIcon.hidden = true
-            additionalAdministrativeItemDropdownIcon.hidden = true
+            qcRemarkInput.isHidden = true
+            qcRemarkLabel.isHidden = true
+            additionalAdministrativeItemLabel.isHidden = true
+            additionalAdministrativeItemInput.isHidden = true
+            qcRemarkDropdownIcon.isHidden = true
+            additionalAdministrativeItemDropdownIcon.isHidden = true
             
             inspResultBottomLabel.frame = CGRect(x: inspResultBottomLabel.frame.origin.x, y: inspResultBottomLabel.frame.origin.y - 100, width: inspResultBottomLabel.frame.size.width, height: inspResultBottomLabel.frame.size.height)
             
             if #available(iOS 9.0, *) {
-                inspResultBottomLabel.topAnchor.constraintEqualToAnchor(self.commentWarpperView.topAnchor, constant: 185).active = true
-                inspResultBottomInput.topAnchor.constraintEqualToAnchor(self.commentWarpperView.topAnchor, constant: 180).active = true
-                resultDropdownIcon.topAnchor.constraintEqualToAnchor(self.commentWarpperView.topAnchor, constant: 185).active = true
+                inspResultBottomLabel.topAnchor.constraint(equalTo: self.commentWarpperView.topAnchor, constant: 185).isActive = true
+                inspResultBottomInput.topAnchor.constraint(equalTo: self.commentWarpperView.topAnchor, constant: 180).isActive = true
+                resultDropdownIcon.topAnchor.constraint(equalTo: self.commentWarpperView.topAnchor, constant: 185).isActive = true
             } else {
                 // Fallback on earlier versions
             }
@@ -288,11 +312,11 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
     
     func getPoList(){
         if poItems.count > 0 {
-            self.poListWrapperView.frame = CGRectMake(0,309,768,CGFloat(poItems.count*poCellHeight))
+            self.poListWrapperView.frame = CGRect(x: 0,y: 309,width: 768,height: CGFloat(poItems.count*poCellHeight))
             var idx = 0
             for poItem in poItems {
                 let poItemCellView = POCellViewInput.loadFromNibNamed("POCellView")
-                poItemCellView?.frame = CGRectMake(20,CGFloat(idx*poCellHeight),728,CGFloat(poCellHeight))
+                poItemCellView?.frame = CGRect(x: 20,y: CGFloat(idx*poCellHeight),width: 728,height: CGFloat(poCellHeight))
                 poItemCellView?.backgroundColor = _TABLECELL_BG_COLOR1
                 poItemCellView?.poNoText.text = poItem.poNo
                 poItemCellView?.poLineNoText.text = poItem.poLineNo
@@ -332,15 +356,15 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                     poItemCellView!.bookingQtyInput.text = String(poItem.targetInspectQty!)
                 }else if poItem.isEnable == 0 && Cache_Task_On?.bookingNo != "" {
                     poItemCellView!.bookingQtyInput.text = "0"
-                    poItemCellView?.availInspectQtyInput.userInteractionEnabled = false
-                    poItemCellView?.sampleQtyInput.userInteractionEnabled = false
+                    poItemCellView?.availInspectQtyInput.isUserInteractionEnabled = false
+                    poItemCellView?.sampleQtyInput.isUserInteractionEnabled = false
                 }else if poItem.isEnable == 1 {
                     
                 }else{
                     poItemCellView?.bookingQtyDB = 0
                     poItemCellView!.bookingQtyInput.text = "0"
-                    poItemCellView?.availInspectQtyInput.userInteractionEnabled = false
-                    poItemCellView?.sampleQtyInput.userInteractionEnabled = false
+                    poItemCellView?.availInspectQtyInput.isUserInteractionEnabled = false
+                    poItemCellView?.sampleQtyInput.isUserInteractionEnabled = false
                 }
                 
                 if Cache_Task_On!.inspectionResultValueId < 0 {
@@ -353,7 +377,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 
                 poItemCellView?.idx = idx
                 poItemCellView?.pVC = self.pVC
-                poItemCellView?.delBtn.hidden = true
+                poItemCellView?.delBtn.isHidden = true
                 
                 poCellItems.append(poItemCellView!)
                 
@@ -375,7 +399,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         }
     }
     
-    func updateContentView(offSet:CGFloat) {
+    func updateContentView(_ offSet:CGFloat) {
         NSLog("update view position")
         
         //self.pVC!.ScrollView.contentSize.height += offSet
@@ -383,7 +407,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         self.pVC!.ScrollView.contentSize.height = self.frame.size.height
     }
     
-    func validateBeforeSignoff(taskStatus:Int=0) ->Bool {
+    func validateBeforeSignoff(_ taskStatus:Int=0) ->Bool {
         
         if taskStatus == 0 {
             //Reset all po items
@@ -422,17 +446,17 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         return true
     }
     
-    @IBAction func signoffViewButton(sender: UIButton) {
+    @IBAction func signoffViewButton(_ sender: UIButton) {
         
         if validateBeforeSignoff() {
-            let myParentTabVC = self.pVC!.parentViewController?.parentViewController as! TabBarViewController
+            let myParentTabVC = self.pVC!.parent?.parent as! TabBarViewController
             if myParentTabVC.saveTask(GetTaskStatusId(caseId: "Draft").rawValue, needValidate: true) {
-                self.pVC!.performSegueWithIdentifier("ToSignoffSegue", sender: sender)
+                self.pVC!.performSegue(withIdentifier: "ToSignoffSegue", sender: sender)
             }
         }
     }
     
-    @IBAction func cancelBtnOnClick(sender: UIButton) {
+    @IBAction func cancelBtnOnClick(_ sender: UIButton) {
         
         if Cache_Task_On?.bookingNo! == "" {
             
@@ -440,32 +464,32 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 
                 Cache_Task_On?.deleteFlag = 1
                 Cache_Task_On?.taskStatus = 0
-                self.pVC!.parentViewController!.navigationController?.popViewControllerAnimated(true)
+                self.pVC!.parent!.navigationController?.popViewController(animated: true)
             })
             
         }else if validateBeforeSignoff(1) {
             //Task Cancel, inspection result is 0
             Cache_Task_On?.inspectionResultValueId = -1
-            self.pVC!.performSegueWithIdentifier("ToSignoffSegue", sender: sender)
+            self.pVC!.performSegue(withIdentifier: "ToSignoffSegue", sender: sender)
         }
     }
     
-    @IBAction func addPOLinesButton(sender: UIButton) {
+    @IBAction func addPOLinesButton(_ sender: UIButton) {
         
-        self.parentVC!.performSegueWithIdentifier("CreateTaskSegueFromTaskForm", sender:self)
+        self.parentVC!.performSegue(withIdentifier: "CreateTaskSegueFromTaskForm", sender:self)
     }
     
-    func resizePoWrapperContent(offset:CGFloat) {
+    func resizePoWrapperContent(_ offset:CGFloat) {
        
-        self.inptCatWrapperView.frame = CGRectMake(self.inptCatWrapperView.frame.origin.x,self.inptCatWrapperView.frame.origin.y+offset,self.inptCatWrapperView.frame.size.width,self.inptCatWrapperView.frame.size.height)
+        self.inptCatWrapperView.frame = CGRect(x: self.inptCatWrapperView.frame.origin.x,y: self.inptCatWrapperView.frame.origin.y+offset,width: self.inptCatWrapperView.frame.size.width,height: self.inptCatWrapperView.frame.size.height)
         
-        self.commentWarpperView.frame = CGRectMake(self.commentWarpperView.frame.origin.x,self.commentWarpperView.frame.origin.y+offset,self.commentWarpperView.frame.size.width,self.commentWarpperView.frame.size.height)
+        self.commentWarpperView.frame = CGRect(x: self.commentWarpperView.frame.origin.x,y: self.commentWarpperView.frame.origin.y+offset,width: self.commentWarpperView.frame.size.width,height: self.commentWarpperView.frame.size.height)
         
         self.pVC!.ScrollView.contentSize.height += offset
         self.frame.size = CGSize(width: 768, height: self.frame.size.height+offset)
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
@@ -478,7 +502,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                 clearDropdownviewForSubviews(self)
             }else{
                 
-                textField.showListData(textField, parent: self, handle: handleFun, listData: resultSet!, width: 250, height:250, tag: _TAG6)
+                textField.showListData(textField, parent: self, handle: handleFun, listData: resultSet! as NSArray, width: 250, height:250, tag: _TAG6)
             }
             
             Cache_Task_On?.didModify = true
@@ -500,7 +524,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                     selectedValues.forEach({ intArray.append(Int($0)!) })
                 }
                 
-                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG7, keyValues: self.qcRemarksKeyValue, selectedValues: intArray ?? [])
+                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData) as NSArray, width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG7, keyValues: self.qcRemarksKeyValue, selectedValues: intArray ?? [])
             }
             
             return false
@@ -520,7 +544,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
                     selectedValues.forEach({ intArray.append(Int($0)!) })
                 }
 
-                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData), width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG8, keyValues: self.AdditionalAdministrativeItemKeyValue, selectedValues: intArray ?? [])
+                textField.showListData(textField, parent: self, handle: handleFun, listData: self.sortStringArrayByName(listData) as NSArray, width: 500, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG8, keyValues: self.AdditionalAdministrativeItemKeyValue, selectedValues: intArray ?? [])
                 
             }
             
@@ -530,7 +554,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if textField == self.inspResultBottomInput {
             return false
@@ -539,13 +563,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         return true
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         Cache_Task_On?.didModify = true
         
         return true
     }
     
-    func dropdownHandleFunc(textField: UITextField) {
+    func dropdownHandleFunc(_ textField: UITextField) {
         if textField == self.qcRemarkInput {
             
             Cache_Task_On?.qcRemarks = textField.showMultiDropdownValues(Cache_Task_On?.qcRemarks ?? "", textField: textField, keyValues: self.qcRemarksKeyValue)
@@ -559,7 +583,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             var myQCRemarkValues = self.qcRemarkInput.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myQCRemarkValues {
                 for value in values {
-                    let trimValue = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    let trimValue = value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                     
                     if self.qcRemarksKeyValue[trimValue] == nil {
                         myQCRemarkValues = myQCRemarkValues!.filter { $0 != value }
@@ -570,7 +594,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             var myAARemarkValues = self.additionalAdministrativeItemInput.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myAARemarkValues {
                 for value in values {
-                    let trimValue = value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    let trimValue = value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                     
                     if self.AdditionalAdministrativeItemKeyValue[trimValue] == nil {
                         myAARemarkValues = myAARemarkValues!.filter { $0 != value }
@@ -581,14 +605,14 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return;
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField(self)
             
         }else {
@@ -597,7 +621,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         }
     }
     
-    func saveTask(taskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue) ->Bool {
+    func saveTask(_ taskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue) ->Bool {
         print("Save Task")
         //check if no enable poItems, then prompt msg
         let enablePoItems = self.poCellItems.filter({ $0.isEnable == 1 })
@@ -638,9 +662,9 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         }
         
         var uniquePoNos = Array(Set(poNos))
-        uniquePoNos.sortInPlace({ Int($0) < Int($1) })
+        uniquePoNos.sort(by: { Int($0) < Int($1) })
         
-        Cache_Task_On!.poNo = uniquePoNos.joinWithSeparator(",")
+        Cache_Task_On!.poNo = uniquePoNos.joined(separator: ",")
         
         //Update Task poItems shipWin
         var shipWins = [String]()
@@ -650,13 +674,13 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             }
         }
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = _DATEFORMATTER
         
         var uniqueShipWins = Array(Set(shipWins))
-        uniqueShipWins.sortInPlace({ (dateFormatter.dateFromString($0) ?? dateFormatter.dateFromString("01/01/1970"))!.isGreaterThanDate((dateFormatter.dateFromString($1) ?? dateFormatter.dateFromString("01/01/1970")!)) })
+        uniqueShipWins.sort(by: { (dateFormatter.date(from: $0) ?? dateFormatter.date(from: "01/01/1970"))!.isGreaterThanDate((dateFormatter.date(from: $1) ?? dateFormatter.date(from: "01/01/1970")!)) })
         
-        Cache_Task_On!.shipWin = uniqueShipWins.joinWithSeparator(",")
+        Cache_Task_On!.shipWin = uniqueShipWins.joined(separator: ",")
         
         Cache_Task_On?.reportPrefix = Cache_Inspector?.reportPrefix
         Cache_Task_On?.reportInspectorId = Cache_Inspector?.inspectorId
@@ -669,7 +693,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
         
         Cache_Task_On?.inspectionResultValueId = taskDataHelper.getResultValueIdByName(self.inspResultBottomInput.text!)
         Cache_Task_On?.uploadInspectorId = Cache_Inspector?.inspectorId
-        Cache_Task_On?.uploadDeviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+        Cache_Task_On?.uploadDeviceId = UIDevice.current.identifierForVendor!.uuidString
         
         if (Cache_Task_On?.myPhotos.count)! > 0 || (Cache_Task_On?.taskRemarks)! != "" || Cache_Task_On?.vdrNotes != "" || (Cache_Task_On?.inspectionResultValueId > 0) || taskDataHelper.ifPhotosAddedInTask((Cache_Task_On?.taskId)!) {
             Cache_Task_On?.didKeepPending = false
@@ -679,7 +703,7 @@ class TaskDetailViewInput: UIView, UITextFieldDelegate, UITextViewDelegate {
             Cache_Task_On?.taskStatus = GetTaskStatusId(caseId: "Pending").rawValue
         }
         
-        self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(TaskStatus(caseId: (Cache_Task_On?.taskStatus)!)))
+        self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(String(describing: TaskStatus(caseId: (Cache_Task_On?.taskStatus)!)))
         
         if taskDataHelper.updateTask(Cache_Task_On!) {
             

@@ -24,14 +24,14 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         createSession()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         prevLayer?.frame.size = myView.frame.size
     }
     
     func createSession() {
         session = AVCaptureSession()
-        device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         
         do {
             try input = AVCaptureDeviceInput(device: device)
@@ -44,55 +44,55 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         prevLayer?.frame.size = myView.frame.size
         prevLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         
-        prevLayer?.connection.videoOrientation = transformOrientation(UIInterfaceOrientation(rawValue: UIApplication.sharedApplication().statusBarOrientation.rawValue)!)
+        prevLayer?.connection.videoOrientation = transformOrientation(UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!)
         
         myView.layer.addSublayer(prevLayer!)
         
         session?.startRunning()
     }
     
-    func cameraWithPosition(position: AVCaptureDevicePosition) -> AVCaptureDevice? {
-        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
-        for device in devices {
-            if device.position == position {
+    func cameraWithPosition(_ position: AVCaptureDevicePosition) -> AVCaptureDevice? {
+        let devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo)
+        for device in devices! {
+            if (device as AnyObject).position == position {
                 return device as? AVCaptureDevice
             }
         }
         return nil
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animateAlongsideTransition({ (context) -> Void in
-            self.prevLayer?.connection.videoOrientation = self.transformOrientation(UIInterfaceOrientation(rawValue: UIApplication.sharedApplication().statusBarOrientation.rawValue)!)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (context) -> Void in
+            self.prevLayer?.connection.videoOrientation = self.transformOrientation(UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!)
             self.prevLayer?.frame.size = self.myView.frame.size
             }, completion: { (context) -> Void in
                 
         })
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
-    func transformOrientation(orientation: UIInterfaceOrientation) -> AVCaptureVideoOrientation {
+    func transformOrientation(_ orientation: UIInterfaceOrientation) -> AVCaptureVideoOrientation {
         switch orientation {
-        case .LandscapeLeft:
-            return .LandscapeLeft
-        case .LandscapeRight:
-            return .LandscapeRight
-        case .PortraitUpsideDown:
-            return .PortraitUpsideDown
+        case .landscapeLeft:
+            return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
         default:
-            return .Portrait
+            return .portrait
         }
     }
     
-    @IBAction func switchCameraSide(sender: AnyObject) {
+    @IBAction func switchCameraSide(_ sender: AnyObject) {
         if let sess = session {
             let currentCameraInput: AVCaptureInput = sess.inputs[0] as! AVCaptureInput
             sess.removeInput(currentCameraInput)
             var newCamera: AVCaptureDevice
-            if (currentCameraInput as! AVCaptureDeviceInput).device.position == .Back {
-                newCamera = self.cameraWithPosition(.Front)!
+            if (currentCameraInput as! AVCaptureDeviceInput).device.position == .back {
+                newCamera = self.cameraWithPosition(.front)!
             } else {
-                newCamera = self.cameraWithPosition(.Back)!
+                newCamera = self.cameraWithPosition(.back)!
             }
             
             do {

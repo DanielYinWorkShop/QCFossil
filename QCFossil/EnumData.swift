@@ -81,30 +81,30 @@ enum TaskStatus:String {
 }
 
 enum GetTaskStatusId:Int {
-    case Cancelled = 0
-    case Booking = 1
-    case Pending = 2
-    case Draft = 3
-    case Confirmed = 4
-    case Uploaded = 5
-    case Refused = 6
-    case PendingForReview = 7
-    case Reviewed = 8
-    case Skipped = 9
+    case cancelled = 0
+    case booking = 1
+    case pending = 2
+    case draft = 3
+    case confirmed = 4
+    case uploaded = 5
+    case refused = 6
+    case pendingForReview = 7
+    case reviewed = 8
+    case skipped = 9
     
     init(caseId:String) {
         switch caseId {
-        case "Cancelled": self = .Cancelled
-        case "Booking": self = .Booking
-        case "Pending": self = .Pending
-        case "Draft": self = .Draft
-        case "Confirmed": self = .Confirmed
-        case "Uploaded": self = .Uploaded
-        case "Refused": self = .Refused
-        case "PendingForReview": self = .PendingForReview
-        case "Reviewed": self = .Reviewed
-        case "Skipped": self = .Skipped
-        default:self = .Draft
+        case "Cancelled": self = .cancelled
+        case "Booking": self = .booking
+        case "Pending": self = .pending
+        case "Draft": self = .draft
+        case "Confirmed": self = .confirmed
+        case "Uploaded": self = .uploaded
+        case "Refused": self = .refused
+        case "PendingForReview": self = .pendingForReview
+        case "Reviewed": self = .reviewed
+        case "Skipped": self = .skipped
+        default:self = .draft
         }
     }
 }
@@ -140,16 +140,16 @@ enum InspTypeValue:String {
 }
 
 enum PhotoDataType:Int {
-    case TASK = 0
-    case INSPECT = 1
-    case DEFECT = 2
+    case task = 0
+    case inspect = 1
+    case defect = 2
     
     init(caseId:String) {
         switch caseId {
-        case "TASK": self = .TASK
-        case "INSPECT": self = .INSPECT
-        case "DEFECT": self = .DEFECT
-        default: self = .TASK
+        case "TASK": self = .task
+        case "INSPECT": self = .inspect
+        case "DEFECT": self = .defect
+        default: self = .task
         }
         
     }

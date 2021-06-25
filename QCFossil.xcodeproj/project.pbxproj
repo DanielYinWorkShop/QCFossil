@@ -401,6 +401,20 @@
 			remoteGlobalIDString = 9C0C36CA1C1E6F7800CF48ED;
 			remoteInfo = QCFossil;
 		};
+		BD742BA226838AB2001D460D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C0C36C31C1E6F7800CF48ED /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDD1A2992123472B00AE391E;
+			remoteInfo = "QCFossil UAT";
+		};
+		BD742BA426838AB9001D460D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C0C36C31C1E6F7800CF48ED /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDD1A2992123472B00AE391E;
+			remoteInfo = "QCFossil UAT";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -1228,6 +1242,7 @@
 			);
 			dependencies = (
 				9C0C36E11C1E6F7800CF48ED /* PBXTargetDependency */,
+				BD742BA326838AB2001D460D /* PBXTargetDependency */,
 			);
 			name = QCFossilTests;
 			productName = QCFossilTests;
@@ -1246,6 +1261,7 @@
 			);
 			dependencies = (
 				9C0C36EC1C1E6F7800CF48ED /* PBXTargetDependency */,
+				BD742BA526838AB9001D460D /* PBXTargetDependency */,
 			);
 			name = QCFossilUITests;
 			productName = QCFossilUITests;
@@ -1290,14 +1306,15 @@
 					};
 					9C0C36DE1C1E6F7800CF48ED = {
 						CreatedOnToolsVersion = 7.1.1;
-						TestTargetID = 9C0C36CA1C1E6F7800CF48ED;
+						TestTargetID = BDD1A2992123472B00AE391E;
 					};
 					9C0C36E91C1E6F7800CF48ED = {
 						CreatedOnToolsVersion = 7.1.1;
-						TestTargetID = 9C0C36CA1C1E6F7800CF48ED;
+						TestTargetID = BDD1A2992123472B00AE391E;
 					};
 					BDD1A2992123472B00AE391E = {
 						DevelopmentTeam = 3XCK33884W;
+						LastSwiftMigration = 0830;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1777,6 +1794,16 @@
 			target = 9C0C36CA1C1E6F7800CF48ED /* QCFossil PRD */;
 			targetProxy = 9C0C36EB1C1E6F7800CF48ED /* PBXContainerItemProxy */;
 		};
+		BD742BA326838AB2001D460D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDD1A2992123472B00AE391E /* QCFossil UAT */;
+			targetProxy = BD742BA226838AB2001D460D /* PBXContainerItemProxy */;
+		};
+		BD742BA526838AB9001D460D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDD1A2992123472B00AE391E /* QCFossil UAT */;
+			targetProxy = BD742BA426838AB9001D460D /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1948,7 +1975,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dragonmobile.QCFossilTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QCFossil.app/QCFossil";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QC210421U.app/QC210421U";
 			};
 			name = Debug;
 		};
@@ -1960,7 +1987,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dragonmobile.QCFossilTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QCFossil.app/QCFossil";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QC210421U.app/QC210421U";
 			};
 			name = Release;
 		};
@@ -1971,7 +1998,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dragonmobile.QCFossilUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = QCFossil;
+				PROVISIONING_PROFILE = "945aaf40-fb03-4628-87a5-aa9e6479d819";
+				TEST_TARGET_NAME = "QCFossil UAT";
 				USES_XCTRUNNER = YES;
 			};
 			name = Debug;
@@ -1983,7 +2011,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dragonmobile.QCFossilUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = QCFossil;
+				PROVISIONING_PROFILE = "945aaf40-fb03-4628-87a5-aa9e6479d819";
+				TEST_TARGET_NAME = "QCFossil UAT";
 				USES_XCTRUNNER = YES;
 			};
 			name = Release;
@@ -2010,6 +2039,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -2030,6 +2060,7 @@
 				PROVISIONING_PROFILE = "945aaf40-fb03-4628-87a5-aa9e6479d819";
 				SWIFT_OBJC_BRIDGING_HEADER = "QCFossil/QCFossil-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "QCFossil-Swift.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

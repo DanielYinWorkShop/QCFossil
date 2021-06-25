@@ -42,7 +42,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.performSegueWithIdentifier("TaskTypeSelectionSegue", sender: self)
+        self.performSegue(withIdentifier: "TaskTypeSelectionSegue", sender: self)
         self.inspectorInput.text = Cache_Inspector?.appUserName
         self.taskStatusInput.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(TaskStatus(caseId: GetTaskStatusId(caseId: "Pending").rawValue).rawValue)
         self.bookingDateInput.text = self.view.getCurrentDate()
@@ -57,7 +57,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
             reportRunningNo = "0"+reportRunningNo
         }
         
-        self.bookingNoInput.text = (Cache_Inspector?.reportPrefix)!+"-"+self.view.getCurrentDate(_DATEFORMATTER2).stringByReplacingOccurrencesOfString("/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)+reportRunningNo
+        self.bookingNoInput.text = (Cache_Inspector?.reportPrefix)!+"-"+self.view.getCurrentDate(_DATEFORMATTER2).replacingOccurrences(of: "/", with: "", options: NSString.CompareOptions.literal, range: nil)+reportRunningNo
         self.vendorInput.text = self.vendorName
         self.vdrLocationInput.text = self.vendorLocCode
         
@@ -84,7 +84,7 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         self.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Form")
         
         self.inspectionInformation.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Information")
-        self.addPoLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), forState: UIControlState.Normal)
+        self.addPoLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Add PO Line(s)"), for: UIControlState())
         self.basicInformation.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Basic Information")
         self.vendorInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor")
         self.vdrLocationInput.placeholder = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Location")
@@ -98,25 +98,25 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         //loadPoItemCell()
         self.createTaskTableview.reloadData()
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "TaskTypeSelectionSegue" {
-            let destVC = segue.destinationViewController as! TaskTypeViewController
+            let destVC = segue.destination as! TaskTypeViewController
             destVC.pVC = self
             
         }else if segue.identifier == "POSearchSegueFromCT" {
-            let destVC = segue.destinationViewController as! POSearchViewController
+            let destVC = segue.destination as! POSearchViewController
             destVC.vendorName = self.vendorInput.text!
             destVC.vendorLocCode = self.vdrLocationInput.text!
             
@@ -130,21 +130,21 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
     }
     
     func createNotificationFromSubView() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateTaskViewController.dismissFromSubView), name: "CreateTaskCancel", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CreateTaskViewController.dismissFromSubView), name: NSNotification.Name(rawValue: "CreateTaskCancel"), object: nil)
     }
     
     func dismissFromSubView() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "CreateTaskCancel", object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "CreateTaskCancel"), object: nil)
         //self.dismissViewControllerAnimated(true, completion: nil)
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func backButton(sender: UIBarButtonItem) {
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func backButton(_ sender: UIBarButtonItem) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
+        self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func saveButton(sender: UIBarButtonItem) {
+    @IBAction func saveButton(_ sender: UIBarButtonItem) {
         NSLog("Save New Task")
         
         if self.poItems.count < 1 {
@@ -207,37 +207,37 @@ class CreateTaskViewController: UIViewController, UITableViewDelegate,  UITableV
         }
         
         self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Create Successed!"),handlerFun: alertViewDismissCallBack)
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
     }
     
-    func alertViewDismissCallBack(alert: UIAlertAction!) {
+    func alertViewDismissCallBack(_ alert: UIAlertAction!) {
         print("Dismiss From Create Task Page")
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.view.showActivityIndicator()
             
-            dispatch_async(dispatch_get_main_queue()) {
-                self.navigationController?.popViewControllerAnimated(true)
-                NSNotificationCenter.defaultCenter().postNotificationName("switchToTaskSearch", object: nil, userInfo: nil)
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "switchToTaskSearch"), object: nil, userInfo: nil)
             }
         }
     }
     
-    func numberOfSectionsInTableView(poItemTableView: UITableView) -> Int {
+    func numberOfSections(in poItemTableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         
         return 1
     }
     
-    func tableView(poItemTableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ poItemTableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         
         return self.poItems.count
     }
     
-    func tableView(poItemTableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = poItemTableView.dequeueReusableCellWithIdentifier("poCellInCreateTaskVC", forIndexPath: indexPath) as! CreateTaskTableViewCell
+    func tableView(_ poItemTableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = poItemTableView.dequeueReusableCell(withIdentifier: "poCellInCreateTaskVC", for: indexPath) as! CreateTaskTableViewCell
         
         let poItem = poItems[indexPath.row] as PoItem
         

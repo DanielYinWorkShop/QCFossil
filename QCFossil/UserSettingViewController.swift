@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class UserSettingViewController: UIViewController, UITextFieldDelegate {
 
@@ -38,7 +62,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.currentPwTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Current Password")
         self.newPwTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password")
         self.newPwAgainTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password Again")
-        self.changePwBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Change Password"), forState: UIControlState.Normal)
+        self.changePwBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Change Password"), for: UIControlState())
         self.imageSizeTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Resolution of Photo from Library or Camera")
         self.inspectorSignatureLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspector Signature")
         self.useBackgroundModeTitle.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Use Background Mode for Download/Upload Task")
@@ -52,22 +76,22 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.view.setButtonCornerRadius(self.changePwBtn)
         self.view.setButtonCornerRadius(self.clearBtn)
         
-        self.inspectorSignatureBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), forState: UIControlState.Normal)
-        self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Signature"), forState: UIControlState.Normal)
+        self.inspectorSignatureBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControlState())
+        self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update Signature"), for: UIControlState())
         
         let keyValueDataHelper = KeyValueDataHelper()
-        let signImageInCode = keyValueDataHelper.getInspectorSignImage(String(Cache_Inspector?.inspectorId))
+        let signImageInCode = keyValueDataHelper.getInspectorSignImage(String(describing: Cache_Inspector?.inspectorId))
         
         if signImageInCode != "" {
             self.inspectorSignatureInput.image = UIImage.init().fromBase64(signImageInCode)
-            self.inspectorSignatureBtn.hidden = true
+            self.inspectorSignatureBtn.isHidden = true
         }
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if (defaults.stringForKey("backgroundrun_preference") != nil) && defaults.stringForKey("backgroundrun_preference")! != "true" {
-            self.useBackgroundModeSwitch.on = false
+        let defaults = UserDefaults.standard
+        if (defaults.string(forKey: "backgroundrun_preference") != nil) && defaults.string(forKey: "backgroundrun_preference")! != "true" {
+            self.useBackgroundModeSwitch.isOn = false
         }else{
-            self.useBackgroundModeSwitch.on = true
+            self.useBackgroundModeSwitch.isOn = true
         }
     }
     
@@ -86,11 +110,11 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
     }
     */
     
-    @IBAction func showMenuAction(sender: UIBarButtonItem) {
-        NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu", object: nil)
+    @IBAction func showMenuAction(_ sender: UIBarButtonItem) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "toggleMenu"), object: nil)
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if textField == self.newPwInput || textField == self.newPwAgainInput {
             
@@ -102,20 +126,20 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    @IBAction func changePwAction(sender: UIButton) {
+    @IBAction func changePwAction(_ sender: UIButton) {
         
         do{
-            self.errorMsg.textColor = UIColor.redColor()
+            self.errorMsg.textColor = UIColor.red
             let inspectorDataHelper = InspectorDataHelper()
             if (inspectorDataHelper.getInspector((Cache_Inspector?.appUserName)!, password: (self.currentPwInput.text?.md5())!) != nil) {
-                self.errorMsg.hidden = true
+                self.errorMsg.isHidden = true
                 
                 //Check if New password equit to appUsername
                 if self.newPwInput.text == Cache_Inspector?.appUserName! {
                     print("new password cant be the same as user login name!")
                     
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.errorMsg.hidden = false
+                    DispatchQueue.main.async {
+                        self.errorMsg.isHidden = false
                         self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Login Name Cannot Be Used As New Password")
                     }
                     
@@ -124,8 +148,8 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                 
                 //Check if New password contains 8 to 15 charators
                 if self.newPwInput.text?.characters.count < 8 || self.newPwInput.text?.characters.count > 15 {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.errorMsg.hidden = false
+                    DispatchQueue.main.async {
+                        self.errorMsg.isHidden = false
                         self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password should be 8-15 Characters")
                     }
                     
@@ -134,14 +158,14 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                 
                 
                 //Check if New password including Numbers
-                let tNumRegularExpression = try NSRegularExpression(pattern: "[0-9]", options: .CaseInsensitive)
-                let tNumMatchCount = tNumRegularExpression.numberOfMatchesInString(self.newPwInput.text!, options: NSMatchingOptions.ReportProgress, range: NSMakeRange(0, self.newPwInput.text!.characters.count))
+                let tNumRegularExpression = try NSRegularExpression(pattern: "[0-9]", options: .caseInsensitive)
+                let tNumMatchCount = tNumRegularExpression.numberOfMatches(in: self.newPwInput.text!, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, self.newPwInput.text!.characters.count))
                 
                 if tNumMatchCount < 1 {
                     print("match Num count: \(tNumMatchCount)")
                     
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.errorMsg.hidden = false
+                    DispatchQueue.main.async {
+                        self.errorMsg.isHidden = false
                         self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Numbers")
                     }
                     
@@ -149,14 +173,14 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 //Check if New password including Letters
-                let tLetterRegularExpression = try NSRegularExpression(pattern: "[A-Za-z]", options: .CaseInsensitive)
-                let tLetterMatchCount = tLetterRegularExpression.numberOfMatchesInString(self.newPwInput.text!, options: NSMatchingOptions.ReportProgress, range: NSMakeRange(0, self.newPwInput.text!.characters.count))
+                let tLetterRegularExpression = try NSRegularExpression(pattern: "[A-Za-z]", options: .caseInsensitive)
+                let tLetterMatchCount = tLetterRegularExpression.numberOfMatches(in: self.newPwInput.text!, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, self.newPwInput.text!.characters.count))
                 
                 if tLetterMatchCount < 1 {
                     print("match Letter count: \(tLetterMatchCount)")
                 
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.errorMsg.hidden = false
+                    DispatchQueue.main.async {
+                        self.errorMsg.isHidden = false
                         self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New Password need to include Letters")
                     }
                     
@@ -171,15 +195,15 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                         data += "\"\(key)\":\"\(value)\","
                     }
                     data += "}"
-                    data = data.stringByReplacingOccurrencesOfString(",}", withString: "}")
-                    data = data.stringByReplacingOccurrencesOfString("new_password", withString: self.newPwInput.text!)
+                    data = data.replacingOccurrences(of: ",}", with: "}")
+                    data = data.replacingOccurrences(of: "new_password", with: self.newPwInput.text!)
                 
                     self.makePostRequest(_DS_CHANGE_PW["APINAME"] as! String, dataInJson: data, actionNames: _DS_CHANGE_PW["ACTIONNAMES"] as! [String], actionFields: _DS_CHANGE_PW["ACTIONFIELDS"] as! Dictionary,  handler: { (result, response, totalRecords) -> Void in
                     
                         if response == "SUCCESS"{
                             
-                            dispatch_async(dispatch_get_main_queue()) {
-                                self.errorMsg.hidden = false
+                            DispatchQueue.main.async {
+                                self.errorMsg.isHidden = false
                                 self.errorMsg.textColor = _FOSSILBLUECOLOR
                                 self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("New password reset Successfully!")
                                 
@@ -189,7 +213,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                                 
                             }
                         }else{
-                            dispatch_async(dispatch_get_main_queue()) {
+                            DispatchQueue.main.async {
                                 self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Update failed. Please check internet connection"), handlerFun: { (action:UIAlertAction!) in
                                     
                                     
@@ -200,16 +224,16 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
                     })
                 
                 }else{
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.errorMsg.hidden = false
+                    DispatchQueue.main.async {
+                        self.errorMsg.isHidden = false
                         self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm Password and New Password Not Matched")
                     }
                     
                 }
                 
             }else{
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.errorMsg.hidden = false
+                DispatchQueue.main.async {
+                    self.errorMsg.isHidden = false
                     self.errorMsg.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Old Password Not Correct")
                 }
             }
@@ -220,7 +244,7 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    @IBAction func imageSizeSegmentAction(sender: UISegmentedControl) {
+    @IBAction func imageSizeSegmentAction(_ sender: UISegmentedControl) {
         
         let selectedSegment = sender.selectedSegmentIndex
         
@@ -243,40 +267,40 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func inspectorSignTap(sender: UIButton) {
-        sender.hidden = true
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+    @IBAction func inspectorSignTap(_ sender: UIButton) {
+        sender.isHidden = true
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
         
         let container: UIView = UIView()
         container.tag = _MASKVIEWTAG
-        container.hidden = false
+        container.isHidden = false
         container.frame = self.view.frame
         container.center = self.view.center
-        container.backgroundColor = UIColor.clearColor()
+        container.backgroundColor = UIColor.clear
         
         let layer = UIView()
         layer.frame = self.view.frame
         layer.center = self.view.center
-        layer.backgroundColor = UIColor.blackColor()
+        layer.backgroundColor = UIColor.black
         layer.alpha = 0.7
         container.addSubview(layer)
         
         signInputView = SignoffView()
-        signInputView!.frame = CGRectMake(0,0,650,415)
+        signInputView!.frame = CGRect(x: 0,y: 0,width: 650,height: 415)
         signInputView!.center = container.center
-        signInputView!.backgroundColor = UIColor.whiteColor()
-        signInputView!.userInteractionEnabled = true
+        signInputView!.backgroundColor = UIColor.white
+        signInputView!.isUserInteractionEnabled = true
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), forState: UIControlState.Normal)
-        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
+        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
-        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         /*
         let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
@@ -296,11 +320,11 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
     
     func cancelInspctorSign() {
         if self.inspectorSignatureInput.image == nil {
-            self.inspectorSignatureBtn.hidden = false
+            self.inspectorSignatureBtn.isHidden = false
         }
         
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
     }
     
     func clearInspctorSign(){
@@ -317,54 +341,54 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         self.inspectorSignatureInput.image = signInputView?.image
         
         let keyValueDataHelper = KeyValueDataHelper()
-        keyValueDataHelper.saveInspectorSignImage(String(Cache_Inspector?.inspectorId), imageToBase64: (self.inspectorSignatureInput.image?.toBase64())!)
+        keyValueDataHelper.saveInspectorSignImage(String(describing: Cache_Inspector?.inspectorId), imageToBase64: (self.inspectorSignatureInput.image?.toBase64())!)
         
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
     }
     
-    @IBAction func clearBtnOnClick(sender: UIButton) {
+    @IBAction func clearBtnOnClick(_ sender: UIButton) {
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
         
         let container: UIView = UIView()
         container.tag = _MASKVIEWTAG
-        container.hidden = false
+        container.isHidden = false
         container.frame = self.view.frame
         container.center = self.view.center
-        container.backgroundColor = UIColor.clearColor()
+        container.backgroundColor = UIColor.clear
         
         let layer = UIView()
         layer.frame = self.view.frame
         layer.center = self.view.center
-        layer.backgroundColor = UIColor.blackColor()
+        layer.backgroundColor = UIColor.black
         layer.alpha = 0.7
         container.addSubview(layer)
         
         signInputView = SignoffView()
-        signInputView!.frame = CGRectMake(0,0,650,415)
+        signInputView!.frame = CGRect(x: 0,y: 0,width: 650,height: 415)
         signInputView!.center = container.center
-        signInputView!.backgroundColor = UIColor.whiteColor()
-        signInputView!.userInteractionEnabled = true
+        signInputView!.backgroundColor = UIColor.white
+        signInputView!.isUserInteractionEnabled = true
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), forState: UIControlState.Normal)
-        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
+        okBtn.addTarget(self, action: #selector(UserSettingViewController.confirmInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
-        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        clearBtn.addTarget(self, action: #selector(UserSettingViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         
         if self.inspectorSignatureInput.image != nil {
             let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
             cancelBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-            cancelBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), forState: UIControlState.Normal)
-            cancelBtn.addTarget(self, action: #selector(UserSettingViewController.cancelInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+            cancelBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControlState())
+            cancelBtn.addTarget(self, action: #selector(UserSettingViewController.cancelInspctorSign), for: UIControlEvents.touchUpInside)
             self.view.setButtonCornerRadius(cancelBtn)
             container.addSubview(cancelBtn)
         }
@@ -386,16 +410,16 @@ class UserSettingViewController: UIViewController, UITextFieldDelegate {
         })*/
     }
     
-    @IBAction func useBackgroundModeOnchange(sender: UISwitch) {
+    @IBAction func useBackgroundModeOnchange(_ sender: UISwitch) {
         
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = UserDefaults.standard
         
-        if sender.on {
-            defaults.setObject("true", forKey: "backgroundrun_preference")
-            NSNotificationCenter.defaultCenter().postNotificationName("initSessionWithBackgroundSession", object: nil, userInfo: nil)
+        if sender.isOn {
+            defaults.set("true", forKey: "backgroundrun_preference")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "initSessionWithBackgroundSession"), object: nil, userInfo: nil)
         }else{
-            defaults.setObject("false", forKey: "backgroundrun_preference")
-            NSNotificationCenter.defaultCenter().postNotificationName("initSessionWithDefaultSession", object: nil, userInfo: nil)
+            defaults.set("false", forKey: "backgroundrun_preference")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "initSessionWithDefaultSession"), object: nil, userInfo: nil)
         }
     }
 }

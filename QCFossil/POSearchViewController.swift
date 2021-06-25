@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDataSource, UITextFieldDelegate{
     
@@ -75,9 +99,9 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         
         if vendorName != "" && vendorLocCode != "" && styleNo != "" {
             //if pVC != nil && pVC?.classForCoder == TaskDetailsViewController.classForCoder() {
-            self.vendorInput.userInteractionEnabled = false
-            self.vendorLocationInput.userInteractionEnabled = false
-            self.styleInput.userInteractionEnabled = false
+            self.vendorInput.isUserInteractionEnabled = false
+            self.vendorLocationInput.isUserInteractionEnabled = false
+            self.styleInput.isUserInteractionEnabled = false
             
         }
         initData()
@@ -87,7 +111,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
     }
     
     func initData() {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             
             let vendorDataHelper = VendorDataHelper()
             self.vendors = vendorDataHelper.getAllVendorsFromPOSearch()!
@@ -96,7 +120,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             let taskDataHelper = TaskDataHelper()
             self.brands = taskDataHelper.getAllTaskBrands()
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(POSearchViewController.reloadPoSearchTableView), name: "reloadPoSearchTableView", object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(POSearchViewController.reloadPoSearchTableView), name: NSNotification.Name(rawValue: "reloadPoSearchTableView"), object: nil)
         })
     }
     
@@ -119,14 +143,14 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         updateLocalizedString()
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.view.resignFirstResponderByTextField(self.view)
             
         }else {
@@ -147,7 +171,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         for idx in 0...sortingBarTitles.count - 1 {
             if self.PoSortingBar != nil {
                 self.PoSortingBar.numberOfSegments
-                self.PoSortingBar.setTitle(sortingBarTitles[idx], forSegmentAtIndex: idx)
+                self.PoSortingBar.setTitle(sortingBarTitles[idx], forSegmentAt: idx)
             }
         }
         
@@ -220,15 +244,15 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }
         
         if(self.searchBtn != nil){
-            self.searchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Search"), forState: UIControlState.Normal )
+            self.searchBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Search"), for: UIControlState() )
         }
         
         if(self.clearBtn != nil){
-            self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
+            self.clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
         }
         
         if(self.selectPOLineBtn != nil){
-            self.selectPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Select PO Line"), forState: UIControlState.Normal)
+            self.selectPOLineBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Select PO Line"), for: UIControlState())
         }
         
         if(self.brandInput != nil){
@@ -244,7 +268,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }
         
         if(self.cancelBtnPopup != nil){
-            self.cancelBtnPopup.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), forState: UIControlState.Normal)
+            self.cancelBtnPopup.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"), for: UIControlState())
         }
         
         if(self.poSearchTitlePopup != nil) {
@@ -258,16 +282,16 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
-        dispatch_async(dispatch_get_main_queue(), {
+    override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.main.async(execute: {
             self.view.showActivityIndicator()
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.updateLocalizedString()
                 
                 if self.pVC?.classForCoder == CreateTaskViewController.classForCoder() || self.pVC?.classForCoder == TaskDetailsViewController.classForCoder() {
-                    self.selectPOLineBtn.hidden = false
-                    self.cancelBtn.hidden = false
+                    self.selectPOLineBtn.isHidden = false
+                    self.cancelBtn.isHidden = false
                 }
                 
                 if self.vendorName != "" && self.vendorLocCode != "" && self.styleNo != "" {
@@ -278,17 +302,17 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                     }
                     
                     if self.vendorInput.text != "" {
-                        poItemsByFilter = poItemsByFilter.filter({ ($0.vdrDisplayName?.lowercaseString.containsString((self.vendorInput.text?.lowercaseString)!))! })
+                        poItemsByFilter = poItemsByFilter.filter({ ($0.vdrDisplayName?.lowercased().contains((self.vendorInput.text?.lowercased())!))! })
                     }
                     
                     //Filter By VendorLocation
                     if self.vendorLocationInput.text != "" {
-                        poItemsByFilter = poItemsByFilter.filter({ ($0.vdrLocationCode?.lowercaseString.containsString((self.vendorLocationInput.text?.lowercaseString)!))! })
+                        poItemsByFilter = poItemsByFilter.filter({ ($0.vdrLocationCode?.lowercased().contains((self.vendorLocationInput.text?.lowercased())!))! })
                     }
                     
                     //Filter By StyleNo
                     if self.styleInput.text != "" {
-                        poItemsByFilter = poItemsByFilter.filter({ ($0.styleNo?.lowercaseString.containsString((self.styleInput.text?.lowercaseString)!))! })
+                        poItemsByFilter = poItemsByFilter.filter({ ($0.styleNo?.lowercased().contains((self.styleInput.text?.lowercased())!))! })
                     }
                     
                     self.poItems = poItemsByFilter
@@ -308,13 +332,13 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "CreateTaskSegueFromPO" {
             
-            let destVC = segue.destinationViewController as! CreateTaskViewController
+            let destVC = segue.destination as! CreateTaskViewController
             destVC.poItems = poSelectedItems
             destVC.pVC = self
             
@@ -329,22 +353,22 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }
     }
     
-    func numberOfSectionsInTableView(poItemTableView: UITableView) -> Int {
+    func numberOfSections(in poItemTableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         
         return 1
     }
     
-    func tableView(poItemTableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ poItemTableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         
         return poItems.count
     }
     
-    func tableView(poItemTableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = poItemTableView.dequeueReusableCellWithIdentifier("poCell", forIndexPath: indexPath) as! POSearchTableViewCell
+    func tableView(_ poItemTableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = poItemTableView.dequeueReusableCell(withIdentifier: "poCell", for: indexPath) as! POSearchTableViewCell
         
         let poItem = poItems[indexPath.row] as PoItem
         
@@ -370,14 +394,14 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         
         for poItem in poSelectedItems {
             if cell.poNoInput.text == poItem.poNo && cell.poLineNoInput.text == poItem.poLineNo {
-                self.poTableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None/*UITableViewScrollPosition.Top*/)
+                self.poTableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none/*UITableViewScrollPosition.Top*/)
             }
         }
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let poSelectedData = poItems[indexPath.row] as PoItem
         poSelectedItems.append(poSelectedData)
@@ -385,19 +409,19 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         self.styleInput.text = poSelectedData.styleNo
         
         //Filter By Style
-        poItems = poItems.filter({ ($0.styleNo?.lowercaseString.containsString((self.styleInput.text?.lowercaseString)!))! })
+        poItems = poItems.filter({ ($0.styleNo?.lowercased().contains((self.styleInput.text?.lowercased())!))! })
         self.poTableView.reloadData()
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
         let poSelectedData = poItems[indexPath.row] as PoItem
-        let index = poSelectedItems.indexOf({ $0.poNo == poSelectedData.poNo && $0.poLineNo == poSelectedData.poLineNo } )
-        poSelectedItems.removeAtIndex(index!)
+        let index = poSelectedItems.index(where: { $0.poNo == poSelectedData.poNo && $0.poLineNo == poSelectedData.poLineNo } )
+        poSelectedItems.remove(at: index!)
         
         if self.poSelectedItems.count < 1 {
             
-            if self.styleInput.userInteractionEnabled == true {
+            if self.styleInput.isUserInteractionEnabled == true {
                 self.styleInput.text = ""
                 self.poItems = self.poItemSet.filter({$0.vdrDisplayName == self.vendorInput.text && $0.vdrLocationCode == self.vendorLocationInput.text})
             }
@@ -406,7 +430,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         self.poTableView.reloadData()
     }
     
-    func dropdownHandleFunc(textField: UITextField) {
+    func dropdownHandleFunc(_ textField: UITextField) {
         
         if textField == self.vendorInput {
             let vendorOnFilter = vendors.filter({ $0.displayName == textField.text })
@@ -435,7 +459,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.view.clearDropdownviewForSubviews(self.view)
         
         //self.view.alertView("showListData")
@@ -452,7 +476,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         }else if textField == self.taskScheduledInput {
             
             let vdrData = [ MylocalizedString.sharedLocalizeManager.getLocalizedString("YES"), MylocalizedString.sharedLocalizeManager.getLocalizedString("NO"), MylocalizedString.sharedLocalizeManager.getLocalizedString("ALL")]
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vdrData, width: 269)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vdrData as NSArray, width: 269)
             
             return false
             
@@ -475,7 +499,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             let taskDataHelper = TaskDataHelper()
             let brandList = taskDataHelper.getAllTaskBrandNames()
             
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: brandList, width: 250)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: brandList as NSArray, width: 250)
             
         }else if textField == self.vendorInput {
             var vdrData = [String]()
@@ -488,7 +512,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 vdrData.append(vendor.displayName!)
             }
  
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vdrData, width: 269)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vdrData as NSArray, width: 269)
         }else if textField == self.vendorLocationInput {
             var vdrLocData = [String]()
             var currVendorId = 0
@@ -512,13 +536,13 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 }
             }
             
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vdrLocData, width: 150)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vdrLocData as NSArray, width: 150)
         }
         
         return true
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         
         if textField == self.vendorLocationInput || textField == self.vendorInput {
             self.vendorLocationInput.text = ""
@@ -530,12 +554,12 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         var inputValue = ""
         if textField.text!.characters.count < 2 && string == "" {
             inputValue = ""
-            textField.showListData(textField, parent: self.view, handle: nil, listData: [String](), width: 200)
+            textField.showListData(textField, parent: self.view, handle: nil, listData: [String]() as NSArray, width: 200)
             return true
             
         }else if string == ""{
@@ -549,28 +573,28 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             let styleList = poDataHelper.getAllStyleNoByValue(inputValue, vendorName: self.vendorInput.text!, vendorLocationCode: self.vendorLocationInput.text!)
             
             let handleFun:(UITextField)->(Void) = dropdownHandleFunc
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: styleList, width: 200)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: styleList as NSArray, width: 200)
             
         }else if textField == self.poNoInput {
             let poDataHelper = PoDataHelper()
             let poNoList = poDataHelper.getAllPoNo(inputValue, vendorName: self.vendorInput.text!, vendorLocationCode: self.vendorLocationInput.text!)
             
             let handleFun:(UITextField)->(Void) = dropdownHandleFunc
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: poNoList, width: 250)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: poNoList as NSArray, width: 250)
             
         }else if textField == self.brandInput {
             let taskDataHelper = TaskDataHelper()
             let brandList = taskDataHelper.getAllTaskBrandNames(inputValue)
 
             let handleFun:(UITextField)->(Void) = dropdownHandleFunc
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: brandList, width: 250)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: brandList as NSArray, width: 250)
         
         }else if textField == self.vendorInput {
             let vendorDataHelper = VendorDataHelper()
             let vendorList = vendorDataHelper.getAllVendors(inputValue)
             
             let handleFun:(UITextField)->(Void) = dropdownHandleFunc
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vendorList, width: 200)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vendorList as NSArray, width: 200)
             
         }
         else if textField == self.vendorLocationInput {
@@ -578,13 +602,13 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             let vendorLocationList = vendorDataHelper.getAllVendorLocs(inputValue)
             
             let handleFun:(UITextField)->(Void) = dropdownHandleFunc
-            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vendorLocationList, width: 200)
+            textField.showListData(textField, parent: self.view, handle: handleFun, listData: vendorLocationList as NSArray, width: 200)
         }
         
         return true
     }
     
-    @IBAction func selectPOLineBtn(sender: UIButton) {
+    @IBAction func selectPOLineBtn(_ sender: UIButton) {
         
         if self.vendorInput.text == "" || self.vendorLocationInput.text == "" {
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please chose a Vendor & Vendor Location!"))
@@ -628,16 +652,16 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func MenuButton(sender: UIBarButtonItem) {
+    @IBAction func MenuButton(_ sender: UIBarButtonItem) {
         NSLog("Toggle Menu")
         
-        NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu", object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "toggleMenu"), object: nil)
     }
     
-    @IBAction func POSearchBtn(sender: UIButton) {
+    @IBAction func POSearchBtn(_ sender: UIButton) {
         
         if self.vendorInput.text == "" {
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please select the Vendor!"))
@@ -645,20 +669,19 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
             return
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.view.showActivityIndicator("Searching")
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
             let poDataHelper = PoDataHelper()
             self.poItemSet = poDataHelper.getAllPoItems()!
             
             //Reset Items
             self.poSelectedItems = [PoItem]()
             
-            let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
-            dispatch_after(time, dispatch_get_main_queue()) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 
-                let dateFormatter = NSDateFormatter()
+                let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = _DATEFORMATTER
                 
                 var poItemsByFilter = self.poItemSet
@@ -678,39 +701,39 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
                 
                 //Filter By Brand
                 if self.brandInput.text != "" {
-                    poItemsByFilter = poItemsByFilter.filter({ ($0.brandName?.lowercaseString.containsString((self.brandInput.text?.lowercaseString)!))! })
+                    poItemsByFilter = poItemsByFilter.filter({ ($0.brandName?.lowercased().contains((self.brandInput.text?.lowercased())!))! })
                 }
                 
                 //Filter By Style
                 if self.styleInput.text != "" {
-                    poItemsByFilter = poItemsByFilter.filter({ ($0.styleNo?.lowercaseString.containsString((self.styleInput.text?.lowercaseString)!))! })
+                    poItemsByFilter = poItemsByFilter.filter({ ($0.styleNo?.lowercased().contains((self.styleInput.text?.lowercased())!))! })
                 }
                 
                 //Filter By PoNo.
                 if self.poNoInput.text != "" {
-                    poItemsByFilter = poItemsByFilter.filter({ ($0.poNo?.lowercaseString.containsString((self.poNoInput.text?.lowercaseString)!))! })
+                    poItemsByFilter = poItemsByFilter.filter({ ($0.poNo?.lowercased().contains((self.poNoInput.text?.lowercased())!))! })
                 }
                 
                 //Filter By Ship Win Date
                 if self.shipWinFromInput.text != "" {
-                    let shipWinFromInput = dateFormatter.dateFromString(self.shipWinFromInput.text!)
-                    poItemsByFilter = poItemsByFilter.filter({ $0.shipWin == nil || ($0.shipWin != "" && (dateFormatter.dateFromString($0.shipWin)!.equalToDate(shipWinFromInput!) || dateFormatter.dateFromString($0.shipWin)!.isGreaterThanDate(shipWinFromInput!))) })
+                    let shipWinFromInput = dateFormatter.date(from: self.shipWinFromInput.text!)
+                    poItemsByFilter = poItemsByFilter.filter({ $0.shipWin == nil || ($0.shipWin != "" && (dateFormatter.date(from: $0.shipWin)!.equalToDate(shipWinFromInput!) || dateFormatter.date(from: $0.shipWin)!.isGreaterThanDate(shipWinFromInput!))) })
                 }
                 
                 if self.shipWinToInput.text != "" {
-                    let shipWinToInput = dateFormatter.dateFromString(self.shipWinToInput.text!)
-                    poItemsByFilter = poItemsByFilter.filter({ $0.shipWin == nil || ($0.shipWin != "" && (dateFormatter.dateFromString($0.shipWin)!.equalToDate(shipWinToInput!) || dateFormatter.dateFromString($0.shipWin)!.isLessThanDate(shipWinToInput!))) })
+                    let shipWinToInput = dateFormatter.date(from: self.shipWinToInput.text!)
+                    poItemsByFilter = poItemsByFilter.filter({ $0.shipWin == nil || ($0.shipWin != "" && (dateFormatter.date(from: $0.shipWin)!.equalToDate(shipWinToInput!) || dateFormatter.date(from: $0.shipWin)!.isLessThanDate(shipWinToInput!))) })
                 }
                 
                 // Filter By OPD/RSD Date
                 if self.orFromInput.text != "" {
-                    let orFromInput = dateFormatter.dateFromString(self.orFromInput.text!)
-                    poItemsByFilter = poItemsByFilter.filter({ $0.opdRsd == nil || ($0.opdRsd != "" && (dateFormatter.dateFromString($0.opdRsd)!.equalToDate(orFromInput!) || dateFormatter.dateFromString($0.opdRsd)!.isGreaterThanDate(orFromInput!))) })
+                    let orFromInput = dateFormatter.date(from: self.orFromInput.text!)
+                    poItemsByFilter = poItemsByFilter.filter({ $0.opdRsd == nil || ($0.opdRsd != "" && (dateFormatter.date(from: $0.opdRsd)!.equalToDate(orFromInput!) || dateFormatter.date(from: $0.opdRsd)!.isGreaterThanDate(orFromInput!))) })
                 }
                 
                 if self.orToInput.text != "" {
-                    let orToInput = dateFormatter.dateFromString(self.orToInput.text!)
-                    poItemsByFilter = poItemsByFilter.filter({ $0.opdRsd == nil || ($0.opdRsd != "" && (dateFormatter.dateFromString($0.opdRsd)!.equalToDate(orToInput!) || dateFormatter.dateFromString($0.opdRsd)!.isLessThanDate(orToInput!))) })
+                    let orToInput = dateFormatter.date(from: self.orToInput.text!)
+                    poItemsByFilter = poItemsByFilter.filter({ $0.opdRsd == nil || ($0.opdRsd != "" && (dateFormatter.date(from: $0.opdRsd)!.equalToDate(orToInput!) || dateFormatter.date(from: $0.opdRsd)!.isLessThanDate(orToInput!))) })
                 }
                 
                 //Filter By Vendor
@@ -742,23 +765,23 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         })
     }
     
-    @IBAction func clearOnClick(sender: UIButton) {
-        dispatch_async(dispatch_get_main_queue(), {
+    @IBAction func clearOnClick(_ sender: UIButton) {
+        DispatchQueue.main.async(execute: {
             //Reset Items
             self.poSelectedItems = [PoItem]()
             
             self.view.showActivityIndicator()
             
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.vendorInput.userInteractionEnabled == true {
+            DispatchQueue.main.async(execute: {
+                if self.vendorInput.isUserInteractionEnabled == true {
                     self.vendorInput.text = ""
                 }
                 
-                if self.vendorLocationInput.userInteractionEnabled == true {
+                if self.vendorLocationInput.isUserInteractionEnabled == true {
                     self.vendorLocationInput.text = ""
                 }
                 
-                if self.styleInput.userInteractionEnabled == true {
+                if self.styleInput.isUserInteractionEnabled == true {
                     self.styleInput.text = ""
                 }
                 
@@ -779,7 +802,7 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         
     }
     
-    @IBAction func POSearchSorting(sender: UISegmentedControl) {
+    @IBAction func POSearchSorting(_ sender: UISegmentedControl) {
         
         let selectedSegment = sender.selectedSegmentIndex
 
@@ -788,33 +811,33 @@ class POSearchViewController: PopoverMaster, UITableViewDelegate,  UITableViewDa
         self.poTableView.reloadData()
     }
     
-    func sortBySegment(selectedSegment:Int = 0) {
-        let dateFormatter = NSDateFormatter()
+    func sortBySegment(_ selectedSegment:Int = 0) {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = _DATEFORMATTER
         
         switch selectedSegment {
-        case 0: poItems.sortInPlace(){$0.poNo>$1.poNo}; break
-        case 1: poItems.sortInPlace(){$0.brandName<$1.brandName}; break
-        case 2: poItems.sortInPlace(){$0.styleNo<$1.styleNo}; break
-        case 3: poItems.sortInPlace(){$0.buyerLocationCode<$1.buyerLocationCode}; break
-        case 4: poItems.sortInPlace(){($0.shipWin != "" && $1.shipWin != "") ? dateFormatter.dateFromString($0.shipWin)!.isGreaterThanDate(dateFormatter.dateFromString($1.shipWin)!) : $0.shipWin>$1.shipWin}; break
-        case 5: poItems.sortInPlace(){ ($0.opdRsd != "" && $1.opdRsd != "") ? dateFormatter.dateFromString($0.opdRsd)!.isGreaterThanDate(dateFormatter.dateFromString($1.opdRsd)!) : $0.opdRsd>$1.opdRsd }; break
-        default: poItems.sortInPlace(){$0.poNo>$1.poNo}; break
+        case 0: poItems.sort(){$0.poNo>$1.poNo}; break
+        case 1: poItems.sort(){$0.brandName<$1.brandName}; break
+        case 2: poItems.sort(){$0.styleNo<$1.styleNo}; break
+        case 3: poItems.sort(){$0.buyerLocationCode<$1.buyerLocationCode}; break
+        case 4: poItems.sort(){($0.shipWin != "" && $1.shipWin != "") ? dateFormatter.date(from: $0.shipWin)!.isGreaterThanDate(dateFormatter.date(from: $1.shipWin)!) : $0.shipWin>$1.shipWin}; break
+        case 5: poItems.sort(){ ($0.opdRsd != "" && $1.opdRsd != "") ? dateFormatter.date(from: $0.opdRsd)!.isGreaterThanDate(dateFormatter.date(from: $1.opdRsd)!) : $0.opdRsd>$1.opdRsd }; break
+        default: poItems.sort(){$0.poNo>$1.poNo}; break
         }
         
     }
     
-    @IBAction func createTaskBtnOnClick(sender: UIBarButtonItem) {
+    @IBAction func createTaskBtnOnClick(_ sender: UIBarButtonItem) {
         
         if poSelectedItems.count > 0{
-            self.performSegueWithIdentifier("CreateTaskSegueFromPO", sender:self)
+            self.performSegue(withIdentifier: "CreateTaskSegueFromPO", sender:self)
         }else{
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please add PO Lines(s)!"))
         }
     }
     
-    @IBAction func cancelBtn(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelBtn(_ sender: AnyObject) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
+        self.dismiss(animated: true, completion: nil)
     }
 }

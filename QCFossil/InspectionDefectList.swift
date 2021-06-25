@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDelegate,  UITableViewDataSource {
     
@@ -32,14 +56,14 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         self.inspectionTitle1Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\(inspItem?.inspReqCatText != "" ? (inspItem?.inspReqCatText)! : (inspItem?.inspAreaText)!)")
         self.inspectionTitle2Input.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspItem?.inspItemText)!)")
         
-        self.inspectionTitle1.font = UIFont.boldSystemFontOfSize(18.0)
-        self.inspectionTitle2.font = UIFont.boldSystemFontOfSize(18.0)
+        self.inspectionTitle1.font = UIFont.boldSystemFont(ofSize: 18.0)
+        self.inspectionTitle2.font = UIFont.boldSystemFont(ofSize: 18.0)
         self.inspectionTitle1.text = MylocalizedString.sharedLocalizeManager.getLocalizedString( inspItem?.inspCatText != "" ? "Inspection Category" : "Inspection Area")
         self.inspectionTitle2.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Inspection Item")
 
         
         if inspItem?.parentView.InputMode == _INPUTMODE02 {
-            self.showDPPDescBtn.hidden = false
+            self.showDPPDescBtn.isHidden = false
             self.inspectionTitle1Input.text = inspItem?.inspAreaText
             self.defectPositionPointsDesc = (inspItem?.inspItemText)!
         } else if inspItem?.parentView.InputMode == _INPUTMODE01 {
@@ -56,7 +80,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         var currIdx = 0
         var currSecId = 0
         var currItemId = 0
-        Cache_Task_On?.defectItems.sortInPlace({ $0.inspElmt.cellCatIdx < $1.inspElmt.cellCatIdx && $0.inspElmt.cellIdx < $1.inspElmt.cellIdx })
+        Cache_Task_On?.defectItems.sort(by: { $0.inspElmt.cellCatIdx < $1.inspElmt.cellCatIdx && $0.inspElmt.cellIdx < $1.inspElmt.cellIdx })
         let defectItemFilter = (Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == self.inspItem!.cellCatIdx && $0.inspElmt.cellIdx == self.inspItem!.cellIdx }))!
         
         for defectItem in defectItemFilter {
@@ -82,14 +106,14 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         self.inspectDefectTableview.allowsSelection = false
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.view.resignFirstResponderByTextField(self.view)
             
         }else {
@@ -98,28 +122,28 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.view.disableAllFunsForView(self.view)
         self.inspectDefectTableview.frame.size.height = 823
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.parentViewController?.parentViewController?.view.removeActivityIndicator()
+        DispatchQueue.main.async(execute: {
+            self.parent?.parent?.view.removeActivityIndicator()
         })
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InspectionDefectList.reloadDefectItems), name: "reloadDefectItems", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InspectionDefectList.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InspectionDefectList.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InspectionDefectList.keyboardDidChange(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.reloadDefectItems), name: NSNotification.Name(rawValue: "reloadDefectItems"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InspectionDefectList.keyboardDidChange(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
      
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.inspectDefectTableview.frame.size.height = 823
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "reloadDefectItems", object: self.view.window)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: self.view.window)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: self.view.window)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "reloadDefectItems"), object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillChangeFrame, object: self.view.window)
     }
     
     func reloadDefectItems() {
@@ -127,36 +151,36 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         updateContentView()
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.inspectDefectTableview.frame.size.height >= 823{
                 self.inspectDefectTableview.frame.size.height -= keyboardSize.height - 45
             }
         }
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.inspectDefectTableview.frame.size.height = 823
     }
     
-    func keyboardDidChange(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+    func keyboardDidChange(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             self.inspectDefectTableview.frame.size.height = 823 - (keyboardSize.height - 45)
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         updateContentView()
         
-        let myParentTabVC = self.parentViewController?.parentViewController as! TabBarViewController
+        let myParentTabVC = self.parent?.parent as! TabBarViewController
         myParentTabVC.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("\((inspItem?.cellCatName)!)")
         
         let leftButton=UIBarButtonItem()
         leftButton.title="< "+MylocalizedString.sharedLocalizeManager.getLocalizedString("Back")
         leftButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        leftButton.style=UIBarButtonItemStyle.Plain
+        leftButton.style=UIBarButtonItemStyle.plain
         leftButton.target=self
         leftButton.action=#selector(InspectionDefectList.clearDefectItemsBeforeGOBack)
         myParentTabVC.navigationItem.leftBarButtonItem=leftButton
@@ -173,7 +197,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             myParentTabVC.setRightBarItemWithHandler(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save"), actionName: "updateTask:", handler: handler)
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
     }
     
     func validation() ->Bool {
@@ -207,7 +231,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             return
         }
         
-        let myParentTabVC = self.parentViewController?.parentViewController as! TabBarViewController
+        let myParentTabVC = self.parent?.parent as! TabBarViewController
         myParentTabVC.handler = nil
         
         let defectDataHelper = DefectDataHelper()
@@ -226,10 +250,10 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 }
                 
                 if noPhotos {
-                    let index = Cache_Task_On?.defectItems.indexOf({ $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
+                    let index = Cache_Task_On?.defectItems.index(where: { $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
                 
                     defectDataHelper.deleteDefectItemById(defectItem.recordId!)
-                    Cache_Task_On?.defectItems.removeAtIndex(index!)
+                    Cache_Task_On?.defectItems.remove(at: index!)
                 }else{
                     self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please enter all Defect Qty."))
                     return
@@ -241,7 +265,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             }
         }
         
-        self.navigationController?.popViewControllerAnimated(false)
+        self.navigationController?.popViewController(animated: false)
     }
     
     override func didReceiveMemoryWarning() {
@@ -252,13 +276,13 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
     // MARK: - Navigation
     
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
         
         if segue.identifier == "PhotoAlbumSegueFromIDF" {
             
-            weak var destVC = segue.destinationViewController as? PhotoAlbumViewController
+            weak var destVC = segue.destination as? PhotoAlbumViewController
             destVC!.pVC = self.currentCell
             destVC?.loadPhotos()
         }
@@ -268,17 +292,17 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         
         //Cache_Task_On?.defectItems.sortInPlace({ $0.sortNum < $1.sortNum })
         self.defectItems = (Cache_Task_On?.defectItems.filter({ $0.inspElmt.cellCatIdx == inspItem!.cellCatIdx && $0.inspElmt.cellIdx == inspItem!.cellIdx }))!//(Cache_Task_On?.defectItems)!
-        self.defectItems.sortInPlace({ $0.sortNum < $1.sortNum && $0.cellIdx < $1.cellIdx })
+        self.defectItems.sort(by: { $0.sortNum < $1.sortNum && $0.cellIdx < $1.cellIdx })
         
         var cellIdx = 0
         self.defectItems.forEach({ $0.cellIdx = cellIdx; $0.sortNum = (self.inspItem?.cellCatIdx)!*1000000 + (self.inspItem!.cellIdx)*1000 + cellIdx; cellIdx += 1 })
         
-        self.defectItems.sortInPlace({ $0.sortNum > $1.sortNum })
+        self.defectItems.sort(by: { $0.sortNum > $1.sortNum })
         
         self.inspectDefectTableview?.reloadData()
     }
     
-    @IBAction func addDefectCell(sender: UIButton) {
+    @IBAction func addDefectCell(_ sender: UIButton) {
         let newDfItem = TaskInspDefectDataRecord(taskId: (Cache_Task_On?.taskId)!, inspectRecordId: inspItem!.taskInspDataRecordId, refRecordId: 0, inspectElementId: inspItem!.elementDbId, defectDesc: "", defectQtyCritical: 0, defectQtyMajor: 0, defectQtyMinor: 0, defectQtyTotal: 0, createUser: Cache_Inspector?.appUserName, createDate: self.view.getCurrentDateTime(), modifyUser: Cache_Inspector?.appUserName, modifyDate: self.view.getCurrentDateTime())
         
         newDfItem?.inputMode = inspItem?.parentView?.InputMode
@@ -305,21 +329,21 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.defectItems.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let defectItem = self.defectItems[indexPath.row]
         
         if defectItem.inputMode! == _INPUTMODE04 {
             self.inspectDefectTableview.rowHeight = 250
-            let cellMode4 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode4", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode4
+            let cellMode4 = tableView.dequeueReusableCell(withIdentifier: "InspDefectCellMode4", for: indexPath) as! InspectionDefectTableViewCellMode4
             
             cellMode4.pVC = self
             cellMode4.taskDefectDataRecordId = defectItem.recordId!
@@ -349,7 +373,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             
         }else if defectItem.inputMode! == _INPUTMODE02 {
             self.inspectDefectTableview.rowHeight = 320
-            let cellMode2 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode2", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode2
+            let cellMode2 = tableView.dequeueReusableCell(withIdentifier: "InspDefectCellMode2", for: indexPath) as! InspectionDefectTableViewCellMode2
             
             cellMode2.pVC = self
             cellMode2.taskDefectDataRecordId = defectItem.recordId!
@@ -385,8 +409,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             var myRemarkValues = cellMode2.defectRemarkOptionList.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myRemarkValues {
                 for value in values {
-                    let trimValue = value.stringByTrimmingCharactersInSet(
-                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                    let trimValue = value.trimmingCharacters(
+                        in: CharacterSet.whitespacesAndNewlines
                     )
                     
                     if cellMode2.remarkKeyValue[trimValue] == nil {
@@ -396,7 +420,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             }
             
             if let values = myRemarkValues {
-                cellMode2.defectRemarkOptionList.text = values.joinWithSeparator(",")
+                cellMode2.defectRemarkOptionList.text = values.joined(separator: ",")
             }
             
             if Int(defectItem.inspectElementId!) > 0 {
@@ -411,18 +435,18 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 
                 if cellMode2.defectValues?.count < 1 {
                     cellMode2.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
-                    cellMode2.defectDesc1ListIcon.hidden = true
+                    cellMode2.defectDesc1ListIcon.isHidden = true
                 } else {
-                    cellMode2.defectDesc1Input.backgroundColor = UIColor.whiteColor()
-                    cellMode2.defectDesc1ListIcon.hidden = false
+                    cellMode2.defectDesc1Input.backgroundColor = UIColor.white
+                    cellMode2.defectDesc1ListIcon.isHidden = false
                 }
                 
                 if cellMode2.caseValues?.count < 1 {
                     cellMode2.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
-                    cellMode2.defectDesc2ListIcon.hidden = true
+                    cellMode2.defectDesc2ListIcon.isHidden = true
                 } else {
-                    cellMode2.defectDesc2Input.backgroundColor = UIColor.whiteColor()
-                    cellMode2.defectDesc2ListIcon.hidden = false
+                    cellMode2.defectDesc2Input.backgroundColor = UIColor.white
+                    cellMode2.defectDesc2ListIcon.isHidden = false
                 }
                 
             }else{
@@ -430,10 +454,10 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 defectItem.defectType = ""
                 
                 cellMode2.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
-                cellMode2.defectDesc1ListIcon.hidden = true
+                cellMode2.defectDesc1ListIcon.isHidden = true
                 
                 cellMode2.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
-                cellMode2.defectDesc2ListIcon.hidden = true
+                cellMode2.defectDesc2ListIcon.isHidden = true
             }
             
             cellMode2.refreshImageviews()
@@ -451,9 +475,9 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 guard let defectTotalQty = Int(cellMode2.defectTotalQtyInput.text!), let defectCriticalQty = Int(cellMode2.defectCriticalQtyInput.text!), let defectMajorQty = Int(cellMode2.defectMajorQtyInput.text!), let defectMinorQty = Int(cellMode2.defectMinorQtyInput.text!) else {return cellMode2}
                 
                 if defectTotalQty < 1 && defectCriticalQty < 1 && defectMajorQty < 1 && defectMinorQty < 1 {
-                    cellMode2.errorMessageLabel.hidden = false
+                    cellMode2.errorMessageLabel.isHidden = false
                 } else {
-                    cellMode2.errorMessageLabel.hidden = true
+                    cellMode2.errorMessageLabel.isHidden = true
                 }
             }
             
@@ -461,7 +485,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
          
         }else if defectItem.inputMode! == _INPUTMODE01 {
             self.inspectDefectTableview.rowHeight = 320
-            let cellMode1 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode1", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode1
+            let cellMode1 = tableView.dequeueReusableCell(withIdentifier: "InspDefectCellMode1", for: indexPath) as! InspectionDefectTableViewCellMode1
             
             cellMode1.pVC = self
             cellMode1.taskDefectDataRecordId = defectItem.recordId!
@@ -501,8 +525,8 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             var myRemarkValues = cellMode1.defectDescInput.text?.characters.split{$0 == ","}.map(String.init)
             if let values = myRemarkValues {
                 for value in values {
-                    let trimValue = value.stringByTrimmingCharactersInSet(
-                        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+                    let trimValue = value.trimmingCharacters(
+                        in: CharacterSet.whitespacesAndNewlines
                     )
                     
                     if cellMode1.remarkKeyValue[trimValue] == nil {
@@ -512,7 +536,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
             }
             
             if let values = myRemarkValues {
-                cellMode1.defectDescInput.text = values.joinWithSeparator(",")
+                cellMode1.defectDescInput.text = values.joined(separator: ",")
             }
             
             if Int(defectItem.inspectElementId!) > 0 {
@@ -527,18 +551,18 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 
                 if cellMode1.defectValues?.count < 1 {
                     cellMode1.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
-                    cellMode1.defectDesc1ListIcon.hidden = true
+                    cellMode1.defectDesc1ListIcon.isHidden = true
                 } else {
-                    cellMode1.defectDesc1Input.backgroundColor = UIColor.whiteColor()
-                    cellMode1.defectDesc1ListIcon.hidden = false
+                    cellMode1.defectDesc1Input.backgroundColor = UIColor.white
+                    cellMode1.defectDesc1ListIcon.isHidden = false
                 }
                 
                 if cellMode1.caseValues?.count < 1 {
                     cellMode1.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
-                    cellMode1.defectDesc2ListIcon.hidden = true
+                    cellMode1.defectDesc2ListIcon.isHidden = true
                 } else {
-                    cellMode1.defectDesc2Input.backgroundColor = UIColor.whiteColor()
-                    cellMode1.defectDesc2ListIcon.hidden = false
+                    cellMode1.defectDesc2Input.backgroundColor = UIColor.white
+                    cellMode1.defectDesc2ListIcon.isHidden = false
                 }
 
             }else{
@@ -546,10 +570,10 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 defectItem.defectType = ""
                 
                 cellMode1.defectDesc1Input.backgroundColor = _GREY_BACKGROUD
-                cellMode1.defectDesc1ListIcon.hidden = true
+                cellMode1.defectDesc1ListIcon.isHidden = true
                 
                 cellMode1.defectDesc2Input.backgroundColor = _GREY_BACKGROUD
-                cellMode1.defectDesc2ListIcon.hidden = true
+                cellMode1.defectDesc2ListIcon.isHidden = true
 
             }
             
@@ -568,9 +592,9 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
                 guard let defectTotalQty = Int(cellMode1.defectQtyInput.text!), let defectCriticalQty = Int(cellMode1.criticalInput.text!), let defectMajorQty = Int(cellMode1.majorInput.text!), let defectMinorQty = Int(cellMode1.minorInput.text!) else {return cellMode1}
                 
                 if defectTotalQty < 1 && defectCriticalQty < 1 && defectMajorQty < 1 && defectMinorQty < 1 {
-                    cellMode1.errorMessageLabel.hidden = false
+                    cellMode1.errorMessageLabel.isHidden = false
                 } else {
-                    cellMode1.errorMessageLabel.hidden = true
+                    cellMode1.errorMessageLabel.isHidden = true
                 }
             }
             
@@ -578,7 +602,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         
         }else {
             self.inspectDefectTableview.rowHeight = 170
-            let cellMode3 = tableView.dequeueReusableCellWithIdentifier("InspDefectCellMode3", forIndexPath: indexPath) as! InspectionDefectTableViewCellMode3
+            let cellMode3 = tableView.dequeueReusableCell(withIdentifier: "InspDefectCellMode3", for: indexPath) as! InspectionDefectTableViewCellMode3
             
             cellMode3.pVC = self
             cellMode3.taskDefectDataRecordId = defectItem.recordId!
@@ -607,7 +631,7 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         }
     }
     
-    @IBAction func showDPP(sender: UIButton){
+    @IBAction func showDPP(_ sender: UIButton){
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
 //        popoverContent.view.translatesAutoresizingMaskIntoConstraints = false
@@ -615,15 +639,15 @@ class InspectionDefectList: PopoverMaster, UITextFieldDelegate, UITableViewDeleg
         popoverContent.selectedValue = defectPositionPointsDesc
         
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        nav.navigationBar.barTintColor = UIColor.whiteColor()
-        nav.navigationBar.tintColor = UIColor.blackColor()
+        nav.modalPresentationStyle = UIModalPresentationStyle.popover
+        nav.navigationBar.barTintColor = UIColor.white
+        nav.navigationBar.tintColor = UIColor.black
         
         let popover = nav.popoverPresentationController
         popover!.delegate = sender.parentVC as! PopoverMaster
         popover!.sourceView = sender
-        popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+        popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY,width: sender.frame.size.width,height: sender.frame.size.height)
         
-        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+        sender.parentVC!.present(nav, animated: true, completion: nil)
     }
 }

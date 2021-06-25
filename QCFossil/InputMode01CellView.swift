@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
 
@@ -41,14 +65,14 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     */
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField((self.parentVC?.view)!)
             
         }else {
@@ -82,7 +106,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         updatePhotoAddediConStatus("",photoTakenIcon: self.photoAddedIcon)
         
         for optInspElmt in self.parentView!.optInspElms {
-            guard let nameEn = optInspElmt.elementNameEn, nameCn = optInspElmt.elementNameCn else {continue}
+            guard let nameEn = optInspElmt.elementNameEn, let nameCn = optInspElmt.elementNameCn else {continue}
             inspectItemKeyValues[_ENGLISH ? nameEn : nameCn] = optInspElmt.elementId
         }
         
@@ -95,25 +119,25 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         self.selectValues = taskDataHelper.getInptElementDetailSelectValueByElementId(self.inspElmId ?? 0)
         
         if selectValues.count > 0 {
-            inptDetailItemsListBtn.hidden = false
+            inptDetailItemsListBtn.isHidden = false
         } else {
-            inptDetailItemsListBtn.hidden = true
+            inptDetailItemsListBtn.isHidden = true
         }
     }
 
-    @IBAction func defectBtnOnClick(sender: UIButton) {
+    @IBAction func defectBtnOnClick(_ sender: UIButton) {
  
         //check if defect input and defect position points nil, then return
         if let value = inptDetailInput.text {
-            if inptDetailItemsListBtn.hidden == false && (value == "" || value.isEmpty) {
-                self.errorMessageLabel.hidden = false
+            if inptDetailItemsListBtn.isHidden == false && (value == "" || value.isEmpty) {
+                self.errorMessageLabel.isHidden = false
                 return
             } else {
-                self.errorMessageLabel.hidden = true
+                self.errorMessageLabel.isHidden = true
             }
         }
         
-        let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
+        let myParentTabVC = self.parentVC!.parent?.parent as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
         
         //add defect cell
@@ -138,10 +162,10 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             }
         }
         
-        self.parentVC!.performSegueWithIdentifier("DefectListFromInspectItemSegue", sender:self)
+        self.parentVC!.performSegue(withIdentifier: "DefectListFromInspectItemSegue", sender:self)
     }
     
-    @IBAction func dismissBtnOnClick(sender: UIButton) {
+    @IBAction func dismissBtnOnClick(_ sender: UIButton) {
         let photoDataHelper = PhotoDataHelper()
         if photoDataHelper.existPhotoByInspItem(self.taskInspDataRecordId!, dataType: PhotoDataType(caseId: "INSPECT").rawValue) || self.inspPhotos.count>0 {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo(s) of this inspection item will be deleted!"), handlerFun: { (action:UIAlertAction!) in
@@ -158,7 +182,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         clearDropdownviewForSubviews(self.parentView!)
         self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete?"), parentVC:(self.parentView?.parentVC)!, handlerFun: { (action:UIAlertAction!) in
             
-            (self.parentView as! InputMode01View).inputCells.removeAtIndex(self.cellPhysicalIdx)
+            (self.parentView as! InputMode01View).inputCells.remove(at: self.cellPhysicalIdx)
             self.removeFromSuperview()
             (self.parentView as! InputMode01View).updateContentView()
             
@@ -166,7 +190,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
             if self.taskInspDataRecordId > 0 {
                 self.deleteTaskPhotos(true)
                 //Reload Photos
-                NSNotificationCenter.defaultCenter().postNotificationName("reloadAllPhotosFromDB", object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadAllPhotosFromDB"), object: nil, userInfo: nil)
                 
                 self.deleteTaskInspDataRecord(self.taskInspDataRecordId!)
             }
@@ -212,10 +236,10 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func showDismissButton() {
-        self.cellDismissButton.hidden = false
+        self.cellDismissButton.isHidden = false
     }
     
-    func dropdownHandleFunc(textField: UITextField) {
+    func dropdownHandleFunc(_ textField: UITextField) {
         Cache_Task_On?.didModify = true
         
         if textField == self.cellResultInput {
@@ -248,7 +272,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
                 fetchDetailSelectedValues()
             }
             
-            NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updatePhotoInfo"), object: nil,userInfo: ["inspElmt":self])
         }
     }
     
@@ -263,7 +287,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         (self.parentView as! InputMode01View).updateOptionalInspElmts(usedInspItemNames)
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
@@ -273,7 +297,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
                 
-                textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height:250, tag: _TAG4)
+                textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues as NSArray, width: 200, height:250, tag: _TAG4)
             }
             
             return false
@@ -287,7 +311,7 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
                 
-                textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: self.sortStringArrayByName(listData), width: self.inptItemInput.frame.size.width*1.2, height:_DROPDOWNLISTHEIGHT, tag: _TAG5)
+                textField.showListData(textField, parent: (self.parentView as! InputMode01View).scrollCellView, handle: handleFun, listData: self.sortStringArrayByName(listData) as NSArray, width: self.inptItemInput.frame.size.width*1.2, height:_DROPDOWNLISTHEIGHT, tag: _TAG5)
             }
             
 
@@ -297,31 +321,31 @@ class InputMode01CellView: InputModeICMaster, UITextFieldDelegate {
         return true
     }
 
-    @IBAction func showInptDetailVals(sender: UIButton) {
+    @IBAction func showInptDetailVals(_ sender: UIButton) {
         if self.ifExistingSubviewByViewTag(self.inptDetailInput, tag: _TAG1) {
             clearDropdownviewForSubviews(self.inptDetailInput)
             return
         }
         
-        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(self.selectValues), width: 500, height:_DROPDOWNLISTHEIGHT, allowManuallyInput: true, tag: _TAG1)
+        self.inptDetailInput.showListData(self.inptDetailInput, parent: (self.parentView as! InputMode01View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(self.selectValues) as NSArray, width: 500, height:_DROPDOWNLISTHEIGHT, tag: _TAG1, allowManuallyInput: true)
     }
     
     
-    @IBAction func takePhotoFromCell(sender: UIButton) {
+    @IBAction func takePhotoFromCell(_ sender: UIButton) {
         if self.inptItemInput.text == "" {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Inspect Item"))
             
             return
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.showActivityIndicator()
             //Save self to DB to get the taskDataRecordId
             self.saveMyselfToGetId()
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 
-                NSNotificationCenter.defaultCenter().postNotificationName("takePhotoFromICCell", object: nil, userInfo: ["inspElmt":self])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "takePhotoFromICCell"), object: nil, userInfo: ["inspElmt":self])
                 
                 self.removeActivityIndicator()
             })

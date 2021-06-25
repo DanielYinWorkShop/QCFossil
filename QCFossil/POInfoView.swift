@@ -43,10 +43,10 @@ class POInfoView: UIView {
         self.retailPriceLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Retail Price")
         self.barcodeLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Barcode")
         
-        self.displayStyleSizeFullTextBtn.hidden = true
+        self.displayStyleSizeFullTextBtn.isHidden = true
     }
     
-    @IBAction func displayFullTextDidPress(sender: UIButton) {
+    @IBAction func displayFullTextDidPress(_ sender: UIButton) {
         
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
@@ -64,9 +64,9 @@ class POInfoView: UIView {
         
         
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        nav.navigationBar.barTintColor = UIColor.whiteColor()
-        nav.navigationBar.tintColor = UIColor.blackColor()
+        nav.modalPresentationStyle = UIModalPresentationStyle.popover
+        nav.navigationBar.barTintColor = UIColor.white
+        nav.navigationBar.tintColor = UIColor.black
         
         let popover = nav.popoverPresentationController
         popover!.delegate = sender.parentVC as! PopoverMaster
@@ -75,11 +75,11 @@ class POInfoView: UIView {
         
         switch sender.tag {
         default:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         }
         
-        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+        sender.parentVC!.present(nav, animated: true, completion: nil)
     }
 
 }

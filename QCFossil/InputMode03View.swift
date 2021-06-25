@@ -26,14 +26,14 @@ class InputMode03View: InputModeSCMaster {
     }
     */
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return;
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField(self)
             
         }else {
@@ -67,7 +67,7 @@ class InputMode03View: InputModeSCMaster {
 
             inputCells.append(inputCell)
             
-            idx++
+            idx += 1
         }
         
         if idx<2 {
@@ -125,11 +125,11 @@ class InputMode03View: InputModeSCMaster {
         resizeScrollView(CGSize.init(width: self.scrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+600)))
     }
     
-    func resizeScrollView(size:CGSize) {
+    func resizeScrollView(_ size:CGSize) {
         self.scrollCellView.contentSize = size
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, inspCatInputText:String, inspItemInputText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, taskInspDataRecordId:Int=0,requestSecId:Int?=0,inspDetailInputText:String="",inspRemarksInputText:String="",resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: "")) -> InputMode03CellView {
+    func inputCellInit(_ index:Int, sectionId:Int, sectionName:String, idxLabelText:String, inspCatInputText:String, inspItemInputText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, taskInspDataRecordId:Int=0,requestSecId:Int?=0,inspDetailInputText:String="",inspRemarksInputText:String="",resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: "")) -> InputMode03CellView {
         
         let inputCellViewObj = InputMode03CellView.loadFromNibNamed("InputMode03Cell")
         
@@ -166,7 +166,7 @@ class InputMode03View: InputModeSCMaster {
         return inputCellViewObj!
     }
     
-    @IBAction func addCellBtnOnClick(sender: UIButton) {
+    @IBAction func addCellBtnOnClick(_ sender: UIButton) {
         NSLog("Add Cell")
         
         let inputCell = inputCellInit(inputCells.count+1,sectionId: categoryIdx, sectionName: categoryName, idxLabelText: String(inputCells.count+1),inspCatInputText: "",inspItemInputText: "",dismissBtnHidden: false, elementDbId: 0, refRecordId: 0, inspElmId: 0, inspPostId: 0)

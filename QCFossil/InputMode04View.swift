@@ -31,14 +31,14 @@ class InputMode04View: InputModeSCMaster{
     }
     */
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField(self)
             
         }else {
@@ -142,11 +142,11 @@ class InputMode04View: InputModeSCMaster{
         resizeScrollView(CGSize.init(width: self.ScrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+500)))
     }
     
-    func resizeScrollView(size:CGSize) {
+    func resizeScrollView(_ size:CGSize) {
         self.ScrollCellView.contentSize = size
     }
 
-    @IBAction func addCellButton(sender: UIButton) {
+    @IBAction func addCellButton(_ sender: UIButton) {
         NSLog("Add Cell")
         
         if self.optInspElms.count > 0 {
@@ -172,7 +172,7 @@ class InputMode04View: InputModeSCMaster{
         }
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, iaLabelText:String, iiLabelText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, displayDDList:Bool=false, resultValueId:Int=0, taskInspDataRecordId:Int=0, requiredElementFlag:Int=0, userInteractive:Bool=false, optionEnableFlag:Int=1) -> InputMode04CellView {
+    func inputCellInit(_ index:Int, sectionId:Int, sectionName:String, idxLabelText:String, iaLabelText:String, iiLabelText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, displayDDList:Bool=false, resultValueId:Int=0, taskInspDataRecordId:Int=0, requiredElementFlag:Int=0, userInteractive:Bool=false, optionEnableFlag:Int=1) -> InputMode04CellView {
         
         let inputCellViewObj = InputMode04CellView.loadFromNibNamed("InputMode04Cell")
         
@@ -200,8 +200,8 @@ class InputMode04View: InputModeSCMaster{
         inputCellViewObj?.requiredElementFlag = requiredElementFlag
         
         if !userInteractive {
-            inputCellViewObj?.inspectionAreaLabel.userInteractionEnabled = false
-            inputCellViewObj?.inspectionItemLabel.userInteractionEnabled = false
+            inputCellViewObj?.inspectionAreaLabel.isUserInteractionEnabled = false
+            inputCellViewObj?.inspectionItemLabel.isUserInteractionEnabled = false
         }
         
         if !dismissBtnHidden || (requiredElementFlag < 1 && optionEnableFlag > 0) {
@@ -215,7 +215,7 @@ class InputMode04View: InputModeSCMaster{
         return inputCellViewObj!
     }
     
-    func updateOptionalInspElmts(inspElmtNames:[String]=[], action:String="filter") {
+    func updateOptionalInspElmts(_ inspElmtNames:[String]=[], action:String="filter") {
         
         if action == "filter" {
             self.optInspElms = self.optInspElmsMaster
@@ -233,9 +233,9 @@ class InputMode04View: InputModeSCMaster{
         }
         
         if self.optInspElms.count < 1 {
-            self.addCellButton.hidden = true
+            self.addCellButton.isHidden = true
         }else{
-            self.addCellButton.hidden = false
+            self.addCellButton.isHidden = false
         }
     }
 }

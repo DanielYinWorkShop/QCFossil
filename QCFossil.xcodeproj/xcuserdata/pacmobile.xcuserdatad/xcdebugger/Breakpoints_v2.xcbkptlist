@@ -208,7 +208,7 @@
             startingLineNumber = "54"
             endingLineNumber = "54"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -224,7 +224,7 @@
             startingLineNumber = "128"
             endingLineNumber = "128"
             landmarkName = "updateContentView()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -238,9 +238,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "dismissDfPhotoButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "141">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -256,7 +254,7 @@
             startingLineNumber = "80"
             endingLineNumber = "80"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -272,7 +270,7 @@
             startingLineNumber = "151"
             endingLineNumber = "151"
             landmarkName = "dismissDfPhotoButton(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -286,9 +284,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "actionSheet(_:clickedButtonAtIndex:)"
-            landmarkType = "5">
+            endingLineNumber = "119">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -350,7 +346,7 @@
             startingLineNumber = "65"
             endingLineNumber = "65"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -366,7 +362,7 @@
             startingLineNumber = "51"
             endingLineNumber = "51"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -382,7 +378,7 @@
             startingLineNumber = "52"
             endingLineNumber = "52"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -396,9 +392,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "dropdownHandleFunc(_:)"
-            landmarkType = "5">
+            endingLineNumber = "117">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -412,9 +406,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "368"
-            endingLineNumber = "368"
-            landmarkName = "setSelectedPhoto(_:needSave:)"
-            landmarkType = "5">
+            endingLineNumber = "368">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -424,13 +416,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/PhotoDataHelper.swift"
-            timestampString = "502174496.381744"
+            timestampString = "646300259.039705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
-            landmarkName = "getDefectPhotosById(_:dataRecordId:taskPath:)"
-            landmarkType = "5">
+            startingLineNumber = "373"
+            endingLineNumber = "373"
+            landmarkName = "getDefectPhotoNamesById(_:dataRecordId:taskPath:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -446,7 +438,7 @@
             startingLineNumber = "356"
             endingLineNumber = "356"
             landmarkName = "getTaskDetailByTask(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -460,9 +452,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "191"
-            endingLineNumber = "191"
-            landmarkName = "defectButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "191">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -476,9 +466,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "370"
-            endingLineNumber = "370"
-            landmarkName = "setSelectedPhoto(_:needSave:)"
-            landmarkType = "5">
+            endingLineNumber = "370">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -492,9 +480,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "470"
-            endingLineNumber = "470"
-            landmarkName = "updateDefectPhotoData(_:photo:needSave:)"
-            landmarkType = "5">
+            endingLineNumber = "470">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -508,9 +494,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "280"
-            endingLineNumber = "280"
-            landmarkName = "addDefectCellButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "280">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -556,9 +540,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "303"
-            endingLineNumber = "303"
-            landmarkName = "removeDefectCell()"
-            landmarkType = "5">
+            endingLineNumber = "303">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -604,9 +586,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "removeDefectCell()"
-            landmarkType = "5">
+            endingLineNumber = "304">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -620,9 +600,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "205"
-            endingLineNumber = "205"
-            landmarkName = "defectButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "205">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -668,9 +646,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "516"
-            endingLineNumber = "516"
-            landmarkName = "previewTapOnClick(_:)"
-            landmarkType = "5">
+            endingLineNumber = "516">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -684,9 +660,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "469"
-            endingLineNumber = "469"
-            landmarkName = "updateDefectPhotoData(_:photo:needSave:)"
-            landmarkType = "5">
+            endingLineNumber = "469">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -700,9 +674,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "addDefectCellButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "281">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -748,9 +720,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "617"
-            endingLineNumber = "617"
-            landmarkName = "selectPOLineBtn(_:)"
-            landmarkType = "5">
+            endingLineNumber = "617">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -814,7 +784,7 @@
             startingLineNumber = "50"
             endingLineNumber = "50"
             landmarkName = "viewDidLoad()"
-            landmarkType = "5">
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -862,7 +832,7 @@
             startingLineNumber = "60"
             endingLineNumber = "60"
             landmarkName = "viewDidLoad()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -894,7 +864,7 @@
             startingLineNumber = "35"
             endingLineNumber = "35"
             landmarkName = "viewDidLoad()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -908,9 +878,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "397"
-            endingLineNumber = "397"
-            landmarkName = "tableView(_:didDeselectRowAtIndexPath:)"
-            landmarkType = "5">
+            endingLineNumber = "397">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -956,9 +924,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "addDefectCellButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "152">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1004,9 +970,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "addDefectCellButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "147">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1020,9 +984,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "defectBtnOnClick(_:)"
-            landmarkType = "5">
+            endingLineNumber = "169">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1069,8 +1031,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "174"
             endingLineNumber = "174"
-            landmarkName = "saveButton(_:)"
-            landmarkType = "5">
+            landmarkName = "saveButton(sender:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1132,9 +1094,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "dismissDfPhotoButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "245">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1180,9 +1140,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "dismissDfPhotoButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "245">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1213,8 +1171,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
             endingLineNumber = "70"
-            landmarkName = "textField(_:shouldChangeCharactersInRange:replacementString:)"
-            landmarkType = "5">
+            landmarkName = "textField(textField:shouldChangeCharactersInRange:replacementString:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1245,8 +1203,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "176"
             endingLineNumber = "176"
-            landmarkName = "saveButton(_:)"
-            landmarkType = "5">
+            landmarkName = "saveButton(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1356,9 +1314,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "315"
-            endingLineNumber = "315"
-            landmarkName = "saveDefectPhotoData(_:photo:needSave:)"
-            landmarkType = "5">
+            endingLineNumber = "315">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1372,9 +1328,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "defectButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "207">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1388,9 +1342,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "defectButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "208">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1404,9 +1356,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "209"
-            endingLineNumber = "209"
-            landmarkName = "showDefectPhoto(_:)"
-            landmarkType = "5">
+            endingLineNumber = "209">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1421,8 +1371,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "85"
             endingLineNumber = "85"
-            landmarkName = "textField(_:shouldChangeCharactersInRange:replacementString:)"
-            landmarkType = "5">
+            landmarkName = "textField(textField:shouldChangeCharactersInRange:replacementString:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1437,8 +1387,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "132"
             endingLineNumber = "132"
-            landmarkName = "clearDefectPhotoDataByPhotoName(_:)"
-            landmarkType = "5">
+            landmarkName = "clearDefectPhotoDataByPhotoName(photoName:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1549,8 +1499,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "116"
             endingLineNumber = "116"
-            landmarkName = "savePhotoToLocal(_:)"
-            landmarkType = "5">
+            landmarkName = "savePhotoToLocal(photo:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1564,9 +1514,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "827"
-            endingLineNumber = "827"
-            landmarkName = "textField(_:shouldChangeCharactersInRange:replacementString:)"
-            landmarkType = "5">
+            endingLineNumber = "827">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1612,9 +1560,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "242"
-            endingLineNumber = "242"
-            landmarkName = "removeDefectPhotoOnIndex(_:)"
-            landmarkType = "5">
+            endingLineNumber = "242">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1628,9 +1574,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "previewTapOnClick(_:)"
-            landmarkType = "5">
+            endingLineNumber = "100">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1644,9 +1588,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "412"
-            endingLineNumber = "412"
-            landmarkName = "dismissDfPhotoButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "412">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1692,9 +1634,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "414"
-            endingLineNumber = "414"
-            landmarkName = "dismissDfPhotoButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "414">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1772,9 +1712,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "268"
-            endingLineNumber = "268"
-            landmarkName = "touchesBegan(_:withEvent:)"
-            landmarkType = "5">
+            endingLineNumber = "268">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1821,8 +1759,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
             endingLineNumber = "155"
-            landmarkName = "saveButton(_:)"
-            landmarkType = "5">
+            landmarkName = "saveButton(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1854,7 +1792,7 @@
             startingLineNumber = "57"
             endingLineNumber = "57"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1870,7 +1808,7 @@
             startingLineNumber = "123"
             endingLineNumber = "123"
             landmarkName = "updateContentView()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1886,7 +1824,7 @@
             startingLineNumber = "140"
             endingLineNumber = "140"
             landmarkName = "updateContentView()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1902,7 +1840,7 @@
             startingLineNumber = "141"
             endingLineNumber = "141"
             landmarkName = "updateContentView()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1916,41 +1854,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "269"
-            endingLineNumber = "269"
-            landmarkName = "touchesBegan(_:withEvent:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "QCFossil/EmbedContainerController.swift"
-            timestampString = "502017407.221702"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "prepareForSegue(_:sender:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "QCFossil/EmbedContainerController.swift"
-            timestampString = "502017407.221702"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "prepareForSegue(_:sender:)"
-            landmarkType = "5">
+            endingLineNumber = "269">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1965,7 +1869,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "264"
             endingLineNumber = "264"
-            landmarkName = "createBodyWithParameters(parameters:boundary:)"
+            landmarkName = "createBodyWithParameters(_:boundary:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1981,7 +1885,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "266"
             endingLineNumber = "266"
-            landmarkName = "createBodyWithParameters(parameters:boundary:)"
+            landmarkName = "createBodyWithParameters(_:boundary:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1996,9 +1900,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1617"
-            endingLineNumber = "1617"
-            landmarkName = "equalToDate(_:)"
-            landmarkType = "5">
+            endingLineNumber = "1617">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2012,9 +1914,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1635"
-            endingLineNumber = "1635"
-            landmarkName = "returnDateForMonth(_:year:day:)"
-            landmarkType = "5">
+            endingLineNumber = "1635">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2028,9 +1928,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "602"
-            endingLineNumber = "602"
-            landmarkName = "selectPOLineBtn(_:)"
-            landmarkType = "5">
+            endingLineNumber = "602">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2045,7 +1943,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "257"
             endingLineNumber = "257"
-            landmarkName = "createBodyWithParameters(parameters:boundary:)"
+            landmarkName = "createBodyWithParameters(_:boundary:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2076,9 +1974,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "742"
-            endingLineNumber = "742"
-            landmarkName = "textFieldShouldBeginEditing(_:)"
-            landmarkType = "5">
+            endingLineNumber = "742">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2092,9 +1988,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1619"
-            endingLineNumber = "1619"
-            landmarkName = "addDays(_:)"
-            landmarkType = "5">
+            endingLineNumber = "1619">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2108,9 +2002,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "277"
-            endingLineNumber = "277"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "5">
+            endingLineNumber = "277">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -2206,7 +2098,7 @@
             startingLineNumber = "105"
             endingLineNumber = "105"
             landmarkName = "textViewShouldBeginEditing(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2234,9 +2126,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "595"
-            endingLineNumber = "595"
-            landmarkName = "selectPOLineBtn(_:)"
-            landmarkType = "5">
+            endingLineNumber = "595">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2251,8 +2141,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "64"
             endingLineNumber = "64"
-            landmarkName = "removePoItem(_:)"
-            landmarkType = "5">
+            landmarkName = "removePoItem(sender:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -2299,8 +2189,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "65"
             endingLineNumber = "65"
-            landmarkName = "removePoItem(_:)"
-            landmarkType = "5">
+            landmarkName = "removePoItem(sender:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -2347,8 +2237,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "68"
             endingLineNumber = "68"
-            landmarkName = "removePoItem(_:)"
-            landmarkType = "5">
+            landmarkName = "removePoItem(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2363,8 +2253,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
             endingLineNumber = "67"
-            landmarkName = "removePoItem(_:)"
-            landmarkType = "5">
+            landmarkName = "removePoItem(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2395,8 +2285,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "229"
             endingLineNumber = "229"
-            landmarkName = "getNameByUpdateDefectPhotoData(_:photo:needSave:)"
-            landmarkType = "5">
+            landmarkName = "getNameByUpdateDefectPhotoData(index:photo:needSave:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -2443,8 +2333,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "231"
             endingLineNumber = "231"
-            landmarkName = "getNameByUpdateDefectPhotoData(_:photo:needSave:)"
-            landmarkType = "5">
+            landmarkName = "getNameByUpdateDefectPhotoData(index:photo:needSave:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2459,8 +2349,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2124"
             endingLineNumber = "2124"
-            landmarkName = "getAllTaskBookingNo(_:)"
-            landmarkType = "5">
+            landmarkName = "getAllTaskBrandNames(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2474,9 +2364,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "textFieldShouldBeginEditing(_:)"
-            landmarkType = "5">
+            endingLineNumber = "118">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2490,9 +2378,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "textFieldShouldBeginEditing(_:)"
-            landmarkType = "5">
+            endingLineNumber = "120">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2506,9 +2392,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
-            endingLineNumber = "101"
-            landmarkName = "InputMode03CellView"
-            landmarkType = "3">
+            endingLineNumber = "101">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2522,9 +2406,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "textFieldShouldBeginEditing(_:)"
-            landmarkType = "5">
+            endingLineNumber = "140">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2539,8 +2421,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2147"
             endingLineNumber = "2147"
-            landmarkName = "getBookingNoByTaskId(_:)"
-            landmarkType = "5">
+            landmarkName = "getAllTaskBookingNo(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2555,8 +2437,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2147"
             endingLineNumber = "2147"
-            landmarkName = "getBookingNoByTaskId(_:)"
-            landmarkType = "5">
+            landmarkName = "getAllTaskBookingNo(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2570,9 +2452,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "touchesBegan(_:withEvent:)"
-            landmarkType = "5">
+            endingLineNumber = "41">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2586,9 +2466,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "251"
-            endingLineNumber = "251"
-            landmarkName = "gestureRecognizer(_:shouldReceiveTouch:)"
-            landmarkType = "5">
+            endingLineNumber = "251">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2666,9 +2544,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
+            endingLineNumber = "71">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2684,7 +2560,7 @@
             startingLineNumber = "59"
             endingLineNumber = "59"
             landmarkName = "didMoveToSuperview()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2714,7 +2590,7 @@
             startingLineNumber = "89"
             endingLineNumber = "89"
             landmarkName = "textFieldDidChange(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2728,9 +2604,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "addDefectPhotoButton(_:)"
-            landmarkType = "5">
+            endingLineNumber = "93">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2740,13 +2614,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QCFossil/DataSyncViewController.swift"
-            timestampString = "638553846.0858231"
+            timestampString = "646302103.941794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1352"
-            endingLineNumber = "1352"
-            landmarkName = "URLSession(_:task:didCompleteWithError:)"
-            landmarkType = "5">
+            startingLineNumber = "1428"
+            endingLineNumber = "1428"
+            landmarkName = "urlSession(_:task:didCompleteWithError:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

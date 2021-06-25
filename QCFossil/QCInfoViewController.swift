@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     
@@ -14,14 +38,14 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
     var ssPhotoPath = ""
     var cbPhotoPath = ""
     
-    override func viewWillAppear(animated: Bool) {
-        if let myParentTabVC = self.parentViewController?.parentViewController as? TabBarViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        if let myParentTabVC = self.parent?.parent as? TabBarViewController {
             myParentTabVC.setLeftBarItem("< "+MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Form"),actionName: "backToTaskDetailFromPADF")
             myParentTabVC.setRightBarItem("", actionName: "")
             
             myParentTabVC.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("QC Info")
             
-            NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
         }
     }
     
@@ -75,8 +99,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
                 if let substrStyleSize = poItem.substrStyleSize {
                     if substrStyleSize != "" {
                         poInfoView.styleSizeDisplay.text = substrStyleSize
-                        dispatch_async(dispatch_get_main_queue(), {
-                            poInfoView.displayStyleSizeFullTextBtn.hidden = false
+                        DispatchQueue.main.async(execute: {
+                            poInfoView.displayStyleSizeFullTextBtn.isHidden = false
                         })
                     }
                 }
@@ -113,7 +137,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         
         taskQCInfoView.poView.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 9.0, *) {
-            taskQCInfoView.poView.heightAnchor.constraintEqualToConstant(newHeight).active = true
+            taskQCInfoView.poView.heightAnchor.constraint(equalToConstant: newHeight).isActive = true
         } else {
             taskQCInfoView.frame = CGRect(x: taskQCInfoView.frame.origin.x, y: taskQCInfoView.frame.origin.y, width: taskQCInfoView.frame.size.width, height: newHeight)
         }
@@ -137,8 +161,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrInspectorNames = taskQCInfo?.substrInspectorNames {
             if substrInspectorNames != "" {
                 taskQCInfoView.inspectorInput.text = substrInspectorNames
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayInspectorFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayInspectorFullTextBtn.isHidden = false
                 })
             }
         }
@@ -153,8 +177,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrQualityStandard = taskQCInfo?.substrQualityStandard {
             if substrQualityStandard != "" {
                 taskQCInfoView.qualityStardardInput.text = substrQualityStandard
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayQualityStandardFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayQualityStandardFullTextBtn.isHidden = false
                 })
             }
         }
@@ -174,8 +198,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrLengthRequirement = taskQCInfo?.substrLengthRequirement {
             if substrLengthRequirement != "" {
                 taskQCInfoView.lengthReqInput.text = substrLengthRequirement
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayLengthReqFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayLengthReqFullTextBtn.isHidden = false
                 })
             }
         }
@@ -187,8 +211,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrMovtOrigin = taskQCInfo?.substrMovtOrigin {
             if substrMovtOrigin != "" {
                 taskQCInfoView.movtInput.text = substrMovtOrigin
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayMovtFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayMovtFullTextBtn.isHidden = false
                 })
             }
         }
@@ -199,8 +223,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrCombineQCRemarks = taskQCInfo?.substrCombineQCRemarks {
             if substrCombineQCRemarks != "" {
                 taskQCInfoView.combineQCRemarkInput.text = substrCombineQCRemarks
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayCombineQCRemarkFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayCombineQCRemarkFullTextBtn.isHidden = false
                 })
             }
         }
@@ -213,8 +237,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrSSReady = taskQCInfo?.substrSSReady {
             if substrSSReady != "" {
                 taskQCInfoView.ssReadyInput.text = substrSSReady
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displaySSReadyFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displaySSReadyFullTextBtn.isHidden = false
                 })
             }
         }
@@ -224,8 +248,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrSSCommentReady = taskQCInfo?.substrSSCommentReady {
             if substrSSCommentReady != "" {
                 taskQCInfoView.ssCommentReadyInput.text = substrSSCommentReady
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displaySSCommentReadyFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displaySSCommentReadyFullTextBtn.isHidden = false
                 })
             }
         }
@@ -243,8 +267,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrCAForm = taskQCInfo?.substrCAForm {
             if substrCAForm != "" {
                 taskQCInfoView.caFormInput.text = substrCAForm
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayCAFormFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayCAFormFullTextBtn.isHidden = false
                 })
             }
         }
@@ -256,8 +280,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         if let substrReliabilityRemark = taskQCInfo?.substrReliabilityRemark {
             if substrReliabilityRemark != "" {
                 taskQCInfoView.reliabilityTestRemarkInput.text = substrReliabilityRemark
-                dispatch_async(dispatch_get_main_queue(), {
-                    taskQCInfoView.displayReliabilityFullTextBtn.hidden = false
+                DispatchQueue.main.async(execute: {
+                    taskQCInfoView.displayReliabilityFullTextBtn.isHidden = false
                 })
             }
         }
@@ -291,59 +315,59 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         
         self.cbPhotoPath = _CASEBACKPHOTOSPHYSICALPATH + stylePhotos.cbPhotoName
         
-        let filemgr = NSFileManager.defaultManager()
-        if stylePhotos.ssPhotoName != "" && filemgr.fileExistsAtPath(ssPhotoPath) {
+        let filemgr = FileManager.default
+        if stylePhotos.ssPhotoName != "" && filemgr.fileExists(atPath: ssPhotoPath) {
             do {
                 taskQCInfoView.salesmanPhoto.image = UIImage(contentsOfFile: ssPhotoPath)
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(ssPhotoPreviewTapOnClick(_:)))
-                taskQCInfoView.salesmanPhoto.userInteractionEnabled = true
+                taskQCInfoView.salesmanPhoto.isUserInteractionEnabled = true
                 taskQCInfoView.salesmanPhoto.addGestureRecognizer(tapGestureRecognizer)
                 taskQCInfoView.salesmanPhoto.backgroundColor = _TABLECELL_BG_COLOR1
                 
             }
         } else {
-            taskQCInfoView.salesmanLabel.hidden = true
-            taskQCInfoView.salesmanPhoto.hidden = true
+            taskQCInfoView.salesmanLabel.isHidden = true
+            taskQCInfoView.salesmanPhoto.isHidden = true
         }
         
-        if stylePhotos.cbPhotoName != "" && filemgr.fileExistsAtPath(cbPhotoPath) {
+        if stylePhotos.cbPhotoName != "" && filemgr.fileExists(atPath: cbPhotoPath) {
             do {
                 taskQCInfoView.caseBackPhoto.image = UIImage(contentsOfFile: cbPhotoPath)
                 let tapGestureRecognizer2 = UITapGestureRecognizer(target:self, action:#selector(cbPhotoPreviewTapOnClick(_:)))
-                taskQCInfoView.caseBackPhoto.userInteractionEnabled = true
+                taskQCInfoView.caseBackPhoto.isUserInteractionEnabled = true
                 taskQCInfoView.caseBackPhoto.addGestureRecognizer(tapGestureRecognizer2)
                 taskQCInfoView.caseBackPhoto.backgroundColor = _TABLECELL_BG_COLOR1
                 
             } 
         } else {
-            taskQCInfoView.caseBackLabel.hidden = true
-            taskQCInfoView.caseBackPhoto.hidden = true
+            taskQCInfoView.caseBackLabel.isHidden = true
+            taskQCInfoView.caseBackPhoto.isHidden = true
         }
     }
     
-    func ssPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
+    func ssPhotoPreviewTapOnClick(_ sender: UITapGestureRecognizer) {
         let container = UIScrollView()
         container.tag = _MASKVIEWTAG
-        container.hidden = false
+        container.isHidden = false
         container.frame = self.view.frame
         container.center = self.view.center
-        container.backgroundColor = UIColor.clearColor()
+        container.backgroundColor = UIColor.clear
         
         let layer = UIView()
         layer.frame = self.view.frame
         layer.center = self.view.center
-        layer.backgroundColor = UIColor.blackColor()
+        layer.backgroundColor = UIColor.black
         layer.alpha = 0.7
         container.addSubview(layer)
         
         let preview = ImagePreviewViewInput.loadFromNibNamed("ImagePreviewView")
-        preview!.frame = CGRectMake(0,0,600,850)
+        preview!.frame = CGRect(x: 0,y: 0,width: 600,height: 850)
         preview?.center = container.center
         preview?.parentView = container
-        preview?.startEditBtn.hidden = true
+        preview?.startEditBtn.isHidden = true
         preview?.previewOnly = true
         preview?.imageView.image = UIImage(contentsOfFile: self.ssPhotoPath)
-        preview?.imageView.contentMode = .ScaleAspectFit
+        preview?.imageView.contentMode = .scaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
         
         let scrollView = UIScrollView()
@@ -359,29 +383,29 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         self.view.addSubview(container)
     }
     
-    func cbPhotoPreviewTapOnClick(sender: UITapGestureRecognizer) {
+    func cbPhotoPreviewTapOnClick(_ sender: UITapGestureRecognizer) {
         let container = UIScrollView()
         container.tag = _MASKVIEWTAG
-        container.hidden = false
+        container.isHidden = false
         container.frame = self.view.frame
         container.center = self.view.center
-        container.backgroundColor = UIColor.clearColor()
+        container.backgroundColor = UIColor.clear
         
         let layer = UIView()
         layer.frame = self.view.frame
         layer.center = self.view.center
-        layer.backgroundColor = UIColor.blackColor()
+        layer.backgroundColor = UIColor.black
         layer.alpha = 0.7
         container.addSubview(layer)
         
         let preview = ImagePreviewViewInput.loadFromNibNamed("ImagePreviewView")
-        preview!.frame = CGRectMake(0,0,600,850)
+        preview!.frame = CGRect(x: 0,y: 0,width: 600,height: 850)
         preview?.center = container.center
         preview?.parentView = container
-        preview?.startEditBtn.hidden = true
+        preview?.startEditBtn.isHidden = true
         preview?.previewOnly = true
         preview?.imageView.image = UIImage(contentsOfFile: self.cbPhotoPath)
-        preview?.imageView.contentMode = .ScaleAspectFit
+        preview?.imageView.contentMode = .scaleAspectFit
         preview?.imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
         
         let scrollView = UIScrollView()
@@ -397,7 +421,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         self.view.addSubview(container)
     }
     
-    func textDisplayRule(textField: UITextField) {
+    func textDisplayRule(_ textField: UITextField) {
         
         if textField.text?.characters.count > 15 {
             textField.text = substringWithRange(textField.text!, start: 0, end: 15) + "..."
@@ -405,7 +429,7 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
         
     }
     
-    func substringWithRange(text:String, start: Int, end: Int) -> String
+    func substringWithRange(_ text:String, start: Int, end: Int) -> String
     {
         if (start < 0 || start > text.characters.count)
         {
@@ -417,8 +441,8 @@ class QCInfoViewController: PopoverMaster, UIScrollViewDelegate {
             print("end index \(end) out of bounds")
             return ""
         }
-        let range = Range(start: text.startIndex.advancedBy(start), end: text.startIndex.advancedBy(end))
+        let range = (text.characters.index(text.startIndex, offsetBy: start) ..< text.characters.index(text.startIndex, offsetBy: end))
         
-        return text.substringWithRange(range)
+        return text.substring(with: range)
     }
 }

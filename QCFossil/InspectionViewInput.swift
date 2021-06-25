@@ -7,6 +7,19 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class InspectionViewInput: UIView, UIScrollViewDelegate {
 
@@ -32,13 +45,13 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
     }
     */
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else {
             return
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField(self)
             
         }else {
@@ -63,8 +76,8 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         self.inspNo.text = Cache_Task_On!.bookingNo!.isEmpty ? Cache_Task_On!.inspectionNo : Cache_Task_On!.bookingNo
         
         self.scrollView.contentSize = CGSize.init(width: CGFloat(categoryCount*768), height: self.scrollView.frame.size.height)
-        self.scrollView.pagingEnabled = true
-        self.scrollView.directionalLockEnabled = true
+        self.scrollView.isPagingEnabled = true
+        self.scrollView.isDirectionalLockEnabled = true
         self.scrollView.delegate = self
         
         for idx in 0...(Cache_Task_On?.inspSections.count)!-1 {
@@ -73,8 +86,8 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
             indexPoint.frame = CGRect.init(x: 743+(idx-categoryCount+1)*35, y: 76, width: 25, height: 25)
             //indexPoint.addTarget(self, action: #selector(InspectionViewInput.indexPointOnClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             indexPoint.tag = idx
-            indexPoint.setTitle(String(idx+1), forState: UIControlState.Normal)
-            indexPoint.setTitleColor(_BTNTITLECOLOR, forState: UIControlState.Normal)
+            indexPoint.setTitle(String(idx+1), for: UIControlState())
+            indexPoint.setTitleColor(_BTNTITLECOLOR, for: UIControlState())
             indexPoint.backgroundColor = _FOSSILYELLOWCOLOR
             indexPoint.layer.cornerRadius = _CORNERRADIUS
             indexPoint.alpha = inactiveAlpha
@@ -84,16 +97,16 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         }
     }
     
-    func initInspView(currentPage:Int=0) {
+    func initInspView(_ currentPage:Int=0) {
         
         self.currentPage = currentPage
         let idx = self.currentPage
         
         if self.currentPage < Cache_Task_On!.inspSections.count && !self.activedPageIds.contains(idx) {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.showActivityIndicator()
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.removeActivityIndicator()
                     
                     self.initInspViewProcess(self.currentPage)
@@ -112,7 +125,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         }
     }
     
-    func initInspViewProcess(page:Int=0) {
+    func initInspViewProcess(_ page:Int=0) {
         let idx = page
         
         if page < Cache_Task_On!.inspSections.count && !self.activedPageIds.contains(idx) {
@@ -174,8 +187,8 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         }
     }
     
-    func updateSectionHeader(currentPage:Int = 0) {
-        let myParentTabVC = self.parentVC?.parentViewController?.parentViewController as! TabBarViewController
+    func updateSectionHeader(_ currentPage:Int = 0) {
+        let myParentTabVC = self.parentVC?.parent?.parent as! TabBarViewController
         
         if currentPage < Cache_Task_On?.inspSections.count {
             myParentTabVC.navigationItem.title = _ENGLISH ? Cache_Task_On?.inspSections[currentPage].sectionNameEn : Cache_Task_On?.inspSections[currentPage].sectionNameCn
@@ -184,11 +197,11 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         }
     }
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         currentPage = Int(scrollView.contentOffset.x / 768)
         ActiveIndexPointStatus(currentPage)
@@ -197,7 +210,7 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         self.lastContentOffset = scrollView.contentOffset.x
     }
     
-    func ActiveIndexPointStatus(currentPage:Int = 0) {
+    func ActiveIndexPointStatus(_ currentPage:Int = 0) {
         
         for indexPoint in indexPoints {
             indexPoint.alpha = inactiveAlpha
@@ -210,22 +223,22 @@ class InspectionViewInput: UIView, UIScrollViewDelegate {
         }
     }
     
-    func indexPointOnClick(sender:UIButton) {
+    func indexPointOnClick(_ sender:UIButton) {
         
         //let offset = CGFloat(sender.tag)*768
         scrollToPosition(sender.tag)
         
     }
     
-    func scrollToPosition(/*offset:CGFloat,*/currentPage:Int, animation:Bool = true) {
+    func scrollToPosition(/*offset:CGFloat,*/_ currentPage:Int, animation:Bool = true) {
         self.scrollView.setContentOffset(CGPoint(x: CGFloat(currentPage)*768, y: 0), animated: animation)
         self.currentPage = currentPage
         ActiveIndexPointStatus(self.currentPage)
         updateSectionHeader(self.currentPage)
     }
     
-    @IBAction func backBarBtnOnClick(sender: UIBarButtonItem) {
-        self.parentVC!.navigationController?.popViewControllerAnimated(false)
+    @IBAction func backBarBtnOnClick(_ sender: UIBarButtonItem) {
+        self.parentVC!.navigationController?.popViewController(animated: false)
     }
     
     

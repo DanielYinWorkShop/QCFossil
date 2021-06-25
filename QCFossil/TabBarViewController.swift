@@ -7,6 +7,41 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 class TabBarViewController: UITabBarController {
     
@@ -68,39 +103,39 @@ class TabBarViewController: UITabBarController {
         self.selectedIndex = 2
     }*/
     
-    func setLeftBarItem(title:String, actionName:String) {
+    func setLeftBarItem(_ title:String, actionName:String) {
         
         let leftButton=UIBarButtonItem()
         leftButton.title=title
         leftButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        leftButton.style=UIBarButtonItemStyle.Plain
+        leftButton.style=UIBarButtonItemStyle.plain
         leftButton.target=self
         leftButton.action=Selector(actionName)
         self.navigationItem.leftBarButtonItem=leftButton
     }
     
-    func setRightBarItem(title:String, actionName:String) {
+    func setRightBarItem(_ title:String, actionName:String) {
         let rightButton=UIBarButtonItem()
         rightButton.title=title
         rightButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        rightButton.style=UIBarButtonItemStyle.Plain
+        rightButton.style=UIBarButtonItemStyle.plain
         rightButton.target=self
         rightButton.action=Selector(actionName)
         self.navigationItem.rightBarButtonItem=rightButton
     }
     
-    func setRightBarItemWithHandler(title:String, actionName:String, handler:(()->(Bool))?) {
+    func setRightBarItemWithHandler(_ title:String, actionName:String, handler:(()->(Bool))?) {
         let rightButton=UIBarButtonItem()
         rightButton.title=title
         rightButton.tintColor = _DEFAULTBUTTONTEXTCOLOR
-        rightButton.style=UIBarButtonItemStyle.Plain
+        rightButton.style=UIBarButtonItemStyle.plain
         rightButton.target=self
         rightButton.action=Selector(actionName)
         self.navigationItem.rightBarButtonItem=rightButton
         self.handler = handler
     }
     
-    func updateRightBarItem(title:String, actionName:String) {
+    func updateRightBarItem(_ title:String, actionName:String) {
         self.navigationItem.rightBarButtonItem?.title = title
         self.navigationItem.rightBarButtonItem?.action = Selector(actionName)
     }
@@ -110,7 +145,7 @@ class TabBarViewController: UITabBarController {
         taskDetalViewContorller!.startTask()
     }
     
-    func saveICItems(needValidate:Bool) ->Bool {
+    func saveICItems(_ needValidate:Bool) ->Bool {
         let taskDataHelper = TaskDataHelper()
         let dpDataHelper = DPDataHelper()
         let icSecs = self.taskDetalViewContorller?.categoriesDetail
@@ -244,7 +279,7 @@ class TabBarViewController: UITabBarController {
     }
     
     func backToTaskDetailFromSignOffPage() {
-        self.taskDetalViewContorller!.navigationController?.popViewControllerAnimated(true)
+        self.taskDetalViewContorller!.navigationController?.popViewController(animated: true)
     }
     
     func backToTaskDetail() {
@@ -253,8 +288,8 @@ class TabBarViewController: UITabBarController {
         self.taskDetalViewContorller!.displaySubViewTag = _TASKDETAILVIEWTAG
         self.taskDetalViewContorller!.scrollToPosition(self.taskDetalViewContorller!.scrollViewOffset)
         
-        self.taskDetalViewContorller!.ScrollView.scrollEnabled = true
-        self.taskDetalViewContorller!.ScrollView.bringSubviewToFront(self.taskDetalViewContorller!.view.viewWithTag(_TASKDETAILVIEWTAG)!)
+        self.taskDetalViewContorller!.ScrollView.isScrollEnabled = true
+        self.taskDetalViewContorller!.ScrollView.bringSubview(toFront: self.taskDetalViewContorller!.view.viewWithTag(_TASKDETAILVIEWTAG)!)
         self.setLeftBarItem("< \(MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Search"))",actionName: "backTaskSearch:")
         //self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem
         //self.setRightBarItem("Start", actionName: "startInspectionCategory")
@@ -269,7 +304,7 @@ class TabBarViewController: UITabBarController {
     
     func backToTaskDetailFromPADF() {
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
         
             self.view.showActivityIndicator()
         })
@@ -285,7 +320,7 @@ class TabBarViewController: UITabBarController {
         print("Save Defect List")
     }
     
-    func saveDFItems(needValidate:Bool = false) ->Bool {
+    func saveDFItems(_ needValidate:Bool = false) ->Bool {
         
         let taskDataHelper = TaskDataHelper()
         let defects = Cache_Task_On?.defectItems
@@ -316,7 +351,7 @@ class TabBarViewController: UITabBarController {
         return true
     }
     
-    func updateTask(taskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue) {
+    func updateTask(_ taskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue) {
         
         if let handler = self.handler {
             if !handler() {
@@ -324,7 +359,7 @@ class TabBarViewController: UITabBarController {
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.view.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Saving..."))
         })
         
@@ -345,10 +380,10 @@ class TabBarViewController: UITabBarController {
                 }
     
                 if noPhotos {
-                    let index = Cache_Task_On?.defectItems.indexOf({ $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
+                    let index = Cache_Task_On?.defectItems.index(where: { $0.inspElmt.cellCatIdx == defectItem.inspElmt.cellCatIdx && $0.inspElmt.cellIdx == defectItem.inspElmt.cellIdx && $0.cellIdx == defectItem.cellIdx })
                 
                     defectDataHelper.deleteDefectItemById(defectItem.recordId!)
-                    Cache_Task_On?.defectItems.removeAtIndex(index!)
+                    Cache_Task_On?.defectItems.remove(at: index!)
                     
 //                    needReloadData = true
                 }
@@ -356,7 +391,7 @@ class TabBarViewController: UITabBarController {
         }
         
 //        if needReloadData {
-            NSNotificationCenter.defaultCenter().postNotificationName("reloadDefectItems", object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadDefectItems"), object: nil, userInfo: nil)
             
             if self.defectListViewController?.defectTableView != nil {
                 self.defectListViewController?.defectTableView.reloadData()
@@ -367,14 +402,14 @@ class TabBarViewController: UITabBarController {
         let taskStatusCurr = GetTaskStatusId(caseId: "Draft").rawValue
         
         if saveTask(taskStatusCurr) {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.view.removeActivityIndicator()
                 self.view.resignFirstResponderByTextField(self.view)
             })
             
             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Success!"))
         }else{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.view.removeActivityIndicator()
                 self.view.resignFirstResponderByTextField(self.view)
             })
@@ -389,7 +424,7 @@ class TabBarViewController: UITabBarController {
         handler = nil
     }
     
-    func needRemoveCheck(defectItem:TaskInspDefectDataRecord) ->Bool {
+    func needRemoveCheck(_ defectItem:TaskInspDefectDataRecord) ->Bool {
         
         switch defectItem.inputMode ?? "" {
         case _INPUTMODE01, _INPUTMODE02:
@@ -410,10 +445,10 @@ class TabBarViewController: UITabBarController {
     
     func confirmTask() {
         print("Confirm Task")
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.view.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Saving..."))
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
         
                 if Cache_Task_On?.vdrSignName == nil || Cache_Task_On?.vdrSignName == "" {
                     self.view.removeActivityIndicator()
@@ -450,12 +485,12 @@ class TabBarViewController: UITabBarController {
                     self.view.removeActivityIndicator()
                     self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Success!"), handlerFun: { (action:UIAlertAction!) in
                         
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             self.view.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Redirecting"))
                             
-                            dispatch_async(dispatch_get_main_queue(), {
-                                NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
-                                self.navigationController?.popViewControllerAnimated(true)
+                            DispatchQueue.main.async(execute: {
+                                NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
+                                self.navigationController?.popViewController(animated: true)
                             })
                         })
                     })
@@ -469,16 +504,16 @@ class TabBarViewController: UITabBarController {
         })
     }
     
-    func backTaskSearch(alert: UIAlertAction! = nil) {
+    func backTaskSearch(_ alert: UIAlertAction! = nil) {
         
         if Cache_Task_On?.didModify == true && (Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Draft").rawValue || Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Pending").rawValue) {
             
             self.view.alertConfirmViewStyle3(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Task")+"?",parentVC:self, handlerFunYes: { (action:UIAlertAction!) in
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.view.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Saving..."))
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         
                         let taskStatusCurr = GetTaskStatusId(caseId: "Draft").rawValue
                         
@@ -486,12 +521,12 @@ class TabBarViewController: UITabBarController {
                             self.view.removeActivityIndicator()
                             
                             self.view.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Save Success!"), handlerFun: { (action:UIAlertAction!) in
-                                dispatch_async(dispatch_get_main_queue(), {
+                                DispatchQueue.main.async(execute: {
                                     self.view.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Redirecting"))
                                     
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
-                                        self.navigationController?.popViewControllerAnimated(true)
+                                    DispatchQueue.main.async(execute: {
+                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
+                                        self.navigationController?.popViewController(animated: true)
                                     })
                                 })
                             })
@@ -510,8 +545,8 @@ class TabBarViewController: UITabBarController {
                 
             }, handlerFunNo:{ (action:UIAlertAction!) in
                     
-                NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
-                self.navigationController?.popViewControllerAnimated(true)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
+                self.navigationController?.popViewController(animated: true)
                     
             }, handlerFunCancel: { (action:UIAlertAction!) in
                 //Cancel Here, Not Need Any Update
@@ -542,13 +577,13 @@ class TabBarViewController: UITabBarController {
                 }
             }
             
-            NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
-            self.navigationController?.popViewControllerAnimated(true)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
+            self.navigationController?.popViewController(animated: true)
             
         }
     }
     
-    func saveTask(TaskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue, needValidate:Bool=false) ->Bool {
+    func saveTask(_ TaskStatus:Int=GetTaskStatusId(caseId: "Draft").rawValue, needValidate:Bool=false) ->Bool {
                 
         var rs = false
         

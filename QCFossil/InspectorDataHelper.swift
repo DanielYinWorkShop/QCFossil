@@ -7,39 +7,63 @@
 //
 
 import Foundation
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class InspectorDataHelper:DataHelperMaster {
     
-    func getInspectorById(Id:Int) ->Inspector? {
+    func getInspectorById(_ Id:Int) ->Inspector? {
         let sql = "SELECT * FROM inspector_mstr im INNER JOIN prod_type_mstr ptm ON im.prod_type_id = ptm.type_id WHERE inspector_id = ?"
         var inspector:Inspector?
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [Id]) {
+            if let rs = db.executeQuery(sql, withArgumentsIn: [Id]) {
                 
                 if rs.next() {
                     
-                    let inspectorId = Int(rs.intForColumn("inspector_id"))
-                    let inspectorName = rs.stringForColumn("inspector_name")
-                    let prodTypeId = Int(rs.intForColumn("prod_type_id"))
-                    let appUserName = rs.stringForColumn("app_username")
-                    let appPassword = rs.stringForColumn("app_password")
-                    let serviceToken = rs.stringForColumn("service_token")
-                    let reportPrefix = rs.stringForColumn("report_prefix")
-                    let reportRunningNo = rs.stringForColumn("report_running_no")
-                    let phoneNo = rs.stringForColumn("phone_no")
-                    let emailAddr = rs.stringForColumn("email_addr")
-                    let createUser = rs.stringForColumn("create_user")
-                    let createDate = rs.stringForColumn("create_date")
-                    let modifyUser = rs.stringForColumn("modify_user")
-                    let modifyDate = rs.stringForColumn("modify_date")
-                    let recStatus = Int(rs.intForColumn("rec_status"))
-                    let deleteFlag = Int(rs.intForColumn("deleted_flag"))
-                    let deleteUser = rs.stringForColumn("delete_user")
-                    let deleteDate = rs.stringForColumn("delete_date")
-                    let chgPwdReqDate = rs.stringForColumn("chg_pwd_req_date")
-                    let typeCode = rs.stringForColumn("type_code")
+                    let inspectorId = Int(rs.int(forColumn: "inspector_id"))
+                    let inspectorName = rs.string(forColumn: "inspector_name")
+                    let prodTypeId = Int(rs.int(forColumn: "prod_type_id"))
+                    let appUserName = rs.string(forColumn: "app_username")
+                    let appPassword = rs.string(forColumn: "app_password")
+                    let serviceToken = rs.string(forColumn: "service_token")
+                    let reportPrefix = rs.string(forColumn: "report_prefix")
+                    let reportRunningNo = rs.string(forColumn: "report_running_no")
+                    let phoneNo = rs.string(forColumn: "phone_no")
+                    let emailAddr = rs.string(forColumn: "email_addr")
+                    let createUser = rs.string(forColumn: "create_user")
+                    let createDate = rs.string(forColumn: "create_date")
+                    let modifyUser = rs.string(forColumn: "modify_user")
+                    let modifyDate = rs.string(forColumn: "modify_date")
+                    let recStatus = Int(rs.int(forColumn: "rec_status"))
+                    let deleteFlag = Int(rs.int(forColumn: "deleted_flag"))
+                    let deleteUser = rs.string(forColumn: "delete_user")
+                    let deleteDate = rs.string(forColumn: "delete_date")
+                    let chgPwdReqDate = rs.string(forColumn: "chg_pwd_req_date")
+                    let typeCode = rs.string(forColumn: "type_code")
                     
                     inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode)
                     
@@ -64,36 +88,36 @@ class InspectorDataHelper:DataHelperMaster {
         return nil
     }
     
-    func getInspector(userName:String, password:String) ->Inspector? {
+    func getInspector(_ userName:String, password:String) ->Inspector? {
         let sql = "SELECT * FROM inspector_mstr im INNER JOIN prod_type_mstr ptm ON im.prod_type_id = ptm.type_id WHERE (lower(app_username) = ? OR app_username = ?) AND app_password = ?"
         var inspector:Inspector?
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [userName.lowercaseString, userName, password]) {
+            if let rs = db.executeQuery(sql, withArgumentsIn: [userName.lowercased(), userName, password]) {
             
             if rs.next() {
                 
-                let inspectorId = Int(rs.intForColumn("inspector_id"))
-                let inspectorName = rs.stringForColumn("inspector_name")
-                let prodTypeId = Int(rs.intForColumn("prod_type_id"))
-                let appUserName = rs.stringForColumn("app_username")
-                let appPassword = rs.stringForColumn("app_password")
-                let serviceToken = rs.stringForColumn("service_token")
-                let reportPrefix = rs.stringForColumn("report_prefix")
-                let reportRunningNo = rs.stringForColumn("report_running_no")
-                let phoneNo = rs.stringForColumn("phone_no")
-                let emailAddr = rs.stringForColumn("email_addr")
-                let createUser = rs.stringForColumn("create_user")
-                let createDate = rs.stringForColumn("create_date")
-                let modifyUser = rs.stringForColumn("modify_user")
-                let modifyDate = rs.stringForColumn("modify_date")
-                let recStatus = Int(rs.intForColumn("rec_status"))
-                let deleteFlag = Int(rs.intForColumn("deleted_flag"))
-                let deleteUser = rs.stringForColumn("delete_user")
-                let deleteDate = rs.stringForColumn("delete_date")
-                let chgPwdReqDate = rs.stringForColumn("chg_pwd_req_date")
-                let typeCode = rs.stringForColumn("type_code")
+                let inspectorId = Int(rs.int(forColumn: "inspector_id"))
+                let inspectorName = rs.string(forColumn: "inspector_name")
+                let prodTypeId = Int(rs.int(forColumn: "prod_type_id"))
+                let appUserName = rs.string(forColumn: "app_username")
+                let appPassword = rs.string(forColumn: "app_password")
+                let serviceToken = rs.string(forColumn: "service_token")
+                let reportPrefix = rs.string(forColumn: "report_prefix")
+                let reportRunningNo = rs.string(forColumn: "report_running_no")
+                let phoneNo = rs.string(forColumn: "phone_no")
+                let emailAddr = rs.string(forColumn: "email_addr")
+                let createUser = rs.string(forColumn: "create_user")
+                let createDate = rs.string(forColumn: "create_date")
+                let modifyUser = rs.string(forColumn: "modify_user")
+                let modifyDate = rs.string(forColumn: "modify_date")
+                let recStatus = Int(rs.int(forColumn: "rec_status"))
+                let deleteFlag = Int(rs.int(forColumn: "deleted_flag"))
+                let deleteUser = rs.string(forColumn: "delete_user")
+                let deleteDate = rs.string(forColumn: "delete_date")
+                let chgPwdReqDate = rs.string(forColumn: "chg_pwd_req_date")
+                let typeCode = rs.string(forColumn: "type_code")
                 
                 inspector = Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode)
                 
@@ -118,16 +142,16 @@ class InspectorDataHelper:DataHelperMaster {
         return nil
     }
     
-    func getTaskCountByInspectorId(inspectorId:Int) ->Int {
+    func getTaskCountByInspectorId(_ inspectorId:Int) ->Int {
         let sql = "SELECT COUNT(task_id) AS task_cnt FROM inspect_task WHERE inspection_no = ?"
         var taskCount = 0
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [inspectorId]) {
+            if let rs = db.executeQuery(sql, withArgumentsIn: [inspectorId]) {
                 
                 if rs.next() {
-                    taskCount = Int(rs.intForColumn("task_cnt"))
+                    taskCount = Int(rs.int(forColumn: "task_cnt"))
                 }
             }
             
@@ -137,13 +161,13 @@ class InspectorDataHelper:DataHelperMaster {
         return taskCount
     }
     
-    func updateRunningNo(rpRunningNo:Int,inspectorId:Int) ->Bool {
+    func updateRunningNo(_ rpRunningNo:Int,inspectorId:Int) ->Bool {
         let sql = "UPDATE inspector_mstr SET report_running_no = ? WHERE inspector_id = ?"
         var result = true
         
         if db.open() {
          
-            if !db.executeUpdate(sql, withArgumentsInArray: [rpRunningNo, inspectorId]) {
+            if !db.executeUpdate(sql, withArgumentsIn: [rpRunningNo, inspectorId]) {
                 result = false
             }
             
@@ -159,21 +183,21 @@ class InspectorDataHelper:DataHelperMaster {
         
         if db.open() {
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: nil) {
+            if let rs = db.executeQuery(sql, withArgumentsIn: nil) {
                 
                 while rs.next() {
                     
-                    let inspectorId = Int(rs.intForColumn("inspector_id"))
-                    let inspectorName = rs.stringForColumn("inspector_name")
-                    let prodTypeId = Int(rs.intForColumn("prod_type_id"))
-                    let appUserName = rs.stringForColumn("app_username")
-                    let appPassword = rs.stringForColumn("app_password")
-                    let serviceToken = rs.stringForColumn("service_token")
-                    let reportPrefix = rs.stringForColumn("report_prefix")
-                    let reportRunningNo = rs.stringForColumn("report_running_no")
-                    let phoneNo = rs.stringForColumn("phone_no")
-                    let emailAddr = rs.stringForColumn("email_addr")
-                    let typeCode = rs.stringForColumn("type_code")
+                    let inspectorId = Int(rs.int(forColumn: "inspector_id"))
+                    let inspectorName = rs.string(forColumn: "inspector_name")
+                    let prodTypeId = Int(rs.int(forColumn: "prod_type_id"))
+                    let appUserName = rs.string(forColumn: "app_username")
+                    let appPassword = rs.string(forColumn: "app_password")
+                    let serviceToken = rs.string(forColumn: "service_token")
+                    let reportPrefix = rs.string(forColumn: "report_prefix")
+                    let reportRunningNo = rs.string(forColumn: "report_running_no")
+                    let phoneNo = rs.string(forColumn: "phone_no")
+                    let emailAddr = rs.string(forColumn: "email_addr")
+                    let typeCode = rs.string(forColumn: "type_code")
                     
                     inspectors.append(Inspector(inspectorId: inspectorId, inspectorName: inspectorName, prodTypeId: prodTypeId, appUserName: appUserName, appPassword: appPassword, serviceToken: serviceToken, reportPrefix: reportPrefix, reportRunningNo: reportRunningNo, phoneNo: phoneNo, emailAddr: emailAddr, typeCode: typeCode))
                 }
@@ -185,22 +209,22 @@ class InspectorDataHelper:DataHelperMaster {
         return inspectors
     }
     
-    func updateInspector(inspector:Inspector) ->Int {
+    func updateInspector(_ inspector:Inspector) ->Int {
         
         if db.open() {
             var sql = "SELECT report_running_no FROM inspector_mstr WHERE inspector_id = ?"
             
-            if let rs = db.executeQuery(sql, withArgumentsInArray: [inspector.inspectorId!]) {
+            if let rs = db.executeQuery(sql, withArgumentsIn: [inspector.inspectorId!]) {
                 
                 if rs.next() {
-                    let rptRunningNo = Int(rs.intForColumn("report_running_no"))
+                    let rptRunningNo = Int(rs.int(forColumn: "report_running_no"))
                     inspector.reportRunningNo = rptRunningNo > Int(inspector.reportRunningNo!) ? String(rptRunningNo) : inspector.reportRunningNo
                 }
             }
             
             sql = "INSERT OR REPLACE INTO inspector_mstr  ('inspector_id','inspector_name','prod_type_id','app_username','app_password','service_token','report_prefix','report_running_no','phone_no','email_addr','rec_status','create_user','create_date','modify_user','modify_date','deleted_flag','delete_user','delete_date') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             
-            if db.executeUpdate(sql, withArgumentsInArray:[notNilObject(inspector.inspectorId)!,inspector.inspectorName!,inspector.prodTypeId!,inspector.appUserName!,inspector.appPassword!,inspector.serviceToken!,inspector.reportPrefix!,inspector.reportRunningNo!,inspector.phoneNo!,inspector.emailAddr!,1,inspector.createUser!,inspector.createDate!,inspector.modifyUser!,inspector.modifyDate!,0,"",""]){
+            if db.executeUpdate(sql, withArgumentsIn:[notNilObject(inspector.inspectorId as AnyObject)!,inspector.inspectorName!,inspector.prodTypeId!,inspector.appUserName!,inspector.appPassword!,inspector.serviceToken!,inspector.reportPrefix!,inspector.reportRunningNo!,inspector.phoneNo!,inspector.emailAddr!,1,inspector.createUser!,inspector.createDate!,inspector.modifyUser!,inspector.modifyDate!,0,"",""]){
                 
             }
             
@@ -212,12 +236,26 @@ class InspectorDataHelper:DataHelperMaster {
         return 0
     }
     
-    func updateProdType(prodType:ProdType) ->Bool {
+    func updateProdType(_ prodType:ProdType) ->Bool {
         
         if db.open() {
             let sql = "INSERT OR REPLACE INTO prod_type_mstr('type_id', 'type_code', 'type_name_en', 'type_name_cn', 'data_env', 'rec_status', 'create_date', 'create_user', 'modify_date', 'modify_user', 'deleted_flag', 'delete_date', 'delete_user') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
             
-            if !db.executeUpdate(sql, withArgumentsInArray: [prodType.typeId ?? "", prodType.typeCode ?? "", prodType.typeNameEn ?? "", prodType.typeNameCn ?? "", prodType.dataEnv ?? "", prodType.recStatus ?? "", prodType.createDate ?? "", prodType.createUser ?? "", prodType.modifyDate ?? "", prodType.modifyUser ?? "", prodType.deletedFlag ?? "", prodType.deleteDate ?? "", prodType.deleteUser ?? ""]) {
+            let typeId = prodType.typeId ?? ""
+            let typeCode = prodType.typeCode ?? ""
+            let typeNameEn = prodType.typeNameEn ?? ""
+            let typeNameCn = prodType.typeNameCn ?? ""
+            let dataEnv = prodType.dataEnv ?? ""
+            let recStatus = prodType.recStatus ?? ""
+            let createDate = prodType.createDate ?? ""
+            let createUser = prodType.createUser ?? ""
+            let modifyDate = prodType.modifyDate ?? ""
+            let modifyUser = prodType.modifyUser ?? ""
+            let deletedFlag = prodType.deletedFlag ?? ""
+            let deleteDate = prodType.deleteDate ?? ""
+            let deleteUser = prodType.deleteUser ?? ""
+            
+            if !db.executeUpdate(sql, withArgumentsIn: [typeId, typeCode, typeNameEn, typeNameCn, dataEnv, recStatus, createDate, createUser, modifyDate, modifyUser, deletedFlag, deleteDate, deleteUser]) {
                 
                 db.close()
                 return false

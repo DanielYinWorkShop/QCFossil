@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     
@@ -73,14 +97,14 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return;
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField((self.parentVC?.view)!)
             
         }else {
@@ -98,19 +122,19 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         self.errorMessageLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please enter defect point info")
     }
     
-    @IBAction func defectBtnOnClick(sender: UIButton) {
+    @IBAction func defectBtnOnClick(_ sender: UIButton) {
         
         //check if defect input and defect position points nil, then return
         if let defectDPPInput = cellDPPInput.text {
             if defectDPPInput == "" || defectDPPInput.isEmpty {
-                self.errorMessageLabel.hidden = false
+                self.errorMessageLabel.isHidden = false
                 return
             } else {
-                self.errorMessageLabel.hidden = true
+                self.errorMessageLabel.isHidden = true
             }
         }
         
-        let myParentTabVC = self.parentVC!.parentViewController?.parentViewController as! TabBarViewController
+        let myParentTabVC = self.parentVC!.parent?.parent as! TabBarViewController
         let defectListVC = myParentTabVC.defectListViewController
         
         //add defect cell
@@ -135,10 +159,10 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             }
         }
         
-        self.parentVC!.performSegueWithIdentifier("DefectListFromInspectItemSegue", sender:self)
+        self.parentVC!.performSegue(withIdentifier: "DefectListFromInspectItemSegue", sender:self)
     }
     
-    func dropdownHandleFunc(textField: UITextField) {
+    func dropdownHandleFunc(_ textField: UITextField) {
         Cache_Task_On?.didModify = true
         
         if textField == self.cellResultInput {
@@ -152,7 +176,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             self.inspItemText = textField.text!
             myDefectPositPoints = [PositPointObj]()
             
-            let selectedValues = textField.text!.stringByReplacingOccurrencesOfString(", ", withString: ",")
+            let selectedValues = textField.text!.replacingOccurrences(of: ", ", with: ",")
             
             let cells = selectedValues.characters.split{$0 == ","}.map(String.init)
             for cell in cells {
@@ -165,10 +189,10 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 }
             }
             
-            textField.backgroundColor = UIColor.whiteColor()
-            self.defectPositionPointIcon.hidden = false
+            textField.backgroundColor = UIColor.white
+            self.defectPositionPointIcon.isHidden = false
             
-            NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updatePhotoInfo"), object: nil,userInfo: ["inspElmt":self])
         }else if textField == self.dpInput {
             
             if self.inspAreaText != textField.text! {
@@ -183,19 +207,19 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             
             self.inspPostId = inspectItemKeyValues[textField.text!]
             
-            NSNotificationCenter.defaultCenter().postNotificationName("updatePhotoInfo", object: nil,userInfo: ["inspElmt":self])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updatePhotoInfo"), object: nil,userInfo: ["inspElmt":self])
             
             let parentPositObjs = (self.parentView as! InputMode02View).defectPosits.filter({$0.positionNameEn == self.dpInput.text || $0.positionNameCn == self.dpInput.text})
             if parentPositObjs.count > 0 {
-                self.cellDPPInput.backgroundColor = UIColor.whiteColor()
-                self.defectPositionPointIcon.hidden = false
+                self.cellDPPInput.backgroundColor = UIColor.white
+                self.defectPositionPointIcon.isHidden = false
             }
             
             let zoneDataHelper = ZoneDataHelper()
             let defectZoneValues = zoneDataHelper.getZoneValuesByPositionId(self.inspPostId ?? 0)
             if defectZoneValues.count > 0 {
-                defectZoneInput.backgroundColor = UIColor.whiteColor()
-                self.defectZoneListIcon.hidden = false
+                defectZoneInput.backgroundColor = UIColor.white
+                self.defectZoneListIcon.isHidden = false
             }
             
             let zoneItems = zoneDataHelper.getZoneValuesByPositionId(self.inspPostId ?? 0)
@@ -213,12 +237,12 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             guard let zoneValueName = self.defectZoneInput.text else {return}
             self.inspectZoneValueId = zoneItemKeyValues[zoneValueName]
             
-            textField.backgroundColor = UIColor.whiteColor()
-            self.defectZoneListIcon.hidden = false
+            textField.backgroundColor = UIColor.white
+            self.defectZoneListIcon.isHidden = false
         }
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == self.cellDPPInput {
             return false
         }
@@ -226,7 +250,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         //clearDropdownviewForSubviews(self.parentView!)
         let handleFun:(UITextField)->(Void) = dropdownHandleFunc
         
@@ -236,7 +260,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
                 
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues, width: 200, height: 250, tag: _TAG3)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.parentView!.resultValues as NSArray, width: 200, height: 250, tag: _TAG3)
             }
             
         }else if textField == self.dpInput {
@@ -250,7 +274,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
             
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), tag: _TAG2, height:_DROPDOWNLISTHEIGHT)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName) as NSArray, height:_DROPDOWNLISTHEIGHT, tag: _TAG2)
             }
             
         }else if textField == self.cellDPPInput {
@@ -264,7 +288,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 clearDropdownviewForSubviews(self.parentView!)
             }else{
                 
-                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName), width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
+                textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: handleFun, listData: self.sortStringArrayByName(positName) as NSArray, width:320, height:_DROPDOWNLISTHEIGHT, allowMulpSel: true, tag: _TAG1)
             }
             
         }else if textField == self.defectZoneInput {
@@ -279,13 +303,13 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
                 return false
             }
             
-            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData), height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
+            textField.showListData(textField, parent: (self.parentView as! InputMode02View).scrollCellView!, handle: dropdownHandleFunc, listData: self.sortStringArrayByName(listData) as NSArray, height:_DROPDOWNLISTHEIGHT, tag: _TAG1)
         }
         
         return false
     }
     
-    @IBAction func dismissBtnOnClick(sender: UIButton) {
+    @IBAction func dismissBtnOnClick(_ sender: UIButton) {
         let photoDataHelper = PhotoDataHelper()
         if photoDataHelper.existPhotoByInspItem(self.taskInspDataRecordId!, dataType: PhotoDataType(caseId: "INSPECT").rawValue) || self.inspPhotos.count>0 {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo(s) of this inspection item will be deleted!"), handlerFun: { (action:UIAlertAction!) in
@@ -300,7 +324,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         clearDropdownviewForSubviews(self.parentView!)
         self.alertConfirmView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Delete?"), parentVC:(self.parentView?.parentVC)!, handlerFun: { (action:UIAlertAction!) in
             
-            (self.parentView as! InputMode02View).inputCells.removeAtIndex(self.cellPhysicalIdx)
+            (self.parentView as! InputMode02View).inputCells.remove(at: self.cellPhysicalIdx)
             self.removeFromSuperview()
             (self.parentView as! InputMode02View).updateContentView()
             
@@ -310,7 +334,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
             if self.taskInspDataRecordId > 0 {
                 self.deleteTaskPhotos(true)
                 //Reload Photos
-                NSNotificationCenter.defaultCenter().postNotificationName("reloadAllPhotosFromDB", object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadAllPhotosFromDB"), object: nil, userInfo: nil)
                 
                 //Delete Item From DB
                 self.deleteTaskInspDataRecord(self.taskInspDataRecordId!)
@@ -352,24 +376,24 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
     }
     
     func showDismissButton() {
-        self.cellDismissButton.hidden = false
+        self.cellDismissButton.isHidden = false
     }
     
-    @IBAction func takePhotoFromCell(sender: UIButton) {
+    @IBAction func takePhotoFromCell(_ sender: UIButton) {
         if self.dpInput.text == "" {
             self.alertView(MylocalizedString.sharedLocalizeManager.getLocalizedString("Please Select Inspect Defect Position and Points"))
             
             return
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.showActivityIndicator()
             //Save self to DB to get the taskDataRecordId
             self.saveMyselfToGetId()
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 
-                NSNotificationCenter.defaultCenter().postNotificationName("takePhotoFromICCell", object: nil, userInfo: ["inspElmt":self])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "takePhotoFromICCell"), object: nil, userInfo: ["inspElmt":self])
                 
                 self.removeActivityIndicator()
             })
@@ -398,7 +422,7 @@ class InputMode02CellView: InputModeICMaster, UITextFieldDelegate {
         }
     }
     
-    @IBAction func clearDropdownListOnClick(sender: UIButton) {
+    @IBAction func clearDropdownListOnClick(_ sender: UIButton) {
         self.parentView.clearDropdownviewForSubviews(self.parentView)
     }
     

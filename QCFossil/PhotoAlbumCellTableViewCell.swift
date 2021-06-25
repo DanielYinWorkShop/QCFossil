@@ -42,22 +42,22 @@ class PhotoAlbumCellTableViewCell: UITableViewCell, UITextViewDelegate {
         self.photoFilenameLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Photo Filename")
     }
 
-    @IBAction func previewPhoto(sender: UIButton) {
+    @IBAction func previewPhoto(_ sender: UIButton) {
         print("preview photo album photos")
         
-        if photo.image != nil && photoFilename != "" {
+        if photo.image != nil && photoFilename.text != "" {
             
             let container:UIView = UIView()
             container.tag = _MASKVIEWTAG
-            container.hidden = false
-            container.frame = (self.parentVC?.parentViewController!.view.frame)!
-            container.center = (self.parentVC?.parentViewController!.view.center)!
-            container.backgroundColor = UIColor.clearColor()
+            container.isHidden = false
+            container.frame = (self.parentVC?.parent!.view.frame)!
+            container.center = (self.parentVC?.parent!.view.center)!
+            container.backgroundColor = UIColor.clear
             
             let layer = UIView()
-            layer.frame = (self.parentVC?.parentViewController!.view.frame)!
-            layer.center = (self.parentVC?.parentViewController!.view.center)!
-            layer.backgroundColor = UIColor.blackColor()
+            layer.frame = (self.parentVC?.parent!.view.frame)!
+            layer.center = (self.parentVC?.parent!.view.center)!
+            layer.backgroundColor = UIColor.black
             layer.alpha = 0.7
             container.addSubview(layer)
             
@@ -66,37 +66,37 @@ class PhotoAlbumCellTableViewCell: UITableViewCell, UITextViewDelegate {
             
             //imageView.frame = CGRect(x: 0,y: 0,width: imageView.image!.size.width,height: imageView.image!.size.height)
             imageView.frame = CGRect(x: 0,y: 0,width: 600,height: 800)
-            imageView.center = (self.parentVC?.parentViewController!.view.center)!
+            imageView.center = (self.parentVC?.parent!.view.center)!
             
             container.addSubview(imageView)
             
-            let button = UIButton(type: UIButtonType.System) as UIButton
-            button.frame = (self.parentVC?.parentViewController!.view.frame)!
-            button.backgroundColor = UIColor.clearColor()
+            let button = UIButton(type: UIButtonType.system) as UIButton
+            button.frame = (self.parentVC?.parent!.view.frame)!
+            button.backgroundColor = UIColor.clear
             button.titleLabel!.font = UIFont(name: "", size: 20)
-            button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            button.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap Anywhere To Close"), forState: UIControlState.Normal)
-            button.contentEdgeInsets = UIEdgeInsetsMake(400 + (self.parentVC?.parentViewController!.view.center.y)!-30, 0, 0, 0);
-            button.addTarget(self, action: #selector(PhotoAlbumCellTableViewCell.closePreviewLayer), forControlEvents: UIControlEvents.TouchUpInside)
+            button.setTitleColor(UIColor.white, for: UIControlState())
+            button.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap Anywhere To Close"), for: UIControlState())
+            button.contentEdgeInsets = UIEdgeInsetsMake(400 + (self.parentVC?.parent!.view.center.y)!-30, 0, 0, 0);
+            button.addTarget(self, action: #selector(PhotoAlbumCellTableViewCell.closePreviewLayer), for: UIControlEvents.touchUpInside)
             
             container.addSubview(button)
             
-            self.parentVC?.parentViewController!.view.addSubview(container)
+            self.parentVC?.parent!.view.addSubview(container)
         }
     }
     
     func closePreviewLayer() {
-        let maskView = self.parentVC?.parentViewController!.view.viewWithTag(_MASKVIEWTAG)
+        let maskView = self.parentVC?.parent!.view.viewWithTag(_MASKVIEWTAG)
         maskView?.removeFromSuperview()
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
     
-    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         
         if self.frame.origin.y - (self.parentVC as! PhotoAlbumViewController).photoTableView.contentOffset.y > 350 {
             (self.parentVC as! PhotoAlbumViewController).adjustTableViewPosition()
@@ -105,7 +105,7 @@ class PhotoAlbumCellTableViewCell: UITableViewCell, UITextViewDelegate {
         return true
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         print("textview changed")
         
         //let photos = Cache_Task_On!.myPhotos//(self.parentVC as! PhotoAlbumViewController).photos
@@ -117,7 +117,7 @@ class PhotoAlbumCellTableViewCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         return true
     }

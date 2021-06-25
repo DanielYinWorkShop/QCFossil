@@ -63,28 +63,28 @@ class InptCategoryCell: UIView {
         resultSetValueFrames.append(resultValueFrame5)
         resultSetValueFrames.append(resultValueFrame6)
         
-        resultValue1.frame = CGRectMake(marginX1, frameTop, frameWidth, frameHeight)
-        resultValue1.textAlignment = .Center
+        resultValue1.frame = CGRect(x: marginX1, y: frameTop, width: frameWidth, height: frameHeight)
+        resultValue1.textAlignment = .center
         resultValueLabels.append(resultValue1)
         
-        resultValue2.frame = CGRectMake(marginX2, frameTop, frameWidth, frameHeight)
-        resultValue2.textAlignment = .Center
+        resultValue2.frame = CGRect(x: marginX2, y: frameTop, width: frameWidth, height: frameHeight)
+        resultValue2.textAlignment = .center
         resultValueLabels.append(resultValue2)
         
-        resultValue3.frame = CGRectMake(marginX3, frameTop, frameWidth, frameHeight)
-        resultValue3.textAlignment = .Center
+        resultValue3.frame = CGRect(x: marginX3, y: frameTop, width: frameWidth, height: frameHeight)
+        resultValue3.textAlignment = .center
         resultValueLabels.append(resultValue3)
         
-        resultValue4.frame = CGRectMake(marginX4, frameTop, frameWidth, frameHeight)
-        resultValue4.textAlignment = .Center
+        resultValue4.frame = CGRect(x: marginX4, y: frameTop, width: frameWidth, height: frameHeight)
+        resultValue4.textAlignment = .center
         resultValueLabels.append(resultValue4)
         
-        resultValue5.frame = CGRectMake(marginX5, frameTop, frameWidth, frameHeight)
-        resultValue5.textAlignment = .Center
+        resultValue5.frame = CGRect(x: marginX5, y: frameTop, width: frameWidth, height: frameHeight)
+        resultValue5.textAlignment = .center
         resultValueLabels.append(resultValue5)
         
-        resultValueTotal.frame = CGRectMake(marginX6, frameTop, frameWidth, frameHeight)
-        resultValueTotal.textAlignment = .Center
+        resultValueTotal.frame = CGRect(x: marginX6, y: frameTop, width: frameWidth, height: frameHeight)
+        resultValueTotal.textAlignment = .center
         resultValueLabels.append(resultValueTotal)
     }
     
@@ -97,14 +97,14 @@ class InptCategoryCell: UIView {
         updateSummaryResultValues(resultSetValues)
     }
     
-    func updateSummaryResultValues(resultSetValues:[SummaryResultValue]) {
+    func updateSummaryResultValues(_ resultSetValues:[SummaryResultValue]) {
         
         var totalCount = 0
         for idx in 0...resultSetValues.count {
             if idx < resultValueLabels.count {
             let resultValueLabel = resultValueLabels[idx]
             
-            resultValueLabel.font = resultValueTotal.font.fontWithSize(14)
+            resultValueLabel.font = resultValueTotal.font.withSize(14)
             if idx == resultSetValues.count {
                 
                 if resultSetValues.count < 5 {
@@ -126,7 +126,7 @@ class InptCategoryCell: UIView {
         
     }
     
-    @IBAction func inptCatButton(sender: UIButton) {
+    @IBAction func inptCatButton(_ sender: UIButton) {
         let myParentVC = self.parentVC as! TaskDetailsViewController
         myParentVC.startTask(sender.tag)
     }

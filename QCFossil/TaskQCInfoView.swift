@@ -123,18 +123,18 @@ class TaskQCInfoView: UIView {
     override func awakeFromNib() {
         updateCell(self)
         
-        self.displayMovtFullTextBtn.hidden = true
-        self.displayCAFormFullTextBtn.hidden = true
-        self.displaySSReadyFullTextBtn.hidden = true
-        self.displayInspectorFullTextBtn.hidden = true
-        self.displayLengthReqFullTextBtn.hidden = true
-        self.displayReliabilityFullTextBtn.hidden = true
-        self.displaySSCommentReadyFullTextBtn.hidden = true
-        self.displayCombineQCRemarkFullTextBtn.hidden = true
-        self.displayQualityStandardFullTextBtn.hidden = true
+        self.displayMovtFullTextBtn.isHidden = true
+        self.displayCAFormFullTextBtn.isHidden = true
+        self.displaySSReadyFullTextBtn.isHidden = true
+        self.displayInspectorFullTextBtn.isHidden = true
+        self.displayLengthReqFullTextBtn.isHidden = true
+        self.displayReliabilityFullTextBtn.isHidden = true
+        self.displaySSCommentReadyFullTextBtn.isHidden = true
+        self.displayCombineQCRemarkFullTextBtn.isHidden = true
+        self.displayQualityStandardFullTextBtn.isHidden = true
     }
 
-    func updateCell(view:UIView) {
+    func updateCell(_ view:UIView) {
         
         // Get the subviews of the view
         let subviews = view.subviews
@@ -144,11 +144,11 @@ class TaskQCInfoView: UIView {
             return
         }
         
-        self.qualityStardardInput.userInteractionEnabled = false
+        self.qualityStardardInput.isUserInteractionEnabled = false
         
         subviews.forEach({
             if $0.classForCoder == UITextField.classForCoder() {
-                $0.userInteractionEnabled = false
+                $0.isUserInteractionEnabled = false
             }
             
             updateCell($0)
@@ -207,7 +207,7 @@ class TaskQCInfoView: UIView {
         
     }
     
-    @IBAction func showFullText(sender: UIButton) {
+    @IBAction func showFullText(_ sender: UIButton) {
         
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSize(width: 320, height: 150 + _NAVIBARHEIGHT)//CGSizeMake(320,150 + _NAVIBARHEIGHT)
@@ -255,9 +255,9 @@ class TaskQCInfoView: UIView {
         
         
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        nav.navigationBar.barTintColor = UIColor.whiteColor()
-        nav.navigationBar.tintColor = UIColor.blackColor()
+        nav.modalPresentationStyle = UIModalPresentationStyle.popover
+        nav.navigationBar.barTintColor = UIColor.white
+        nav.navigationBar.tintColor = UIColor.black
         
         let popover = nav.popoverPresentationController
         popover!.delegate = sender.parentVC as! PopoverMaster
@@ -266,38 +266,38 @@ class TaskQCInfoView: UIView {
         
         switch sender.tag {
         case 1:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 2:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 250,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 250,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 3:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 100,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 6:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 100,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 7:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 100,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 8:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 100,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 9:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 100,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 100,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 10:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 200,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 200,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         case 11:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY - 250,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY - 250,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         default:
-            popover!.sourceRect = CGRectMake(0,sender.frame.minY,sender.frame.size.width,sender.frame.size.height)
+            popover!.sourceRect = CGRect(x: 0,y: sender.frame.minY,width: sender.frame.size.width,height: sender.frame.size.height)
             break
         }
         
-        sender.parentVC!.presentViewController(nav, animated: true, completion: nil)
+        sender.parentVC!.present(nav, animated: true, completion: nil)
     }
 
 }

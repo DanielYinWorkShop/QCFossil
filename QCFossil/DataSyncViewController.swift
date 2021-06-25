@@ -7,8 +7,32 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate {
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+class DataSyncViewController: PopoverMaster, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     
     @IBOutlet weak var loginUserLabel: UILabel!
     @IBOutlet weak var lastLoginDateLabel: UILabel!
@@ -71,8 +95,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     var failULPhotoCount:Int = 0
     
     //NSURLSession URL Request
-    var fgSession: NSURLSession?
-    var sessionDownloadTask: NSURLSessionDownloadTask?
+    var fgSession: Foundation.URLSession?
+    var sessionDownloadTask: URLSessionDownloadTask?
     var buffer:NSMutableData = NSMutableData()
     var expectedContentLength = 0
     var dsDataObj:AnyObject?
@@ -92,7 +116,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     var cleanTaskCnt = 0
     var errorMsg = ""
     var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
-    let path = "\(NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0])/response.json"
+    let path = "\(NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0])/response.json"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,11 +128,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     }
     
     func initSessionObj() {
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 300
         configuration.timeoutIntervalForResource = 300
 
-        fgSession = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        fgSession = Foundation.URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -147,8 +171,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.taskStatusDataLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("-Task Status Data")
         self.lastLoginDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Login Date")
         self.lastDDateLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Last Download")
-        self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), forState: UIControlState.Normal )
-        self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), forState: UIControlState.Normal )
+        self.downloadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Download"), for: UIControlState() )
+        self.uploadBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Upload"), for: UIControlState() )
         
         self.dataUploadLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("Data Upload")
         self.taskResultDataLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString ("-Task Result Data")
@@ -171,7 +195,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.lastDownloadDatetime.text = keyValueDataHelper.getLastDownloadDatetimeByUserId(String((Cache_Inspector?.inspectorId)!))
         self.lastUploadDatetime.text = keyValueDataHelper.getLastUploadDatetimeByUserId(String((Cache_Inspector?.inspectorId)!))
         self.lastUploadTasksCount.text = keyValueDataHelper.getLastUploadTasksCountByUserId(String((Cache_Inspector?.inspectorId)!))
-        self.deviceIdLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Device ID:") + " \(UIDevice.currentDevice().identifierForVendor!.UUIDString)"
+        self.deviceIdLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Device ID:") + " \(UIDevice.current.identifierForVendor!.uuidString)"
         
         self.downloadProcessBar.progress = 0.0
         self.uploadProcessBar.progress = 0.0
@@ -185,26 +209,26 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.cleanTaskProcessBar.progress = 0.0
         self.stylePhotoPrecessBar.progress = 0.0
         self.stylePhotoCleanProcessBar.progress = 0.0
-        self.downloadProcessBar.hidden = true
-        self.uploadProcessBar.hidden = true
-        self.downloadProcessLabel.hidden = true
-        self.uploadProcessLabel.hidden = true
+        self.downloadProcessBar.isHidden = true
+        self.uploadProcessBar.isHidden = true
+        self.downloadProcessLabel.isHidden = true
+        self.uploadProcessLabel.isHidden = true
         
-        self.downloadTaskStatusDetailButton.hidden = true
-        self.uploadTaskStatusDetailButton.hidden = true
+        self.downloadTaskStatusDetailButton.isHidden = true
+        self.uploadTaskStatusDetailButton.isHidden = true
     }
     
-    func menuButton(sender: UIBarButtonItem) {
+    func menuButton(_ sender: UIBarButtonItem) {
         NSLog("Toggle Menu")
         
-        NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu", object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "toggleMenu"), object: nil)
     }
     
-    @IBAction func downloadDataOnClick(sender: UIButton) {
+    @IBAction func downloadDataOnClick(_ sender: UIButton) {
         
-        self.downloadProcessBar.hidden = true
-        self.downloadProcessLabel.hidden = false
-        self.downloadTaskStatusDetailButton.hidden = true
+        self.downloadProcessBar.isHidden = true
+        self.downloadProcessLabel.isHidden = false
+        self.downloadTaskStatusDetailButton.isHidden = true
         
         self.actionType = 0
         self.currentCounter = 1
@@ -247,66 +271,66 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.errorMsg = ""
 
         dataSet = [Dictionary<String, String>]()
-        makeDLPostRequest(_DS_MSTRDATA)
+        makeDLPostRequest(_DS_MSTRDATA as AnyObject)
         
         self.lastDownloadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
         let keyValueDataHelper = KeyValueDataHelper()
         keyValueDataHelper.updateLastDownloadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
     }
     
-    func updateButtonStatus(status:String,btn:UIButton, isRetry: Bool = false) {
+    func updateButtonStatus(_ status:String,btn:UIButton, isRetry: Bool = false) {
         if status == "Enable" {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.downloadBtn.enabled = true
+            DispatchQueue.main.async(execute: {
+                self.downloadBtn.isEnabled = true
                 self.downloadBtn.backgroundColor = _FOSSILBLUECOLOR
                 
-                self.uploadBtn.enabled = true
+                self.uploadBtn.isEnabled = true
                 self.uploadBtn.backgroundColor = _FOSSILBLUECOLOR
                 
-                NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":true])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":true])
             })
             
             
         }else{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 
-                self.downloadBtn.enabled = false
-                self.downloadBtn.backgroundColor = UIColor.grayColor()
+                self.downloadBtn.isEnabled = false
+                self.downloadBtn.backgroundColor = UIColor.gray
                 
-                self.uploadBtn.enabled = false
-                self.uploadBtn.backgroundColor = UIColor.grayColor()
+                self.uploadBtn.isEnabled = false
+                self.uploadBtn.backgroundColor = UIColor.gray
             })
         }
     }
     
-    func updateDLProcessLabel(text:String){
-        dispatch_async(dispatch_get_main_queue(), {
+    func updateDLProcessLabel(_ text:String){
+        DispatchQueue.main.async(execute: {
             self.downloadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(text)
         })
     }
     
-    func updateULProcessLabel(text:String){
-        dispatch_async(dispatch_get_main_queue(), {
+    func updateULProcessLabel(_ text:String){
+        DispatchQueue.main.async(execute: {
             self.uploadProcessLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString(text)
         })
     }
     
-    func updateDownloadTaskStatusDetailButton(isHidden: Bool = false) {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.downloadTaskStatusDetailButton.hidden = isHidden
+    func updateDownloadTaskStatusDetailButton(_ isHidden: Bool = false) {
+        DispatchQueue.main.async(execute: {
+            self.downloadTaskStatusDetailButton.isHidden = isHidden
         })
     }
     
-    func updateUploadTaskStatusDetailButton(isHidden: Bool = false) {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.uploadTaskStatusDetailButton.hidden = isHidden
+    func updateUploadTaskStatusDetailButton(_ isHidden: Bool = false) {
+        DispatchQueue.main.async(execute: {
+            self.uploadTaskStatusDetailButton.isHidden = isHidden
         })
     }
     
-    func updateULPhotoStatus(index:Int, total:Int, fail:Int=0){
-        dispatch_async(dispatch_get_main_queue(), {
+    func updateULPhotoStatus(_ index:Int, total:Int, fail:Int=0){
+        DispatchQueue.main.async(execute: {
             self.taskPhotoUploadStatus.text = "\(index)/\(total)"
             
             if fail>0 {
@@ -318,18 +342,18 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         })
     }
     
-    func makeULRequest(dsDataMstr:AnyObject,Service_Session:String) {
+    func makeULRequest(_ dsDataMstr:AnyObject,Service_Session:String) {
         
         makeULPostRequest(dsDataMstr)
         
         if "Master Data Download" == self.dsDataObj!["NAME"] as! String {
-            self.makeULPostRequest(_DS_INPTSETUP)
+            self.makeULPostRequest(_DS_INPTSETUP as AnyObject)
         }else if "Inspection Setup Data Download" == self.dsDataObj!["NAME"] as! String {
-            self.makeULPostRequest(_DS_FGPODATA)
+            self.makeULPostRequest(_DS_FGPODATA as AnyObject)
         }else if "FGPO Data Download" == self.dsDataObj!["NAME"] as! String {
-            self.makeULPostRequest(_DS_TASKDATA)
+            self.makeULPostRequest(_DS_TASKDATA as AnyObject)
         }else{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.updateDLProcessLabel("Complete")
                 self.updateButtonStatus("Enable",btn: self.downloadBtn)
                 self.lastDownloadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
@@ -340,7 +364,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func processingDownloadData(apiName:String, jsonData:NSDictionary) {
+    func processingDownloadData(_ apiName:String, jsonData:NSDictionary) {
         
         let dataSyncDataHelper = DataSyncDataHelper()
         let actionNames = self.dsDataObj!["ACTIONNAMES"] as! [String]
@@ -393,7 +417,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             "defect_set_value"
         ]
         
-        dataSet = dataSet.reverse()
+        dataSet = dataSet.reversed()
         while let data = dataSet.popLast() {
             //outerloop: for data in dataSet {
             
@@ -431,9 +455,9 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             for idx in 0...actionFields[data["tableName"]!]!.count-1 {
                 
-                let state = UIApplication.sharedApplication().applicationState
+                let state = UIApplication.shared.applicationState
                 
-                if state != .Active {
+                if state != .active {
                     updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode"))
                     updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
                     errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
@@ -442,7 +466,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 }
                 
                 if var value = data[actionFields[data["tableName"]!]![idx]] {
-                    value = value.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+                    value = value.replacingOccurrences(of: "\"", with: "\\\"")
                     
                     if apiName == "_DS_TASKDATA" && actionFields[data["tableName"]!]![idx] == "ref_task_id" && data["tableName"] != "inspect_task_qc_info_list" {
                         
@@ -524,7 +548,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     } else if apiName == "_DS_FGPODATA" && actionFields[data["tableName"]!]![idx] == "prod_desc" {
                         
                         dbFields += actionFields[data["tableName"]!]![idx]
-                        dbValues += "\"\(value.stringByReplacingOccurrencesOfString("\\\"", withString: "\"\""))\""
+                        dbValues += "\"\(value.replacingOccurrences(of: "\\\"", with: "\"\""))\""
                         
                     } else {
                         dbFields += actionFields[data["tableName"]!]![idx]
@@ -548,7 +572,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
             
             dbActionForTaskStatus += "]!@#$*&^"
-            dbActionForTaskStatus = dbActionForTaskStatus.stringByReplacingOccurrencesOfString(",]!@#$*&^", withString: "")
+            dbActionForTaskStatus = dbActionForTaskStatus.replacingOccurrences(of: ",]!@#$*&^", with: "")
             
             var dbAction = ""
             if apiName == "_DS_DL_TASK_STATUS" {
@@ -623,7 +647,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateProgressBar(progress*0.01)
                 
                 recCountInTable["service_session"] = Int(_DS_SESSION)
-                self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
+                self.makeULACKPostRequest(ackName as AnyObject, coutDic: recCountInTable)
                 return
                 
             }else{
@@ -648,7 +672,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     //sleep(1)
                 }
             
-                self.makeULACKPostRequest(ackName, coutDic: recCountInTable)
+                self.makeULACKPostRequest(ackName as AnyObject, coutDic: recCountInTable)
             } else {
                 if self.actionType < 1 {
                     self.updateButtonStatus("Enable",btn: self.downloadBtn, isRetry: true)
@@ -662,7 +686,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         })
     }
     
-    func getCurrentPODataTitle(apiName:String) ->String {
+    func getCurrentPODataTitle(_ apiName:String) ->String {
         switch apiName {
             case "_DS_MSTRDATA":
                 return MylocalizedString.sharedLocalizeManager.getLocalizedString("Master Data")
@@ -684,245 +708,247 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         //var uploadData = "\(_DS_PREFIX){"
         var uploadData = "{"
         uploadData += "\"service_token\" : \"\(_DS_SERVICETOKEN)\","
-        uploadData += "\"device_id\" : \"\(UIDevice.currentDevice().identifierForVendor!.UUIDString)\","
+        uploadData += "\"device_id\" : \"\(UIDevice.current.identifierForVendor!.uuidString)\","
         uploadData += "\"service_type\" : \"Task Result Data Upload\","
         
         let dataSyncDataHelper = DataSyncDataHelper()
         let taskDataObj = _DS_ULTASKDATA
+        var recordsCount = 0
         
         //1. Construct Task Data from inspect_task_list
-        let taskFields = taskDataObj["ACTIONFIELDS"]!["inspect_task_list"] as! Dictionary<String, String>
-        let tasks = dataSyncDataHelper.getAllInspectTasks(taskFields)
-        
-        var recordsCount = 0
-        var tasklist = "["
-        for task in tasks {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskFields = actionFields["inspect_task_list"] as? Dictionary<String, String> {
+            let tasks = dataSyncDataHelper.getAllInspectTasks(taskFields)
             
-            var data = "{"
-            for (key, value) in task {
+            var tasklist = "["
+            for task in tasks {
                 
-                if key == "inspector_sign_image_file" || key == "vdr_sign_image_file" {
-                    data += "\"\(key)\":\"\(value)\","
-                }else{
-                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                var data = "{"
+                for (key, value) in task {
+                    
+                    if key == "inspector_sign_image_file" || key == "vdr_sign_image_file" {
+                        data += "\"\(key)\":\"\(value)\","
+                    }else{
+                        data += "\"\(key)\":\"\(value.urlEncode!)\","
+                    }
                 }
+                data += "},"
+                
+                tasklist += data
+                recordsCount += 1
             }
-            data += "},"
+            //Get the tasks count for the last data upload
+            _DS_UPLOADEDTASKCOUNT = recordsCount
             
-            tasklist += data
-            recordsCount += 1
+            tasklist += "]"
+            tasklist = tasklist.replacingOccurrences(of: ",}", with: "}")
+            tasklist = tasklist.replacingOccurrences(of: ",]", with: "]")
+            
+            uploadData += "\"inspect_task_list\":\(tasklist),"
+            
+            _DS_TOTALRECORDS_DB["inspect_task_count"] = String(recordsCount)
+            recordsCount = 0
         }
-        //Get the tasks count for the last data upload
-        _DS_UPLOADEDTASKCOUNT = recordsCount
-        
-        tasklist += "]"
-        tasklist = tasklist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        tasklist = tasklist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"inspect_task_list\":\(tasklist),"
-        
-        _DS_TOTALRECORDS_DB["inspect_task_count"] = String(recordsCount)
-        recordsCount = 0
-        
         
         //2. Construct Task Inspector from inspect_task_inspector_list
-        let taskInspectorFields = taskDataObj["ACTIONFIELDS"]!["inspect_task_inspector_list"] as! Dictionary<String, String>
-        let taskInspectors = dataSyncDataHelper.getAllInspectTaskInspectors(taskInspectorFields)
-        
-        var taskInspectorlist = "["
-        for taskInspector in taskInspectors {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskInspectorFields = actionFields["inspect_task_inspector_list"] as? Dictionary<String, String> {
+            let taskInspectors = dataSyncDataHelper.getAllInspectTaskInspectors(taskInspectorFields)
             
-            var data = "{"
-            for (key, value) in taskInspector {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskInspectorlist = "["
+            for taskInspector in taskInspectors {
+                
+                var data = "{"
+                for (key, value) in taskInspector {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskInspectorlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskInspectorlist += data
+            taskInspectorlist += "]"
+            taskInspectorlist = taskInspectorlist.replacingOccurrences(of: ",}", with: "}")
+            taskInspectorlist = taskInspectorlist.replacingOccurrences(of: ",]", with: "]")
             
-            recordsCount += 1
+            uploadData += "\"inspect_task_inspector_list\":\(taskInspectorlist),"
+            _DS_TOTALRECORDS_DB["inspect_task_inspector_count"] = String(recordsCount)
+            recordsCount = 0
         }
-        
-        taskInspectorlist += "]"
-        taskInspectorlist = taskInspectorlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskInspectorlist = taskInspectorlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"inspect_task_inspector_list\":\(taskInspectorlist),"
-        _DS_TOTALRECORDS_DB["inspect_task_inspector_count"] = String(recordsCount)
-        recordsCount = 0
         
         //3. Construct Task Inspector from inspect_task_item_list
-        let taskItemFields = taskDataObj["ACTIONFIELDS"]!["inspect_task_item_list"] as! Dictionary<String, String>
-        let taskItems = dataSyncDataHelper.getAllInspectTaskItems(taskItemFields)
-        
-        var taskItemlist = "["
-        for taskItem in taskItems {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskItemFields = actionFields["inspect_task_item_list"] as? Dictionary<String, String> {
+            let taskItems = dataSyncDataHelper.getAllInspectTaskItems(taskItemFields)
             
-            var data = "{"
-            for (key, value) in taskItem {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskItemlist = "["
+            for taskItem in taskItems {
+                
+                var data = "{"
+                for (key, value) in taskItem {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskItemlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskItemlist += data
+            taskItemlist += "]"
+            taskItemlist = taskItemlist.replacingOccurrences(of: ",}", with: "}")
+            taskItemlist = taskItemlist.replacingOccurrences(of: ",]", with: "]")
             
-            recordsCount += 1
+            uploadData += "\"inspect_task_item_list\":\(taskItemlist),"
+            _DS_TOTALRECORDS_DB["inspect_task_item_count"] = String(recordsCount)
+            recordsCount = 0
         }
-        
-        taskItemlist += "]"
-        taskItemlist = taskItemlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskItemlist = taskItemlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"inspect_task_item_list\":\(taskItemlist),"
-        _DS_TOTALRECORDS_DB["inspect_task_item_count"] = String(recordsCount)
-        recordsCount = 0
-        
         
         //4. Construct Task Inspect Field Value from task_inspect_field_value_list
-        let taskIFVFields = taskDataObj["ACTIONFIELDS"]!["task_inspect_field_value_list"] as! Dictionary<String, String>
-        let taskIFVs = dataSyncDataHelper.getAllInspectTaskIFVs(taskIFVFields)
-        
-        var taskIFVlist = "["
-        for taskIFV in taskIFVs {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskIFVFields = actionFields["task_inspect_field_value_list"] as? Dictionary<String, String> {
+            let taskIFVs = dataSyncDataHelper.getAllInspectTaskIFVs(taskIFVFields)
             
-            var data = "{"
-            for (key, value) in taskIFV {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskIFVlist = "["
+            for taskIFV in taskIFVs {
+                
+                var data = "{"
+                for (key, value) in taskIFV {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskIFVlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskIFVlist += data
+            taskIFVlist += "]"
+            taskIFVlist = taskIFVlist.replacingOccurrences(of: ",}", with: "}")
+            taskIFVlist = taskIFVlist.replacingOccurrences(of: ",]", with: "]")
             
-            recordsCount += 1
+            uploadData += "\"task_inspect_field_value_list\":\(taskIFVlist),"
+            _DS_TOTALRECORDS_DB["task_inspect_field_value_count"] = String(recordsCount)
+            recordsCount = 0
         }
-        
-        taskIFVlist += "]"
-        taskIFVlist = taskIFVlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskIFVlist = taskIFVlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"task_inspect_field_value_list\":\(taskIFVlist),"
-        _DS_TOTALRECORDS_DB["task_inspect_field_value_count"] = String(recordsCount)
-        recordsCount = 0
-        
         
         //5. Construct Task Inspect Data Record from task_inspect_data_record_list
-        let taskIDRFields = taskDataObj["ACTIONFIELDS"]!["task_inspect_data_record_list"] as! Dictionary<String, String>
-        let taskIDRs = dataSyncDataHelper.getAllInspectTaskIDRs(taskIDRFields)
-        
-        var taskIDRlist = "["
-        for taskIDR in taskIDRs {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskIDRFields = actionFields["task_inspect_data_record_list"] as? Dictionary<String, String> {
+            let taskIDRs = dataSyncDataHelper.getAllInspectTaskIDRs(taskIDRFields)
             
-            var data = "{"
-            for (key, value) in taskIDR {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskIDRlist = "["
+            for taskIDR in taskIDRs {
+                
+                var data = "{"
+                for (key, value) in taskIDR {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskIDRlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskIDRlist += data
+            taskIDRlist += "]"
+            taskIDRlist = taskIDRlist.replacingOccurrences(of: ",}", with: "}")
+            taskIDRlist = taskIDRlist.replacingOccurrences(of: ",]", with: "]")
             
-            recordsCount += 1
+            uploadData += "\"task_inspect_data_record_list\":\(taskIDRlist),"
+            _DS_TOTALRECORDS_DB["task_inspect_data_record_count"] = String(recordsCount)
+            recordsCount = 0
+            
+            print("upload Data: \(taskIDRlist)")
         }
-        
-        taskIDRlist += "]"
-        taskIDRlist = taskIDRlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskIDRlist = taskIDRlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"task_inspect_data_record_list\":\(taskIDRlist),"
-        _DS_TOTALRECORDS_DB["task_inspect_data_record_count"] = String(recordsCount)
-        recordsCount = 0
-        
-        print("upload Data: \(taskIDRlist)")
         
         //6. Construct Task Inspect Data Record from task_inspect_position_point_list
-        let taskIPPFields = taskDataObj["ACTIONFIELDS"]!["task_inspect_position_point_list"] as! Dictionary<String, String>
-        let taskIPPs = dataSyncDataHelper.getAllInspectTaskIPPs(taskIPPFields)
-        
-        var taskIPPlist = "["
-        for taskIPP in taskIPPs {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskIPPFields = actionFields["task_inspect_position_point_list"] as? Dictionary<String, String> {
+            let taskIPPs = dataSyncDataHelper.getAllInspectTaskIPPs(taskIPPFields)
             
-            var data = "{"
-            for (key, value) in taskIPP {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskIPPlist = "["
+            for taskIPP in taskIPPs {
+                
+                var data = "{"
+                for (key, value) in taskIPP {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskIPPlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskIPPlist += data
+            taskIPPlist += "]"
+            taskIPPlist = taskIPPlist.replacingOccurrences(of: ",}", with: "}")
+            taskIPPlist = taskIPPlist.replacingOccurrences(of: ",]", with: "]")
             
-            recordsCount += 1
+            uploadData += "\"task_inspect_position_point_list\":\(taskIPPlist),"
+            _DS_TOTALRECORDS_DB["task_inspect_position_point_count"] = String(recordsCount)
+            recordsCount = 0
         }
-        
-        taskIPPlist += "]"
-        taskIPPlist = taskIPPlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskIPPlist = taskIPPlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"task_inspect_position_point_list\":\(taskIPPlist),"
-        _DS_TOTALRECORDS_DB["task_inspect_position_point_count"] = String(recordsCount)
-        recordsCount = 0
-        
         
         //7. Construct Task Defect Data Record from task_defect_data_record_list
-        let taskDDRFields = taskDataObj["ACTIONFIELDS"]!["task_defect_data_record_list"] as! Dictionary<String, String>
-        let taskDDRs = dataSyncDataHelper.getAllInspectTaskDDRs(taskDDRFields)
-        
-        var taskDDRlist = "["
-        for taskDDR in taskDDRs {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskDDRFields = actionFields["task_defect_data_record_list"] as? Dictionary<String, String> {
+            let taskDDRs = dataSyncDataHelper.getAllInspectTaskDDRs(taskDDRFields)
             
-            var data = "{"
-            for (key, value) in taskDDR {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskDDRlist = "["
+            for taskDDR in taskDDRs {
+                
+                var data = "{"
+                for (key, value) in taskDDR {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskDDRlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskDDRlist += data
+            taskDDRlist += "]"
+            taskDDRlist = taskDDRlist.replacingOccurrences(of: ",}", with: "}")
+            taskDDRlist = taskDDRlist.replacingOccurrences(of: ",]", with: "]")
             
-            recordsCount += 1
+            uploadData += "\"task_defect_data_record_list\":\(taskDDRlist),"
+            _DS_TOTALRECORDS_DB["task_defect_data_record_count"] = String(recordsCount)
+            recordsCount = 0
         }
-        
-        taskDDRlist += "]"
-        taskDDRlist = taskDDRlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskDDRlist = taskDDRlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        
-        uploadData += "\"task_defect_data_record_list\":\(taskDDRlist),"
-        _DS_TOTALRECORDS_DB["task_defect_data_record_count"] = String(recordsCount)
-        recordsCount = 0
-        
         
         //8. Construct Task Defect Data Record from task_inspect_photo_file_list
-        let taskIPFFields = taskDataObj["ACTIONFIELDS"]!["task_inspect_photo_file_list"] as! Dictionary<String, String>
-        let taskIPFs = dataSyncDataHelper.getAllInspectTaskIPFs(taskIPFFields)
-        
-        var taskIPFlist = "["
-        for taskIPF in taskIPFs {
+        if let actionFields = taskDataObj["ACTIONFIELDS"] as? Dictionary<String, Any>, let taskIPFFields = actionFields["task_inspect_photo_file_list"] as? Dictionary<String, String> {
+            let taskIPFs = dataSyncDataHelper.getAllInspectTaskIPFs(taskIPFFields)
             
-            var data = "{"
-            for (key, value) in taskIPF {
-                data += "\"\(key)\":\"\(value.urlEncode!)\","
+            var taskIPFlist = "["
+            for taskIPF in taskIPFs {
+                
+                var data = "{"
+                for (key, value) in taskIPF {
+                    data += "\"\(key)\":\"\(value.urlEncode!)\","
+                }
+                data += "},"
+                
+                taskIPFlist += data
+                
+                recordsCount += 1
             }
-            data += "},"
             
-            taskIPFlist += data
+            taskIPFlist += "]"
+            taskIPFlist = taskIPFlist.replacingOccurrences(of: ",}", with: "}")
+            taskIPFlist = taskIPFlist.replacingOccurrences(of: ",]", with: "]")
+            taskIPFlist = taskIPFlist.replacingOccurrences(of: ">", with: "")
+            taskIPFlist = taskIPFlist.replacingOccurrences(of: "<", with: "")
             
-            recordsCount += 1
+            uploadData += "\"task_inspect_photo_file_list\":\(taskIPFlist)}"
+            _DS_TOTALRECORDS_DB["task_inspect_photo_file_count"] = String(recordsCount)
         }
-        
-        taskIPFlist += "]"
-        taskIPFlist = taskIPFlist.stringByReplacingOccurrencesOfString(",}", withString: "}")
-        taskIPFlist = taskIPFlist.stringByReplacingOccurrencesOfString(",]", withString: "]")
-        taskIPFlist = taskIPFlist.stringByReplacingOccurrencesOfString(">", withString: "")
-        taskIPFlist = taskIPFlist.stringByReplacingOccurrencesOfString("<", withString: "")
-        
-        uploadData += "\"task_inspect_photo_file_list\":\(taskIPFlist)}"
-        _DS_TOTALRECORDS_DB["task_inspect_photo_file_count"] = String(recordsCount)
-        
         //print("upload Data: \(uploadData)")
         
         return uploadData
     }
     
-    @IBAction func uploadDataOnClick(sender: UIButton) {
+    @IBAction func uploadDataOnClick(_ sender: UIButton) {
         
-        self.uploadProcessLabel.hidden = false
-        self.uploadTaskStatusDetailButton.hidden = true
+        self.uploadProcessLabel.isHidden = false
+        self.uploadTaskStatusDetailButton.isHidden = true
         self.actionType = 1 //Current Action is Upload
         
         self.taskResultDataProcessBar.progress = 0.0
@@ -938,44 +964,44 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.updateButtonStatus("Disable",btn: self.uploadBtn)
         self.updateULProcessLabel("Sending Request...")
         self.buffer = NSMutableData()
-        makeULPostRequest(_DS_ULTASKDATA)
+        makeULPostRequest(_DS_ULTASKDATA as AnyObject)
         
         self.lastUploadDatetime.text = self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm")
         let keyValueDataHelper = KeyValueDataHelper()
         keyValueDataHelper.updateLastUploadDatetime(String((Cache_Inspector?.inspectorId)!), datetime: self.view.getCurrentDateTime("\(_DATEFORMATTER) HH:mm"))
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
     }
     
     //-------------------------------------- upload photo ------------------------------------
-    func createPhotoULRequest (photo:Photo) -> NSURLRequest {
-        self.dsDataObj = _DS_ULTASKPHOTO
+    func createPhotoULRequest (_ photo:Photo) -> URLRequest {
+        self.dsDataObj = _DS_ULTASKPHOTO as AnyObject
         
         let boundary = self.generateBoundaryString()
         
-        let url = NSURL(string: "\(dataSyncServerUsing)ul_task_photo.aspx")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let url = URL(string: "\(dataSyncServerUsing)ul_task_photo.aspx")!
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        let dirPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         
         let dbDir = dirPaths[0] as String
         
-        let photoFile = dbDir.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)/Tasks/"+photo.taskBookingNo!+"/"+photo.photoFile)
-        let thumbFile = dbDir.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)/Tasks/"+photo.taskBookingNo!+"/Thumbs/"+photo.photoFile)
+        let photoFile = dbDir + ("/\((Cache_Inspector?.appUserName?.lowercased())!)/Tasks/"+photo.taskBookingNo!+"/"+photo.photoFile)
+        let thumbFile = dbDir + ("/\((Cache_Inspector?.appUserName?.lowercased())!)/Tasks/"+photo.taskBookingNo!+"/Thumbs/"+photo.photoFile)
         
-        let filemgr = NSFileManager.defaultManager()
-        if !filemgr.fileExistsAtPath(photoFile) || !filemgr.fileExistsAtPath(thumbFile) {
+        let filemgr = FileManager.default
+        if !filemgr.fileExists(atPath: photoFile) || !filemgr.fileExists(atPath: thumbFile) {
 //            updateULProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed No Original or Thumb Photo Found!"))
             self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed No Original or Thumb Photo Found!")
             updateButtonStatus("Enable",btn: self.uploadBtn, isRetry: true)
-            return NSMutableURLRequest()
+            return NSMutableURLRequest() as URLRequest
         }
         
         let param = [
             "service_token"  : "\(_DS_SERVICETOKEN)",
-            "device_id"    : "\(UIDevice.currentDevice().identifierForVendor!.UUIDString)",
+            "device_id"    : "\(UIDevice.current.identifierForVendor!.uuidString)",
             "task_id" : "\(photo.taskId)",
             "photo_id" : "\(photo.photoId!)",
             "photo_filename" : "\(photo.photoFilename)",
@@ -985,12 +1011,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             "ref_task_id" : "\(photo.refTaskId!)"
         ]
         
-        request.HTTPBody = createBodyWithParameters(param, boundary: boundary)
+        request.httpBody = createBodyWithParameters(param, boundary: boundary)
         
-        return request
+        return request as URLRequest
     }
     
-    func createBodyWithParameters(parameters: [String: String]?, boundary: String) -> NSData {
+    func createBodyWithParameters(_ parameters: [String: String]?, boundary: String) -> Data {
         let body = NSMutableData()
         
         if parameters != nil {
@@ -1001,24 +1027,24 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     body.appendString("\(value)\r\n")
                 }else{
                     
-                    let url = NSURL(fileURLWithPath: value)
+                    let url = URL(fileURLWithPath: value)
                     let filename = url.lastPathComponent
-                    let data = NSData(contentsOfURL: url)
+                    let data = try? Data(contentsOf: url)
                     let mimetype = mimeTypeForPath(value)
                     
                     //print("filename: \(url), data: \(data?.length)")
                     
                     body.appendString("--\(boundary)\r\n")
-                    body.appendString("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(filename!)\"\r\n")
+                    body.appendString("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(filename)\"\r\n")
                     body.appendString("Content-Type: \(mimetype)\r\n\r\n")
                     
                     if data != nil {
-                        body.appendData(data!)
+                        body.append(data!)
                     }else{
                         
-                        body.appendData(NSData())
+                        body.append(Data())
                         
-                        return NSMutableData()
+                        return NSMutableData() as Data
                     }
                     
                     body.appendString("\r\n")
@@ -1027,26 +1053,26 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
         
         body.appendString("--\(boundary)--\r\n")
-        return body
+        return body as Data
     }
     
     func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().UUIDString)"
+        return "Boundary-\(UUID().uuidString)"
     }
     
-    func mimeTypeForPath(path: String) -> String {
+    func mimeTypeForPath(_ path: String) -> String {
         return "image/jpg";
     }
     //------------------------------------- end upload photo --------------------------------------------
-    func makeDLPostRequest(dsData:AnyObject) {
+    func makeDLPostRequest(_ dsData:AnyObject) {
 
-        let state = UIApplication.sharedApplication().applicationState
-        if state == .Active {
+        let state = UIApplication.shared.applicationState
+        if state == .active {
             
             updateDLProcessLabel("Sending Request...")
             
             // foreground
-            sessionDownloadTask = fgSession?.downloadTaskWithRequest(createDLRequest(dsData))
+            sessionDownloadTask = fgSession?.downloadTask(with: createDLRequest(dsData))
             sessionDownloadTask?.resume()
             
         }else{
@@ -1059,7 +1085,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func createDLRequest(dsData:AnyObject) -> NSURLRequest {
+    func createDLRequest(_ dsData:AnyObject) -> URLRequest {
         self.dsDataObj = dsData
         
         var param = "\(_DS_PREFIX){"
@@ -1073,7 +1099,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
         }
         param += "}"
-        param = param.stringByReplacingOccurrencesOfString(",}", withString: "}")
+        param = param.replacingOccurrences(of: ",}", with: "}")
         
         if self.dsDataObj!["NAME"] as! String == "FGPO Data Download" {
             if self.downloadReqCnt < 1 {
@@ -1091,23 +1117,23 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         print("Download Request: \(param)")
         #endif
             
-        let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: URL(string: dsData["APINAME"] as! String)!)
+        request.httpMethod = "POST"
         request.timeoutInterval = 300
-        request.HTTPBody = param.dataUsingEncoding(NSUTF8StringEncoding)
-        request.HTTPShouldHandleCookies = false
+        request.httpBody = param.data(using: String.Encoding.utf8)
+        request.httpShouldHandleCookies = false
         
-        return request
+        return request as URLRequest
     }
     
-    func makeULACKPostRequest(dsData:AnyObject, coutDic:Dictionary<String,Int>) {
+    func makeULACKPostRequest(_ dsData:AnyObject, coutDic:Dictionary<String,Int>) {
         
-        let state = UIApplication.sharedApplication().applicationState
+        let state = UIApplication.shared.applicationState
         
-        if state == .Active {
+        if state == .active {
             
             // foreground
-            sessionDownloadTask = fgSession?.downloadTaskWithRequest(createULACKRequest(dsData, coutDic: coutDic))
+            sessionDownloadTask = fgSession?.downloadTask(with: createULACKRequest(dsData, coutDic: coutDic))
             sessionDownloadTask?.resume()
             
         }else{
@@ -1120,7 +1146,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func createULACKRequest(dsData:AnyObject, coutDic:Dictionary<String,Int>) -> NSURLRequest {
+    func createULACKRequest(_ dsData:AnyObject, coutDic:Dictionary<String,Int>) -> URLRequest {
         self.dsDataObj = dsData
         
         var param = "\(_DS_PREFIX){"
@@ -1136,7 +1162,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
         }
         param += "}"
-        param = param.stringByReplacingOccurrencesOfString(",}", withString: "}")
+        param = param.replacingOccurrences(of: ",}", with: "}")
         
         #if DEBUG
         print("param: \(param), Name: \(self.dsDataObj!["NAME"])")
@@ -1158,22 +1184,22 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         print("\(dsData["APINAME"] as! String) ACK Response: \(param)")
         #endif
         
-        let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: URL(string: dsData["APINAME"] as! String)!)
+        request.httpMethod = "POST"
         request.timeoutInterval = 300
-        request.HTTPBody = param.dataUsingEncoding(NSUTF8StringEncoding)
-        request.HTTPShouldHandleCookies = false
+        request.httpBody = param.data(using: String.Encoding.utf8)
+        request.httpShouldHandleCookies = false
         
-        return request
+        return request as URLRequest
     }
     
-    func makeULPostRequest(dsData:AnyObject) {
-        let state = UIApplication.sharedApplication().applicationState
+    func makeULPostRequest(_ dsData:AnyObject) {
+        let state = UIApplication.shared.applicationState
         
-        if state == .Active {
+        if state == .active {
             
             // foreground
-            sessionDownloadTask = fgSession?.downloadTaskWithRequest(createULRequest(dsData))
+            sessionDownloadTask = fgSession?.downloadTask(with: createULRequest(dsData))
             sessionDownloadTask?.resume()
             
         }else{
@@ -1184,7 +1210,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func createULRequest(dsData:AnyObject) -> NSURLRequest {
+    func createULRequest(_ dsData:AnyObject) -> URLRequest {
         self.dsDataObj = dsData
         
         let boundary = self.generateBoundaryString()
@@ -1204,43 +1230,43 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             self.updateProgressBar(0.2)
         }
         
-        let request = NSMutableURLRequest(URL: NSURL(string: dsData["APINAME"] as! String)!)
+        let request = NSMutableURLRequest(url: URL(string: dsData["APINAME"] as! String)!)
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.HTTPMethod = "POST"
+        request.httpMethod = "POST"
         request.timeoutInterval = 60
-        request.HTTPBody = body
-        request.HTTPShouldHandleCookies = false
+        request.httpBody = body as Data
+        request.httpShouldHandleCookies = false
         
-        return request
+        return request as URLRequest
     }
     
     //------------------------------------- Delegate Funcs --------------------------------------------------------
-    func URLSession(session: NSURLSession, task: NSURLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         print("bytesSent: \(bytesSent) totalBytesSent: \(totalBytesSent) totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
         
         if "Task Result Data Upload" == self.dsDataObj!["NAME"] as! String {
-            dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+            DispatchQueue.global(qos: .userInitiated).async {
                 
                 var percentageUploaded = 55 + (Float(totalBytesSent) / Float(totalBytesExpectedToSend))*5
                 percentageUploaded = percentageUploaded*0.01
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.taskUploadDataStatus.text = "\(String(lroundf(100*percentageUploaded)))%"
                     self.taskResultDataProcessBar.progress = percentageUploaded
                 })
             }
             
         }else if "Task Photo Data Upload" == self.dsDataObj!["NAME"] as! String {
-            dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+            DispatchQueue.global(qos: .userInitiated).async {
                 let percentageUploaded = Float(totalBytesSent) / Float(totalBytesExpectedToSend)
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     
                     self.taskPhotoProcessBar.progress = percentageUploaded
                 })
             }
             
-        }else if (self.dsDataObj!["NAME"] as! String).containsString("Acknowledgement") {
+        }else if (self.dsDataObj!["NAME"] as! String).contains("Acknowledgement") {
             if totalBytesSent == totalBytesExpectedToSend {
                 if self.dsDataObj!["NAME"] as! String == "FGPO Data Download Acknowledgement" {
                     if self.downloadReqCnt == self.totalReqCnt {
@@ -1269,7 +1295,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
+    func URLSession(_ session: Foundation.URLSession, dataTask: URLSessionDataTask, didReceiveResponse response: URLResponse, completionHandler: (Foundation.URLSession.ResponseDisposition) -> Void) {
         
         //here you can get full lenth of your content
         expectedContentLength = Int(response.expectedContentLength)
@@ -1278,12 +1304,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         print("expectedContentLength: \(expectedContentLength)")
         #endif
         
-        completionHandler(NSURLSessionResponseDisposition.Allow)
+        completionHandler(Foundation.URLSession.ResponseDisposition.allow)
     }
     
-    func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let completionHandler = appDelegate.backgroundSessionCompletionHandler {
             appDelegate.backgroundSessionCompletionHandler = nil
             completionHandler()
@@ -1294,11 +1320,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         #endif
     }
     
-    func errorMsgByCode(code:Int) ->String {
+    func errorMsgByCode(_ code:Int) ->String {
         var errorDesc = "";
         switch(code) {
             case 3840:
-                if UIApplication.sharedApplication().applicationState == .Active {
+                if UIApplication.shared.applicationState == .active {
                     errorDesc = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Network Issue")
                 } else {
                     errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
@@ -1311,13 +1337,13 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         return errorDesc
     }
     
-    func displayDetailErrorInfo(error: NSError, pathToFile: String?) {
+    func displayDetailErrorInfo(_ error: NSError, pathToFile: String?) {
         let errorObject = error
         self.errorMsg = errorObject.localizedDescription ?? ""
         
         if let _pathToFile = pathToFile {
             do {
-                let dataFromServer = try NSString(contentsOfFile: _pathToFile, encoding: NSUTF8StringEncoding)
+                let dataFromServer = try NSString(contentsOfFile: _pathToFile, encoding: String.Encoding.utf8.rawValue)
                 self.errorMsg += "\n\nReference Json Data: \(dataFromServer)"
             } catch {}
         }
@@ -1333,30 +1359,30 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         //use buffer here.Download is done
         //progress.progress = 1.0   // download 100% complete
         
         if(error != nil) {
             
-            buffer.setData(NSMutableData())
+            buffer.setData(NSMutableData() as Data)
             
             var errorMsg = ""
-            if error?.code == NSURLErrorTimedOut {
+            if error?._code == NSURLErrorTimedOut {
                 errorMsg = "\(MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed due to Network Issue"))"
-            }else if error?.code == NSURLErrorNotConnectedToInternet || error?.code == NSURLErrorCannotConnectToHost {
+            }else if error?._code == NSURLErrorNotConnectedToInternet || error?._code == NSURLErrorCannotConnectToHost {
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("App is in Offline Mode and unable to proceed Data Download.")
             }else{
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Network Request Failed with Unknown Reason!")
             }
-            self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?.code)"
+            self.errorMsg = "\(error?.localizedDescription ?? "") with code: \(error?._code)"
             
-            if UIApplication.sharedApplication().applicationState != .Active {
+            if UIApplication.shared.applicationState != .active {
                 errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Sync Failed when iPad in Sleep Mode")
                 self.errorMsg = MylocalizedString.sharedLocalizeManager.getLocalizedString("Please avoid to press home/power button or show up control center when data sync in progress.")
                 updateDownloadTaskStatusDetailButton()
             }
-
+            
             if self.actionType < 1 {
                 updateDLProcessLabel(errorMsg)
                 updateDownloadTaskStatusDetailButton()
@@ -1370,24 +1396,25 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Preparing Master Data...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+                if let result = jsonData["action_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
-                    
+                
                 self.processingDownloadData("_DS_MSTRDATA", jsonData: jsonData)
             } catch {
                 
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1398,26 +1425,27 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Sending Master Data Download Acknowledgement...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["ack_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
-                        
+                
                 self.updateProgressBar(1)
                 
-                self.makeDLPostRequest(_DS_INPTSETUP)
+                self.makeDLPostRequest(_DS_INPTSETUP as AnyObject)
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1431,20 +1459,21 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                  })*/
                 
                 updateDLProcessLabel("Preparing Inspection Setup Data...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 
                 #if DEBUG
-//                print("jsonData: \(jsonData)")
+                    //                print("jsonData: \(jsonData)")
                 #endif
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["action_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
                 
                 self.processingDownloadData("_DS_INPTSETUP", jsonData: jsonData)
@@ -1452,7 +1481,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1462,26 +1491,27 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Sending Inspection Setup Data Download Acknowledgement...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["ack_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
-                    
+                
                 self.updateProgressBar(1)
                 
-                self.makeDLPostRequest(_DS_FGPODATA)
+                self.makeDLPostRequest(_DS_FGPODATA as AnyObject)
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1491,29 +1521,25 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Preparing FGPO Data...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                if self.ainit_service_session == "" {
-                    self.ainit_service_session = _DS_SESSION
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["action_result"] as? String {
+                    session_result += result
                 }
                 
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
-                
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
                 
                 self.processingDownloadData("_DS_FGPODATA", jsonData: jsonData)
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1523,31 +1549,32 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Sending FGPO Data Download Acknowledgement...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["ack_result"] as? String {
+                    session_result += result
+                }
                 
                 if self.totalReqCnt > self.downloadReqCnt {
-                    self.makeDLPostRequest(_DS_FGPODATA)
+                    self.makeDLPostRequest(_DS_FGPODATA as AnyObject)
                     return
                 }
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
                 
                 self.updateProgressBar(1)
                 
-                self.makeDLPostRequest(_DS_TASKDATA)
+                self.makeDLPostRequest(_DS_TASKDATA as AnyObject)
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1563,29 +1590,30 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 updateDLProcessLabel("Preparing Task Booking Data...")
                 
-//                let jsonString = "{\"\"service_session\":\"42530\",\"inspect_task_list\":[{\"ref_task_id\":\"14285\",\"prod_type_id\":\"1\",\"inspect_type_id\":\"1\",\"booking_no\":\"RPT-0000014285\",\"booking_date\":\"10/30/2020 12:00:00 AM\",\"vdr_location_id\":\"42\",\"report_inspector_id\":\"\",\"report_prefix\":\"\",\"report_running_no\":\"\",\"inspection_no\":\"\",\"inspection_date\":\"\",\"inspect_setup_id\":\"1\",\"tmpl_id\":\"2\",\"task_remarks\":\"\",\"vdr_notes\":\"\",\"inspect_result_value_id\":\"\",\"inspector_sign_image_file\":\"\",\"vdr_sign_name\":\"\",\"vdr_sign_image_file\":\"\",\"task_status\":\"2\",\"rec_status\":\"0\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_inspector_list\":[{\"ref_task_id\":\"14285\",\"inspector_id\":\"121\",\"inspect_enable_flag\":\"1\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:26 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_item_list\":[{\"ref_task_id\":\"14285\",\"po_item_id\":\"89247\",\"ref_qc_plan_line_id\":\"\",\"target_inspect_qty\":\"250\",\"avail_inspect_qty\":\"\",\"sampling_qty\":\"\",\"inspect_enable_flag\":\"1\",\"item_barcode\":\"\",\"retail_price\":\"\",\"currency\":\"\",\"style_size\":\"ES4255\",\"substr_style_size\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_qc_info_list\":[]}"
-//                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
-
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                //                let jsonString = "{\"\"service_session\":\"42530\",\"inspect_task_list\":[{\"ref_task_id\":\"14285\",\"prod_type_id\":\"1\",\"inspect_type_id\":\"1\",\"booking_no\":\"RPT-0000014285\",\"booking_date\":\"10/30/2020 12:00:00 AM\",\"vdr_location_id\":\"42\",\"report_inspector_id\":\"\",\"report_prefix\":\"\",\"report_running_no\":\"\",\"inspection_no\":\"\",\"inspection_date\":\"\",\"inspect_setup_id\":\"1\",\"tmpl_id\":\"2\",\"task_remarks\":\"\",\"vdr_notes\":\"\",\"inspect_result_value_id\":\"\",\"inspector_sign_image_file\":\"\",\"vdr_sign_name\":\"\",\"vdr_sign_image_file\":\"\",\"task_status\":\"2\",\"rec_status\":\"0\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_inspector_list\":[{\"ref_task_id\":\"14285\",\"inspector_id\":\"121\",\"inspect_enable_flag\":\"1\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:26 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_item_list\":[{\"ref_task_id\":\"14285\",\"po_item_id\":\"89247\",\"ref_qc_plan_line_id\":\"\",\"target_inspect_qty\":\"250\",\"avail_inspect_qty\":\"\",\"sampling_qty\":\"\",\"inspect_enable_flag\":\"1\",\"item_barcode\":\"\",\"retail_price\":\"\",\"currency\":\"\",\"style_size\":\"ES4255\",\"substr_style_size\":\"\",\"create_date\":\"10/29/2020 4:51:26 PM\",\"create_user\":\"admin1\",\"modify_date\":\"10/29/2020 4:51:27 PM\",\"modify_user\":\"admin1\"}],\"inspect_task_qc_info_list\":[]}"
+                //                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
+                
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 
                 
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["action_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
-                print("session result: \(session_result)")
+                    print("session result: \(session_result)")
                 #endif
-                    
+                
                 self.processingDownloadData("_DS_TASKDATA", jsonData: jsonData)
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1595,23 +1623,24 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Sending Task Booking Data Download Acknowledgement...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["ack_result"] as? String {
+                    session_result += result
+                }
                 
                 self.updateProgressBar(1)
                 //task status download request
-                self.makeDLPostRequest(_DS_DL_TASK_STATUS)
+                self.makeDLPostRequest(_DS_DL_TASK_STATUS as AnyObject)
                 
             }
             catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1626,16 +1655,17 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 updateDLProcessLabel("Preparing Task Status Data...")
                 
-//                let jsonString = "{\"service_session\":\"42257\",\"inspect_task_list\":[{\"task_id\":\"\",\"inspection_no\":\"\",\"inspection_date\":null,\"app_ready_purge_date\":\"\",\"ref_task_id\":\"14285\",\"inspect_result_value_id\":\"\",\"task_status\":\"0\",\"review_remarks\":\"\",\"review_user\":\"\",\"review_date\":\"\",\"rec_status\":\"0\",\"modify_date\":\"10/29/2020 4:54:04 PM\",\"modify_user\":\"admin1\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\"}]}"
-//                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                //                let jsonString = "{\"service_session\":\"42257\",\"inspect_task_list\":[{\"task_id\":\"\",\"inspection_no\":\"\",\"inspection_date\":null,\"app_ready_purge_date\":\"\",\"ref_task_id\":\"14285\",\"inspect_result_value_id\":\"\",\"task_status\":\"0\",\"review_remarks\":\"\",\"review_user\":\"\",\"review_date\":\"\",\"rec_status\":\"0\",\"modify_date\":\"10/29/2020 4:54:04 PM\",\"modify_user\":\"admin1\",\"deleted_flag\":\"0\",\"delete_date\":\"\",\"delete_user\":\"\"}]}"
+                //                let dataJson = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["action_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
                     print("session result: \(session_result)")
@@ -1655,14 +1685,15 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Sending Task Status Data Download Acknowledgement...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["ack_result"] as? String {
+                    session_result += result
+                }
                 
                 //Send local notification for Task Done.
                 self.updateProgressBar(1)
@@ -1677,7 +1708,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     self.view.deleteTask(taskId)
                     self.cleanTaskCnt += 1
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.updateDLProcessLabel("Task Cleaning...")
                         
                         self.cleanTaskStatus.text = "\(self.cleanTaskCnt)"
@@ -1689,7 +1720,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 }
                 
                 if self.cleanTaskCnt < 1 {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.cleanTaskStatus.text = "0"
                         self.cleanTaskProcessBar.progress = 1.0
                     })
@@ -1703,15 +1734,15 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     self.view.deleteTask(id)
                 }
                 
-                let fileManager = NSFileManager.defaultManager()
-                if fileManager.fileExistsAtPath(getDataJsonPath()) {
-                    try fileManager.removeItemAtPath(getDataJsonPath())
+                let fileManager = FileManager.default
+                if fileManager.fileExists(atPath: getDataJsonPath()) {
+                    try fileManager.removeItem(atPath: getDataJsonPath())
                 }
                 
                 //Send local notification for Task Done.
                 self.updateProgressBar(1)
-                self.makeDLPostRequest(_DS_DL_STYLE_PHOTO)
-
+                self.makeDLPostRequest(_DS_DL_STYLE_PHOTO as AnyObject)
+                
             }
             catch {
                 #if DEBUG
@@ -1724,13 +1755,14 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             do {
                 
                 updateDLProcessLabel("Preparing Style Photo Data...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["action_result"] as? String {
+                    session_result += result
+                }
                 
                 #if DEBUG
                     print("session result: \(session_result)")
@@ -1749,13 +1781,14 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
             do {
                 updateDLProcessLabel("Sending Style Photo Data Download Acknowledgement...")
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 
-                _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                
-                var session_result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                session_result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                var session_result = _DS_SESSION
+                if let result = jsonData["ack_result"] as? String {
+                    session_result += result
+                }
                 
                 self.updateProgressBar(1)
                 
@@ -1780,12 +1813,12 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 self.updateDLProcessLabel("Style Photo Cleaning...")
                 var cleanStylePhotoCount = 0
                 while let path = self.stylePhotoDeletePaths.popLast() {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         if UIImage().removeImageFromLocalByPath(path) {
                             cleanStylePhotoCount += 1
                         }
-                    
-                        dispatch_async(dispatch_get_main_queue(), {
+                        
+                        DispatchQueue.main.async(execute: {
                             self.stylePhotoCleanStatus.text = "\(cleanStylePhotoCount)"
                             let percent = Float(cleanStylePhotoCount)/Float(totalDeletePhotosCount)
                             
@@ -1798,7 +1831,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 photoDataHelper.removeStylePhotosMarkDeleted()
                 
                 if cleanStylePhotoCount < 1 {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.stylePhotoCleanStatus.text = "0"
                         self.stylePhotoCleanProcessBar.progress = 1.0
                     })
@@ -1819,27 +1852,27 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         } else if self.dsDataObj != nil && self.dsDataObj!["NAME"] as! String == "Task Result Data Upload" {
             //Handle data in NSData type
             updateULProcessLabel("Processing Response...")
-    
+            
             do {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.taskUploadDataStatus.text = "100%"
                     self.taskResultDataProcessBar.progress = 100
                 })
-    
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
-    
+                
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
+                
                 if jsonData.count > 0 {
-    
+                    
                     for (key,value) in jsonData {
                         //print("key: \(key) value: \(value)")
-    
+                        
                         if key as? String == "task_status_list" {
                             //Remove reviewed task here
                             //Get Delete Flag Here
                             //let taskStatusList = try NSJSONSerialization.JSONObjectWithData(value as! NSData, options: .AllowFragments) as! NSDictionary
                             taskStatusList = value as? [[String : String]] ?? [[:]]
-    
+                            
                         }else{
                             if value as? String != _DS_TOTALRECORDS_DB[key as! String] && (key as! String) != "service_session" {
                                 print("\(key) mismatch response value: \(value), but \(_DS_TOTALRECORDS_DB[key as! String])")
@@ -1847,10 +1880,11 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                         }
                     }
                     
-                    _DS_SESSION = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                    
-                    var result = (self.nullToNil(jsonData["service_session"]) == nil) ? "": jsonData["service_session"] as! String
-                    result += (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
+                    _DS_SESSION = jsonData["service_session"] as? String ?? ""
+                    var session_result = _DS_SESSION
+                    if let result = jsonData["action_result"] as? String {
+                        session_result += result
+                    }
                     
                     
                     /*if !result.containsString("OK") {
@@ -1858,8 +1892,10 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                      }*/
                     
                 } else{
-                    var result = (self.nullToNil(jsonData["action_result"]) == nil) ? "": jsonData["action_result"] as! String
-                    result += (self.nullToNil(jsonData["ack_result"]) == nil) ? "": jsonData["ack_result"] as! String
+                    var result = jsonData["action_result"] as? String ?? ""
+                    if let aResult = jsonData["ack_result"] as? String {
+                        result += aResult
+                    }
                 }
                 
                 //Update Task Status
@@ -1871,7 +1907,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     includeTaskIds += "\(taskId),"
                 }
                 includeTaskIds += ")"
-                includeTaskIds = includeTaskIds.stringByReplacingOccurrencesOfString(",)", withString: ")")
+                includeTaskIds = includeTaskIds.replacingOccurrences(of: ",)", with: ")")
                 
                 let refusedTaskIds = getRefusedTaskIdAndUpdateConfirmUploadDate()
                 var excludeTaskIds = "("
@@ -1879,7 +1915,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     excludeTaskIds += "\(taskId),"
                 }
                 excludeTaskIds += ")"
-                excludeTaskIds = excludeTaskIds.stringByReplacingOccurrencesOfString(",)", withString: ")")
+                excludeTaskIds = excludeTaskIds.replacingOccurrences(of: ",)", with: ")")
                 
                 self.updateProgressBar(0.8)
                 //start upload task photo here
@@ -1889,32 +1925,32 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 } else {
                     uploadPhotos = dataSyncHelper.getAllPhotos(includeTaskIds, excludeTaskIds: excludeTaskIds)!
                     self.totalULPhotos = uploadPhotos.count
-                    uploadPhotos = uploadPhotos.reverse()
+                    uploadPhotos = uploadPhotos.reversed()
                 }
                 
                 if self.totalULPhotos>0 {
                     self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos)
                     let photoDataHelper = PhotoDataHelper()
                     if let photo = uploadPhotos.popLast() {
-                        var request: NSURLRequest = createPhotoULRequest(photo)
-                        while request.URL == nil {
+                        var request: NSURLRequest = createPhotoULRequest(photo) as NSURLRequest
+                        while request.url == nil {
                             currULPhotoIndex += 1
                             failULPhotoCount += 1
                             self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
                             tasksWithPhotosUploadFail.append(photoDataHelper.getTaskIdByPhotoId(photo.photoId ?? 0) ?? "")
                             
                             if let photo = uploadPhotos.popLast() {
-                                request = createPhotoULRequest(photo)
+                                request = createPhotoULRequest(photo) as NSURLRequest
                             } else {
                                 break
                             }
                         }
                         
-                        if UIApplication.sharedApplication().applicationState == .Active {
+                        if UIApplication.shared.applicationState == .active {
                             
                             // foreground
-                            if let _ = request.URL {
-                                sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
+                            if let _ = request.url {
+                                sessionDownloadTask = self.fgSession?.downloadTask(with: request as URLRequest)
                                 sessionDownloadTask?.resume()
                             } else {
                                 self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
@@ -1938,7 +1974,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     
                 }else{
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.taskPhotoProcessBar.progress = 1.0
                     })
                     
@@ -1955,7 +1991,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 //resultSet = dataSet
             } catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -1972,8 +2008,8 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             }
             
             do {
-                let dataJson = try NSData(contentsOfFile: getDataJsonPath(), options: NSDataReadingOptions.DataReadingMappedIfSafe)
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(dataJson, options: .AllowFragments) as! NSDictionary
+                let dataJson = try Data(contentsOf: URL(fileURLWithPath: getDataJsonPath()), options: NSData.ReadingOptions.mappedIfSafe)
+                let jsonData = try JSONSerialization.jsonObject(with: dataJson, options: .allowFragments) as! NSDictionary
                 //buffer.setData(NSMutableData())
                 
                 if jsonData.count > 0 {
@@ -1986,15 +2022,15 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     
                     dataSet.append(dataObj)
                     
-                    var result = (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
-                    result += (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
+                    var result = jsonData["ul_result"] as? String ?? ""
+                    result += jsonData["ul_result"] as? String ?? ""
                     
                     #if DEBUG
-                    print("result: \(result)")
+                        print("result: \(result)")
                     #endif
                     
                     //update photo upload date
-                    if result.containsString("OK") {
+                    if result.contains("OK") {
                         let photoIdUploaded = Int(dataObj["photo_id"] ?? "0") ?? 0
                         let taskId = Int(dataObj["task_id"] ?? "0") ?? 0
                         let dataSyncDataHelper = DataSyncDataHelper()
@@ -2007,14 +2043,14 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                     }
                     
                 } else{
-                    var result = (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
-                    result += (self.nullToNil(jsonData["ul_result"]) == nil) ? "": jsonData["ul_result"] as! String
+                    var result = jsonData["ul_result"] as? String ?? ""
+                    result += jsonData["ul_result"] as? String ?? ""
                     
                 }
                 
                 if self.currULPhotoIndex == self.totalULPhotos {
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.taskPhotoProcessBar.progress = 100
                     })
                     
@@ -2033,25 +2069,25 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
                 if let photo = uploadPhotos.popLast() {
                     let photoDataHelper = PhotoDataHelper()
-                    var request: NSURLRequest = createPhotoULRequest(photo)
-                    while request.URL == nil {
+                    var request: NSURLRequest = createPhotoULRequest(photo) as NSURLRequest
+                    while request.url == nil {
                         currULPhotoIndex += 1
                         failULPhotoCount += 1
                         self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
                         tasksWithPhotosUploadFail.append(photoDataHelper.getTaskIdByPhotoId(photo.photoId ?? 0) ?? "")
                         
                         if let photo = uploadPhotos.popLast() {
-                            request = createPhotoULRequest(photo)
+                            request = createPhotoULRequest(photo) as NSURLRequest
                         } else {
                             break
                         }
                     }
                     
-                    if UIApplication.sharedApplication().applicationState == .Active {
+                    if UIApplication.shared.applicationState == .active {
                         
                         // foreground
-                        if let _ = request.URL {
-                            sessionDownloadTask = self.fgSession?.downloadTaskWithRequest(request)
+                        if let _ = request.url {
+                            sessionDownloadTask = self.fgSession?.downloadTask(with: request as URLRequest)
                             sessionDownloadTask?.resume()
                         } else {
                             self.updateULPhotoStatus(self.currULPhotoIndex, total: self.totalULPhotos, fail: failULPhotoCount)
@@ -2075,7 +2111,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
             } catch {
                 #if DEBUG
-                print("error serializing JSON: \(error)")
+                    print("error serializing JSON: \(error)")
                 #endif
                 displayDetailErrorInfo(error as NSError, pathToFile: getDataJsonPath())
             }
@@ -2125,7 +2161,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         self.updateProgressBar(1)
     }
     
-    func URLSession(session: NSURLSession, didBecomeInvalidWithError error: NSError?) {
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         self.fgSession?.finishTasksAndInvalidate()
     }
     
@@ -2134,19 +2170,19 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     }
     
     //didBecomeInvalidWithError
-    func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("下载完成")
         
         do {
             
-            let fileManager = NSFileManager.defaultManager()
+            let fileManager = FileManager.default
             let path = getDataJsonPath()
             
-            if fileManager.fileExistsAtPath(path) {
-                try fileManager.removeItemAtPath(path)
+            if fileManager.fileExists(atPath: path) {
+                try fileManager.removeItem(atPath: path)
             }
             
-            try fileManager.copyItemAtPath(location.path!, toPath: path)
+            try fileManager.copyItem(atPath: location.path, toPath: path)
             
             //let dataFromLocation = try NSData(contentsOfFile: path, options: NSDataReadingOptions.DataReadingMappedIfSafe)
             
@@ -2165,7 +2201,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     }
     
     //Download Task Process
-    func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         print("正在下载 \(totalBytesWritten)/\(totalBytesExpectedToWrite)")
         
         let percentageDownloaded = 15 + (Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))*15
@@ -2182,16 +2218,16 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
         print("从 \(fileOffset) 处恢复下载，一共 \(expectedTotalBytes)")
         
     }
     
-    func updateProgressBar(percentageDownloaded:Float = 0) {
+    func updateProgressBar(_ percentageDownloaded:Float = 0) {
         print("dsDataObj: \(self.dsDataObj!["NAME"] as! String)")
         if "Master Data Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.mstrDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.masterDataProcessBar.progress =  percentageDownloaded
                 
@@ -2199,7 +2235,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
         }else if "Inspection Setup Data Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.inspSetupDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.setupDataProcessBar.progress =  percentageDownloaded
                 
@@ -2208,7 +2244,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }else if "FGPO Data Download" == self.dsDataObj!["NAME"] as! String {
             //if self.downloadReqCnt < 1 {
                 updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.fgpoDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.fgpoDataProcessBar.progress =  percentageDownloaded
                     
@@ -2217,28 +2253,28 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             
         }else if "Task Booking Data Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.taskDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.taskDataProcessBar.progress =  percentageDownloaded
                 
             })
         }else if "Task Status Data Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.taskStatusDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.taskStatusDataProcessBar.progress =  percentageDownloaded
                 
             })
         }else if "Style Photo Download" == self.dsDataObj!["NAME"] as! String {
             updateDLProcessLabel(MylocalizedString.sharedLocalizeManager.getLocalizedString("Downloading Data..."))
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.stylePhotoStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                 self.stylePhotoPrecessBar.progress =  percentageDownloaded
     
             })
         }else if "FGPO Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if /*self.downloadReqCnt == self.totalReqCnt && */self.fgpoDataProcessBar.progress < percentageDownloaded {
                     self.fgpoDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.fgpoDataProcessBar.progress =  percentageDownloaded
@@ -2248,7 +2284,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
     
         }else if "Master Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if self.masterDataProcessBar.progress < percentageDownloaded {
                     self.mstrDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.masterDataProcessBar.progress = percentageDownloaded
@@ -2256,7 +2292,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             })
         }else if "Inspection Setup Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if self.setupDataProcessBar.progress < percentageDownloaded {
                     self.inspSetupDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.setupDataProcessBar.progress = percentageDownloaded
@@ -2265,7 +2301,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             })
         }else if "Task Booking Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if self.taskDataProcessBar.progress < percentageDownloaded {
                     self.taskDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.taskDataProcessBar.progress = percentageDownloaded
@@ -2274,7 +2310,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
             })
         }else if "Task Status Data Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if self.taskStatusDataProcessBar.progress < percentageDownloaded{
                     self.taskStatusDataStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.taskStatusDataProcessBar.progress = percentageDownloaded
@@ -2282,7 +2318,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
                 
             })
         }else if "Style Photo Download Acknowledgement" == self.dsDataObj!["NAME"] as! String {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if self.stylePhotoPrecessBar.progress < percentageDownloaded{
                     self.stylePhotoStatus.text = "\(String(lroundf(100*percentageDownloaded)))%"
                     self.stylePhotoPrecessBar.progress = percentageDownloaded
@@ -2292,7 +2328,7 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         }
     }
     
-    @IBAction func downloadTaskStatusDetailBtnDidPress(sender: UIButton) {
+    @IBAction func downloadTaskStatusDetailBtnDidPress(_ sender: UIButton) {
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
         
@@ -2300,19 +2336,19 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         popoverContent.selectedValue = self.errorMsg
         
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        nav.navigationBar.barTintColor = UIColor.whiteColor()
-        nav.navigationBar.tintColor = UIColor.blackColor()
+        nav.modalPresentationStyle = UIModalPresentationStyle.popover
+        nav.navigationBar.barTintColor = UIColor.white
+        nav.navigationBar.tintColor = UIColor.black
         
         let popover = nav.popoverPresentationController
         popover?.delegate = sender.parentVC as? PopoverMaster
         popover?.sourceView = sender
-        popover?.sourceRect = CGRectMake(0,0,sender.frame.size.width,sender.frame.size.height)
+        popover?.sourceRect = CGRect(x: 0,y: 0,width: sender.frame.size.width,height: sender.frame.size.height)
         
-        sender.parentVC?.presentViewController(nav, animated: true, completion: nil)
+        sender.parentVC?.present(nav, animated: true, completion: nil)
     }
     
-    @IBAction func uploadTaskStatusDetailBtnDidPress(sender: UIButton) {
+    @IBAction func uploadTaskStatusDetailBtnDidPress(_ sender: UIButton) {
         let popoverContent = PopoverViewController()
         popoverContent.preferredContentSize = CGSize(width: 640, height: 320)
         
@@ -2320,15 +2356,15 @@ class DataSyncViewController: PopoverMaster, NSURLSessionDelegate, NSURLSessionT
         popoverContent.selectedValue = self.errorMsg
         
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.Popover
-        nav.navigationBar.barTintColor = UIColor.whiteColor()
-        nav.navigationBar.tintColor = UIColor.blackColor()
+        nav.modalPresentationStyle = UIModalPresentationStyle.popover
+        nav.navigationBar.barTintColor = UIColor.white
+        nav.navigationBar.tintColor = UIColor.black
         
         let popover = nav.popoverPresentationController
         popover?.delegate = sender.parentVC as? PopoverMaster
         popover?.sourceView = sender
-        popover?.sourceRect = CGRectMake(0,0,sender.frame.size.width,sender.frame.size.height)
+        popover?.sourceRect = CGRect(x: 0,y: 0,width: sender.frame.size.width,height: sender.frame.size.height)
         
-        sender.parentVC?.presentViewController(nav, animated: true, completion: nil)
+        sender.parentVC?.present(nav, animated: true, completion: nil)
     }
 }

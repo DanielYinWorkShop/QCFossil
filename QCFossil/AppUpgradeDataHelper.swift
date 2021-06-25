@@ -11,33 +11,32 @@ import UIKit
 
 class AppUpgradeDataHelper:DataHelperMaster {
 
-    func appUpgradeCode(appVersionCode:String? = nil, parentView:UIView, completion:(result: Bool) -> ()) {
+    func appUpgradeCode(_ appVersionCode:String? = nil, parentView:UIView, completion:@escaping (_ result: Bool) -> ()) {
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             parentView.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("DB Updating"))
             
-            let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
-            dispatch_after(time, dispatch_get_main_queue()) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 var result = true
-                var database = "\(_DBNAME_USING)_\((Cache_Inspector?.appUserName?.lowercaseString)!)"
-                let filemgr = NSFileManager.defaultManager()
-                let dirPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+                var database = "\(_DBNAME_USING)_\((Cache_Inspector?.appUserName?.lowercased())!)"
+                let filemgr = FileManager.default
+                let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
                 let dbDir = dirPaths[0] as String
-                let databasePath = dbDir.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)\(database)")
-                let databasePathBakup = dbDir.stringByAppendingString("/\((Cache_Inspector?.appUserName?.lowercaseString)!)\(database)_bakup")
+                let databasePath = dbDir + "/\((Cache_Inspector?.appUserName?.lowercased())!)\(database)"
+                let databasePathBakup = dbDir + "/\((Cache_Inspector?.appUserName?.lowercased())!)\(database)_bakup"
                 
                 //If Backup File Exist, Restore First...
-                if filemgr.fileExistsAtPath(databasePathBakup) {
+                if filemgr.fileExists(atPath: databasePathBakup) {
                     print("DB Backup File Found, Restore Now...")
                     
                     do {
-                        try filemgr.removeItemAtPath(databasePath)
-                        try filemgr.moveItemAtPath(databasePathBakup, toPath: databasePath)
-                        try filemgr.removeItemAtPath(databasePathBakup)
+                        try filemgr.removeItem(atPath: databasePath)
+                        try filemgr.moveItem(atPath: databasePathBakup, toPath: databasePath)
+                        try filemgr.removeItem(atPath: databasePathBakup)
                         
                     } catch let error as NSError {
                         print(error.localizedDescription)
-                        completion(result: result)
+                        completion(result)
                     }
                 }
                 
@@ -45,15 +44,15 @@ class AppUpgradeDataHelper:DataHelperMaster {
                 parentView.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("DB Backup"))
                 
                 if Cache_Inspector?.appUserName != "" {
-                    database = _DBNAME_USING + "_" + (Cache_Inspector?.appUserName?.lowercaseString)!
-                    _TASKSPHYSICALPATH = "\(_TASKSPHYSICALPATHPREFIX + (Cache_Inspector?.appUserName?.lowercaseString)! + "/\(_TASKSPHYSICALFOLDERNAME)")/"
+                    database = _DBNAME_USING + "_" + (Cache_Inspector?.appUserName?.lowercased())!
+                    _TASKSPHYSICALPATH = "\(_TASKSPHYSICALPATHPREFIX + (Cache_Inspector?.appUserName?.lowercased())! + "/\(_TASKSPHYSICALFOLDERNAME)")/"
                     
                 }
                 
-                if filemgr.fileExistsAtPath(databasePath) {
+                if filemgr.fileExists(atPath: databasePath) {
                     
                     do {
-                        try filemgr.copyItemAtPath(databasePath, toPath: databasePathBakup)
+                        try filemgr.copyItem(atPath: databasePath, toPath: databasePathBakup)
                     } catch let error as NSError {
                         print(error.localizedDescription)
                     }
@@ -66,81 +65,81 @@ class AppUpgradeDataHelper:DataHelperMaster {
                     
                     //---------------------------- Vdr Location Mstr ----------------------------
                     var sql = "ALTER TABLE vdr_location_mstr ADD COLUMN vdr_sign_name varchar(100) DEFAULT ''"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(vdr_location_mstr)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(vdr_location_mstr)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "vdr_sign_name" {
+                            if tableInfo.string(forColumn: "name") == "vdr_sign_name" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     //---------------------------- Inspect Mstr ----------------------------
                     sql = "ALTER TABLE inspector_mstr ADD COLUMN chg_pwd_req_date varchar(30) DEFAULT ''"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspector_mstr)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspector_mstr)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "chg_pwd_req_date" {
+                            if tableInfo.string(forColumn: "name") == "chg_pwd_req_date" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     //---------------------------- Fgpo Line Item ----------------------------
                     sql = "ALTER TABLE fgpo_line_item ADD COLUMN prod_desc text DEFAULT ''"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "prod_desc" {
+                            if tableInfo.string(forColumn: "name") == "prod_desc" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     //-------------------------------- Task Inspect Photo File ----------------------------
                     sql = "ALTER TABLE task_inspect_photo_file ADD COLUMN upload_date datetime"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_inspect_photo_file)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_inspect_photo_file)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "upload_date" {
+                            if tableInfo.string(forColumn: "name") == "upload_date" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     sql = "UPDATE task_inspect_photo_file SET upload_date = datetime('now','localtime') WHERE task_id IN (SELECT task_id FROM inspect_task WHERE task_status = ? OR task_status = ?)"
                     
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: [GetTaskStatusId(caseId: "Confirmed").rawValue, GetTaskStatusId(caseId: "Uploaded").rawValue]) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: [GetTaskStatusId(caseId: "Confirmed").rawValue, GetTaskStatusId(caseId: "Uploaded").rawValue]) {
                         result = false
                     }
                     
                     //---------------------------- Inspect Task ----------------------------
                     sql = "ALTER TABLE inspect_task ADD COLUMN confirm_upload_date datetime"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "confirm_upload_date" {
+                            if tableInfo.string(forColumn: "name") == "confirm_upload_date" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
@@ -154,579 +153,579 @@ class AppUpgradeDataHelper:DataHelperMaster {
                     
                     //---------------------------- Inspect Position Mstr for 1.09 ----------------------------
                     sql = "ALTER TABLE inspect_position_mstr ADD COLUMN position_zone_set_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_position_mstr)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_position_mstr)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "position_zone_set_id" {
+                            if tableInfo.string(forColumn: "name") == "position_zone_set_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     sql = "ALTER TABLE inspect_element_mstr ADD COLUMN inspect_defect_set_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_element_mstr)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_element_mstr)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspect_defect_set_id" {
+                            if tableInfo.string(forColumn: "name") == "inspect_defect_set_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     sql = "ALTER TABLE inspect_element_mstr ADD COLUMN inspect_case_set_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_element_mstr)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_element_mstr)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspect_case_set_id" {
+                            if tableInfo.string(forColumn: "name") == "inspect_case_set_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     sql = "ALTER TABLE inspect_element_mstr ADD COLUMN inspect_case_set_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_element_mstr)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_element_mstr)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspect_case_set_id" {
+                            if tableInfo.string(forColumn: "name") == "inspect_case_set_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add table zone_value_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `zone_value_mstr` ( `value_id` VARCHAR ( 10 ), `value_code` VARCHAR ( 30 ) NOT NULL, `value_name_en` VARCHAR ( 60 ) NOT NULL, `value_name_cn` VARCHAR ( 60 ) NOT NULL, `display_order` VARCHAR ( 10 ) NOT NULL, `rec_status` VARCHAR ( 2 ) NOT NULL, `create_date` DATETIME NOT NULL, `create_user` VARCHAR ( 30 ) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR ( 30 ) NOT NULL, `deleted_flag` VARCHAR ( 1 ) NOT NULL, `delete_date` DATETIME, `delete_user` VARCHAR ( 30 ), PRIMARY KEY(`value_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table zone_set_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `zone_set_mstr` ( `set_id` VARCHAR ( 10 ), `set_name` VARCHAR ( 60 ) NOT NULL, `rec_status` VARCHAR ( 2 ) NOT NULL, `create_date` DATETIME NOT NULL, `create_user` VARCHAR ( 30 ) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR ( 30 ) NOT NULL, `deleted_flag` VARCHAR ( 1 ) NOT NULL, `delete_date` DATETIME, `delete_user` VARCHAR ( 30 ), PRIMARY KEY(`set_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table zone_set_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `zone_set_value` ( `set_id` VARCHAR ( 10 ), `value_id` VARCHAR ( 10 ), `create_date` DATETIME NOT NULL, `create_user` VARCHAR ( 30 ) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR ( 30 ) NOT NULL, PRIMARY KEY(`set_id`,`value_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table case_value_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `case_value_mstr` ( `value_id` VARCHAR ( 10 ), `value_code` VARCHAR ( 10 ) NOT NULL, `value_name_en` VARCHAR ( 60 ) NOT NULL, `value_name_cn` VARCHAR ( 60 ) NOT NULL, `display_order` VARCHAR ( 10 ) NOT NULL, `rec_status` VARCHAR ( 2 ) NOT NULL, `create_date` DATETIME NOT NULL, `create_user` VARCHAR ( 30 ) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR ( 30 ) NOT NULL, `deleted_flag` VARCHAR ( 1 ) NOT NULL, `delete_date` DATETIME, `delete_user` VARCHAR ( 30 ), PRIMARY KEY(`value_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table case_set_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `case_set_mstr` ( `set_id` VARCHAR ( 10 ), `set_name` VARCHAR ( 60 ) NOT NULL, `rec_status` VARCHAR ( 2 ) NOT NULL, `create_date` DATETIME NOT NULL, `create_user` VARCHAR ( 30 ) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR ( 30 ) NOT NULL, `deleted_flag` VARCHAR ( 1 ) NOT NULL, `delete_date` DATETIME, `delete_user` VARCHAR ( 30 ), PRIMARY KEY(`set_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table case_set_value
                     sql = "CREATE TABLE IF NOT EXISTS `case_set_value` ( `set_id` VARCHAR(10), `value_id` VARCHAR(10), `create_date` DATETIME NOT NULL, `create_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table defect_value_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `defect_value_mstr` ( `value_id` VARCHAR(10), `value_code` VARCHAR(10) NOT NULL, `value_name_en` VARCHAR(60) NOT NULL, `value_name_cn` VARCHAR(60) NOT NULL, `display_order` VARCHAR(10) NOT NULL, `rec_status` VARCHAR(2) NOT NULL, `create_date` DATETIME NOT NULL, `create_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL, `deleted_flag` VARCHAR(1) NOT NULL, `delete_date` DATETIME, `delete_user` VARCHAR(30), PRIMARY KEY(`value_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table defect_set_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `defect_set_mstr` ( `set_id` VARCHAR(30), `set_name` VARCHAR(60) NOT NULL, `rec_status` VARCHAR(2) NOT NULL, `create_date` DATETIME NOT NULL, `create_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL, `deleted_flag` VARCHAR(1) NOT NULL, `delete_date` DATETIME, `delete_user` VARCHAR(30), PRIMARY KEY(`set_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table defect_set_value
                     sql = "CREATE TABLE IF NOT EXISTS `defect_set_value` ( `set_id` VARCHAR(10), `value_id` VARCHAR(10), `create_date` DATETIME NOT NULL, `create_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL, PRIMARY KEY(`value_id`,`set_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                 
                     // Add table task_selection_option_mstr
                     sql = "CREATE TABLE IF NOT EXISTS `task_selection_option_mstr` ( `option_id` NUMERIC(10,0) NOT NULL, `data_env` VARCHAR(30) NOT NULL, `selection_type` NUMERIC(2,0) NOT NULL, `result_code_match_list` VARCHAR(1000), `option_val` VARCHAR(100) NOT NULL, `option_text_en` VARCHAR(1000) NOT NULL, `option_text_zh` VARCHAR(1000) NOT NULL, `display_order` NUMERIC(10,0) NOT NULL, `rec_status` NUMERIC(2,0) NOT NULL, `create_user` VARCHAR(30) NOT NULL, `create_date` DATETIME NOT NULL, `modify_user` VARCHAR(30) NOT NULL, `modify_date` DATETIME NOT NULL, `deleted_flag` NUMERIC(1,0) NOT NULL, `delete_user` VARCHAR(30), `delete_date` DATETIME, PRIMARY KEY(`option_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table inspect_task_qc_info
                     sql = "CREATE TABLE IF NOT EXISTS `inspect_task_qc_info` ( `ref_task_id` numeric(10,0) NOT NULL, `aql_qty` numeric(10,0), `product_class` varchar(50), `quality_standard` varchar(50), `adjust_time` varchar(50), `preinspect_detail` TEXT, `ca_form` varchar(50), `caseback_marking` varchar(50), `upc_orbid_status` varchar(50), `ts_report_no` varchar(50), `ts_submit_date` DATETIME, `ts_result` nvarchar(50), `qc_booking_ref_no` varchar(50), `ss_comment_ready`varchar(50), `ss_ready` varchar(50), `ss_photo_name` varchar(50), `battery_production_code` varchar(50), `with_quesiton_pending` varchar(50), `wth_same_po_rejected_bef` varchar(50), `assortment` varchar(50), `consigned_styles` varchar(50), `qc_inspect_type` varchar(50), `net_weight` varchar(50), `inspect_method` varchar(50), `length_requirement` varchar(50), `inspection_sample_ready` varchar(50), `fty_packing_info` varchar(50), `fty_droptest_info` varchar(50), `movt_origin` varchar(100), `battery_type` varchar(50), `pre_inspect_result` nvarchar(50), `pre_inspect_remark` TEXT, `reliability_remark` TEXT, `jwl_marking` varchar(50), `combine_qc_remarks` varchar(150), `links_remarks` nvarchar(50), `dusttest_remark` nvarchar(50), `smartlink_remark` nvarchar(50), `precise_report` nvarchar(50), `smartlink_report` nvarchar(50), `create_user` varchar(30) NOT NULL, `create_date` DATETIME NOT NULL, `modify_user` varchar(30) NOT NULL, `modify_date` DATETIME NOT NULL, inspector_names varchar(1000), PRIMARY KEY(`ref_task_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add table style_photo
                     sql = "CREATE TABLE IF NOT EXISTS `style_photo` ( `photo_id` numeric(10,0) NOT NULL, `data_env` varchar(30) NOT NULL, `style_no` varchar(30) NOT NULL, `ss_photo_name` varchar(50) NOT NULL, `create_date` datetime NOT NULL, `modify_date` datetime NOT NULL, `deleted_flag` numeric(1,0) NOT NULL, `delete_date` datetime, PRIMARY KEY(`photo_id`) )"
-                    if !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                    if !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                         result = false
                     }
                     
                     // Add new field to task_inspect_data_record
                     sql = "ALTER TABLE task_inspect_data_record ADD COLUMN inspect_position_zone_value_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_inspect_data_record)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_inspect_data_record)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspect_position_zone_value_id" {
+                            if tableInfo.string(forColumn: "name") == "inspect_position_zone_value_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to task_defect_data_record
                     sql = "ALTER TABLE task_defect_data_record ADD COLUMN inspect_element_defect_value_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspect_element_defect_value_id" {
+                            if tableInfo.string(forColumn: "name") == "inspect_element_defect_value_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to task_defect_data_record
                     sql = "ALTER TABLE task_defect_data_record ADD COLUMN inspect_element_case_value_id VARCHAR(10)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspect_element_case_value_id" {
+                            if tableInfo.string(forColumn: "name") == "inspect_element_case_value_id" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to qc_remarks_option_list
                     sql = "ALTER TABLE inspect_task ADD COLUMN qc_remarks_option_list TEXT"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "qc_remarks_option_list" {
+                            if tableInfo.string(forColumn: "name") == "qc_remarks_option_list" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to additional_admin_item_option_list
                     sql = "ALTER TABLE inspect_task ADD COLUMN additional_admin_item_option_list TEXT"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "additional_admin_item_option_list" {
+                            if tableInfo.string(forColumn: "name") == "additional_admin_item_option_list" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to defect_remarks_option_list
                     sql = "ALTER TABLE task_defect_data_record ADD COLUMN defect_remarks_option_list TEXT"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "defect_remarks_option_list" {
+                            if tableInfo.string(forColumn: "name") == "defect_remarks_option_list" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to defect_remarks_option_list
                     sql = "ALTER TABLE task_defect_data_record ADD COLUMN other_remarks TEXT"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(task_defect_data_record)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "other_remarks" {
+                            if tableInfo.string(forColumn: "name") == "other_remarks" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to fgpo_line_item
                     sql = "ALTER TABLE fgpo_line_item ADD COLUMN market varchar(20)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "market" {
+                            if tableInfo.string(forColumn: "name") == "market" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to fgpo_line_item
                     sql = "ALTER TABLE fgpo_line_item ADD COLUMN material_category varchar(20)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "material_category" {
+                            if tableInfo.string(forColumn: "name") == "material_category" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to fgpo_line_item
                     sql = "ALTER TABLE fgpo_line_item ADD COLUMN ship_mode_name varchar(20)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(fgpo_line_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "ship_mode_name" {
+                            if tableInfo.string(forColumn: "name") == "ship_mode_name" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_item
                     sql = "ALTER TABLE inspect_task_item ADD COLUMN item_barcode varchar(30)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "item_barcode" {
+                            if tableInfo.string(forColumn: "name") == "item_barcode" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_item
                     sql = "ALTER TABLE inspect_task_item ADD COLUMN retail_price NUMERIC(12,2)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "retail_price" {
+                            if tableInfo.string(forColumn: "name") == "retail_price" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN inspector_names varchar(1000)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "inspector_names" {
+                            if tableInfo.string(forColumn: "name") == "inspector_names" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN wth_same_po_rejected_bef varchar(50)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "wth_same_po_rejected_bef" {
+                            if tableInfo.string(forColumn: "name") == "wth_same_po_rejected_bef" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to style_photo
                     sql = "ALTER TABLE style_photo ADD COLUMN ss_photo_avail_date datetime"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "ss_photo_avail_date" {
+                            if tableInfo.string(forColumn: "name") == "ss_photo_avail_date" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to style_photo
                     sql = "ALTER TABLE style_photo ADD COLUMN cb_photo_name varchar(50)"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "cb_photo_name" {
+                            if tableInfo.string(forColumn: "name") == "cb_photo_name" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to style_photo
                     sql = "ALTER TABLE style_photo ADD COLUMN cb_photo_avail_date datetime"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(style_photo)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "cb_photo_avail_date" {
+                            if tableInfo.string(forColumn: "name") == "cb_photo_avail_date" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to style_photo
                     sql = "ALTER TABLE inspect_task_item ADD COLUMN currency currency"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "currency" {
+                            if tableInfo.string(forColumn: "name") == "currency" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_item
                     sql = "ALTER TABLE inspect_task_item ADD COLUMN style_size text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "style_size" {
+                            if tableInfo.string(forColumn: "name") == "style_size" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_item
                     sql = "ALTER TABLE inspect_task_item ADD COLUMN substr_style_size text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_item)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_style_size" {
+                            if tableInfo.string(forColumn: "name") == "substr_style_size" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_inspector_names text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_inspector_names" {
+                            if tableInfo.string(forColumn: "name") == "substr_inspector_names" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_quality_standard text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_quality_standard" {
+                            if tableInfo.string(forColumn: "name") == "substr_quality_standard" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_length_requirement text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_length_requirement" {
+                            if tableInfo.string(forColumn: "name") == "substr_length_requirement" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_movt_origin text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_movt_origin" {
+                            if tableInfo.string(forColumn: "name") == "substr_movt_origin" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_combine_qc_remarks text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_combine_qc_remarks" {
+                            if tableInfo.string(forColumn: "name") == "substr_combine_qc_remarks" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_ss_ready text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_ss_ready" {
+                            if tableInfo.string(forColumn: "name") == "substr_ss_ready" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_pre_inspect_remark text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_pre_inspect_remark" {
+                            if tableInfo.string(forColumn: "name") == "substr_pre_inspect_remark" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_ss_comment_ready text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_ss_comment_ready" {
+                            if tableInfo.string(forColumn: "name") == "substr_ss_comment_ready" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_ca_form text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_ca_form" {
+                            if tableInfo.string(forColumn: "name") == "substr_ca_form" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
                     
                     // Add new field to inspect_task_qc_info
                     sql = "ALTER TABLE inspect_task_qc_info ADD COLUMN substr_reliability_remark text"
-                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsInArray: nil) {
+                    if let tableInfo = self.db.executeQuery("PRAGMA table_info(inspect_task_qc_info)", withArgumentsIn: nil) {
                         var noNeedUpdate = false
                         while tableInfo.next() {
-                            if tableInfo.stringForColumn("name") == "substr_reliability_remark" {
+                            if tableInfo.string(forColumn: "name") == "substr_reliability_remark" {
                                 noNeedUpdate = true
                             }
                         }
                         
-                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsInArray: nil) {
+                        if !noNeedUpdate && !self.db.executeUpdate(sql, withArgumentsIn: nil) {
                             result = false
                         }
                     }
@@ -799,49 +798,47 @@ class AppUpgradeDataHelper:DataHelperMaster {
                 }
                 
                 //If upgrade success, remove the backup DB file, else rollback from the backup DB file
-                if result && filemgr.fileExistsAtPath(databasePathBakup) {
+                if result && filemgr.fileExists(atPath: databasePathBakup) {
                     print("DB Upgrade Success, Remove Backup FIle Now...")
                     
                     do {
-                        try filemgr.removeItemAtPath(databasePathBakup)
+                        try filemgr.removeItem(atPath: databasePathBakup)
                         
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             parentView.removeActivityIndicator()
                             parentView.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Success"))
-                            let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 2 * Int64(NSEC_PER_SEC))
-                            dispatch_after(time, dispatch_get_main_queue()) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 parentView.removeActivityIndicator()
-                                completion(result: result)
+                                completion(result)
                             }
                         })
                         
                     } catch let error as NSError {
                         print(error.localizedDescription)
-                        completion(result: result)
+                        completion(result)
                     }
-                }else if filemgr.fileExistsAtPath(databasePathBakup) {
+                }else if filemgr.fileExists(atPath: databasePathBakup) {
                     print("DB Upgrade Fail, Rollback Now...")
                     
                     do {
-                        try filemgr.removeItemAtPath(databasePath)
-                        try filemgr.moveItemAtPath(databasePathBakup, toPath: databasePath)
+                        try filemgr.removeItem(atPath: databasePath)
+                        try filemgr.moveItem(atPath: databasePathBakup, toPath: databasePath)
                         
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             parentView.removeActivityIndicator()
                             parentView.showActivityIndicator(MylocalizedString.sharedLocalizeManager.getLocalizedString("Fail"))
-                            let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 2 * Int64(NSEC_PER_SEC))
-                            dispatch_after(time, dispatch_get_main_queue()) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 parentView.removeActivityIndicator()
-                                completion(result: result)
+                                completion(result)
                             }
                         })
                         
                     } catch let error as NSError {
                         print(error.localizedDescription)
-                        completion(result: result)
+                        completion(result)
                     }
                 }else{
-                    completion(result: false)
+                    completion(false)
                 }
                 
                 

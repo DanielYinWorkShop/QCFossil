@@ -7,6 +7,19 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class InputMode02View: InputModeSCMaster {
     
@@ -39,14 +52,14 @@ class InputMode02View: InputModeSCMaster {
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         guard let touch:UITouch = touches.first else
         {
             return
         }
         
-        if touch.view!.isKindOfClass(UITextField().classForCoder) || String(touch.view!.classForCoder) == "UITableViewCellContentView" {
+        if touch.view!.isKind(of: UITextField().classForCoder) || String(describing: touch.view!.classForCoder) == "UITableViewCellContentView" {
             self.resignFirstResponderByTextField(self)
             
         }else {
@@ -140,11 +153,11 @@ class InputMode02View: InputModeSCMaster {
         resizeScrollView(CGSize.init(width: self.scrollCellView.frame.size.width, height: CGFloat(inputCells.count*cellHeight+500)))
     }
     
-    func resizeScrollView(size:CGSize) {
+    func resizeScrollView(_ size:CGSize) {
         self.scrollCellView.contentSize = size
     }
     
-    func inputCellInit(index:Int, sectionId:Int, sectionName:String, idxLabelText:String, dpText:String, dpDescText:String, dppText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspectPositionZoneValueId:Int=0) -> InputMode02CellView {
+    func inputCellInit(_ index:Int, sectionId:Int, sectionName:String, idxLabelText:String, dpText:String, dpDescText:String, dppText:String, dismissBtnHidden:Bool, elementDbId:Int, refRecordId:Int, inspElmId:Int, inspPostId:Int, resultValueObj:ResultValueObj=ResultValueObj(resultValueId:0,resultValueNameEn: "",resultValueNameCn: ""), taskInspDataRecordId:Int=0, inspectPositionZoneValueId:Int=0) -> InputMode02CellView {
         
         let inputCellViewObj = InputMode02CellView.loadFromNibNamed("InputMode02Cell")
         
@@ -182,18 +195,18 @@ class InputMode02View: InputModeSCMaster {
         let parentPositObjs = self.defectPosits.filter({$0.positionNameEn == dpText || $0.positionNameCn == dpText})
         if parentPositObjs.count < 1 {
             inputCellViewObj?.cellDPPInput.backgroundColor = _GREY_BACKGROUD
-            inputCellViewObj?.defectZoneListIcon.hidden = true
+            inputCellViewObj?.defectZoneListIcon.isHidden = true
         } else {
-            inputCellViewObj?.cellDPPInput.backgroundColor = UIColor.whiteColor()
-            inputCellViewObj?.defectZoneListIcon.hidden = false
+            inputCellViewObj?.cellDPPInput.backgroundColor = UIColor.white
+            inputCellViewObj?.defectZoneListIcon.isHidden = false
         }
         
         if inputCellViewObj?.zoneValues?.count < 1 {
             inputCellViewObj?.defectZoneInput.backgroundColor = _GREY_BACKGROUD
-            inputCellViewObj?.defectPositionPointIcon.hidden = true
+            inputCellViewObj?.defectPositionPointIcon.isHidden = true
         } else {
-            inputCellViewObj?.defectZoneInput.backgroundColor = UIColor.whiteColor()
-            inputCellViewObj?.defectPositionPointIcon.hidden = false
+            inputCellViewObj?.defectZoneInput.backgroundColor = UIColor.white
+            inputCellViewObj?.defectPositionPointIcon.isHidden = false
         }
         
         if !dismissBtnHidden {
@@ -203,7 +216,7 @@ class InputMode02View: InputModeSCMaster {
         return inputCellViewObj!
     }
     
-    @IBAction func addCellBtnOnClick(sender: UIButton) {
+    @IBAction func addCellBtnOnClick(_ sender: UIButton) {
         NSLog("Add Cell")
         
         let dpDataHelper = DPDataHelper()

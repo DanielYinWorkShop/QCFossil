@@ -29,28 +29,28 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        NSNotificationCenter.defaultCenter().postNotificationName("setScrollable", object: nil,userInfo: ["canScroll":false])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "setScrollable"), object: nil,userInfo: ["canScroll":false])
         
         //load sign images if exsit
-        self.inspectorSignTap.hidden = false
+        self.inspectorSignTap.isHidden = false
         if Cache_Task_On?.inspectionSignImageFile != "" {
             self.inspectorSignInput.image = UIImage.init().fromBase64((Cache_Task_On?.inspectionSignImageFile)!)
-            self.inspectorSignTap.hidden = true
+            self.inspectorSignTap.isHidden = true
         }else{
             let keyValueDataHelper = KeyValueDataHelper()
-            let signImageInCode = keyValueDataHelper.getInspectorSignImage(String(Cache_Inspector?.inspectorId))
+            let signImageInCode = keyValueDataHelper.getInspectorSignImage(String(describing: Cache_Inspector?.inspectorId))
             
             if signImageInCode != "" {
                 self.inspectorSignInput.image = UIImage.init().fromBase64(signImageInCode)
                 Cache_Task_On?.inspectionSignImageFile = signImageInCode
-                self.inspectorSignTap.hidden = true
+                self.inspectorSignTap.isHidden = true
             }
         }
         
-        self.vendorSignTap.hidden = false
+        self.vendorSignTap.isHidden = false
         if Cache_Task_On?.vdrSignImageFile != "" {
             self.vendorSignInput.image = UIImage.init().fromBase64((Cache_Task_On?.vdrSignImageFile)!)
-            self.vendorSignTap.hidden = true
+            self.vendorSignTap.isHidden = true
         }
         
         /*
@@ -81,15 +81,15 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         
         updateLocalizedString()
         
-        self.vendorSignBoxInput.addTarget(self, action: #selector(SignoffViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        self.vendorSignBoxInput.addTarget(self, action: #selector(SignoffViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged)
     }
     
-    func textFieldDidChange(textField: UITextField) {
+    func textFieldDidChange(_ textField: UITextField) {
         
         Cache_Task_On?.vdrSignName = textField.text
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         //if Cache_Task_On?.taskStatus == GetTaskStatusId(caseId: "Confirmed").rawValue {
         self.view.disableAllFunsForView(self.view)
         //}
@@ -100,10 +100,10 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.vendorSignLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Vendor Confirmer")
         self.inspectorSignBoxLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Signature")
         self.vendorSignBoxLabel.text = MylocalizedString.sharedLocalizeManager.getLocalizedString("Signature")
-        self.inspectorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), forState: UIControlState.Normal)
-        self.vendorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), forState: UIControlState.Normal)
-        self.inspectorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
-        self.vendorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
+        self.inspectorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControlState())
+        self.vendorSignTap.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Tap to Sign"), for: UIControlState())
+        self.inspectorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        self.vendorSignClearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
     }
     
     override func didReceiveMemoryWarning() {
@@ -111,13 +111,13 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         NSLog("Signoff View Will Appear")
         self.view.disableAllFunsForView(self.view)
         self.view.setButtonCornerRadius(self.inspectorSignClearBtn)
         self.view.setButtonCornerRadius(self.vendorSignClearBtn)
         
-        let myParentTabVC = self.parentViewController?.parentViewController as! TabBarViewController
+        let myParentTabVC = self.parent?.parent as! TabBarViewController
         myParentTabVC.setLeftBarItem(MylocalizedString.sharedLocalizeManager.getLocalizedString("Cancel"),actionName: "backToTaskDetailFromSignOffPage")
         myParentTabVC.navigationItem.title = MylocalizedString.sharedLocalizeManager.getLocalizedString("Task Form")
         
@@ -126,7 +126,7 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         saveSignImages()
     }
     
@@ -140,54 +140,54 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
     }
     */
     
-    @IBAction func backMenuButton(sender: UIBarButtonItem) {
+    @IBAction func backMenuButton(_ sender: UIBarButtonItem) {
         NSLog("Back Menu Click")
         //self.dismissViewControllerAnimated(true, completion: nil)
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func confirmMenuButton(sender: UIBarButtonItem) {
+    @IBAction func confirmMenuButton(_ sender: UIBarButtonItem) {
         NSLog("Confrim Menu Click")
         
     }
     
-    @IBAction func inspectorSignTap(sender: UIButton) {
+    @IBAction func inspectorSignTap(_ sender: UIButton) {
         NSLog("Inspector Sign Tap")
         //self.view.alpha = 0.3
-        sender.hidden = true
+        sender.isHidden = true
         self.inspectorSignBoxInput.resignFirstResponder()
         self.vendorSignBoxInput.resignFirstResponder()
         
         let container: UIView = UIView()
         container.tag = _MASKVIEWTAG
-        container.hidden = false
+        container.isHidden = false
         container.frame = self.view.frame
         container.center = self.view.center
-        container.backgroundColor = UIColor.clearColor()
+        container.backgroundColor = UIColor.clear
         
         let layer = UIView()
         layer.frame = self.view.frame
         layer.center = self.view.center
-        layer.backgroundColor = UIColor.blackColor()
+        layer.backgroundColor = UIColor.black
         layer.alpha = 0.7
         container.addSubview(layer)
         
         signInputView = SignoffView()//.init()1.58
-        signInputView!.frame = CGRectMake(0,0,650,415)
+        signInputView!.frame = CGRect(x: 0,y: 0,width: 650,height: 415)
         signInputView!.center = container.center
-        signInputView!.backgroundColor = UIColor.whiteColor()
-        signInputView!.userInteractionEnabled = true
+        signInputView!.backgroundColor = UIColor.white
+        signInputView!.isUserInteractionEnabled = true
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), forState: UIControlState.Normal)
-        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
+        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
-        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         /*
         let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
@@ -207,11 +207,11 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
     
     func cancelInspctorSign() {
         if self.inspectorSignInput.image == nil {
-            self.inspectorSignTap.hidden = false
+            self.inspectorSignTap.isHidden = false
         }
         
         if self.vendorSignInput.image == nil {
-            self.vendorSignTap.hidden = false
+            self.vendorSignTap.isHidden = false
         }
         
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
@@ -246,42 +246,42 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.view.subviews.forEach({if $0.tag == _MASKVIEWTAG {$0.removeFromSuperview()} })
     }
     
-    @IBAction func vendorSignTap(sender: UIButton) {
+    @IBAction func vendorSignTap(_ sender: UIButton) {
         NSLog("Vendor Sign Tap")
-        sender.hidden = true
+        sender.isHidden = true
         self.inspectorSignBoxInput.resignFirstResponder()
         self.vendorSignBoxInput.resignFirstResponder()
         
         let container: UIView = UIView()
         container.tag = _MASKVIEWTAG
-        container.hidden = false
+        container.isHidden = false
         container.frame = self.view.frame
         container.center = self.view.center
-        container.backgroundColor = UIColor.clearColor()
+        container.backgroundColor = UIColor.clear
         
         let layer = UIView()
         layer.frame = self.view.frame
         layer.center = self.view.center
-        layer.backgroundColor = UIColor.blackColor()
+        layer.backgroundColor = UIColor.black
         layer.alpha = 0.7
         container.addSubview(layer)
         
         signInputView = SignoffView()//.init()
-        signInputView!.frame = CGRectMake(0,0,650,415)
+        signInputView!.frame = CGRect(x: 0,y: 0,width: 650,height: 415)
         signInputView!.center = container.center
-        signInputView!.backgroundColor = UIColor.whiteColor()
-        signInputView!.userInteractionEnabled = true
+        signInputView!.backgroundColor = UIColor.white
+        signInputView!.isUserInteractionEnabled = true
         
         let okBtn = UIButton(frame: CGRect(x: 600, y: 750, width: 100, height: 50))
         okBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), forState: UIControlState.Normal)
-        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmVendorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        okBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Confirm"), for: UIControlState())
+        okBtn.addTarget(self, action: #selector(SignoffViewController.confirmVendorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(okBtn)
         
         let clearBtn = UIButton(frame: CGRect(x: 490, y: 750, width: 100, height: 50))
         clearBtn.backgroundColor = _DEFAULTBUTTONTEXTCOLOR
-        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), forState: UIControlState.Normal)
-        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), forControlEvents: UIControlEvents.TouchUpInside)
+        clearBtn.setTitle(MylocalizedString.sharedLocalizeManager.getLocalizedString("Clear"), for: UIControlState())
+        clearBtn.addTarget(self, action: #selector(SignoffViewController.clearInspctorSign), for: UIControlEvents.touchUpInside)
         self.view.setButtonCornerRadius(clearBtn)
         /*
         let cancelBtn = UIButton(frame: CGRect(x: 380, y: 750, width: 100, height: 50))
@@ -299,16 +299,16 @@ class SignoffViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(container)
     }
     
-    @IBAction func clearInspectorSign(sender: UIButton) {
+    @IBAction func clearInspectorSign(_ sender: UIButton) {
         inspectorSignInput.image = nil
         Cache_Task_On?.inspectionSignImageFile = ""
-        inspectorSignTap.hidden = false
+        inspectorSignTap.isHidden = false
     }
     
-    @IBAction func clearVendorSign(sender: UIButton) {
+    @IBAction func clearVendorSign(_ sender: UIButton) {
         vendorSignInput.image = nil
         Cache_Task_On?.vdrSignImageFile = ""
-        vendorSignTap.hidden = false
+        vendorSignTap.isHidden = false
     }
     
     func saveSignImages() {

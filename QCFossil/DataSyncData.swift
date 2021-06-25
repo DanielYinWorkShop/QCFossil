@@ -52,7 +52,7 @@ let _DS_USERLOGIN = [
     "APINAME" : "\(dataSyncServerUsing)req_inspector_auth.aspx",
     "APIPARA" : [
         "service_type" : "Inspector Authentication",
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "action_type": "user_login",
         "app_username": _DS_USERNAME,
         "app_password": _DS_USERPASSWORD
@@ -103,14 +103,14 @@ let _DS_USERLOGIN = [
             "delete_user"
         ]
     ]
-]
+] as [String : Any]
 
 let _DS_FORGET_UN = [
     "NAME" : "Inspector Authentication",
     "APINAME" : "\(dataSyncServerUsing)req_inspector_auth.aspx",
     "APIPARA" : [
         "service_type" : "Inspector Authentication",
-        "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id" : UIDevice.current.identifierForVendor!.uuidString,
         "action_type": "forget_username",
         "email" : _DS_RESETEMAIL
     ],
@@ -125,14 +125,14 @@ let _DS_FORGET_UN = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 let _DS_FORGET_UNPW = [
     "NAME" : "Inspector Authentication",
     "APINAME" : "\(dataSyncServerUsing)req_inspector_auth.aspx",
     "APIPARA" : [
         "service_type" : "Inspector Authentication",
-        "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id" : UIDevice.current.identifierForVendor!.uuidString,
         "action_type": "forget_password",
         "app_username": _DS_USERNAME,
         "email": _DS_RESETEMAIL
@@ -148,7 +148,7 @@ let _DS_FORGET_UNPW = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 let _DS_CHANGE_PW = [
     "NAME" : "Inspector Authentication",
@@ -156,7 +156,7 @@ let _DS_CHANGE_PW = [
     "APIPARA" : [
         "service_type" : "Inspector Authentication",
         "service_token": _DS_SERVICETOKEN,
-        "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id" : UIDevice.current.identifierForVendor!.uuidString,
         "action_type" : "change_password",
         "decrypt_app_password" : "new_password"
     ],
@@ -171,7 +171,7 @@ let _DS_CHANGE_PW = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //Master Data Download
 let _DS_MSTRDATA = [
@@ -180,7 +180,7 @@ let _DS_MSTRDATA = [
     "ACKNAME" : _DS_ACKMSTRDATA,
     "APIPARA" : [
         "service_token": _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type" : "Master Data Download"
     ],
     "ACTIONNAMES" : [
@@ -272,7 +272,7 @@ let _DS_MSTRDATA = [
             "vdr_name"
         ]
     ]
-]
+] as [String : Any]
 
 //Master Data Download Acknowledgement
 let _DS_ACKMSTRDATA = [
@@ -298,7 +298,7 @@ let _DS_ACKMSTRDATA = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //Inspection Setup Data Download
 let _DS_INPTSETUP = [
@@ -307,7 +307,7 @@ let _DS_INPTSETUP = [
     "ACKNAME" : _DS_ACKINPTSETUP,
     "APIPARA" : [
         "service_token": _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type" : "Inspection Setup Data Download"
     ],
     "ACTIONNAMES" : [
@@ -730,7 +730,7 @@ let _DS_INPTSETUP = [
             "delete_date"
         ]
     ]
-]
+] as [String : Any]
 
 //Inspection Setup Data Download Acknowledgement
 let _DS_ACKINPTSETUP = [
@@ -778,7 +778,7 @@ let _DS_ACKINPTSETUP = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //FGPO Data Download Request
 let _DS_FGPODATA = [
@@ -787,7 +787,7 @@ let _DS_FGPODATA = [
     "ACKNAME" : _DS_ACKFGPODATA,
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type": "FGPO Data Download",
         "init_service_session": ""
     ],
@@ -859,7 +859,7 @@ let _DS_FGPODATA = [
             "market"
         ]
     ]
-]
+] as [String : Any]
 //FGPO Data Download Acknowledgement
 let _DS_ACKFGPODATA = [
     "NAME" : "FGPO Data Download Acknowledgement",
@@ -881,7 +881,7 @@ let _DS_ACKFGPODATA = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //Task Booking Data Download
 let _DS_TASKDATA = [
@@ -890,7 +890,7 @@ let _DS_TASKDATA = [
     "ACKNAME" : _DS_ACKTASKDATA,
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type": "Task Booking Data Download",
     ],
     
@@ -1026,7 +1026,7 @@ let _DS_TASKDATA = [
             "substr_reliability_remark"
         ]
     ]
-]
+] as [String : Any]
 
 //Task Booking Data Download Acknowledgement
 let _DS_ACKTASKDATA = [
@@ -1052,7 +1052,7 @@ let _DS_ACKTASKDATA = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //Task Status Data Download Request
 let _DS_DL_TASK_STATUS = [
@@ -1061,7 +1061,7 @@ let _DS_DL_TASK_STATUS = [
     "ACKNAME" : _DS_ACKTASKSTATUS,
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type": "Task Status Data Download",
     ],
     
@@ -1091,7 +1091,7 @@ let _DS_DL_TASK_STATUS = [
             "inspection_date"//add 0820
         ]
     ]
-]
+] as [String : Any]
 
 //Task Status Data Download Acknowledgement
 let _DS_ACKTASKSTATUS = [
@@ -1114,7 +1114,7 @@ let _DS_ACKTASKSTATUS = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //Style Photo Data Download Request
 let _DS_DL_STYLE_PHOTO = [
@@ -1123,7 +1123,7 @@ let _DS_DL_STYLE_PHOTO = [
     "ACKNAME" : _DS_ACKSTYLEPHOTO,
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type": "Style Photo Download",
     ],
     "ACTIONNAMES" : [
@@ -1147,7 +1147,7 @@ let _DS_DL_STYLE_PHOTO = [
             "delete_date"
         ]
     ]
-]
+] as [String : Any]
 
 //Style Photo Data Download Acknowledgement
 let _DS_ACKSTYLEPHOTO = [
@@ -1169,7 +1169,7 @@ let _DS_ACKSTYLEPHOTO = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //App Database Backup Upload
 let _DS_UPLOADDBBACKUP = [
@@ -1177,7 +1177,7 @@ let _DS_UPLOADDBBACKUP = [
     "APINAME" : "\(dataSyncServerUsing)ul_db_backup.aspx",
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id" : UIDevice.current.identifierForVendor!.uuidString,
         "db_filename" : "fossil_qc_prd.sqlite",
         "db_file" : "fossil_qc_prd.sqlite",
         "backup_remarks" : "",
@@ -1195,14 +1195,14 @@ let _DS_UPLOADDBBACKUP = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 let _DS_LISTDBBACKUP = [
     "NAME" : "App Database Backup History",
     "APINAME" : "\(dataSyncServerUsing)list_db_backup.aspx",
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id" : UIDevice.current.identifierForVendor!.uuidString,
         "service_type" : "App Database Backup History",
         "app_version" : "",
         "app_release" : ""
@@ -1226,14 +1226,14 @@ let _DS_LISTDBBACKUP = [
             "app_release"
         ]
     ]
-]
+] as [String : Any]
 
 let _DS_DBBACKUPDOWNLOAD = [
     "NAME" : "App Database Backup Download",
     "APINAME" : "\(dataSyncServerUsing)dl_db_backup.aspx",
     "APIPARA" : [
         "service_token" : _DS_SERVICETOKEN,
-        "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id" : UIDevice.current.identifierForVendor!.uuidString,
         "service_type" : "App Database Backup Download",
         "backup_sync_id" : ""
     ],
@@ -1248,7 +1248,7 @@ let _DS_DBBACKUPDOWNLOAD = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 //Task Result Data Upload
 let _DS_ULTASKDATA = [
@@ -1256,7 +1256,7 @@ let _DS_ULTASKDATA = [
     "APINAME" : "\(dataSyncServerUsing)ul_task_data.aspx",
     "APIPARA" : [
         "service_token": _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type": "Task Result Data Upload",
     ],
     
@@ -1445,7 +1445,7 @@ let _DS_ULTASKDATA = [
             "data_refuse_desc":"" //add 1107
         ]
     ]
-]
+] as [String : Any]
 
 //Task Photo Data Upload
 let _DS_ULTASKPHOTO = [
@@ -1453,7 +1453,7 @@ let _DS_ULTASKPHOTO = [
     "APINAME" : "\(dataSyncServerUsing)ul_task_photo.aspx",
     "APIPARA" : [
         "service_token": _DS_SERVICETOKEN,
-        "device_id": UIDevice.currentDevice().identifierForVendor!.UUIDString,
+        "device_id": UIDevice.current.identifierForVendor!.uuidString,
         "service_type": "Task Photo Data Upload",
         "task_id": "task_id",
         "photo_id" : "photo_id",
@@ -1474,6 +1474,6 @@ let _DS_ULTASKPHOTO = [
             "novalue"
         ]
     ]
-]
+] as [String : Any]
 
 
