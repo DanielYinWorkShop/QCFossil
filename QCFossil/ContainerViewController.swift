@@ -85,8 +85,10 @@ class ContainerViewController: UIViewController{
     
     @objc func setScrollable(_ notification:Notification) {
         let userInfo:Dictionary<String,Bool?> = notification.userInfo as! Dictionary<String,Bool?>
-        if let canScroll = userInfo["canScroll"] as? Bool, canScroll == false {
-            closeMenu()
+        if let canScroll = userInfo["canScroll"] as? Bool {
+            if canScroll == false {
+                closeMenu()
+            }
             self.containerScroll.isScrollEnabled = canScroll
         }
     }

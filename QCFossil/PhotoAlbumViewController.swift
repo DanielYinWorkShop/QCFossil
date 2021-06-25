@@ -80,7 +80,6 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         }
         
         updateLocalizeString()
-        loadPhotos()
     }
     
     func updateLocalizeString() {
@@ -98,21 +97,17 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         DispatchQueue.main.async(execute: {
             self.view.showActivityIndicator()
             
-            //let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
-            //dispatch_after(time, dispatch_get_main_queue()) {
-            DispatchQueue.main.async(execute: {
-                if self.pVC != nil {
-                    Cache_Task_On?.myPhotos = self.getImageNamesFromLocal(PhotoDataType(caseId: "INSPECT").rawValue)
-                    //self.photos = self.getImageNamesFromLocal(PhotoDataType(caseId: "INSPECT").rawValue)
-                }else{
-                    Cache_Task_On?.myPhotos = self.getImageNamesFromLocal()
-                    //self.photos = self.getImageNamesFromLocal()
-                }
-                
-                self.photoTableView.reloadData()
-                
-                self.view.removeActivityIndicator()
-            })
+            if self.pVC != nil {
+                Cache_Task_On?.myPhotos = self.getImageNamesFromLocal(PhotoDataType(caseId: "INSPECT").rawValue)
+                //self.photos = self.getImageNamesFromLocal(PhotoDataType(caseId: "INSPECT").rawValue)
+            }else{
+                Cache_Task_On?.myPhotos = self.getImageNamesFromLocal()
+                //self.photos = self.getImageNamesFromLocal()
+            }
+            
+            self.photoTableView.reloadData()
+            
+            self.view.removeActivityIndicator()
         })
     }
 
@@ -125,6 +120,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
         self.view.disableAllFunsForView(self.view)
         
         DispatchQueue.main.async(execute: {
+            self.loadPhotos()
             self.parent?.parent!.view.removeActivityIndicator()
         })
         
@@ -203,8 +199,7 @@ class PhotoAlbumViewController: UIViewController, UINavigationControllerDelegate
             rightButton.target = self
             rightButton.action = #selector(PhotoAlbumViewController.didSelectedPhotos)
             myParentTabVC.navigationItem.rightBarButtonItem = rightButton
-            
-            loadPhotos()
+
             self.photoTableView.allowsMultipleSelection = true
         }else{
             self.photoTableView.allowsSelection = false
